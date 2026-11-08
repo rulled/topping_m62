@@ -1,0 +1,674 @@
+
+===== PAGE 1 =====
+M62
+便携声卡
+Portable Audio Interface V1.1
+===== PAGE 2 =====
+4
+4
+5
+9
+9
+10
+11
+11
+12
+14
+14
+14
+18
+19
+20
+21
+21
+22
+24
+24
+25
+25
+26
+27
+27
+28
+29
+29
+30
+1. Package Contents
+2. Overview
+3. Indicators
+4. Power & USB Detection Indicators
+4.1 Charging / Discharging
+4.2 Indicator LEDs
+5. M62 Operating Modes
+5.1 Mode Comparison
+5.2 Switching Modes
+6. Getting Started
+6.1 Power On/Off
+6.2 Connecting Microphones
+6.3 Connecting Balanced Line-Out Devices
+6.4 Connecting Unbalanced Line-Out Devices 
+6.5 Connecting via Bluetooth
+6.6 Adjusting Input Gain / Volume
+6.7 Connecting Headphones
+6.8 Phone Connection
+6.9 Connecting a Computer
+6.10 Noise Reduction
+6.11 Ducking
+6.12 Reverb
+6.13 Touch Lock Mode
+7. Remote Control
+7.1 Pairing the Remote via Bluetooth
+7.2 Remote Button Functions
+8. Factory reset
+8.1 Using Device Buttons
+8.2 Using M Control Center
+9. M Control Center 30
+Table of Contents
+2 of 36
+===== PAGE 3 =====
+10. DAW Audio Settings 31
+11. Precautions 31
+12. Attribute 31
+13. Specifications 33
+3 of 36
+===== PAGE 4 =====
+1. Package Contents
+2. Overview
+M62 x 1
+M-RC31 Remote x 1
+USB A-C Cable x 1
+USB C-C Cable x 1
+Quick Start Guide x 1
+Cleaning Cloth x 1
+4 of 36
+===== PAGE 5 =====
+3. Indicators
+1. Level Meter 1
+Normal: Shows real-time OTG output level.
+Mute: Top two red LEDs flash when OTG is muted.
+Adjust: When changing OTG volume or IN1/IN2 gain, LEDs show the value (0–
+99).
+Left LEDs = tens; right LEDs = ones.
+Example: 3 LEDs left + 5 LEDs right → Volume 35.
+2. Level Meter 2
+Normal: Shows real-time headphone output level.
+Mute: Top two red LEDs flash when headphone is muted.
+Adjust: When changing headphone volume or AUX/BT input, LEDs show the
+value (0–99).
+5 of 36
+===== PAGE 6 =====
+Left LEDs = tens; right LEDs = ones.
+Example: 3 LEDs left + 5 LEDs right → Volume 35.
+3. IN1 Mic Input Selection
+IN1 supports Mic1, Mic-3.5, and Mic-HP. Press SEL to switch; selected input LED
+lights up.
+4. Noise Reduction / Ducking
+Short press NC (left): toggle Noise Reduction.
+Long press NC: enable/ disable Ducking.
+5. Reverb Modes
+Press Reverb (right) to cycle: Studio → Live → Hall → Off.
+6. 48V Indicator
+Hold + and − on IN1/IN2 to toggle phantom power; 48V LED lights when on.
+LED DESCRIPTION
+NC1 ON NC1 Noise Reduction On
+NC2 ON NC2 Noise Reduction On
+NC1 & NC2 OFF Noise Reduction Off
+DUCKING ON Ducking Enabled
+DUCKING OFF Ducking Disabled
+6 of 36
+===== PAGE 7 =====
+Mic1 / Mic2: Supplies 48V phantom power to the mic.
+Mic-3.5 / Mic-HP: Supplies 2.5V plug-in power to the mic.
+⚠ Notes:
+If your device doesn’t need phantom power (2.5V/48V), enabling it may
+cause damage. Use only if required.
+Turn off phantom power before plugging/unplugging mics to avoid noise
+or damage.
+Lower volume before switching phantom power on/off.
+7. IN1 / IN2 Level Indicator
+Press/hold + or − on IN1/IN2 to adjust gain. If red LED lights (clipping), reduce
+gain.
+8. AUX Input Indicator
+Press/hold + or − on AUX to adjust volume.
+• 
+• 
+• 
+LED STATUS MEANING
+BLUE Connected
+GREEN Normal signal
+YELLOW Near overload
+RED Clipping
+YELLOW FLASHING Mute
+7 of 36
+===== PAGE 8 =====
+9. Bluetooth Input Indicator
+Press/hold + or − on BT to adjust volume.
+Hold + and − on BT to disconnect and enter pairing.
+*Bluetooth ON/OFF can be set in M Control Center. Default: ON. [Settings →
+Device Settings]
+LED STATUS MEANING
+BLUE Connected
+GREEN Normal signal
+YELLOW Near overload
+RED Clipping
+LED STATUS MEANING
+BLUE BREATHING Not paired
+BLUE FLASHING Pairing
+RED FLASHING Remote pairing
+BLUE STEADY Connected
+GREEN Normal signal
+YELLOW Near overload
+RED Clipping
+OFF Bluetooth off*
+8 of 36
+===== PAGE 9 =====
+10. Power Indicator
+After power on, the ring LED shows:
+Green: Battery >10%
+Yellow: Battery <10%
+Red: Battery <5%
+Single-press main button: White ring shows battery. Full ring = full charge. LEDs
+fade counterclockwise as power drops.
+Single and double-press main button actions can be customized in M Control
+Center. [Settings → Device Settings]
+4. Power & USB Detection Indicators
+4.1 Charging / Discharging
+Notes:
+Charge: Powers the M62 battery.
+Discharge: M62 supplies power to the connected device.
+• 
+• 
+• 
+STATUS CHARGE PORT OTG PORT USB-C PORT
+M62 OFF Charge only Discharge only Charge only
+M62 ON Charge only Options: Discharge /Idle Options: Charge /Discharge / Idle
+• 
+• 
+9 of 36
+===== PAGE 10 =====
+When powered on, the charge/discharge status of the OTG and USB-C ports can
+be configured either with the two bottom-left buttons on the remote control or
+in M Control Center under [Settings → Device Settings].
+After configuration, the power LED will indicate the status for a few seconds:
+Flowing upward = Charging
+Flowing downward = Discharging
+Flashing = Idle (neither charging nor discharging)
+M62 can charge and discharge at the same time, e.g. charge via Charge port
+while discharging via OTG and USB-C.
+M62 charges from only one port at a time. If two are connected, the first source
+is used and the other ignored.
+4.2 Indicator LEDs
+Charge LED shows charge/discharge only.
+OTG/USB-C LEDs show both power status and device detection.
+Device Detection (White LED)
+• 
+• 
+• 
+COLOR STATUS DESCRIPTION
+WHITE Steady Device detected
+OFF - No device detected
+10 of 36
+===== PAGE 11 =====
+Charge / Discharge (Green/Yellow LED)
+Example
+Because OTG/USB-C LEDs show both states, the above tables combine.
+Example: OTG detects a phone and M62 discharges to charge it.
+OTG LED: Yellow breathing with brief white flashes.
+5. M62 Operating Modes
+5.1 Mode Comparison
+M62 offers three modes for different needs. Default: Mobile Mode.
+COLOR STATUS DESCRIPTION
+YELLOW Breathing Discharging
+GREEN Breathing Charging
+GREEN Steady M62 fully charged
+OFF - Idle
+MODE MOBILE MODE LIVE STREAMINGMODE PRO AUDIO MODE
+FEATURES
+Simple UI, intuitive
+use; saves settings to
+device; no PC
+required.
+Optimized for
+streaming; supports
+multi-mix and effects
+Up to 96 kHz with mic
+4-band PEQ plus
+headphone 10-band
+EQ
+SAMPLE RATES 44.1/48 kHz 44.1/48 kHz 44.1/48/88.2/96 kHz
+INPUTS IN1, IN2, AUX, BT, OTG,Playback 1/2 IN1, IN2, AUX, BT, OTG,Playback 1/2–9/10 IN1, IN2, AUX, BT, OTG,Playback 1/2–9/10
+MIXER None Mix A–E (5 buses) Mix A–C (3 buses)
+11 of 36
+===== PAGE 12 =====
+5.2 Switching Modes
+Switching Modes on the Device
+1. Hold the main button to power off.
+2. Wait ~5 seconds.
+3. Hold SEL + main until LEDs light.
+MODE MOBILE MODE LIVE STREAMINGMODE PRO AUDIO MODE
+LOOPBACK Recording Loopback 1/2, 3/4, 5/6,7/8 Loopback 1/2, 3/4, 5/6,7/8
+EFFECTS
+Noise Reduction,
+Compressor, Reverb
+(adjustable)
+Noise Reduction,
+Compressor, Reverb
+(adjustable).
+Supports input signal
+level adjustment.
+None
+PEQ Mic input: 4-bandPEQ Mic input: 4-bandPEQ
+Mic input: 4-band
+PEQ
+Headphone out: 10-
+band PEQ
+DUCKING Supported(adjustable) Supported(adjustable) Not supported
+PRESETS Chat, Vocal Chat, Vocal None
+SCENARIOS For calls, meetings,mobile streaming, etc. For streaming For pro users:recording, musicproduction, etc.
+12 of 36
+===== PAGE 13 =====
+Short-press SEL to switch:
+2 LEDs → Mobile Mode
+4 LEDs → Live streaming mode
+6 LEDs → Pro audio Mode
+4. After selecting, hold main to reboot into that mode.
+Switching Modes in M Control Center
+• 
+• 
+• 
+13 of 36
+===== PAGE 14 =====
+6. Getting Started
+6.1 Power On/Off
+Hold the main button to power on; hold again to power off.
+6.2 Connecting Microphones
+1. Select the Microphone Input
+M62 supports three types of microphone input, located on the top panel:
+Mic1 / Mic2 (6.35mm TRS):  Connect dynamic or condenser microphones;
+provides 48V phantom power.
+Mic-3.5 (3.5mm TS):  Connect lavalier or mini microphones; provides 2.5V
+plug-in power.
+Mic-HP (3.5mm TRRS): Connect headsets with microphones.
+Up  to  2  microphones  are  supported  at  the  same  time:  IN1  can  select  Mic1,
+Mic-3.5, or Mic-HP; IN2 is fixed as Mic2.
+• 
+• 
+• 
+14 of 36
+===== PAGE 15 =====
+2. Lower Input Gain
+Before connecting, lower the input gain for the channel to avoid sudden loud
+volume.
+When connecting Mic1, Mic-3.5, or Mic-HP, lower IN1 gain.
+When connecting Mic2, lower IN2 gain.
+Press the − button on the channel to reduce gain.
+3. Use the proper cable to connect the microphone
+Dynamic/Condenser mics: Use XLR to 6.35mm TRS cables to connect to
+Mic1/Mic2.
+Lavalier or mini mics: Use 3.5mm TRS or TS cables to connect to Mic-3.5.
+Headsets: Connect directly to Mic-HP.
+(Illustration for reference only)
+• 
+• 
+• 
+• 
+• 
+15 of 36
+===== PAGE 16 =====
+4. IN1 Input Switching
+Up  to  2  microphones  are  supported  at  the  same  time:  IN1  can  select  Mic1,
+Mic-3.5, or Mic-HP; IN2 is fixed as Mic2.
+If using Mic2, no switching needed.
+When using Mic1, Mic-3.5, or Mic-HP, press SEL to cycle inputs; the selected
+input LED lights up.
+16 of 36
+===== PAGE 17 =====
+5. Enable Phantom Power (if required)
+Hold + and − on IN1/IN2 to enable or disable phantom power; the 48V LED lights
+when active.
+Mic1 / Mic2: Supplies 48V phantom power when enabled.
+Mic-3.5 / Mic-HP: Supplies 2.5V plug-in power when enabled.
+⚠ Notes:
+If the device doesn’t require phantom power (2.5V/48V), enabling it may
+cause damage. Enable only when needed.
+Turn off phantom power before plugging/unplugging to avoid noise or
+damage.
+Lower the volume before enabling/disabling phantom power.
+6. Adjust Input Gain
+After connecting, gradually raise gain until a proper recording level is reached.
+See 6.6 Adjusting Input Gain/Volume for details.
+• 
+• 
+• 
+• 
+• 
+17 of 36
+===== PAGE 18 =====
+6.3 Connecting Balanced Line-Out Devices
+1. Lower the input gain of IN1 and IN2. Press or hold the − button to reduce gain.
+If the 48V indicator is on, hold both + and − on IN1 (or IN2) to disable phantom
+power.
+2. For IN1 input switching, press SEL to select Mic1 (Mic1 LED lights).
+3. Use 6.35 mm TRS cables to connect line-out devices to Mic1 and Mic2.
+18 of 36
+===== PAGE 19 =====
+4. After connecting, gradually raise input gain until a proper level is reached. See
+6.6 Adjusting Input Gain / Volume.
+6.4 Connecting Unbalanced Line-Out Devices
+1. Lower AUX input volume by pressing or holding the − button.
+2. Use a 3.5 mm TRS cable to connect to the AUX stereo input，
+19 of 36
+===== PAGE 20 =====
+3. After connecting, gradually raise input gain until a proper level is reached. See
+6.6 Adjusting Input Gain / Volume.
+(Alternatively, use the 6.35 mm TS cable to connect unbalanced line-out devices
+to Mic1 and Mic2; same as 6.3 Connecting Balanced Line-Out Devices)
+6.5 Connecting via Bluetooth
+1. Hold BT + and − until the blue LED flashes; M62 enters pairing mode.
+2. On your phone, search and select “M62.” Blue LED stays on when paired.
+3. Lower phone volume before playback. Then adjust volume using both phone
+controls and BT +/− on M62.
+20 of 36
+===== PAGE 21 =====
+6.6 Adjusting Input Gain / Volume
+Once input is connected, the channel’s level LEDs display the signal in real time.
+Press or hold the channel’s +/− buttons to adjust volume.
+When using a microphone, speak into it and observe LEDs. Slowly raise gain
+with + until the signal is strong but not clipping. AUTO gain detection is also
+available in M Control Center.
+When adjusting input gain/volume, LEDs display the numeric value (0–99).
+Left LEDs = tens; right LEDs = ones.
+Example: 3 LEDs left + 5 LEDs right → Volume 35.
+6.7 Connecting Headphones
+1. Connect headphones to the HP jack (3.5 mm) on the top.
+2. Use HP +/− (right side) to adjust headphone volume.
+LED STATUS MEANING
+BLUE LED Input connected
+GREEN LED Normal signal level
+YELLOW LED Near overload
+RED LED Clipping
+YELLOW FLASHING Mute (IN1/IN2 only)
+21 of 36
+===== PAGE 22 =====
+Level Meter
+Normal: LEDs show real-time headphone output.
+Mute: Top two red LEDs flash when headphone is muted.
+Adjust: When changing headphone, AUX, or BT volume, LEDs display the value
+(0–99).
+Left LEDs = tens; right LEDs = ones.
+Example: 3 LEDs left + 5 LEDs right → Volume 35.
+6.8 Phone Connection
+1. Select Operating Mode
+If using phones only, use Mobile mode (default).
+If connecting both phone and computer, switch to Live streaming mode
+or Pro audio mode.
+Set according to your needs. See 5. M62 Operating Modes for details.
+2. Connection & Volume Control
+Use a USB cable to connect the phone to the OTG port.
+• 
+• 
+22 of 36
+===== PAGE 23 =====
+Use OTG +/− (left side) to adjust output volume to the phone.
+Level Meter
+Normal: LEDs show real-time OTG output.
+Mute: Top two red LEDs flash when OTG is muted.
+Adjust: When changing OTG volume or IN1/IN2 gain, LEDs show the value (0–
+99).
+Left LEDs = tens; right LEDs = ones.
+Example: 3 LEDs left + 5 LEDs right → Volume 35.
+23 of 36
+===== PAGE 24 =====
+3. Dual Phone Connection
+For dual phone connection, connect the second phone to the USB-C port.
+4. Phone Charging & Detection
+See 4. Power & USB Detection Indicators for details.
+6.9 Connecting a Computer
+Use a USB cable to connect your computer to the USB-C port. Install M Control
+Center for advanced settings.
+6.10 Noise Reduction
+Press NC (left side) to toggle Noise Reduction. In M Control Center, NC1 and NC2
+intensity can be adjusted separately.
+LED DISPLAY DESCRIPTION USE CASE
+NC1 LED ON NC1 Noise Reduction On AI noise reduction, keepsvoice clear; best for calls/chat
+24 of 36
+===== PAGE 25 =====
+6.11 Ducking
+Hold NC (left side) to enable/ disable Ducking (mic priority).
+When the microphone (IN1/IN2) detects input, other sources (AUX, Bluetooth,
+etc.) are automatically lowered, so the voice remains clear. Commonly used for
+live streaming and voice-over.
+Ducking parameters (threshold, attack, reduction, release) can be adjusted in M
+Control Center.
+6.12 Reverb
+M62 provides three reverb modes. Press Reverb (right side) to cycle through
+them:
+STUDIO: Small room reverb for intimate sound.
+LIVE: Stage reverb for medium spaces, adding presence.
+HALL: Hall reverb for large spaces, with grand ambience.
+Use +/− to adjust wet/dry mix, controlling the ratio of reverb to dry signal.
+More detailed reverb parameters can be adjusted in M Control Center.
+LED DISPLAY DESCRIPTION USE CASE
+NC2 LED ON NC2 Noise Reduction On Noise gate, low latency; bestfor singing
+NC1 & NC2 OFF Noise Reduction Off /
+• 
+• 
+• 
+25 of 36
+===== PAGE 26 =====
+6.13 Touch Lock Mode
+Enter Touch Lock Mode
+Press and hold the NC and Reverb buttons simultaneously. The light ring will
+flash rapidly twice, indicating that the device has entered Touch Lock Mode.
+In this mode:
+All physical buttons on the device and the remote control are locked and
+will not respond. When any button is pressed, the light ring will flash twice
+to remind you that Touch Lock Mode is active.
+Power on/off operations can still be performed normally.
+After restarting, the device will automatically restore the Touch Lock Mode
+status from before shutdown.
+Touch Lock Mode does not affect normal operation via M Control Center.
+• 
+• 
+• 
+• 
+26 of 36
+===== PAGE 27 =====
+Exit Touch Lock Mode
+Press and hold the NC and Reverb buttons simultaneously again. The light ring
+will flash twice, indicating that the device has exited Touch Lock Mode.
+7. Remote Control
+The  M62  remote  supports  both  Bluetooth  and  infrared.  If  Bluetooth  is  not
+connected, it operates in infrared mode.
+In  infrared  mode,  the  remote  indicator  blinks  twice  per  press;  in  Bluetooth
+mode, it blinks once.
+7.1 Pairing the Remote via Bluetooth
+1. Install two AAA batteries in the remote (not included).
+2. Hold the M62 main button to turn it on.
+3. Hold both + and − on the M62 BT channel until the BT indicator flashes red.
+4. Then hold “IN1 SEL” and the “Battery Display” button on the remote until its
+LED flashes; release and wait until it stops flashing.
+27 of 36
+===== PAGE 28 =====
+5. If pairing fails, repeat the steps.
+7.2 Remote Button Functions
+Chat&Vocal Scene
+Chat Scene: Enables Ducking and disables Reverb.
+Vocal Scene: Disables Ducking.
+Note: Scene presets only change the on/off state of Ducking and Reverb —
+specific parameter settings are not saved.
+User1 and User2 Preset Buttons
+The M62 provides three operating modes, and each mode supports two user
+presets.
+28 of 36
+===== PAGE 29 =====
+Saved Settings:
+All adjustable parameters available on the M62 hardware, such as channel
+volumes and 48V phantom power (excluding custom single/double press
+functions of the power button).
+Mute states of IN1 and IN2.
+All  parameters  for  EQ,  Noise  Reduction,  Compressor,  and  Reverb  (if
+supported in the current mode).
+Phase invert settings for IN1 and IN2 (Pro Audio Mode only).
+Playback 1/2 and Recording Channel Volume (Mobile Mode Only)
+Loading Presets: Presets can be loaded via the M Control Center by clicking the
+desired preset, or by pressing the User1 or User2 button on the remote.
+8. Factory reset
+8.1 Using Device Buttons
+1. Hold the main button to power off the M62.
+2. Wait about 5 seconds.
+3. Hold + and − on the HP channel (right side), then hold the main button to
+power on until all level LEDs light up; wait for reboot.
+• 
+• 
+• 
+• 
+• 
+29 of 36
+===== PAGE 30 =====
+8.2 Using M Control Center
+9. M Control Center
+Download here: https://topping.pro/download
+30 of 36
+===== PAGE 31 =====
+10. DAW Audio Settings
+M62 is compatible with any DAWs that supports Core Audio on Mac or ASIO on
+Windows.
+You need to ensure that M62 is selected as the ASIO driver (Windows) or Core
+Audio driver (Mac) in the DAW's preferences/playback settings. If you are not
+sure where these options can be found, please refer to your DAW's user guide.
+11. Precautions
+Do not keep the unit in a hot, humid environment or hit the unit strongly.
+Opening the case instantly voids the warranty!
+If  unused  for  long  periods,  recharge  periodically  to  maintain  battery
+health.
+Indoor use only.
+Topping  accepts  no  liability  for  any  loss  or  damage  arising  directly  or
+indirectly from the failure of M62.
+For  improvement  purposes,  specifications  subject  to  changes  without
+prior notice.
+12. Attribute
+BASIC ATTRIBUTE
+INTERFACE ATTRIBUTE
+• 
+• 
+• 
+• 
+• 
+• 
+DIMENSIONS 7.2cm x 15.0cm x 2.0cm (Includes protrudingparts)
+WEIGHT 300g
+CHARGE PORT Type-C
+OTG PORT Type-C (USB 2.0 FS)
+31 of 36
+===== PAGE 32 =====
+POWER ATTRIBUTE
+TECHNICAL ATTRIBUTE
+USB-C PORT Type-C (USB 2.0 HS)
+MIC INPUTS 2 × 6.35mm TRS inputs (with 48V phantom power)
+MIC-3.5 INPUT 1 × 3.5mm TS input (with 2.5V bias voltage)
+HEADSET MIC INPUT 1 × 3.5mm TRRS input (with 2.5V bias voltage)
+AUX INPUT 1 × 3.5mm stereo input
+HEADPHONE OUTPUT 1 × 3.5mm stereo output
+WIRELESS INPUT 1 × Bluetooth stereo input
+BATTERY CAPACITY 5000mAh
+CHARGE PORT DC 5V/1.0A–2.5A, total power <13W
+USB-C PORT (CHARGE) DC 5V/2.5A (manual switch to charging mode)
+USB-C PORT (DISCHARGE) DC 5V/1.0A (manual switch to dischargemode)
+OTG PORT (DISCHARGE) DC 5V/1.0A (manual switch to dischargemode)
+CHARGING TIME <2.5H (with >10W adapter, device powered off)
+BATTERY LIFE
+(NO CHARGING OR DISCHARGING)
+>8.5H (with no condenser mic connected)
+>7.5H (with one condenser mic connected)
+>6.5H (with two condenser mic connected)
+MIC PRE MODULES Ultra-linear
+OTG TECHNOLOGY Digital ASRC
+32 of 36
+===== PAGE 33 =====
+13. Specifications
+M62 SPECIFICATIONS (@24BITS/96KHZ)
+MICROPHONE INPUT
+SUPPORTED SAMPLING RATES Type-C: 24bit/44.1kHz – 24bit/96kHzOTG: 16bit/48kHz – 24bit/48kHz
+SOFTWARE CONTROL Yes (M Control Center)
+DAW CHANNELS 10
+RECORDING CHANNELS 16
+LOOPBACK CHANNELS 8
+OPERATING MODES 3 modes (Mobile mode, Live streaming mode,Pro audio mode)
+OS SUPPORT Mac / Windows / iOS / Android
+DUAL HOST SUPPORT Yes
+BLUETOOTH TRANSMISSION RANGE 10m
+EQUIVALENT INPUT NOISE @A-WT,150 OHM -129.5dBu
+THD+N @A-WT -116dB (0.00015%)
+DYNAMIC RANGE @A-WT 118dB
+SNR @A-WT 118dB
+CROSSTALK @1KHZ -140dB
+FREQUENCY RESPONSE 20Hz–20kHz (±0.2dB)
+MAXIMUM INPUT LEVEL 8.6dBu
+33 of 36
+===== PAGE 34 =====
+AUX INPUT
+MIC-3.5 INPUT
+INPUT IMPEDANCE 2.0k Ohms
+AVAILABLE GAIN 0–88dB
+PHANTOM POWER 48V
+CONNECTOR TYPE 6.35mm TRS: Tip (Hot), Ring (Cold), Sleeve (Shield)
+THD+N @A-WT -110dB (0.0003%)
+DYNAMIC RANGE @A-WT 117dB
+SNR @A-WT 117dB
+CROSSTALK @1KHZ -118dB
+FREQUENCY RESPONSE 20Hz–20kHz (±0.2dB)
+MAXIMUM INPUT LEVEL 2.6dBu
+INPUT IMPEDANCE 10k Ohms
+AVAILABLE GAIN -99dB to +9.5dB
+CONNECTOR TYPE 3.5mm TRS: Tip (Left), Ring (Right), Sleeve(Gnd)
+THD+N @A-WT -100dB (0.001%)
+DYNAMIC RANGE @A-WT 113dB
+SNR @A-WT 113dB
+FREQUENCY RESPONSE 20Hz–20kHz (±0.2dB)
+34 of 36
+===== PAGE 35 =====
+MIC-HP INPUT
+HEADPHONE OUTPUT
+MAXIMUM INPUT LEVEL 4dBu
+INPUT IMPEDANCE 1.2k Ohms
+AVAILABLE GAIN 0–88dB
+BIAS VOLTAGE 2.5V
+CONNECTOR TYPE 3.5mm TS: Tip (Signal) & Sleeve (Gnd)
+THD+N @A-WT -100dB (0.001%)
+DYNAMIC RANGE @A-WT 113dB
+SNR @A-WT 113dB
+FREQUENCY RESPONSE 20Hz–20kHz (±0.2dB)
+MAXIMUM INPUT LEVEL 4dBu
+INPUT IMPEDANCE 1.2k Ohms
+AVAILABLE GAIN 0–88dB
+BIAS VOLTAGE 2.5V
+CONNECTOR TYPE 3.5mm TR1R2S: Ring2 (Gnd), Sleeve (Signal)
+THD+N @A-WT -115dB (0.00017%)
+DYNAMIC RANGE @A-WT 122dB
+SNR @A-WT 122dB
+CROSSTALK @1KHZ -130dB
+35 of 36
+===== PAGE 36 =====
+OTG OUTPUT 
+(@OTG 24bits/48kHz <–> TypeC 24bits/44.1kHz–96kHz)
+*Note: The above data is the result of the test in TOPPING laboratory.
+FREQUENCY RESPONSE 20Hz–20kHz (±0.2dB)
+MAXIMUM OUTPUT LEVEL 16dBu
+NOISE @A-WT 3.8uVrms
+OUTPUT IMPEDANCE 1 Ohm
+OUTPUT POWER
+500mW × 2 @32Ω THD+N<1%
+330mW × 2 @64Ω THD+N<1%
+150mW × 2 @150Ω THD+N<1%
+80mW × 2 @300Ω THD+N<1%
+39mW × 2 @600Ω THD+N<1%
+CONNECTOR TYPE 3.5mm TR1R2S: Tip (Left), Ring1 (Right), Ring2 (Gnd)
+THD+N @A-WT -130dB (0.00003%)
+DYNAMIC RANGE @A-WT 138dB
+SNR @A-WT 138dB
+CROSSTALK @1KHZ -154dB
+FREQUENCY RESPONSE 20Hz–20kHz (±0.1dB)
+MAXIMUM OUTPUT LEVEL -0.5dBFS
+CONNECTOR TYPE OTG (Type-C)
+36 of 36

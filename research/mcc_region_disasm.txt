@@ -1,0 +1,262 @@
+﻿image base = 0x140000000
+  .text      va=0x00001000 vsize=0x24e15f raw=0x00000400 rawsz=0x24e200
+  .rdata     va=0x00250000 vsize=0x1131770 raw=0x0024e600 rawsz=0x1131800
+  .data      va=0x01382000 vsize=0x00bac8 raw=0x0137fe00 rawsz=0x00a400
+  .pdata     va=0x0138e000 vsize=0x011238 raw=0x0138a200 rawsz=0x011400
+  .rsrc      va=0x013a0000 vsize=0x02df60 raw=0x0139b600 rawsz=0x02e000
+  .reloc     va=0x013ce000 vsize=0x0085e8 raw=0x013c9600 rawsz=0x008600
+
+регион 0x22b000..0x232000  ->  файл 0x22a400..0x231400
+
+групп (фрагментов функций) с тегами: 17
+
+--- 0x0022c30f..0x0022c5d5  (16 тегов)  {'?73': 8, '?74': 8}
+     0x0022c30f  7301  ?73            dword ptr [rbp - 0x10], 0x7301
+     0x0022c351  7302  ?73            dword ptr [rbp - 0x10], 0x7302
+     0x0022c378  7304  ?73            dword ptr [rbp - 0x10], 0x7304
+     0x0022c39f  7306  ?73            dword ptr [rbp - 0x10], 0x7306
+     0x0022c3c6  7307  ?73            dword ptr [rbp - 0x10], 0x7307
+     0x0022c3ed  7303  ?73            dword ptr [rbp - 0x10], 0x7303
+     0x0022c42b  7305  ?73            dword ptr [rbp - 0x10], 0x7305
+     0x0022c456  7308  ?73            dword ptr [rbp - 0x10], 0x7308
+     0x0022c498  7401  ?74            dword ptr [rbp - 0x10], 0x7401
+     0x0022c4da  7402  ?74            dword ptr [rbp - 0x10], 0x7402
+     0x0022c501  7404  ?74            dword ptr [rbp - 0x10], 0x7404
+     0x0022c528  7406  ?74            dword ptr [rbp - 0x10], 0x7406
+     0x0022c54f  7407  ?74            dword ptr [rbp - 0x10], 0x7407
+     0x0022c576  7403  ?74            dword ptr [rbp - 0x10], 0x7403
+     0x0022c5b1  7405  ?74            dword ptr [rbp - 0x10], 0x7405
+     0x0022c5d5  7408  ?74            dword ptr [rbp - 0x10], 0x7408
+
+--- 0x0022c69b..0x0022c725  (4 тегов)  {'?71': 2, '?72': 2}
+     0x0022c69b  7103  ?71            dword ptr [rbp - 0x10], 0x7103
+     0x0022c6c6  7102  ?71            dword ptr [rbp - 0x10], 0x7102
+     0x0022c701  7203  ?72            dword ptr [rbp - 0x10], 0x7203
+     0x0022c725  7202  ?72            dword ptr [rbp - 0x10], 0x7202
+
+--- 0x0022c7ef..0x0022cc0c  (16 тегов)  {'?77': 7, '?78': 1, '?6b': 2, 'out33': 1, 'out34': 1, '?5b': 4}
+     0x0022c7ef  7701  ?77            dword ptr [rbp - 0x10], 0x7701
+     0x0022c816  7702  ?77            dword ptr [rbp - 0x10], 0x7702
+     0x0022c83d  7703  ?77            dword ptr [rbp - 0x10], 0x7703
+     0x0022c864  7704  ?77            dword ptr [rbp - 0x10], 0x7704
+     0x0022c88b  7705  ?77            dword ptr [rbp - 0x10], 0x7705
+     0x0022c8af  7706  ?77            dword ptr [rbp - 0x10], 0x7706
+     0x0022c8d3  7707  ?77            dword ptr [rbp - 0x10], 0x7707
+     0x0022c8f7  7807  ?78            dword ptr [rbp - 0x10], 0x7807
+     0x0022ca47  6b07  ?              dword ptr [rbp - 0x59], 0x6b07
+     0x0022ca6e  6b11  ?              dword ptr [rbp - 0x59], 0x6b11
+     0x0022ca99  3303  out33          dword ptr [rbp - 0x59], 0x3303
+     0x0022cac7  3403  out34          dword ptr [rbp - 0x59], 0x3403
+     0x0022cb42  5b07  ?5b            dword ptr [rbp - 0x59], 0x5b07
+     0x0022cb6d  5b06  ?5b            dword ptr [rbp - 0x59], 0x5b06
+     0x0022cbe8  5b0f  ?5b            dword ptr [rbp - 0x59], 0x5b0f
+     0x0022cc0c  5b0e  ?5b            dword ptr [rbp - 0x59], 0x5b0e
+
+--- 0x0022d29f..0x0022d565  (16 тегов)  {'?75': 8, '?76': 8}
+     0x0022d29f  7501  ?75            dword ptr [rbp - 0x10], 0x7501
+     0x0022d2e1  7502  ?75            dword ptr [rbp - 0x10], 0x7502
+     0x0022d308  7504  ?75            dword ptr [rbp - 0x10], 0x7504
+     0x0022d32f  7506  ?75            dword ptr [rbp - 0x10], 0x7506
+     0x0022d356  7507  ?75            dword ptr [rbp - 0x10], 0x7507
+     0x0022d37d  7503  ?75            dword ptr [rbp - 0x10], 0x7503
+     0x0022d3bb  7505  ?75            dword ptr [rbp - 0x10], 0x7505
+     0x0022d3e6  7508  ?75            dword ptr [rbp - 0x10], 0x7508
+     0x0022d428  7601  ?76            dword ptr [rbp - 0x10], 0x7601
+     0x0022d46a  7602  ?76            dword ptr [rbp - 0x10], 0x7602
+     0x0022d491  7604  ?76            dword ptr [rbp - 0x10], 0x7604
+     0x0022d4b8  7606  ?76            dword ptr [rbp - 0x10], 0x7606
+     0x0022d4df  7607  ?76            dword ptr [rbp - 0x10], 0x7607
+     0x0022d506  7603  ?76            dword ptr [rbp - 0x10], 0x7603
+     0x0022d541  7605  ?76            dword ptr [rbp - 0x10], 0x7605
+     0x0022d565  7608  ?76            dword ptr [rbp - 0x10], 0x7608
+
+--- 0x0022d670..0x0022d9ee  (19 тегов)  {'?81': 2, '?82': 2, '?83': 3, '?85': 7, '?86': 5}
+     0x0022d670  8105  ?81            dword ptr [rbp - 0x20], 0x8105
+     0x0022d6a8  8205  ?82            dword ptr [rbp - 0x20], 0x8205
+     0x0022d6cc  8101  ?81            dword ptr [rbp - 0x20], 0x8101
+     0x0022d6f0  8201  ?82            dword ptr [rbp - 0x20], 0x8201
+     0x0022d717  8303  ?83            dword ptr [rbp - 0x20], 0x8303
+     0x0022d73e  8301  ?83            dword ptr [rbp - 0x20], 0x8301
+     0x0022d765  8304  ?83            dword ptr [rbp - 0x20], 0x8304
+     0x0022d78c  8502  ?85            dword ptr [rbp - 0x20], 0x8502
+     0x0022d7b3  8503  ?85            dword ptr [rbp - 0x20], 0x8503
+     0x0022d7da  8504  ?85            dword ptr [rbp - 0x20], 0x8504
+     0x0022d801  8505  ?85            dword ptr [rbp - 0x20], 0x8505
+     0x0022d828  8506  ?85            dword ptr [rbp - 0x20], 0x8506
+     0x0022d84f  8507  ?85            dword ptr [rbp - 0x20], 0x8507
+     0x0022d891  8508  ?85            dword ptr [rbp - 0x20], 0x8508
+     0x0022d8db  8601  ?86            dword ptr [rbp - 0x20], 0x8601
+     0x0022d979  8602  ?86            dword ptr [rbp - 0x20], 0x8602
+     0x0022d9a0  8603  ?86            dword ptr [rbp - 0x20], 0x8603
+     0x0022d9c7  8604  ?86            dword ptr [rbp - 0x20], 0x8604
+     0x0022d9ee  8605  ?86            dword ptr [rbp - 0x20], 0x8605
+
+--- 0x0022db10..0x0022de11  (14 тегов)  {'device': 14}
+     0x0022db10  1105  device         dword ptr [rbp - 0x20], 0x1105
+     0x0022db56  1102  Dev?           dword ptr [rbp - 0x20], 0x1102
+     0x0022dbdb  1107  device         dword ptr [rbp - 0x20], 0x1107
+     0x0022dc5f  110c  device         dword ptr [rbp - 0x20], 0x110c
+     0x0022dc86  1103  device         dword ptr [rbp - 0x20], 0x1103
+     0x0022dcad  1104  device         dword ptr [rbp - 0x20], 0x1104
+     0x0022dcd4  110e  device         dword ptr [rbp - 0x20], 0x110e
+     0x0022dcfb  110f  device         dword ptr [rbp - 0x20], 0x110f
+     0x0022dd22  1110  device         dword ptr [rbp - 0x20], 0x1110
+     0x0022dd49  1111  device         dword ptr [rbp - 0x20], 0x1111
+     0x0022dd70  1112  device         dword ptr [rbp - 0x20], 0x1112
+     0x0022dd9b  1113  device         dword ptr [rbp - 0x20], 0x1113
+     0x0022ddd6  110d  device         dword ptr [rbp - 0x20], 0x110d
+     0x0022de11  1108  device         dword ptr [rbp - 0x20], 0x1108
+
+--- 0x0022df20..0x0022e4b3  (26 тегов)  {'in1': 5, 'in2': 6, 'aux': 3, '?91': 2, '?92': 1, '?93': 2, '?94': 1, '?95': 2, '?96': 1, '?97': 2, '?98': 1}
+     0x0022df20  2103  in1            dword ptr [rbp - 0x20], 0x2103
+     0x0022df47  2102  IN1.gain?      dword ptr [rbp - 0x20], 0x2102
+     0x0022df6e  2105  IN1.x5         dword ptr [rbp - 0x20], 0x2105
+     0x0022df95  2101  IN1.METER      dword ptr [rbp - 0x20], 0x2101
+     0x0022dfc0  2109  IN1.x9         dword ptr [rbp - 0x20], 0x2109
+     0x0022e006  2206  in2            dword ptr [rbp - 0x20], 0x2206
+     0x0022e069  2203  in2            dword ptr [rbp - 0x20], 0x2203
+     0x0022e090  2202  in2            dword ptr [rbp - 0x20], 0x2202
+     0x0022e0b7  2205  in2            dword ptr [rbp - 0x20], 0x2205
+     0x0022e0de  2201  in2            dword ptr [rbp - 0x20], 0x2201
+     0x0022e109  2209  in2            dword ptr [rbp - 0x20], 0x2209
+     0x0022e14b  2305  aux            dword ptr [rbp - 0x20], 0x2305
+     0x0022e16f  2301  aux            dword ptr [rbp - 0x20], 0x2301
+     0x0022e193  2309  aux            dword ptr [rbp - 0x20], 0x2309
+     0x0022e29f  9102  ?91            dword ptr [rbp - 0x40], 0x9102
+     0x0022e2db  9103  ?91            dword ptr [rbp - 0x40], 0x9103
+     0x0022e306  9203  ?92            dword ptr [rbp - 0x40], 0x9203
+     0x0022e344  9302  ?93            dword ptr [rbp - 0x40], 0x9302
+     0x0022e36b  9303  ?93            dword ptr [rbp - 0x40], 0x9303
+     0x0022e396  9403  ?94            dword ptr [rbp - 0x40], 0x9403
+     0x0022e3d4  9502  ?95            dword ptr [rbp - 0x40], 0x9502
+     0x0022e3fb  9503  ?95            dword ptr [rbp - 0x40], 0x9503
+     0x0022e426  9603  ?96            dword ptr [rbp - 0x40], 0x9603
+     0x0022e468  9702  ?97            dword ptr [rbp - 0x40], 0x9702
+     0x0022e48f  9703  ?97            dword ptr [rbp - 0x40], 0x9703
+     0x0022e4b3  9803  ?98            dword ptr [rbp - 0x40], 0x9803
+
+--- 0x0022ecbf..0x0022eef3  (13 тегов)  {'out31': 4, 'out32': 3, 'out33': 4, 'out34': 2}
+     0x0022ecbf  3102  out31          dword ptr [rbp - 0x40], 0x3102
+     0x0022ecfb  3103  Output.L.gain  dword ptr [rbp - 0x40], 0x3103
+     0x0022ed22  3203  out32          dword ptr [rbp - 0x40], 0x3203
+     0x0022ed49  3104  out31          dword ptr [rbp - 0x40], 0x3104
+     0x0022ed79  3204  out32          dword ptr [rbp - 0x40], 0x3204
+     0x0022eda0  3104  out31          dword ptr [rbp - 0x40], 0x3104
+     0x0022edcb  3204  out32          dword ptr [rbp - 0x40], 0x3204
+     0x0022ee0d  3302  out33          dword ptr [rbp - 0x40], 0x3302
+     0x0022ee34  3303  out33          dword ptr [rbp - 0x40], 0x3303
+     0x0022ee5b  3403  out34          dword ptr [rbp - 0x40], 0x3403
+     0x0022ee82  3304  out33          dword ptr [rbp - 0x40], 0x3304
+     0x0022eecf  3304  out33          dword ptr [rbp - 0x40], 0x3304
+     0x0022eef3  3404  out34          dword ptr [rbp - 0x40], 0x3404
+
+--- 0x0022efd4..0x0022f022  (3 тегов)  {'device': 3}
+     0x0022efd4  1101  Sel?           dword ptr [rsp + 0x30], 0x1101
+     0x0022effb  110b  device         dword ptr [rsp + 0x30], 0x110b
+     0x0022f022  1109  device         dword ptr [rsp + 0x30], 0x1109
+
+--- 0x0022f8f0..0x0022fa2d  (8 тегов)  {'?46': 8}
+     0x0022f8f0  4601  ?46            dword ptr [rbp - 0x10], 0x4601
+     0x0022f932  4602  ?46            dword ptr [rbp - 0x10], 0x4602
+     0x0022f959  4604  ?46            dword ptr [rbp - 0x10], 0x4604
+     0x0022f980  4606  ?46            dword ptr [rbp - 0x10], 0x4606
+     0x0022f9a7  4607  ?46            dword ptr [rbp - 0x10], 0x4607
+     0x0022f9ce  4603  ?46            dword ptr [rbp - 0x10], 0x4603
+     0x0022fa09  4605  ?46            dword ptr [rbp - 0x10], 0x4605
+     0x0022fa2d  4608  ?46            dword ptr [rbp - 0x10], 0x4608
+
+--- 0x0022fb87..0x0022fdd7  (10 тегов)  {'EQHP': 2, 'out63': 1, 'out64': 1, 'EQFX': 6}
+     0x0022fb87  ab0f  EQ_HP.Switch   dword ptr [rbp - 0x59], 0xab0f
+     0x0022fbae  ab14  EQHP           dword ptr [rbp - 0x59], 0xab14
+     0x0022fbd9  6303  out63          dword ptr [rbp - 0x59], 0x6303
+     0x0022fc08  6403  out64          dword ptr [rbp - 0x59], 0x6403
+     0x0022fc87  9b0f  EQ_FX.Switch   dword ptr [rbp - 0x59], 0x9b0f
+     0x0022fcb2  9b0d  EQFX           dword ptr [rbp - 0x59], 0x9b0d
+     0x0022fcf3  9b12  EQFX           dword ptr [rbp - 0x59], 0x9b12
+     0x0022fd72  9b10  EQFX           dword ptr [rbp - 0x59], 0x9b10
+     0x0022fd96  9b0e  EQFX           dword ptr [rbp - 0x59], 0x9b0e
+     0x0022fdd7  9b13  EQFX           dword ptr [rbp - 0x59], 0x9b13
+
+--- 0x002304b0..0x00230abb  (24 тегов)  {'?45': 2, 'device': 15, '?43': 7}
+     0x002304b0  4501  ?45            dword ptr [rbp - 0x20], 0x4501
+     0x002304db  4502  ?45            dword ptr [rbp - 0x20], 0x4502
+     0x00230506  110e  device         dword ptr [rbp - 0x20], 0x110e
+     0x00230531  1112  device         dword ptr [rbp - 0x20], 0x1112
+     0x0023055c  1108  device         dword ptr [rbp - 0x20], 0x1108
+     0x0023058b  110b  device         dword ptr [rbp - 0x20], 0x110b
+     0x002306de  4301  ?43            dword ptr [rbp - 0x20], 0x4301
+     0x00230705  4302  ?43            dword ptr [rbp - 0x20], 0x4302
+     0x0023072c  4303  ?43            dword ptr [rbp - 0x20], 0x4303
+     0x00230753  4304  ?43            dword ptr [rbp - 0x20], 0x4304
+     0x0023077a  4305  ?43            dword ptr [rbp - 0x20], 0x4305
+     0x002307a1  4306  ?43            dword ptr [rbp - 0x20], 0x4306
+     0x002307cc  4307  ?43            dword ptr [rbp - 0x20], 0x4307
+     0x0023080e  111a  device         dword ptr [rbp - 0x20], 0x111a
+     0x00230839  1104  device         dword ptr [rbp - 0x20], 0x1104
+     0x002308ba  111b  device         dword ptr [rbp - 0x20], 0x111b
+     0x002308e5  111c  device         dword ptr [rbp - 0x20], 0x111c
+     0x0023096d  111d  device         dword ptr [rbp - 0x20], 0x111d
+     0x002309cc  111e  device         dword ptr [rbp - 0x20], 0x111e
+     0x002309f3  1121  device         dword ptr [rbp - 0x20], 0x1121
+     0x00230a1a  1122  device         dword ptr [rbp - 0x20], 0x1122
+     0x00230a45  1123  device         dword ptr [rbp - 0x20], 0x1123
+     0x00230a80  111f  device         dword ptr [rbp - 0x20], 0x111f
+     0x00230abb  1120  device         dword ptr [rbp - 0x20], 0x1120
+
+--- 0x00230bd0..0x00231044  (14 тегов)  {'EFFECT': 14}
+     0x00230bd0  4401  Input1Level    dword ptr [rbp - 0x20], 0x4401
+     0x00230c08  4402  Input2Level    dword ptr [rbp - 0x20], 0x4402
+     0x00230c2c  4403  x3             dword ptr [rbp - 0x20], 0x4403
+     0x00230c50  4404  EFFECT         dword ptr [rbp - 0x20], 0x4404
+     0x00230c77  4405  EFFECT         dword ptr [rbp - 0x20], 0x4405
+     0x00230c9e  4406  NoiseReduction dword ptr [rbp - 0x20], 0x4406
+     0x00230cd8  4407  NoiseReductionType dword ptr [rbp - 0x20], 0x4407
+     0x00230d73  4408  DryWet         dword ptr [rbp - 0x20], 0x4408
+     0x00230d9a  4409  x9             dword ptr [rbp - 0x20], 0x4409
+     0x00230dc1  440a  xa             dword ptr [rbp - 0x20], 0x440a
+     0x00230df0  440b  ReverbType     dword ptr [rbp - 0x20], 0x440b
+     0x00230e99  440c  xc             dword ptr [rbp - 0x20], 0x440c
+     0x00230f9a  440b  ReverbType     dword ptr [rbp - 0x20], 0x440b
+     0x00231044  440f  Width          dword ptr [rbp - 0x20], 0x440f
+
+--- 0x00231274..0x0023160e  (18 тегов)  {'in1': 5, 'in2': 4, 'aux': 3, 'bt': 3, 'otgin': 3}
+     0x00231274  2102  IN1.gain?      dword ptr [rbp - 0x20], 0x2102
+     0x002312f8  2103  in1            dword ptr [rbp - 0x20], 0x2103
+     0x0023131f  2104  IN1.x4         dword ptr [rbp - 0x20], 0x2104
+     0x00231346  2105  IN1.x5         dword ptr [rbp - 0x20], 0x2105
+     0x00231371  210a  IN1.xa         dword ptr [rbp - 0x20], 0x210a
+     0x002313b3  2203  in2            dword ptr [rbp - 0x20], 0x2203
+     0x002313da  2204  in2            dword ptr [rbp - 0x20], 0x2204
+     0x00231401  2205  in2            dword ptr [rbp - 0x20], 0x2205
+     0x0023142c  220a  in2            dword ptr [rbp - 0x20], 0x220a
+     0x0023146e  2304  aux            dword ptr [rbp - 0x20], 0x2304
+     0x002314a5  2305  aux            dword ptr [rbp - 0x20], 0x2305
+     0x002314d0  230a  aux            dword ptr [rbp - 0x20], 0x230a
+     0x00231512  2504  bt             dword ptr [rbp - 0x20], 0x2504
+     0x00231549  2505  bt             dword ptr [rbp - 0x20], 0x2505
+     0x00231574  250a  bt             dword ptr [rbp - 0x20], 0x250a
+     0x002315b6  2704  otgin          dword ptr [rbp - 0x20], 0x2704
+     0x002315ea  2705  otgin          dword ptr [rbp - 0x20], 0x2705
+     0x0023160e  270a  otgin          dword ptr [rbp - 0x20], 0x270a
+
+--- 0x0023171f..0x00231bd0  (20 тегов)  {'loop51': 4, 'loop52': 3, 'loop53': 4, 'loop54': 3, 'loop55': 2, 'loop56': 1, 'loop57': 2, 'loop58': 1}
+     0x0023171f  5102  loop51         dword ptr [rbp - 0x40], 0x5102
+     0x0023175b  5103  Loopback12.L   dword ptr [rbp - 0x40], 0x5103
+     0x002317a8  5203  loop52         dword ptr [rbp - 0x40], 0x5203
+     0x0023180c  5302  loop53         dword ptr [rbp - 0x40], 0x5302
+     0x00231833  5303  loop53         dword ptr [rbp - 0x40], 0x5303
+     0x00231880  5403  loop54         dword ptr [rbp - 0x40], 0x5403
+     0x002318e4  5502  loop55         dword ptr [rbp - 0x40], 0x5502
+     0x0023190b  5503  loop55         dword ptr [rbp - 0x40], 0x5503
+     0x00231958  5603  loop56         dword ptr [rbp - 0x40], 0x5603
+     0x002319bc  5702  loop57         dword ptr [rbp - 0x40], 0x5702
+     0x002319e3  5703  loop57         dword ptr [rbp - 0x40], 0x5703
+     0x00231a30  5803  loop58         dword ptr [rbp - 0x40], 0x5803
+     0x00231a94  5103  Loopback12.L   dword ptr [rbp - 0x40], 0x5103
+     0x00231abb  5203  loop52         dword ptr [rbp - 0x40], 0x5203
+     0x00231ae6  5104  loop51         dword ptr [rbp - 0x40], 0x5104
+     0x00231b16  5204  loop52         dword ptr [rbp - 0x40], 0x5204
+     0x00231b58  5303  loop53         dword ptr [rbp - 0x40], 0x5303
+     0x00231b7c  5403  loop54         dword ptr [rbp - 0x40], 0x5403
+     0x00231ba0  5304  loop53         dword ptr [rbp - 0x40], 0x5304
+     0x00231bd0  5404  loop54         dword ptr [rbp - 0x40], 0x5404

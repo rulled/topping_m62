@@ -1,0 +1,197 @@
+﻿# Topping DX5 II -- USB HID Control Protocol
+
+Reverse-engineered documentation of the vendor HID control protocol used by the
+Topping DX5 II DAC/headphone amplifier. This is the same interface used by the
+official TOPPING Tune software and covers device control (volume, mute, input,
+output, filters, crossfeed, PEQ enable) -- everything observable and settable
+without the vendor tools.
+
+Verified against: DX5 II, USB VID:PID `152a:8750` (Thesycon Systemsoftware VID,
+stock XMOS-based firmware). Findings were produced by passive observation of
+state-change notifications and confirmed by replaying frames as commands on
+real hardware. No vendor software was disassembled.
+
+Other Topping devices supported by TOPPING Tune (D50 III, DX9, etc.) likely
+speak the same framing, possibly with overlapping property IDs -- unverified.
+Captures from other models welcome.
+
+## Transport
+
+The device exposes three USB interfaces:
+
+| Interface | Class | Purpose |
+|-----------|-------|---------|
+| 0 | Audio (1) / Control | UAC2 audio control |
+| 1 | Audio (1) / Streaming | UAC2 streaming (multiple alt-settings) |
+| 2 | HID (3) | **vendor control protocol (this document)** |
+
+Interface 2's report descriptor declares a vendor-opaque **16-byte input
+report** and **16-byte output report**, no report IDs:
+
+```
+05 01        Usage Page (Generic Desktop)
+09 00        Usage (undefined)
+a1 01        Collection (Application)
+15 00 25 ff  Logical 0..255
+19 01 29 08  Usage 1..8
+95 10 75 08  16 fields x 8 bits
+81 02        Input (Data,Var,Abs)
+19 01 29 08  Usage 1..8
+91 02        Output (Data,Var,Abs)
+c0           End Collection
+```
+
+On Linux the kernel's generic HID driver binds the interface and exposes it as
+`/dev/hidrawN`. All communication is plain 16-byte reads/writes on that node
+(prefix writes with a `0x00` report-ID byte when using hidapi).
+
+The device **broadcasts a notification frame on every state change**,
+regardless of origin (front panel, IR remote, Bluetooth app, or HID command).
+The protocol is symmetric: a notification frame written back to the device is
+executed as a command. No session setup, authentication, or keepalive handling
+is required. The device also emits all-zero 16-byte reports periodically;
+ignore them.
+
+## Frame format
+
+All frames -- notifications and commands -- share one 16-byte layout:
+
+```
+offset  size  field
+0       2     SOF magic          22 33
+2       2     header             20 01        (constant in all observed frames)
+4       2     group ID           big-endian   (0x0071 = audio, 0x0111 = system)
+6       1     property ID
+7       4     value              big-endian, signed 32-bit
+11      2     CRC-16/MODBUS      big-endian, computed over bytes 2..10
+13      2     EOF magic          66 77
+15      1     padding            00
+```
+
+CRC-16/MODBUS: polynomial 0x8005 reflected (0xA001), init 0xFFFF, no final
+XOR -- the standard Modbus RTU checksum. It is computed over the 9 bytes
+between the SOF and CRC fields (header + group + property + value) and stored
+**big-endian** (high byte first -- note this differs from Modbus RTU's
+little-endian placement).
+
+Reference implementation:
+
+```python
+def crc16_modbus(data: bytes) -> int:
+    crc = 0xFFFF
+    for b in data:
+        crc ^= b
+        for _ in range(8):
+            crc = (crc >> 1) ^ 0xA001 if crc & 1 else crc >> 1
+    return crc
+
+def frame(group: int, prop: int, value: int) -> bytes:
+    body = bytes([0x20, 0x01]) + group.to_bytes(2, "big") \
+         + bytes([prop]) + value.to_bytes(4, "big", signed=True)
+    c = crc16_modbus(body)
+    return (b"\x22\x33" + body + bytes([c >> 8, c & 0xFF]) + b"\x66\x77") \
+           .ljust(16, b"\x00")
+```
+
+Example -- mute on / mute off:
+
+```
+22 33 20 01 00 71 03 00 00 00 01 dc dd 66 77 00
+22 33 20 01 00 71 03 00 00 00 00 1c 1c 66 77 00
+```
+
+## Properties -- group 0x0071 (audio)
+
+All confirmed working as **both** notification and command unless noted.
+
+| ID | Property | Values / encoding |
+|------|------------------|-------------------------------------------------|
+| 0x01 | Power state | 1 = on, 0 = off. Notification only (see 0x0111:0x14) |
+| 0x02 | Volume | Attenuation in 0.5 dB steps: `raw = dB_attenuation x 2`. Range 0 dB to -99.0 dB (raw 0-198). 0x52 = -41.0 dB, 0x56 = -43.0 dB |
+| 0x03 | Mute | 0 = unmuted, 1 = muted |
+| 0x04 | Input select | 0 = USB, 1 = Optical, 2 = Coaxial, 3 = Bluetooth |
+| 0x05 | Output mode | 0 = ALL, 1 = HPA ALL, 2 = LO ALL, 3 = HPA SE, 4 = HPA BAL, 5 = LO SE |
+| 0x0d | PCM filter | 0-7 (ES9039Q2M reconstruction filters, as ordered in the device menu) |
+| 0x0f | Stream status | Read-only telemetry; fires on input/stream changes. Observed: 0 = no signal, 1 (Bluetooth stream), 6 (USB stream), others during transitions. Value<->sample-rate mapping not yet charted |
+| 0x16 | Balance | Signed, 0.1 dB units. Negative = left. Range observed +/-95 (+/-9.5 dB). `0xffffffec` = L 2.0 dB |
+| 0x17 | Gain | 0 = low, 1 = high |
+| 0x2b | Crossfeed mode | 0 = convolution, 1 = simple, 2 = off |
+| 0x2c | Convolution preset | 0 = Small Room, 1 = Studio |
+| 0x2d | Simple preset | 0 = Improved, 1 = bs2b-default, 2 = bs2b-ChuMoy, 3 = bs2b-JanMeier |
+| 0x32 | PEQ enable | 0 = off, 1 = on |
+
+Notes:
+
+- Touching the crossfeed settings causes the device to re-broadcast the whole
+  0x2b/0x2c/0x2d trio (and often adjacent state); expect bursts of related
+  notifications rather than single frames.
+- Input changes broadcast a burst: 0x2c, 0x2d, 0x2b, 0x04, then 0x0f (stream
+  status), and usually 0x02 (volume -- per-input volume memory).
+- **PEQ preset selection does not broadcast a notification** and its property
+  ID is not yet known. Only the enable toggle (0x32) is mapped.
+
+## Properties -- group 0x0111 (system)
+
+| ID | Property | Values / encoding |
+|------|------------------|-------------------------------------------------|
+| 0x14 | Standby | Broadcast on power transition: 1 = entering standby, 0 = waking. Untested as a command; note the polarity is inverted vs. 0x0071:0x01 |
+
+Power-off broadcasts `0111:14=1` followed by `0071:01=0` and a burst of 0x0f
+transitions. Power-on broadcasts `0111:14=0`, `0071:01=1`, then a state dump
+(output mode, stream status, volume, and several unmapped properties).
+
+## Unmapped observations
+
+Seen during power-on state dumps or menu interaction; meanings unconfirmed:
+
+| Group:ID | Observed values | Context |
+|----------|-----------------|---------|
+| 0071:13 | 0 | power-on dump |
+| 0071:14 | 7 | once, during app interaction |
+| 0071:1f | 0 | emitted when entering the output-select menu |
+| 0071:2a | 1 | power-on dump |
+
+## Open questions
+
+- **Get/query verb.** All observed frames use header `20 01`. A request/
+  response verb for reading state on demand presumably exists (TOPPING Tune
+  must use one) but has not been identified. Workaround: the device broadcasts
+  every change, so a listener that stays attached has complete state after the
+  first user interaction; a state dump can also be triggered by power-cycling
+  via 0x0111:0x14 or nudging any property.
+- **PEQ preset select** property ID (candidates near 0x32 untested).
+- **PEQ band editing** (frequency/gain/Q per band) -- not investigated; likely
+  a multi-frame or different-header exchange used by TOPPING Tune.
+- Value<->rate table for stream status (0x0f).
+- Whether other TOPPING Tune-supported models share group/property IDs.
+
+## Linux usage notes
+
+- hidraw nodes are root-only by default. Grant user access with a udev rule:
+
+  ```
+  # /etc/udev/rules.d/70-topping-dx5ii.rules
+  SUBSYSTEM=="hidraw", ATTRS{idVendor}=="152a", ATTRS{idProduct}=="8750", TAG+="uaccess"
+  ```
+
+- The device's UAC2 mixer control (visible in ALSA as `'DX5 II'`) soft-mutes/
+  attenuates the USB stream only; it does **not** drive the device's real
+  volume/mute and the front panel does not reflect it. Use this protocol
+  instead.
+- When opening via hidapi with multiple same-VID devices present, select on
+  `interface_number == 2`.
+
+## Provenance & legal
+
+Documented by black-box observation of a retail unit's USB HID traffic
+(notification frames emitted by the device) and confirmation by replay. No
+firmware was dumped and no vendor software was decompiled. This document
+describes interoperability information for the purpose of writing independent
+control software.
+
+This project is not affiliated with or endorsed by TOPPING (Guangzhou Topping
+Electronics & Technology Co., Ltd.) or Thesycon Systemsoftware & Consulting
+GmbH. Use at your own risk; writing unknown property IDs or values to the
+device may have unintended effects.
+
+

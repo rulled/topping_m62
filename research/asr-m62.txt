@@ -1,0 +1,714 @@
+﻿ 
+Topping M62 Portable Audio Interface Review | Audio Science Review (ASR) Forum 
+FAQ (Read First) 
+Reviews 
+Review Index 
+Forums 
+New posts 
+Search forums 
+What's new 
+Featured content 
+New posts 
+Latest activity 
+Donations 
+Members 
+Current visitors 
+Log in 
+Register 
+What's new 
+Search 
+Search
+Everywhere 
+ Threads 
+ This forum 
+ This thread 
+Search titles only
+Note 
+By: 
+Search 
+ Advanced search… 
+New posts 
+Search forums 
+Menu
+Log in
+Register
+Install the app
+Install 
+How to install the app on iOS
+Follow along with the video below to see how to install our site as a web app on your home screen.
+Note: This feature may not be available in some browsers. 
+Welcome to ASR. There are many reviews of audio hardware and expert members to help answer your questions. 
+Click here to have your audio equipment measured for free! 
+Forums 
+Audio, Audio, Audio! 
+Pro Audio Forum 
+JavaScript is disabled. For a better experience, please enable JavaScript in your browser before proceeding.
+You are using an out of date browser. It may not display this or other websites correctly.
+You should upgrade or use an alternative browser .
+Topping M62 Portable Audio Interface Review
+Thread starter 
+ Thread starter 
+amirm 
+Start date 
+ Start date 
+Sep 13, 2026 
+Rate this audio interface:
+1. Poor (headless panther)
+Votes: 0
+0.0%
+2. Not terrible (postman panther)
+Votes: 3
+2.9%
+3. Fine (happy panther)
+Votes: 34
+32.4%
+4. Great (golfing panther)
+Votes: 68
+64.8%
+Total voters 
+ 105 
+1 
+2 
+3 
+… 
+Go to page
+Go 
+8 
+Next 
+1 of 8
+Go to page
+Go 
+Next 
+Last 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Sep 13, 2026 
+#1
+This is a review and detailed measurements of the Topping M62 Portable (battery operated) Audio Interface (ADC/DAC) and headphone amplifier. It was sent to me by the company and costs US $ 249.
+There is a ton of functionality for which, I am not qualified to fully describe. But we are talking about a bunch of inputs and outputs including no less than three USB-C!
+Inclusion of such features as OTG and company description implies portable, in-field recording. To that end, a number of signal processing features such as programmable reverb, noise reduction, and limiter are provided. Accompanied software makes operation of the unit much easier. As shipped, it is in "mobile" or should I say, novice mode. It limits sample rate to just 48 kHz. There is a Pro mode where it unlocks all the other rates and importantly, gives you 6-band 10-band PEQ. Alas, I could not find any documentation on how to push it into Pro mode other than a post by a member here. The process includes multiple keystroke/power cycle sequences which I must have gotten wrong. I wish the control software allowed the switch. Or something much simpler on the hardware.
+The M62 comes in many colors and there are a lot accessories for it such as a case and such -- clearly aimed at the younger content maker.
+The metal enclosure is solid and has enough weight to it to hold on to cables to some extent while not being too heavy or big to carry.
+Topping M62 DAC Measurements 
+There is no line out that I could figure out so I used the headphone output. There, you have a gain for that output and another master volume control. It took some doing to optimize the performance without clipping:
+For a DAC, that is competent. For an audio interface, it is much better, landing near the top of our ranking:
+More performance can be had if you let the output go higher:
+Noise performance is extremely good for this class as well as all audio interfaces:
+IMD performance again, for a DAC is good but for an interface, much better:
+Frequency response is flat as you want it:
+There is correlated jitter components, albeit inaudible kind:
+Wideband distortion measurement rises some at either end but again, we are talking about a portable audio interface here:
+Topping M62 ADC Measurement 
+I backed out the Mic 1 input gain all the way and the result was excellent:
+Distortion is at whopping -125 dB so clearly inaudible. So noise sets SINAD:
+We are talking competition with desktop ADCs here at much higher cost!
+Back to the dashboard, anything over 2.2 volt would cause clipping so you are left with that 6 dB of digital headroom.
+IMD sweep shows excellent results:
+Frequency response is flat:
+Noise performance is extremely good:
+As is wideband noise+distortion:
+Look at that performance gap compared to a full blow audio interface!
+Topping M62 Headphone Output Measurement 
+On many audio interfaces, headphone output is a "checklist" item with very low output and lots of noise and distortion. Not here:
+This should comfortably drive many headphones.
+Noise at 50mv though is not that great due to lack of gain controls:
+Likely the application is a normal headphone and not an IEM so this is fine in practice.
+Conclusions 
+Topping's entry into professional audio interfaces was just competent. We all expected more but the price was right.
+With M62, we see the company producing far better performance in a battery operated portable no less! As such, I am surprised at the positioning toward average content creator. It is far more capable than that with extensive connectivity. And you have a nice headphone jack to boot. Charge the unit and you can enjoy many hours of music listening with an appropriate source.
+All of this comes at such a reasonable price.
+I am happy to recommend Topping M62 Professional Interface.
+----------
+As always, questions, comments, recommendations, etc. are welcome.
+Any donations are much appreciated using : https://www.audiosciencereview.com/forum/index.php?threads/how-to-support-audio-science-review.8150/ 
+Last edited: Sep 13, 2026 
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ AnalogSteph , Alegretti , SDX-LV and 77 others 
+OP 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Sep 13, 2026 
+Thread Starter 
+#2
+Next-Gen Portable Audio Interface – Designed for outdoor/indoor live streaming, podcasts, music recording, and field recording, offering professional-grade sound in a compact device.
+Dual Mic Inputs with 48V Phantom Power – Connect and power two condenser or dynamic microphones simultaneously, ideal for interviews, podcasts, and vocal + instrument recording.
+Ultra-Linear Preamp & High Dynamic Range – Gain up to 88dB with EIN as low as -129.5dBu, ensuring ultra-low noise and clear, natural sound for professional creators.
+Smart Audio Processing – AI noise reduction, noise gate, auto gain, and 3 reverb modes (Studio/Live/Hall) let you optimize vocals with one touch.
+Flexible Connectivity – Supports smartphone OTG, Bluetooth (aptX-HD/aptX-LL/AAC/SBC), AUX, and PC/Mac via USB-C, with lossless transmission and multi-source mixing.
+Real-Time EQ & Monitoring – Input EQ enhances source recordings, Output EQ customizes listening, with zero-latency monitoring for accurate sound control.
+Long Battery Life – 5000mAh battery powers up to 8.5 hours (dynamic mic) or 6.5 hours (dual condenser mics), perfect for extended live sessions.
+Powerful Headphone Output – 500mW x2 @32Ω with ultra-low 1Ω output impedance easily drives up to 600Ω headphones for precise monitoring.
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ astamixa , Bl00dWolf , Adylski and 7 others 
+Billy Budapest 
+Major Contributor 
+ Forum Donor 
+Joined 
+ Oct 11, 2019 
+Messages 
+ 2,508 
+Likes 
+ 3,922 
+Location 
+Missouri, U.S.A. 
+Sep 13, 2026 
+#3
+This is what CEntrance should be doing.
+Reactions: 
+ dailyherold , Bl00dWolf , WestSideWarrior and 7 others 
+LTig 
+Master Contributor 
+ Forum Donor 
+Joined 
+ Feb 27, 2019 
+Messages 
+ 7,348 
+Likes 
+ 12,570 
+Location 
+Europe 
+Sep 13, 2026 
+#4
+@amirm : I think the red note in the ADC dashboard is wrong. It says 2.2 V but is 1V.
+Edit: And it would be nice to see ADC noise over Mic gain, at least with gains of 20, 40 and 60 dB.
+Reactions: 
+ Bl00dWolf , DanTheMan , Bob101 and 1 other person 
+L 
+lewdish 
+Senior Member 
+Joined 
+ May 29, 2021 
+Messages 
+ 494 
+Likes 
+ 394 
+Sep 13, 2026 
+#5
+Why is there 3 USB C ports for charge, otg, and usb-c? It seems kinda confusing...
+VintageFlanker 
+Master Contributor 
+ Forum Donor 
+Reviewer 
+Joined 
+ Sep 20, 2018 
+Messages 
+ 5,825 
+Likes 
+ 23,884 
+Location 
+Paris 
+Sep 13, 2026 
+#6
+LTig said: 
+@amirm: I think the red note in the ADC dashboard is wrong. It says 2.2 V but is 1V
+Click to expand... 
+It also says -6dBFS, which equals ≈1.1Vrms at the end (guess it clips after that). Very good performance for an ADC, just a bit low as maximum input voltage.
+VintageFlanker's Review Index 
+Reactions: 
+ babadono 
+NTTY 
+Major Contributor 
+ Forum Donor 
+Reviewer 
+Joined 
+ Apr 27, 2018 
+Messages 
+ 1,858 
+Likes 
+ 11,786 
+Location 
+Switzerland 
+Sep 13, 2026 
+#7
+LTig said: 
+@amirm : I think the red note in the ADC dashboard is wrong. It says 2.2 V but is 1V.
+Edit: And it would be nice to see ADC noise over Mic gain, at least with gains of 20, 40 and 60 dB.
+Click to expand... 
+That view is peak levels, right?
+If yes, I’d say 1.1Vpp ie -6dBu or 0.4Vrms.
+Flo — CD Players Reviewed , Audio Technical CD , More than we hear 
+Reactions: 
+ VintageFlanker 
+LTig 
+Master Contributor 
+ Forum Donor 
+Joined 
+ Feb 27, 2019 
+Messages 
+ 7,348 
+Likes 
+ 12,570 
+Location 
+Europe 
+Sep 13, 2026 
+#8
+NTTY said: 
+That view is peak levels, right?
+If yes, I’d say 1.1Vpp ie -6dBu or 0.4Vrms.
+Click to expand... 
+Yes.
+LTig 
+Master Contributor 
+ Forum Donor 
+Joined 
+ Feb 27, 2019 
+Messages 
+ 7,348 
+Likes 
+ 12,570 
+Location 
+Europe 
+Sep 13, 2026 
+#9
+VintageFlanker said: 
+It also says -6dBFS, which equals ≈1.1Vrms at the end (guess it clips after that). Very good performance for an ADC, just a bit low as maximum input voltage.
+Click to expand... 
+As @NTTY wrote it is 1.1V pp = 0.4V rms. This is low but it is a MIC input and hence perfectly sufficent. Maybe the Aux connector is a line level input, or there is a switchable 20 dB pad at the Mic inputs.
+Reactions: 
+ DanTheMan and VintageFlanker 
+Zim 
+Active Member 
+ Forum Donor 
+Joined 
+ Jul 9, 2021 
+Messages 
+ 133 
+Likes 
+ 274 
+Location 
+Kangarooland 
+Sep 13, 2026 
+#10
+Need some latency measurements (hopefully low) for this device to be taken seriously as an interface.
+Reactions: 
+ composer , DavidShe , Videoteque73 and 3 others 
+daniboun 
+Major Contributor 
+ Forum Donor 
+Joined 
+ May 2, 2020 
+Messages 
+ 3,094 
+Likes 
+ 4,908 
+Location 
+France (Lyon) 
+Sep 13, 2026 
+#11
+I see no Hi-Z input, only Mic and Line. Better to use active devices / instruments here....
+Apart from that : sota measurements )
+Teardown see attached files
+Attachments
+m62 back.jpg 
+326.3 KB
+· Views: 400
+m62 front.jpg 
+298.4 KB
+· Views: 406
+Trust the measurements and not the prices. The measures have their reason that the prices cannot understand-)
+Amp Sinad List 
+Reactions: 
+ Adylski , GWolfman and DanTheMan 
+R 
+rongon 
+Active Member 
+Joined 
+ Jan 30, 2020 
+Messages 
+ 199 
+Likes 
+ 129 
+Sep 13, 2026 
+#12
+A critical part of a product's success as a digital recording interface is its control software and ease of use. Is this product meant for use in a portable recording setup? How exactly is that meant to be set up? Does this device need to be connected to a laptop or smartphone to record audio? Or can it be used standalone with a USB storage drive connected?
+daniboun just mentioned that there are no high impedance instrument inputs. That means if you wanted to record an electric guitar straight into this device, you'd need some kind of a preamp/buffer (a 'guitar preamp' with gain , not just an electric guitar effects pedal or a unity-gain buffer).
+The product also lacks XLR inputs. That's a shame. But it does have 48V DC phantom power. That's good. I guess recordists will need to factor in the cost of acquiring XLR to TRS adapters for their existing mic cables, as microphones require XLR connectors on their end.
+Another critical consideration is how well this device gets along with the dominant DAW apps out there. Does its driver play well with Pro Tools, Cubase, Audacity, Reaper, Ableton Live, GarageBand, Logic, etc?
+I see there's a digital reverb included in the device. How does that sound? Is it competitive with the VST plugins available (many of them cheap or free)? If the reverb is usable then that's a plus, but that's an unnecessary feature unless the built in reverb algorithms provide a lot of control and are truly exceptional sounding. I guess adding a digital reverb is cheap and easy to do, so why not? Hopefully it's a usable feature and not just a distraction.
+In addition, the product includes built in PEQ. Again, that's a feature that's covered in all the popular DAW apps. What is the intended use for this device? Is it expected that the PEQ will be used during live recording ('tracking'), instead of in the post-tracking/mixing phase? 
+Also, what would the Bluetooth interface be used for, in the real world? Is that both input and output, as in the designers expect users to be able to record from Bluetooth headsets? For musicians (and to me), that looks like another unnecessary feature that was cheap and easy to add on.
+I don't see separate volume controls for studio monitor loudspeakers and headphones. Are those separately adjustable from this device? Or is this meant to be used with headphone monitoring only?
+The ADC measurements are truly impressive, but it looks like it might lack some of the features people expect to find in a musician's home studio or portable live music recording interface. I could be wrong, though.
+Necessities of a home recording studio type of AD/DA interface:
+1. Balanced XLR inputs for microphones
+2. 1/4" inputs for either balanced line level sources or unbalanced electric guitar/bass
+3. +48V DC phantom power for condenser microphones
+4. High impedance instrument input mode for recording electric guitar, bass guitar straight to the interface.
+5. Monitor level control (for controlling your studio monitor loudspeaker setup separately from the line out volume level adjustment).
+6. Headphone out with its own level control.
+7. A good, easy-to-use app or hardware interface to switch on/off features and settings (Hi-Z/Lo-Z, phantom power, active inputs/outputs, bit depth/sample rate, etc.)
+Measurements are one thing, but this device should be a tool to get something concrete done in the real world. Can it do it gracefully, with ease and flexibility? Or is this all about the glamor of the best possible measurements, with usability features compromised?
+Again, I could be wrong about all of this. If I am, please clarify so I and others may know what this device can and cannot do as a musician's recording interface. Thanks.
+Last edited: Sep 13, 2026 
+Reactions: 
+ oozlum , composer , Jimi Floyd and 6 others 
+Grooved 
+Addicted to Fun and Learning 
+Joined 
+ Feb 26, 2021 
+Messages 
+ 714 
+Likes 
+ 465 
+Sep 13, 2026 
+#13
+amirm said: 
+There is a Pro mode where it unlocks all the other rates and importantly, gives you 6-band PEQ. Alas, I could not find any documentation on how to push it into Pro mode other than a post by a member here. The process includes multiple keystroke/power cycle sequences which I must have gotten wrong. I wish the control software allowed the switch. Or something much simpler on the hardware.
+Click to expand... 
+The manual is not available easily on the website but it's here: https://download.topping.pro/downloads/M62-EN_V1.1.pdf 
+It appears that there's a possibility to switch between the three modes from the software:
+Here are the differences:
+Reactions: 
+ Adylski , Rhubarb , tunwen and 5 others 
+R 
+rongon 
+Active Member 
+Joined 
+ Jan 30, 2020 
+Messages 
+ 199 
+Likes 
+ 129 
+Sep 13, 2026 
+#14
+I see the product includes built in PEQ and dynamics compression. Again, these are feature that are very capably covered in all the popular DAW apps and with VST plugins. These built in effects had better be excellent , or they're unnecessary duplications of functions that already exist.
+Is there a separate PEQ for each of the two Mic input channels? Or is there one PEQ setting that is applied to both Mic inputs?
+Is it expected that the PEQ will be used during live recording ('tracking'), instead of in the mixing phase?
+I see that these effects are not available in 'Pro Audio Mode.' Interesting.
+What is the intended use for this device?
+I guess I'm a 'pro user,' so I'm not very interested in the other modes. The portable and streaming modes could be useful for quick live recordings, 'live to 2-track.' That would provoke some interest. This could be a better version of the Zoom XLR-only digital recorder, perhaps... 
+Oh, another question... Does this device support recording in 32-bit float within its hardware, or is its internal processing done in 24-bit resolution? (Most interfaces have internal 24 bit processing, so 32 bit float recording is done in the DAW.)
+Last edited: Sep 13, 2026 
+Reactions: 
+ Steve Dallas 
+Steve Dallas 
+Major Contributor 
+Joined 
+ May 28, 2020 
+Messages 
+ 1,415 
+Likes 
+ 3,487 
+Location 
+A Whole Other Country 
+Sep 13, 2026 
+#15
+Like others, I am struggling to understand why this product exists. There are already plenty of high quality portable recording interfaces on the market with better analog connectivity--especially on the output side. 
+As this has no internal storage, it is implied it is to be used with a laptop which would be able to supply power over USB, so the battery must be for OTG use with a phone or tablet. I guess people do that? 
+Unless the effects are amazing, no serious person would use them, opting for DAW plugins instead. The only effect someone might want to record on the input is compression, but it had better be excellent. Most people would want to apply it in post (in the DAW during mixing) where it can be closely monitored and adjusted to perfection. If livestreaming, it can still be applied in the DAW in real time.
+The measurements are great, but I would rather have a Babyface or M2/M4. I can't figure out a problem this thing solves, but maybe I am missing some use cases since I don't do anything in field.
+Media Room: Multiple Sources -> Denon AVR-X4800H w/ ART -> Buckeye NCx252MP -> Revel F206 + Revel C205 + Polk 65RT + Polk 70RT + SVS SB2000 = 7.2.2
+Home Office: Silent PC w/ Dirac -> MOTU M4 -> Topping Mini 300 -> KEF R3
+Living Room: Roku Ultra -> Sony STR-ZA1100ES -> KEF Q100
+Home Studio: PC w/ Luna Pro -> UA Apollo Twin X -> Neumann KH120II + MA1
+Reactions: 
+ silverak , bobster and rongon 
+OP 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Sep 13, 2026 
+Thread Starter 
+#16
+LTig said: 
+@amirm: I think the red note in the ADC dashboard is wrong. It says 2.2 V but is 1V.
+Click to expand... 
+No, 2.2 Volt is correct. That value is not seen by the AP as it only sees digital samples. Hence the reason I manually wrote that.
+I think you may be confused by the scope display. The values there are in "D" or digital. Scope is showing peak to peak 0.5 full scale value which when converted to RMS becomes the -6 dBFS you see in the meter below. It has no relationship to any voltage as again, AP is only seeing digital samples, not analog waveform in ADC testing.
+Net, net, 2.2 volt at 0 dB gain is pretty good although I would have wanted to see 4 volt if one were to use that as line input.
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ Adylski , LTig and seank 
+OP 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Sep 13, 2026 
+Thread Starter 
+#17
+LTig said: 
+Edit: And it would be nice to see ADC noise over Mic gain, at least with gains of 20, 40 and 60 dB.
+Click to expand... 
+I computed the EIN when using multiple gain levels resulting in the value that I reported. My regular dynamic range measurements are for line level and hence the 0 dB gain. If I am missing something there, please explain and i will add. 
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ LTig and seank 
+OP 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Sep 13, 2026 
+Thread Starter 
+#18
+Steve Dallas said: 
+Like others, I am struggling to understand why this product exists.
+Click to expand... 
+I think the product is aimed at mobile content producers in local market. There, I think by far the application is to use a mobile phone, not a laptop. I have not looked at the recording apps on mobiles but I assume effects/processing is more limited than what the M62 is providing. I would also think a limiter on the device would work better than one in the host as it has no latency to deal with. Ditto for monitoring although other interfaces provide local loopback for that.
+I think for our general audience here, you could use this box as both a desktop DAC+headphone app and an interface for measuring your room and such. Other interfaces in its price range have much lower performance especially in headphone department. And inclusion of the battery means it will work well listening on a train and such if the size and weight is not a concern.
+I can also see it be used for desktop voice recording for content creation. Yes, you won't need the battery there but you are not paying for it either seeing how this is not more expensive than typical desktop interfaces with lower measured performance.
+But I agree that lack of balanced output is a disadvantage.
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ Alegretti , MiqaFox , Adylski and 6 others 
+yo! 
+Active Member 
+Joined 
+ Oct 2, 2024 
+Messages 
+ 154 
+Likes 
+ 161 
+Sep 13, 2026 
+#19
+The lack of XLR inputs too.
+Anyhow, I really like the Pro series a lot. Still happy with the e8x8 Pre, simple and solid. Waiting for the next gen hopefully with some dsp features.
+S 
+sm5 
+Member 
+ Forum Donor 
+Joined 
+ Jun 15, 2019 
+Messages 
+ 38 
+Likes 
+ 67 
+Sep 13, 2026 
+#20
+As a note, it is 10-band PEQ, not 6 
+I've owned the M62 for a while now - I actually sold my RME UFX III and Babyface Pro FS and UCX II and RME 2/4 and Neumann MT48 and just have this and the Topping DX1 II now which is admittedly sort of odd, but as I no longer have a surround setup: I really only need two i/o and this combo has been working fine with a few annoyances. Overall for recording: having 2 nice preamps and 2 outputs for $250 is pretty amazing, so any notes below I have is being pretty picky considering what all you get with the M62
+Some M62 Notes:
+Size is about two phones stacked on top of each other. Smaller/Lighter than Babyface Pro FS.
+Drivers so far have had no issues at all in Pro Tools on MAC/PC. I don't recall them being any better or worse so far than RME/MOTU/Neumann drivers actually. 
+10 Band EQ! MOTU doesn't have this and only the highest end RME interfaces has this many ... not even the new ADI EX has 10 band EQ (which is crazy in 2026 that a device that expensive doesn't have 10 band EQ and not any better converters than the old model)
+Lack of Guitar DI is frustrating, but I picked up a Triton Bigamp in-line Guitar DI and it works fine.
+Max input levels are fine for my mics, but if I was recording drums: might need an external pad: so a pad or padless preamps with higher input level may be beneficial in future desktop models (like THAT 1580 preamps)
+Latency is about as good if not better than Neumann MT48, but not as good as MOTU/RME.
+The stepped gain for volume output and input is very wanted! That's why I am okay with this whereas I sold the Topping E8x8 and didn't pick up the other smaller topping interfaces as you can't match stereo mic pres with those, nor can you set an exact value for output. (8x8 doesn't really work as a surround interface which is a shame)
+The low latency mixing in the M Control software in there is fine though - for tracking/etc - that's all that's really needed.
+The remote control is great: I wish all studio interfaces had a remote control!
+The colored LED's can be a bit confusing for levels of headphone output vs a normal screen like on the DX1 II that says -25/etc.
+The buttons/combo button presses/color the circle is and how to change modes can be confusing.
+The lack of digital I/O is disappointing: if it had optical out you could easily plug it into a DX1 II and have a great combo.
+OTG is confusing/not really a pro standard. Digital I/O would have been preferred at least for my use-case/most any professional.
+I can't actually figure out how to get this to record on my phone easily. If they could make a way to plug in a USB stick to the OTG port to record - it would make this 100x better, or a way to plug a DAC into it for two extra outputs would also make this 100x better.
+I do agree it's a strange use-case device where it's lacking some things for a dedicated desktop interface like digital i/o or a second set of analog outs so you can hook up speakers, but as a portable device: it doesn't have a way to record direct to the device for just on the go recording random sounds/etc and is probably a bit too complicated for most casual users who probably don't care about 114 SINAD inputs. Even pro portable recorders like a Mixpre or zoom recorder: usually you just stick in a USB stick and press the big red record button and that's all.
+I can see why there are no XLR outputs and you need a TRS to XLR adaptor - it's too thin. At least it's a normal TRS to XLR adaptor that's needed unlike the DX1 II or E1DA gear where you may need more rare stereo balanced type cable adaptors.
+RME Babyface PRO FS is probably closest to this - both are fine: more options for software routing on the Babyface, but the M62 has 10 bands of EQ which the RME doesn't have and the AD/DA conversion is much better on the M62 and it's also smaller and battery powered when required and USB-C is nowadays is smarter as that's what most everything has and you won't need a usb to usb-C dongle like the Babyface. M62 has remote control ... so it sort of can work as a replacement ADI-2 Pro FS R BE in some ways actually if you just plug some speakers into the HP out. The DX1 II definitely replaced the ADI 2/4 I had for sure though: 10 band EQ + digital out + remote + HP is honestly amazing.
+I use the DX1 II as main output: digital out to Optical to SPDIF converter with a SPDIF to AES/EBU passive adaptor + headphone output. One of the few things that actually has digital volume control for the output. I just plug this M62 in whenever I need to calibrate my speakers with DIRAC (headphone out to speakers works fine) or record something. I do wish this had digital output with volume control or even a second analog out so I don't have to choose between headphones or speakers though.
+I'd hope their future larger desktop devices incorporate the preamps these have + a Guitar DI (All digitally stepped so can match levels) or THAT 1580/other padless preamps with a bit more headroom for hotter mics would be nicer though - or these pres + a optional pad for hot signals. I'd love it if they kept using remote controls for desktop models too. I'll also throw out Digital outputs and volume control of them so you can have digital and analog speakers all controlled by a remote/knob would be great for surround mixing. The DX1 II having volume-controllable digital outputs is a step in the right direction!
+As I posted elsewhere about latency being okay, but not state of the art:
+It uses Thesycon USB Drivers like the Neumann MT-48 and some other interfaces and has a bit better figures than the MT48 as you can see in ifrit's post: https://www.audiosciencereview.com/forum/index.php?threads/neumann-mt-48.43537/post-1821755 
+Latency: M62 at 96khz
+16=5.27
+32 =5.3
+64=5.6
+128=6.4
+256 =9.7
+512=15
+1024=26
+2048=49
+4096=94
+Still not as good as:
+MOTU 10Pre 96k @ 32 = 1.83
+MOTU 828 96k @ 32 = 3.01
+MK5 96k @ 32 = 3.1
+RME UFX III 96k @64 = 2.208 & 192k @128 = 1.953
+Attachments
+96 16.jpg 
+142 KB
+· Views: 85
+96 128.jpg 
+142.6 KB
+· Views: 90
+441 8.jpg 
+138.5 KB
+· Views: 77
+441 64.jpg 
+143.4 KB
+· Views: 82
+Reactions: 
+ RexrothPigeon , AnalogSteph , Alegretti and 20 others 
+1 
+2 
+3 
+… 
+Go to page
+Go 
+8 
+Next 
+1 of 8
+Go to page
+Go 
+Next 
+Last 
+You must log in or register to reply here.
+Similar threads
+How long until new ADC chips make it into products?
+jerryfreak 
+Sep 9, 2026 
+Audio Electronics and Hardware 
+Replies 
+ 4 
+Views 
+ 962 
+Sep 13, 2026 
+KSTR 
+Poll 
+ Poll 
+Topping KB22 Audio Interface and Keyboard Review
+amirm 
+Oct 24, 2026 
+Audio Interfaces (ADC & DAC) 
+4 
+5 
+6 
+Replies 
+ 115 
+Views 
+ 18K 
+Yesterday at 12:03 PM 
+Sedaxel 
+S 
+SINAD vs input level
+jerryfreak 
+Apr 22, 2026 
+Audio Interfaces (ADC & DAC) 
+Replies 
+ 4 
+Views 
+ 2K 
+Jul 11, 2026 
+jerryfreak 
+Poll 
+ Poll 
+Quant Asylum QA403 Audio Analyzer Review
+amirm 
+Oct 12, 2026 
+Amplifiers, Phono preamp, and Analog Audio Review 
+6 
+7 
+8 
+Replies 
+ 154 
+Views 
+ 21K 
+Oct 30, 2026 
+ClaudeJ1 
+Poll 
+ Poll 
+Topping DX1 II DAC & HP Amp Review
+amirm 
+Jun 24, 2026 
+Combination Audio DAC and Headphone Amplifiers 
+51 
+52 
+53 
+Replies 
+ 1K 
+Views 
+ 195K 
+Yesterday at 9:35 PM 
+poppie8 
+P 
+Share: 
+Facebook 
+Bluesky 
+LinkedIn 
+Reddit 
+Pinterest 
+Tumblr 
+WhatsApp 
+Email 
+Share 
+Link 
+Forums 
+Audio, Audio, Audio! 
+Pro Audio Forum 
+Light Theme
+Contact us 
+Terms and rules 
+Privacy policy 
+Help 
+RSS 
+Community platform by XenForo ® © 2010-2026 XenForo Ltd. 
+ Copyright © Audio Science Review LLC 
+XenPorta 2 PRO © Jason Axelrod of
+ 8WAYRUN 
+Back 
+Top 
+Bottom 
+

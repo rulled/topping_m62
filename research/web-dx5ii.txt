@@ -1,0 +1,98 @@
+﻿# topping-dx5ii-linux
+
+Native ALSA **hardware** controls for the Topping DX5 II USB DAC/headphone amp
+on Linux.
+
+*Important Note:* This was a few hours work as a quick side-project. It works
+well for me on CachyOS, but I haven't written documentation for compiling this
+on other Linux distributions. This is a kernel module modification using DKMS,
+so it's not quite as simple as a regular application. In essence, the new `mixer_topping.c`
+teaches your kernel how to speak the proprietary control protocol used by the
+DX5 II. I only spent about an hour reverse engineering the protocol (you can
+see that in `docs/PROTOCOL.md`), so it's quite possible that I've missed something.
+
+The DX5 II's real controls - analogue volume, mute, input/output selection,
+gain, PCM reconstruction filter, PEQ enable - are only reachable through a
+vendor HID protocol, not its UAC2 mixer (which merely soft-processes the USB
+stream). This project is a `snd-usb-audio` mixer quirk (`src/mixer_topping.c`)
+that exposes them as native kcontrols and, because the device broadcasts on
+every change, keeps them **bidirectionally in sync** with the front-panel knob,
+IR remote and Bluetooth app via `snd_ctl_notify()`. The KDE/PipeWire slider and
+media keys drive the DAC's real analogue volume, bit-perfect.
+
+Reverse-engineered from a retail unit; see `docs/PROTOCOL.md`. Not affiliated
+with TOPPING.
+
+## Controls
+
+`Master Playback Volume` (dB TLV) - `Master Playback Switch` - `Input Source`
+(USB/Optical/Coaxial/Bluetooth) - `Output Mode` (ALL/HPA/LO variants) - `Gain`
+(Low/High) - `PCM Filter` (F-1..F-8) - `PEQ Switch`.
+
+The quirk also removes the device's UAC2 soft-volume "decoy" control and mutes
+the device on connect for safety (no read verb exists to learn the current
+level, so a stale desktop slider can't blast full output).
+
+## Quick start (Arch / CachyOS)
+
+Full details, including HID-ownership options and troubleshooting, are in
+[`docs/BUILD.md`](docs/BUILD.md).
+
+```bash
+# 1. toolchain + matching headers (Clang-built kernels are auto-detected)
+sudo pacman -S --needed base-devel clang llvm lld linux-cachyos-headers
+
+# 2. keep usbhid off the control interface (interface 2)
+sudo cp conf/modprobe.d/topping-dx5ii.conf /etc/modprobe.d/
+#   (if usbhid is built-in, use the kernel cmdline instead - see docs/BUILD.md)
+
+# 3. build + install the patched snd-usb-audio
+src=$(./scripts/fetch-kernel-source.sh)
+./scripts/build.sh "$src" install
+sudo reboot        # simplest way to load the module and apply the HID quirk
+
+# 4. desktop volume: disable UCM so PipeWire maps our Master control, then pick
+#    the "Analog Stereo Output" profile in KDE / pavucontrol
+sudo cp conf/wireplumber/51-topping-dx5ii.conf /etc/wireplumber/wireplumber.conf.d/
+systemctl --user restart wireplumber pipewire pipewire-pulse
+```
+
+Verify:
+
+```bash
+dmesg | grep -i topping                       # "hardware mixer enabled"
+amixer -c 0 contents | grep -i 'Playback\|Source\|Filter'
+alsactl monitor 0                             # turn the knob -> events stream
+```
+
+## DKMS (survive kernel updates)
+
+```bash
+echo "KSRC=$src" | sudo tee /etc/topping-dx5ii.conf
+sudo ./dkms/install-dkms.sh
+```
+
+## Layout
+
+```
+src/       kernel mixer quirk (mixer_topping.c/.h)
+scripts/   build + helper scripts (build, fetch-kernel-source, wire, unbind)
+dkms/      DKMS packaging
+conf/      usbhid modprobe drop-in + WirePlumber rule
+patches/   upstream (alsa-devel) patch series
+tools/     Python protocol tools (cannot run while the kernel driver owns the
+           HID interface)
+docs/      PROTOCOL.md, capture log, BUILD.md
+```
+
+## Status
+
+v1 working: 7 controls, bidirectional sync, decoy removal, mute-on-connect,
+DKMS. Developed out-of-tree; the `patches/` series targets mainline
+(`hid-quirks` ignore + `mixer_topping.c`). Deferred: balance, crossfeed,
+standby, PEQ preset/band editing (see `docs/PROTOCOL.md`).
+
+## License
+
+GPL-2.0-only.
+

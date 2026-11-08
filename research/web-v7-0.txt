@@ -1,0 +1,221 @@
+﻿From mboxrd@z Thu Jan  1 00:00:00 1970
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1DD51DDEA
+	for <linux-kernel@vger.kernel.org>; Wed, 30 Sep 2026 21:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790804011; cv=none; b=LinE2Ww7ae4Oxn1AXJKP9JDhahtwPLxq69rAo1asQKQhH4rvkbinqkRq+KKBAJp6v7Uj7sqUw/KUrfL9qcmYKeBlJocNXDwa1Dz5yTaQCbWVnJnR5pK7qbKvOWSzwBBmGbCWCM+1aeZdqWrS4HBwCjoWuN+/n4d++qPe24mkCD4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790804011; c=relaxed/simple;
+	bh=MYK7tdi4Oypb4pea0xD2o67bKC5yeMKz3ljLGMgPNgw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PMbUFUBaIcDWQwdJjlhllZSaGd+6ydycVZ7O4pFUvBH899nwy7M+LSTmBaHE1C+pr2EBCAwh/5IoHdaBfwMVDCvt6b17efsyY7EF6w+uNa/PQYgCIMiFiNH1F5kllrmQQM/Uib8ZsrDIMy9jgV4U/PuqPjmzgLPtfs18dJ5Gy5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TjMTELcm; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TjMTELcm"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffe281cb1so30162625e9.1
+        for <linux-kernel@vger.kernel.org>; Wed, 30 Sep 2026 14:33:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790804007; x=1791408807; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=B8BUJKi9C7LAekCEGvKTAzu5hMBS3qiARC5hGgrbqX0=;
+        b=TjMTELcmYdI7Lu/wzRoNBZ/4cFfmvWOtMtm0bTEqllAToLscBEsqBbMjMWaZfJDCEy
+         DMvOaVWhAOAE6uyreWrwgkc/xtZ0HxQWMTlBQVXrdBBmfMhZiJ5XwNlYkuM0tQGXhc+A
+         WR7hBn7DTQQ9ADVX+cc3nOBWBqDjG092UuRF8LchOMdCLsX4inBnExJaV+37KlnZQTQZ
+         tmc7vGqRtMsM/14jZmmSoF9lVrbNDTIOaWbXZE9dJWXjIojurOTGDP7POu0cB09pE5TX
+         gp/SEWR/YDrUJWiCu3wLkBPviCWqoet8yzFC85h1Cn3nKom4+1ncS3/8cW+5IssxI0qk
+         1bxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790804007; x=1791408807;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=B8BUJKi9C7LAekCEGvKTAzu5hMBS3qiARC5hGgrbqX0=;
+        b=QkJxFio+7qm3e2qUnWiG4ZcJfREJ7ql1IwGvnZCTZv77SZDl4wQMgxC1uB3mbbGeQF
+         yBTg9EDLQCIaZLYDw0On7Y8a23mMQfeZXBI/K+5amHOwaIBXGcGvyzHb2yW4TKicqd8z
+         fdZgjfNi0chH+hHykArNE8fGjnh1VXAEBukWmotZfYbS7aMZWVcPC4xipb80d/KLW53S
+         Hmiyf648/njeIAPxbomWSA4AkbE3PjZ41rtWHImsVfC7SPueegjJC417GRKcpj7RbZgZ
+         oXaeFJPkO8B1QZLbM2j7dba+5+UaTL76f48xPjDSgRKu9ochOaCz9cd7DTd35pRS+fvK
+         /rWQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxnQolFFh0WxSzq42FXdErM6ZLJOj3A4FuCkOrHXBYr9eszfGLBoo3lQnNKC7ZXOqtQ/chBfw/JOSrvMgQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kJMEF0ehvRhl+GU2JJf8EVOLvP6Wb4Fo+qUZVCTBgrN2LjsF6D
+	Fwgd8S1MzjJoXuTuNC0eZLncrIkl2bB8bxmnXy1mLnO53c+FF4c/uHrc
+X-Gm-Gg: AYBFou00IB8H+PEC/41HNjMx0C/emv2WyxGNpr2uOUHgtr/LhWVrdTM3mnTHXtEPRRx
+	E67calQmx7+9YDnNfaZrYOiy0Rr+sv68vx/IlV5QuqIYbtbUEdIUR/UejHfOqsr40mPe94WLw/R
+	daKmHCavT9+bAAKZ4rrVmk7wnt9bMClGCqdgRfk3zX7RcvHaw5cCpukEi7cqJeKbgR8KuV5aPv/
+	p50ngxx952lIWjw0i4UNVZoNsJtxk2sUJjn/UkOy8v30h8tBI6wAYVRq8vTfbSjv9uPTNrAIaZ2
+	IkrNx6EZJR9LPY4rAercWfzFTVAxRhEvwAVIvwaM/0SMQufcBU8UQbaEqH8pFdWbx/yju8mrE6v
+	/NwR4PA7tdVyPcfNl74jXnAxq356B96FvGONNcmI+BmK1JwS72DhKZZx0mw7n0xke5zCdF7LOOH
+	pXRk/x3DUobdSTbRxgCsZmGW2AgO9YBcj4vM5zqtrOb/AoDev6hiJibE0nWeB8oTMorzggNTc37
+	AdE/ENJk+XD/wVh2An0GPDGRTgoQ48qHIue8r1q0nECs48663ATZNHMnaAWrRFDjpKScHw=
+X-Received: by 2002:a05:600c:608d:b0:4a0:17a:8844 with SMTP id 5b1f17b1804b1-4a01ad8fdd0mr43216825e9.1.1790804007254;
+        Wed, 30 Sep 2026 14:33:27 -0700 (PDT)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01feb7198sm6355255e9.1.2026.09.30.14.33.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 14:33:26 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: jikos@kernel.org,
+	bentiss@kernel.org,
+	tiwai@suse.de
+Cc: tiwai@suse.com,
+	perex@perex.cz,
+	linux-input@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mikhail.v.gavrilov@gmail.com
+Subject: [PATCH v7 0/2] the Topping M62's vendor controls, on the component framework
+Date: Thu,  1 Oct 2026 02:33:20 +0500
+Message-ID: <20260930213322.32454-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.55.0
+Precedence: bulk
+X-Mailing-List: linux-kernel@vger.kernel.org
+List-Id: <linux-kernel.vger.kernel.org>
+List-Subscribe: <mailto:linux-kernel+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-kernel+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+The Topping M62 keeps its analogue input gains, output volumes and
+output source selectors behind a vendor protocol on a HID interface,
+outside the USB Audio Class. On Linux they can only be set by hand on
+the front panel; the one capture gain snd-usb-audio exposes is a
+digital trim after the converter.
+
+This series makes them ordinary ALSA controls on the card
+snd-usb-audio already creates. 1/2 is a HID driver that speaks the
+protocol. 2/2 makes the M62's mixer quirk a component master, which
+hands the HID driver its struct snd_card at bind time and takes the
+controls away at unbind; neither driver needs to know about the
+other's disconnect.
+
+This is the first posting without RFC. The split was Takashi's
+suggestion in the thread of an earlier series that did the same job
+as a mixer quirk claiming the HID interface. After RFC v6 he wrote,
+for the audio side:
+
+  If the implementation with the component works actually, I'm for
+  it. So, from the audio side, feel free to submit patches for
+  upstreaming without RFC.
+
+  https://lore.kernel.org/all/87mrsy50gy.wl-tiwai@suse.de/
+
+and left the question of which tree takes it until the HID side is
+settled. So this posting is mainly for Jiri and Benjamin.
+
+The one HID question the RFC carried is gone. RFC v6 cleared
+intf->needs_remote_wakeup after hid_hw_open(), so that the card could
+runtime-suspend although it has no remote wakeup. That was wrong for
+this driver. The card reports every turn of a front-panel knob, and a
+suspended card without remote wakeup cannot deliver one; after resume
+it re-reports the gains of connected inputs but not the output
+volumes, so a headphone volume changed while it slept would stay stale
+in its control. v7 leaves the flag as usbhid_open() sets it, which is
+what every other driver in drivers/hid does -- none of them touches
+it -- and runtime autosuspend of the card is refused while the driver
+is bound.
+
+On the tree question: the two patches depend on each other neither at
+build time nor at run time. 1/2 alone binds, speaks to the card and
+creates no controls; 2/2 alone registers a master that never matches.
+They can go through one tree or each through its own.
+
+Changes since RFC v6
+(https://lore.kernel.org/all/20260904165848.3940603-1-mikhail.v.gavrilov@gmail.com/):
+
+  - the needs_remote_wakeup clear in probe is gone, with the comment
+    that carried it, as above. Nothing else changed.
+
+What the card reports
+
+After a subscribe the card reports itself in two waves: jacks at about
+0.9 s, then at about 5.2 s the jacks again, the output mutes and the
+gain of each input whose jack is present. Every turn of a front-panel
+knob is reported as it happens. A source selector is never reported:
+the card reports events, and a selector has no front-panel control.
+So the controls are published at bind and carry whatever alsactl
+restores, and the selectors start at an "Unknown" item until something
+writes them. 1/2's commit message has the details.
+
+One problem outside the kernel, now fixed there: removing controls
+from a live card -- which is what unbinding this driver does --
+corrupted the heap of any process holding the card through alsa-lib's
+ctl remap plugin, and UCM profiles that use MixerRemap put WirePlumber
+in exactly that position. It crashed some time later, inside unrelated
+free() calls. The cause is a one-line slip in
+remap_forget_numid_child(), present since alsa-lib 1.2.14; the fix is
+posted:
+
+  https://lore.kernel.org/alsa-devel/20260930212624.30308-1-mikhail.v.gavrilov@gmail.com/
+
+Tested
+
+Fedora, 7.3.0-rc5-551c722f4080 plus this series, with KASAN (generic),
+lockdep and UBSAN; M62 firmware V87.05.45.48.27. The loaded module was
+matched against the installed file by build ID, so everything below
+ran on the code posted here.
+
+All nine controls present, and front-panel knobs reported to ALSA as
+they turn.
+
+Fifty cycles of module unload and load against a live card with
+PipeWire running: fifty binds and nothing in the kernel log. With stock
+alsa-lib WirePlumber crashes during this, for the reason above; with
+the fix, ten cycles under valgrind run clean.
+
+System suspend to RAM and back: the headphone source selector kept its
+value across it, and the front panel still reports afterwards.
+
+The cable pulled out twice while a control was being written in a
+loop: no write errors logged, and the card binds again when plugged
+back in.
+
+Two M62s on one host, on different hub ports, one in Pro Audio mode
+and one in Mobile Mode: each binds to its own HID device and carries
+its own nine controls, a knob on the second card's panel produces
+events on that card only, and unplugging the first leaves the second's
+controls in place.
+
+With no UCM profile involved -- the card in Mobile Mode, where none
+applies -- PipeWire's stock analog-output-headphones path finds
+"Headphone Playback Volume" by name, and the desktop volume drives the
+card's analogue headphone stage through the driver.
+
+Not tested:
+
+  - an audio-side unbind and rebind with the HID driver left bound;
+  - hibernation, and with it .reset_resume, which shares
+    topping_resume() with .resume: this machine powers off instead of
+    saving an image, for reasons unrelated to this series;
+  - kmemleak, compiled in here but disabled at boot;
+  - a card whose battery has run down;
+  - a big-endian host.
+
+Mikhail Gavrilov (2):
+  HID: topping-m62: driver for the M62's vendor controls
+  ALSA: usb-audio: bind the Topping M62's vendor controls
+
+ MAINTAINERS                   |   9 +
+ drivers/hid/Kconfig           |  19 +
+ drivers/hid/Makefile          |   1 +
+ drivers/hid/hid-ids.h         |   3 +
+ drivers/hid/hid-quirks.c      |   3 +
+ drivers/hid/hid-topping-m62.c | 911 ++++++++++++++++++++++++++++++++++
+ sound/usb/Makefile            |   1 +
+ sound/usb/mixer_quirks.c      |   5 +
+ sound/usb/mixer_topping.c     | 236 +++++++++
+ sound/usb/mixer_topping.h     |   7 +
+ 10 files changed, 1195 insertions(+)
+ create mode 100644 drivers/hid/hid-topping-m62.c
+ create mode 100644 sound/usb/mixer_topping.c
+ create mode 100644 sound/usb/mixer_topping.h
+
+-- 
+2.55.0
+
+
+

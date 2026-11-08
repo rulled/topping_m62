@@ -1,0 +1,747 @@
+
+===== PAGE 1 =====
+V1.1
+KB22
+User manual
+===== PAGE 2 =====
+Contents
+1. Packaging Contents
+2. Parts and Names
+2.1. Ports and Buttons
+2.2. Display Indicators
+2.2.1. Pro/Game Mode
+2.2.2. HIFI Mode
+3. KB22 three operating modes
+3.1. Mode comparison
+3.2. Mode switching
+3.2.1. Switch modes on the device
+3.2.2. Switch modes in KB Control Center
+4. Connections
+4.1. Connect the keyboard
+4.2. Pro/Game Mode
+4.2.1. Connect a microphone
+4.2.2. Connect an instrument/line output device
+4.2.3. Connect monitoring devices
+4.3. HIFI Mode
+4.3.1. Connect input sources
+4.3.2. Connect output devices
+5. Operation Instructions
+5.1. Power On/Off and Standby
+5.2. Volume Settings
+5.3. Input/Output Settings
+5.3.1. Pro / Game Mode
+5.3.2. HIFI Mode
+6. Settings Menu
+6.1. Open the Menu and Change Settings
+6.2. Settings Description
+6.2.1. Display
+6.2.2. Input Selection (HIFI)
+6.2.3. Output Config
+6.2.4. PEQ Settings (HIFI)
+6.2.5. Advanced
+6.2.6. Mode Selection
+6.2.7. Language
+6.2.8. Factory Reset
+7. Keyboard Functions
+1 of 25
+3.....................................................................................................................................
+3..........................................................................................................................................
+3...................................................................................................................................................
+5...................................................................................................................................................
+5...................................................................................................................................................
+6.............................................................................................................................................................
+7.......................................................................................................................
+7...................................................................................................................................................
+8.......................................................................................................................................................
+8...............................................................................................................................
+9...................................................................................................................
+9..................................................................................................................................................
+9............................................................................................................................................
+10....................................................................................................................................................
+10......................................................................................................................................
+12......................................................................................................
+12.............................................................................................................................
+13..............................................................................................................................................................
+13......................................................................................................................................
+13....................................................................................................................................
+14...............................................................................................................................
+14..................................................................................................................................
+14....................................................................................................................................................
+15..........................................................................................................................................
+15...............................................................................................................................................
+15...........................................................................................................................................................
+16.............................................................................................................................................
+16..................................................................................................................
+16.............................................................................................................................................
+16...............................................................................................................................................................
+16........................................................................................................................................
+16....................................................................................................................................................
+17............................................................................................................................................
+17...........................................................................................................................................................
+18..................................................................................................................................................
+19...........................................................................................................................................................
+19.....................................................................................................................................................
+19...................................................................................................................................
+===== PAGE 3 =====
+7.1. VIA Key Customization
+7.2. 2-in-1 Keycap / Switch Puller
+8. Firmware Upgrade
+9. Precautions
+10. Main Unit Properties
+11. Specifications
+2 of 25
+19.........................................................................................................................................
+20...............................................................................................................................
+20.....................................................................................................................................
+21.................................................................................................................................................
+21................................................................................................................................
+25...........................................................................................................................................
+===== PAGE 4 =====
+1. Packaging Contents
+KB22 x 1
+USB A-C Data Cable x 1
+USB C-C Data Cable x 1
+Switch Puller x 1
+Keycaps x 5
+Switches x 4
+Product Information Card x 1
+2. Parts and Names
+2.1. Ports and Buttons
+USB Expansion Port
+Connect devices such as a mouse or USB flash drive while saving a USB port on the computer.
+OTG Port
+Connect a mobile device to this port to record audio from the mobile device to the computer or
+send audio from the computer to the mobile device.
+1. 
+2. 
+3 of 25
+===== PAGE 5 =====
+USB-C Port
+Connect the computer to this port for data transfer and to power the KB22.
+POWER Port
+When power is insufficient, connect a DC5V power supply to this port. The USB-C port on the left
+will then be used only for data transfer, not power.
+LINE OUT
+6.35mm TRS balanced port for connecting the main monitoring device.
+IN1&IN2 (not supported in HIFI Mode)
+Combo input port supporting XLR, 6.35mm TRS balanced, and 6.35mm TS unbalanced plugs.
+Connect a microphone, instrument (such as an electric guitar), or LINE OUT device.
+Display
+Button Functions
+Up Button Down Button Knob
+HIFI
+Mode
+Short press: Open the menu*
+Long press: Turn output mute
+on or off
+Short press: Switch the USB
+input
+Long press: Turn the screen off
+or on
+Turn the knob: Adjust the
+volume*
+Short press: Switch the output
+Pro
+Mode
+Short press: Open the menu*
+Long press: Turn Input 1 EQ on
+or off
+Short press: Switch between
+input/output settings*
+Long press: Turn the screen off
+or on
+Turn the knob: Adjust the
+volume*
+Short press: Switch between
+input and output volume
+Double-click: Turn output mute
+on or off
+Game
+Mode
+Short press: Open the menu*
+Long press: Turn output mute
+on or off
+Short press: Switch between
+input/output settings*
+Long press: Turn Input 1 mute
+on or off
+Turn the knob: Adjust the
+volume*
+Short press: Switch between
+input and output volume
+Double-click: Turn Input 1 48V
+on or off
+Note: Buttons marked with * cannot be customized. The functions of the other buttons can be customized under
+[Menu-Advanced].
+9. 6.35mm Unbalanced Headphone Port
+10. 3.5mm Headphone/Headset Port (not supported in HIFI Mode)
+3.5mm TRRS port for connecting headphones or a headset (CTIA standard). Provides a 2.5V bias
+voltage when headset input is enabled.
+11. Power Switch
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+4 of 25
+===== PAGE 6 =====
+5 of 25
+2.2. Display Indicators 
+2.2.1. Pro/Game Mode
+IN1 Settings
+M: Turn mute on or off.
+Z: Switch between line and instrument input. The icon is off for line input and on for instrument
+input.
+48: 48V Indicator.
+IN1/IN2: When 48V is enabled, 48V phantom power is supplied to the connected microphone.
+This applies to the XLR input of the corresponding input port.
+Important:
+Phantom power is normally used only with condenser microphones. Enabling 48V for a
+1. 
+microphone or device that does not require phantom power may cause damage, so keep it off
+when not in use. Confirm that the microphone supports 48V phantom power before enabling it,
+and lower the microphone input volume before turning it on or off.
+===== PAGE 7 =====
+6 of 25
+IN2 Settings
+M: Turn mute on or off.
+Z: Switch between line and instrument input. The icon is off for line input and on for instrument
+input.
+3.5mm Headset Icon: When this icon is lit, the microphone input of the IN2 port is disabled.
+48: 48V Indicator
+IN1/IN2: When 48V is enabled, 48V phantom power is supplied to the connected microphone.
+This applies to the XLR input of the corresponding input port.
+Important:
+Phantom power is normally used only with condenser microphones. Enabling 48V for a
+microphone or device that does not require phantom power may cause damage, so keep it off
+when not in use. Confirm that the microphone supports 48V phantom power before enabling it,
+and lower the microphone input volume before turning it on or off.
+Output Settings
+EQ: Turn EQ on or off.
+G: 3.5mm/6.35mm headphone amplifier gain.
+Speaker Icon: Turn LINE OUT output on or off.
+Headphone Icon: Turn headphone output on or off.
+IN1&IN2 Input Level Indicator
+When the signal clips, the CLIP indicator at the top of the level meter lights up. Lower the signal
+level.
+Output Level Indicator
+When the signal clips, the CLIP indicator at the top of the level meter lights up. Lower the signal
+level.
+Sample Rate Indicator
+IN1 Input Gain
+IN2 Input Gain
+Output volume (3.5mm & 6.35mm & LINE OUT)
+USB input indicator (shown after the device is recognized)
+Note: Except for the sample rate display, the other icons and descriptions in Game Mode are the
+same as in Pro Mode.
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+2.2.2. HIFI Mode
+
+===== PAGE 8 =====
+7 of 25
+USB/OTG input indicator
+Set this in [Menu - Input Selection]
+EQ indicator
+PCM filter indicator
+3.5mm/6.35mm headphone amplifier gain
+6.35mm headphone output indicator
+3.5mm headphone output indicator
+LINE OUT output indicator
+Audio format
+Sample Rate Indicator
+Output volume settings (3.5mm/6.35mm/LINE OUT)
+VU meter
+3. KB22 three operating modes
+3.1. Mode comparison
+To meet different user needs, KB22 provides three operating modes that can be switched according
+to the usage scenario.
+Mode HIFI Mode Pro Mode Game Mode
+Recommended use
+Suitable for everyday
+music listening and other
+light use
+For professional users;
+suitable for recording
+studios, multi-channel
+routing, and music
+production
+For gaming; suitable for
+various game streaming
+needs
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+Sample rate
+PCM 44.1-384kHz
+DSD Native 64-256/Dop
+64-128
+44.1-192kHz 44.1kHz/48kHz
+Input channels UAB-C、OTG
+IN1、IN2、3.5-Mic、
+OTG、
+Playback 1/2~7/8
+IN1、IN2、3.5-Mic、
+OTG、
+Playback 1/2~5/6
+Mix channels None Mix A–C (3 groups) 3 groups
+Internal recording None Loopback 1/2、3/4、5/6 Recording
+Effects EQ
+EQ, ducking, noise
+reduction, compression,
+expansion, delay, and
+reverb
+Ducking, noise reduction,
+vocal enhancement,
+output audio effect
+enhancement, output
+spatial enhancement
+===== PAGE 9 =====
+8 of 25
+PEQ adjustment Headphone/Line Out: 10-band PEQ
+Microphone input: 4-
+band PEQ
+Headphone output: 10-
+band PEQ
+None
+3.2. Mode switching
+3.2.1. Switch modes on the device
+Set this in [Menu - Mode Choose].
+
+===== PAGE 10 =====
+3.2.2. Switch modes in KB Control Center
+4. Connections
+4.1. Connect the keyboard
+Use a USB cable to connect KB22's USB-C port to a USB port on the computer. Then slide the power
+switch to ON.
+Note：The computer may take a few seconds to recognize the device the first time it is connected.
+After recognition is complete, the keyboard is ready for normal input.
+If keyboard input is abnormal, try briefly press FN+A to switch to the Mac layer, or FN+S to switch 
+to the Win layer.
+9 of 25
+===== PAGE 11 =====
+4.2. Pro/Game Mode
+4.2.1. Connect a microphone
+Select the microphone input port
+IN1/IN2( XLR port) : Connects to dynamic or condenser microphones and provides 48V phantom
+power.
+3.5-Mic (3.5mm TRRS port): Connects to a headset with a microphone.
+4-pole CTIA-standard headset or standalone microphone: Connect directly to the 3.5-Mic jack.
+2-pole or 3-pole standalone microphone: Usually requires a microphone adapter cable that
+converts it to CTIA TRRS.
+Standalone microphone and 3.5 mm headphones at the same time: Use a headset splitter
+adapter.
+The wiring, output level, and power requirements of different microphones may vary. Confirm the
+specifications with the microphone manufacturer before use. Actual compatibility depends on
+connection testing.
+1. 
+2. Lower the input gain
+Before connecting a microphone, lower the input gain for the corresponding channel to prevent 
+excessive volume when connecting it. For details, see the manual: 5.2 Volume Settings.
+3. Connect the microphone with the appropriate cable
+Dynamic/condenser microphone: Use an XLR-to-XLR cable to connect it to IN1/IN2.
+Headset / microphone connection:
+• 
+• 
+• 
+10 of 25
+===== PAGE 12 =====
+Microphone input settings
+Up to 2 microphone inputs are supported at the same time. IN2 settings include both IN2 input and
+3.5-Mic input settings. When 3.5-Mic is enabled, the IN2 microphone input is disabled. Briefly press
+the down key on the right side of the screen to open the IN1/IN2 settings. For details, see the manual:
+5.3 Input/Output Settings.
+Enable phantom power (if needed)
+IN1 / IN2: When 48V is enabled, 48V phantom power is supplied to the connected microphone.
+⚠Notice:
+If the connected device does not require phantom power, enabling phantom power may damage
+the device. Enable this function only after confirming that your microphone requires it.
+Before connecting or disconnecting a microphone, set the device volume to the minimum and
+turn off phantom power to prevent damage or noise.
+Adjust the input gain
+4. 
+• 
+• 
+• 
+5. 
+11 of 25
+===== PAGE 13 =====
+After connecting the microphone, gradually increase the input gain until you achieve a suitable
+recording level. For details, see the manual: 5.2 Volume Settings.
+4.2.2. Connect an instrument/line output device
+Lower the input gain for IN1 and IN2. For details, see the manual: 5.2 Volume Settings.
+Use a 6.35mm TS/TRS cable to connect an instrument or line output device to IN1/IN2.
+When connecting an instrument, open the IN1/IN2 settings and turn on the INST switch. No
+additional settings are required for a line output device.
+After connecting, gradually increase the input gain until the level is suitable. For details, see the
+manual: 5.2 Volume Settings.
+4.2.3. Connect monitoring devices
+According to your needs, connect 3.5mm / 6.35mm headphones to KB22's headphone output, or use
+a 6.35mm TRS balanced cable to connect KB22's LINE OUT to powered monitor speakers. To adjust
+the output volume, see the manual: 5.2 Volume Settings.
+1. 
+2. 
+3. 
+4. 
+12 of 25
+===== PAGE 14 =====
+4.3. HIFI Mode
+4.3.1. Connect input sources
+Note: When connecting a mobile device or when power is insufficient, connect an additional DC5V
+power supply to the POWER port.
+4.3.2. Connect output devices
+According to your needs, connect 3.5mm / 6.35mm headphones to KB22's headphone output, or use
+a 6.35mm TRS balanced cable to connect KB22's LINE OUT to powered speakers. To adjust the output
+volume, see the manual: 5.2 Volume Settings.
+Note: In this mode, the headset input is unavailable. To use a headset, set it in [Menu-Mode Choose-
+Pro/Game Mode].
+13 of 25
+===== PAGE 15 =====
+5. Operation Instructions
+5.1. Power On/Off and Standby
+Power On
+When connecting to a computer, use a USB cable to connect to KB22's USB-C port. When connecting
+to a mobile device or when power is insufficient, use a DC 5V charger connected to the POWER port to
+power the device. After connecting, set the power switch on the right side of the unit to ON to power
+it on.
+Standby
+While KB22 is powered on, press and hold the knob to enter standby. In standby mode, briefly press
+the knob to power on.
+Note: When KB22's auto-standby function is enabled, the device enters standby after one minute if
+no digital signal is detected and the analog signal level is below -40 dBFS. It automatically resumes
+normal operation when a valid signal is detected again.
+To disable auto-standby, set it to Off in [Menu-Advanced-Auto Power-Off].
+5.2. Volume Settings
+Pro Mode / Game Mode: Briefly press the knob to select the IN1, IN2, or OUT volume in sequence,
+then turn the knob to adjust the selected volume.
+Adjust Volume
+HIFI Mode: Turn the knob directly to adjust the volume.
+Mute
+Customize shortcut actions under [Menu-Advanced] and assign Mute to the knob or buttons.
+14 of 25
+===== PAGE 16 =====
+5.3. Input/Output Settings
+5.3.1. Pro/Game Mode
+Note: The OUT gain (GAIN) setting applies only to the 3.5mm and 6.35mm headphone outputs.
+5.3.2. HIFI Mode
+Input Settings
+Briefly press the down button to the right of KB22's display to switch between USB and OTG input.
+Output Options Settings
+Because the device has multiple output channels, switching may take some time. For greater
+efficiency, preselect commonly used output channels in [Menu-Output Config-Output Options] to
+reduce switching time. After selection, the system switches only among the selected channels.
+☐ All
+☐ Line Out
+☐ HPA 6.35mm
+☐ HPA 3.5mm
+☐ All HP
+☐ Line + HPA 6.35mm
+☐ Line + HPA 3.5mm
+Switch Output Channels
+After setting the output options, press the knob to cycle through the outputs.
+15 of 25
+===== PAGE 17 =====
+6. Settings Menu
+6.1. Open the Menu and Change Settings 
+6.2. Settings Description
+6.2.1. Display
+Brightness
+Low, Medium, High (default)
+VU Style (Pro/HIFI Mode)
+Colorful (default), White
+Icon Style (HIFI Mode)
+Filling (default), Wireframe
+6.2.2. Input Selection (HIFI) 
+USB-C (default), OTG
+6.2.3. Output Config
+Output Selection (Pro/HIFI Mode)
+All (default) / Cycle through the list selected under "Output Options"
+Output Options (Pro/HIFI Mode)
+Because the device has multiple output channels, switching may take some time. For greater
+efficiency, preselect commonly used output channels in [ Menu-Output Settings-Output Options] to
+reduce output-channel switching time.
+Available output channels include:
+☐ All
+☐ Line Out
+16 of 25
+===== PAGE 18 =====
+☐ HPA 6.35mm
+☐ HPA 3.5mm
+☐ All HP
+☐ Line + HPA 6.35mm
+☐ Line + HPA 3.5mm
+PCM Filter (HIFI Mode)
+F-1: Fast roll-off (default)
+F-2: Slow roll-off
+F-3: Minimum phase
+HP Gain
+Low (default), High
+Channel Balance
+Available range: C (balanced), L+0.5-9.5dB, or R+0.5-9.5dB. (Default: C)
+*When using the knob to set this option, press the knob once to enter the setting, turn the knob to
+adjust the value, then press it again to exit.
+Volume Step 
+0.5dB (default), 1dB
+Polarity 
+Normal (default), Inverted
+6.2.4. PEQ Settings (HIFI) 
+PEQ
+Enabled, Disabled (default)
+PEQ Specifications
+USB IN: 44.1kHz-192kHz
+PEQ Selection
+The device includes 3 default presets for selection. To edit them, use the KB Control Center software.
+6.2.5. Advanced
+Auto Power 
+On (default), Off
+Vol Memory
+Input (HIFI Mode): The device remembers the volume and gain settings last used for each input
+channel and restores them automatically the next time you switch to that channel.
+17 of 25
+===== PAGE 19 =====
+Output (Pro Mode/HIFI Mode): Remember the volume and gain last used for each output channel
+and restores them automatically the next time you use that channel. (Default)
+None: Do not use this function
+PEQ Memory
+Input (HIFI Mode): Remembers the PEQ configuration selected for each input channel and restores it
+automatically the next time you use that channel.
+Output (Pro Mode/HIFI Mode): Remembers the PEQ configuration selected for each output channel
+and restores it automatically the next time you use that channel. (Default)
+None: Do not use this function
+Knob Button (HIFI Mode)
+Use this function to customize the shortcut action performed when you short-press the knob on the
+normal display.
+Available inputs, outputs, and controls vary by operating mode, so the functions available by short-
+pressing the knob also vary with the current mode.
+Knob Double-press (Pro Mode/Game Mode)
+Use this function to customize the shortcut action performed when you double-click the knob on the
+normal display.
+Available inputs, outputs, and controls vary by operating mode, so the functions available by double-
+clicking the knob also vary with the current mode.
+Up Button Long-press
+Use this function to customize the shortcut action performed when you press and hold the Up button
+on the normal display.
+Available inputs, outputs, and controls vary by operating mode, so the functions available by
+pressing and holding the Up button also vary with the current mode.
+Down Button Short-press (HIFI Mode)
+Use this function to customize the shortcut action performed when you short-press the Down button
+on the normal display.
+Available inputs, outputs, and controls vary by operating mode, so the functions available by short-
+pressing the Down button also vary with the current mode.
+Down Button Long-press
+Use this function to customize the shortcut action performed when you press and hold the Down
+button on the normal display.
+Available inputs, outputs, and controls vary by operating mode, so the functions available by
+pressing and holding the Down button also vary with the current mode.
+6.2.6. Mode Selection
+HIFI Mode, Pro (default), Game Mode
+18 of 25
+===== PAGE 20 =====
+6.2.7. Language
+English, Chinese
+6.2.8. Factory Reset
+Selecting Factory Reset opens a dialog. Select OK or No (the selected option is blue), then press the
+front-panel knob to confirm.
+7. Keyboard Functions
+7.1. VIA Key Customization
+KB22 supports VIA key customization, including changing key assignments, setting lighting effects,
+and recording macros.
+Key Remapping Address: https://usevia.app/
+JSON File: https://download.topping.pro/downloads/JSON-KB22_V0101_20250218.zip
+FN Key
+Combinations
+19 of 25
+Windows Mac (press F1–F12 without Fn)
+Fn+F1 Open My Computer Decrease screen brightness
+Fn+F2 Open browser Increase screen brightness
+Fn+F3 Open email Switch windows
+Fn+F4 Open calculator All apps
+Fn+F5 Open music player \
+Fn+F6 Stop playback \
+Fn+F7 Previous track Previous track
+Fn+F8 Pause/Play Pause/Play
+Fn+F9 Next track Next track
+Fn+F10 Mute Mute
+Fn+F11 Decrease volume Decrease volume
+Fn+F12 Increase volume Increase volume
+FN+WIN_L Lock/Unlock Windows key
+FN+|\ Switch backlight mode Switch backlight mode
+===== PAGE 21 =====
+7.2. 2-in-1 Keycap / Switch Puller
+Removing Keycaps
+Fit the wider end of the puller around the keycap.
+Make sure the wires hook under both sides.
+Pull straight up gently to remove the keycap.
+Removing Switches
+Remove the keycap first.
+Align the narrower end with the clips on the top and bottom of the switch.
+Squeeze inward to release the clips.
+Keep squeezing and pull the switch straight up.
+Pull straight up and avoid twisting to prevent damage to the switch pins or hot-swap socket. If
+the switch is tight, make sure both clips are fully pressed before pulling. Do not pry it out.
+For more details, click the link below: https://topping.pro/supports/99AQV25
+8. Firmware Upgrade 
+1. 
+2. 
+Download KB Control Center to update the firmware.
+Win: https://topping.pro/download/Roy05zQ
+3. 
+1. 
+2. 
+3. 
+4. 
+20 of 25
+FN+↑ Increase main backlight brightness Increase main backlight brightness
+FN+↓ Decrease main backlight brightness Decrease main backlight brightness
+FN+← Decrease main backlight effectspeed Decrease main backlight effectspeed
+FN+→ Increase main backlight effect speed Increase main backlight effect speed
+FN+ENTER Increase main backlight hue Increase main backlight hue
+FN+BACK Turn off backlight Turn off backlight
+FN+Space
+Press and hold for 3 seconds to
+restore factory settings. The entire
+backlight flashes white 3 times.
+Press and hold for 3 seconds to
+restore factory settings. The entire
+backlight flashes white 3 times.
+FN+A Briefly press to switch to the Maclayer Briefly press to switch to the Maclayer
+FN+S Briefly press to switch to theWindows layer Briefly press to switch to theWindows layer
+===== PAGE 22 =====
+9. 
+MAC: https://topping.pro/download/Em1vree
+Precautions
+Routine Keyboard Maintenance:
+Disconnect the keyboard from the device before cleaning. For routine cleaning, turn the keyboard
+upside down and gently tap the back to remove dust and debris, then use a soft brush to clean
+between the keycaps and remove surface dust.
+For more thorough cleaning, carefully remove the keycaps with a keycap puller, then use a soft brush
+to remove dust and debris from inside the keyboard. If stains remain, gently wipe the surface with a
+clean, soft, slightly damp cloth. Allow the keyboard to air-dry in a cool, well-ventilated place. Do not
+rinse the keyboard with water or spray cleaning solution directly onto it.
+During use, do not repeatedly unplug, pull, or bend the keyboard cable, as this may loosen or
+disconnect the keyboard connector or cause poor contact. Avoid leaving the keyboard for long
+periods in humid, hot, dusty, or directly sunlit environments.
+Do not disassemble the case. Have repairs performed by qualified service personnel.
+For indoor use only.
+We are not responsible for any loss or damage caused directly or indirectly by product failure.
+Specifications and functions are subject to change without notice due to product improvements.
+10. Main Unit Properties
+Basic Properties
+1. 
+2. 
+3. 
+4. 
+5. 
+21 of 25
+===== PAGE 23 =====
+Dimensions 32.2 cm x 16.3 cm x 5.0 cm (including protruding parts)
+Unit Weight 1.27 kg
+Interface Properties
+Power Input
+POWER USB Type-C port (preferred)
+or USB Type-C port
+OTG Port OTG USB Type-C port (USB 2.0 FS)
+USB-C Port USB Type-C port (USB 2.0 HS)
+USB Hub Expansion Port USB Type-A port (USB 2.0 HS)
+Microphone Inputs 2 (XLR/TRS combo inputs with 48 V phantom power)
+High-Impedance Inputs 2 (XLR/TRS combo inputs)
+Line Inputs 2 (XLR/TRS combo inputs)
+Line Outputs 2 (6.35 mm TRS outputs)
+Headphone/Headset Ports
+2: 3.5 mm TRRS (stereo headphone output +
+microphone input, 
+shared with microphone input 2)
+6.35 mm TRS (stereo headphone output)
+Power Properties
+Power Supply DC 5 V / 1.0-2.0 A (devices connected to the hubincrease current consumption)
+Hub Power Output DC 5 V / 1.0 A
+Display Properties
+Display 1.46-inch color display
+Technical Properties
+Microphone Preamp Technology Ultra-linear
+OTG Technology Digital ASRC
+22 of 25
+===== PAGE 24 =====
+Supported Sample Rates
+USB Type-C:
+16 bit/44.1 kHz-32 bit/384 kHz, DSD64-DSD128 (DoP),
+DSD64-DSD256 (Native) @ HIFI Mode
+24 bit/44.1 kHz-24 bit/48 kHz @ Game Mode
+24 bit/44.1 kHz24 bit/192 kHz @ Professional Mode
+OTG:
+16 bit/48 kHz-24 bit/192 kHz
+Software Control Supports KB Control Center
+DAW Channels 8 (Professional Recording Mode)
+Recording Channels 10 (Professional Recording Mode)
+Loopback Channels 6 (Professional Recording Mode)
+Operating Modes 3 (HIFI Mode, Game Mode, and Professional Mode)
+Operating Systems macOS / Windows / iOS / Android
+Simultaneous Dual-Host Operation Supported
+DSP Effects 1 (Professional Mode)
+Mixers 3
+PEQ
+Each microphone input supports 4-band PEQ
+Headphone output supports 10-band PEQ
+(Professional Recording Mode only)
+Type: Parametric equalizer (PEQ)
+Noise Reduction Noise gate with 70 noise-reduction levels
+Compressor Adjustable threshold, ratio, attack time, release time,gain, and dry/wet mix
+Expander Adjustable threshold, expansion ratio, attack time,release time, gain, and dry/wet mix
+Ducking
+Switchable ducking from the microphone inputs to all
+playback channels
+Adjustable threshold, attack time, ducking amount,
+and release time
+Delay Adjustable time, feedback, ping-pong effect, and dry/wet mix
+DSP Effects 2 (Game Mode)
+23 of 25
+===== PAGE 25 =====
+Noise Reduction Noise gate with 70 noise-reduction levels
+Voice Enhancement Input voice enhancement with 36 adjustable levels
+Ducking Adjustable threshold
+Headphone Output Enhancement 3 presets + custom settings
+Headphone Spatial Enhancement Off, Studio, Small Room
+DSP Effects 3 (HIFI Mode)
+PEQ Supports three 10-band PEQ presets
+Keyboard Properties
+Keyboard Type Custom mechanical keyboard
+Switch Type
+Lime Tactile Silent Mechanical Switch (KB22 LM)
+Anlan Linear Silent Mechanical Switch (KB22 LS)
+Switch Feel
+Tactile (KB22 LM)
+Linear (KB22 LS)
+Hot-Swap Support Full-key hot-swappable
+Simultaneously Connected Devices 1
+Number of Keys 80
+Compatible Systems Multi-system compatibility: macOS / Windows / iOS /Android
+Backlighting RGB
+Case Material Aluminum alloy + ABS
+Keycap Material Double-shot PBT
+Keycap Legend Process Dye-sublimation
+Keyboard Structure Gasket
+Battery Capacity No battery
+Connection Wired
+Power Supply Method Wired power supply
+VIA Support Yes
+24 of 25
+===== PAGE 26 =====
+11. Specifications
+For more detailed specifications: https://topping.pro/kb22/
+25 of 25

@@ -1,0 +1,746 @@
+{
+  "version": 1,
+  "label": "coverage-test",
+  "at": "2026-11-08T10:49:48.714Z",
+  "hid": {
+    "46:0a": 0,
+    "46:0c": -782,
+    "46:0d": -902,
+    "21:01": -721,
+    "11:01": 2,
+    "44:0d": -746,
+    "44:0e": -762,
+    "33:15": -762,
+    "34:15": -762,
+    "35:15": -842,
+    "36:15": -842,
+    "9b:0b": -762,
+    "46:09": -800,
+    "64:06": 0,
+    "62:06": 0,
+    "25:06": 0,
+    "23:06": 0,
+    "22:06": 0,
+    "21:06": 1,
+    "12:02": 135,
+    "12:03": 5,
+    "11:04": 0,
+    "44:07": 15,
+    "11:18": 90,
+    "11:19": 1,
+    "44:01": 0,
+    "44:03": -90,
+    "44:04": -90,
+    "11:22": 1,
+    "44:08": 0,
+    "44:09": 1,
+    "44:0a": 0,
+    "44:0f": 0,
+    "44:0b": 1,
+    "21:04": 43,
+    "12:04": 69,
+    "12:05": 72,
+    "12:06": 39,
+    "11:1c": 1,
+    "11:1b": 0,
+    "11:1a": 0,
+    "12:01": 100,
+    "11:1e": 0,
+    "44:02": -90,
+    "44:05": -90,
+    "44:0c": 0,
+    "11:23": 4,
+    "91:01": 0,
+    "91:06": 0,
+    "91:02": 1,
+    "91:07": 1,
+    "91:03": 0,
+    "91:08": 0,
+    "91:04": 632,
+    "91:09": 632,
+    "91:05": 7000,
+    "91:0a": 7000,
+    "92:01": 0,
+    "92:06": 0,
+    "92:02": 1,
+    "92:07": 1,
+    "92:03": 0,
+    "92:08": 0,
+    "92:04": 632,
+    "92:09": 632,
+    "92:05": 7000,
+    "92:0a": 7000,
+    "93:01": 0,
+    "93:06": 0,
+    "93:02": 1,
+    "93:07": 1,
+    "93:03": 0,
+    "93:08": 0,
+    "93:04": 632,
+    "93:09": 632,
+    "93:05": 7000,
+    "93:0a": 7000,
+    "94:01": 0,
+    "94:06": 0,
+    "94:02": 1,
+    "94:07": 1,
+    "94:03": 0,
+    "94:08": 0,
+    "94:04": 632,
+    "94:09": 632,
+    "94:05": 7000,
+    "94:0a": 7000,
+    "9b:12": 0,
+    "9b:13": 0,
+    "9b:0f": 0,
+    "9b:10": 0,
+    "46:01": 0,
+    "46:02": -28,
+    "46:03": 10,
+    "46:04": 5,
+    "46:05": 200,
+    "46:06": 10,
+    "46:07": 0,
+    "46:08": 100,
+    "11:25": 1,
+    "64:04": 0,
+    "62:04": 0,
+    "64:03": 50,
+    "44:06": 15,
+    "43:07": 0
+  },
+  "workspace": {
+    "mode": "Live",
+    "name": "main2",
+    "inputs": [
+      {
+        "id": "Input_IN1",
+        "channel": "IN1",
+        "name": "IN 1",
+        "mic": "Mic1",
+        "phantom48": false,
+        "solo": false,
+        "mute": false,
+        "gain": 43,
+        "anti": null,
+        "balance": 100
+      },
+      {
+        "id": "Input_IN2",
+        "channel": "IN2",
+        "name": "IN 2",
+        "mic": null,
+        "phantom48": false,
+        "solo": false,
+        "mute": true,
+        "gain": 0,
+        "anti": null,
+        "balance": 100
+      },
+      {
+        "id": "Input_AUX",
+        "channel": "AUX",
+        "name": "AUX",
+        "mic": null,
+        "phantom48": false,
+        "solo": false,
+        "mute": false,
+        "gain": -90,
+        "anti": null,
+        "balance": null
+      },
+      {
+        "id": "Input_BT",
+        "channel": "BT",
+        "name": "BT",
+        "mic": null,
+        "phantom48": false,
+        "solo": false,
+        "mute": false,
+        "gain": -89,
+        "anti": null,
+        "balance": null
+      },
+      {
+        "id": "Input_OTGIN",
+        "channel": "OTGIN",
+        "name": "OTG IN",
+        "mic": null,
+        "phantom48": false,
+        "solo": false,
+        "mute": false,
+        "gain": -89,
+        "anti": null,
+        "balance": null
+      }
+    ],
+    "mixer": [
+      {
+        "channel": "IN12",
+        "name": "IN",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "AUX",
+        "name": "AUX",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "BT",
+        "name": "BT",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "OTGIN",
+        "name": "OTG IN",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "FX",
+        "name": "FX",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "PB12",
+        "name": "Playback 1/2",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "PB34",
+        "name": "Playback 3/4",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "PB56",
+        "name": "Playback 5/6",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "PB78",
+        "name": "Playback 7/8",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      },
+      {
+        "channel": "PB910",
+        "name": "Playback 9/10",
+        "buses": {
+          "A": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "B": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "C": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "D": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          },
+          "E": {
+            "gain": 0,
+            "solo": false,
+            "mute": false
+          }
+        }
+      }
+    ],
+    "eq": [
+      {
+        "id": "EQ_IN1",
+        "switch": false,
+        "gainInput": 0,
+        "gainOutput": null,
+        "format": "in",
+        "mixedFormat": false,
+        "bands": [
+          {
+            "band": 1,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          },
+          {
+            "band": 2,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          },
+          {
+            "band": 3,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          },
+          {
+            "band": 4,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          }
+        ]
+      },
+      {
+        "id": "EQ_IN2",
+        "switch": false,
+        "gainInput": 0,
+        "gainOutput": null,
+        "format": "in",
+        "mixedFormat": false,
+        "bands": [
+          {
+            "band": 1,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          },
+          {
+            "band": 2,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          },
+          {
+            "band": 3,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          },
+          {
+            "band": 4,
+            "raw": "|0|632|0.7|0",
+            "format": "4",
+            "type": 0,
+            "freq": 632,
+            "q": 0.7,
+            "gain": 0,
+            "flag": null
+          }
+        ]
+      }
+    ],
+    "loopback": [
+      {
+        "id": "Loopback_LB12",
+        "channel": "LB12",
+        "name": "Loopback 1/2",
+        "source": "FX",
+        "gain": 0,
+        "gainLeft": null,
+        "gainRight": null,
+        "mute": false,
+        "muteLeft": false,
+        "muteRight": false,
+        "link": false
+      },
+      {
+        "id": "Loopback_LB34",
+        "channel": "LB34",
+        "name": "Loopback 3/4",
+        "source": "Mix A",
+        "gain": -90,
+        "gainLeft": null,
+        "gainRight": null,
+        "mute": true,
+        "muteLeft": false,
+        "muteRight": false,
+        "link": false
+      },
+      {
+        "id": "Loopback_LB56",
+        "channel": "LB56",
+        "name": "Loopback 5/6",
+        "source": "Mix A",
+        "gain": -90,
+        "gainLeft": null,
+        "gainRight": null,
+        "mute": true,
+        "muteLeft": false,
+        "muteRight": false,
+        "link": false
+      },
+      {
+        "id": "Loopback_LB78",
+        "channel": "LB78",
+        "name": "Loopback 7/8",
+        "source": "Mix A",
+        "gain": -90,
+        "gainLeft": null,
+        "gainRight": null,
+        "mute": true,
+        "muteLeft": false,
+        "muteRight": false,
+        "link": false
+      }
+    ],
+    "outputs": [
+      {
+        "id": "Output_HP",
+        "channel": "HP",
+        "name": "HP",
+        "source": "Playback 1/2",
+        "gain": -5,
+        "mute": false,
+        "isLoopback": false
+      },
+      {
+        "id": "Output_OTGOUT",
+        "channel": "OTGOUT",
+        "name": "OTG OUT",
+        "source": "Mix A",
+        "gain": -89,
+        "mute": false,
+        "isLoopback": false
+      }
+    ],
+    "ducking": {
+      "enabled": true,
+      "channelName": "IN 1+2",
+      "switch": 0,
+      "threshold": -30,
+      "attack": 200,
+      "reduction": 16,
+      "release": 1000,
+      "map": {
+        "IN1AUX": true,
+        "IN2AUX": true,
+        "IN1BT": true,
+        "IN2BT": true,
+        "IN1OTGIN": true,
+        "IN2OTGIN": true,
+        "IN1Playback1_2": true,
+        "IN2Playback1_2": true,
+        "IN1Playback3_4": true,
+        "IN2Playback3_4": true,
+        "IN1Playback5_6": true,
+        "IN2Playback5_6": true,
+        "IN1Playback7_8": true,
+        "IN2Playback7_8": true,
+        "IN1Playback9_10": true,
+        "IN2Playback9_10": true
+      }
+    },
+    "effects": {
+      "layout": "integration",
+      "inputLevels": {
+        "input1": 0,
+        "input2": -90,
+        "aux": -90,
+        "bluetooth": -90,
+        "otg": -90
+      },
+      "muteFx": false,
+      "noiseReduction": {
+        "nc1": 15,
+        "nc2": 30,
+        "bypass": 15,
+        "type": "NC1"
+      },
+      "reverb": {
+        "type": "Bypass",
+        "studio": {
+          "level": 1,
+          "dryWet": 0,
+          "decay": 0,
+          "width": "0"
+        },
+        "live": {
+          "level": 4,
+          "dryWet": 25,
+          "decay": 11,
+          "width": "0.699999988079071"
+        },
+        "hall": {
+          "level": 4,
+          "dryWet": 25,
+          "decay": 11,
+          "width": "0.699999988079071"
+        },
+        "bypass": {
+          "level": 1,
+          "dryWet": 0,
+          "decay": 0,
+          "width": "0"
+        }
+      }
+    },
+    "compressor": {
+      "switch": true,
+      "threshold": -28,
+      "ratio": 1,
+      "attack": 5,
+      "release": 200,
+      "gain": 10,
+      "mix": 100
+    }
+  }
+}

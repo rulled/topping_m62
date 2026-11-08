@@ -1,0 +1,571 @@
+﻿ 
+Topping KB22 Audio Interface and Keyboard Review | Audio Science Review (ASR) Forum 
+FAQ (Read First) 
+Reviews 
+Review Index 
+Forums 
+New posts 
+Search forums 
+What's new 
+Featured content 
+New posts 
+Latest activity 
+Donations 
+Members 
+Current visitors 
+Log in 
+Register 
+What's new 
+Search 
+Search
+Everywhere 
+ Threads 
+ This forum 
+ This thread 
+Search titles only
+Note 
+By: 
+Search 
+ Advanced search… 
+New posts 
+Search forums 
+Menu
+Log in
+Register
+Install the app
+Install 
+How to install the app on iOS
+Follow along with the video below to see how to install our site as a web app on your home screen.
+Note: This feature may not be available in some browsers. 
+Welcome to ASR. There are many reviews of audio hardware and expert members to help answer your questions. 
+Click here to have your audio equipment measured for free! 
+Forums 
+Audio, Audio, Audio! 
+DACs, Streamers, Servers, Players, Audio Interface 
+Audio Interfaces (ADC & DAC) 
+JavaScript is disabled. For a better experience, please enable JavaScript in your browser before proceeding.
+You are using an out of date browser. It may not display this or other websites correctly.
+You should upgrade or use an alternative browser .
+Topping KB22 Audio Interface and Keyboard Review
+Thread starter 
+ Thread starter 
+amirm 
+Start date 
+ Start date 
+Oct 24, 2026 
+Rate this audio interface+keyboard:
+1. Poor (headless panther)
+Votes: 1
+0.9%
+2. Not terrible (postman panther)
+Votes: 5
+4.3%
+3. Fine (happy panther)
+Votes: 13
+11.3%
+4. Great (golfing panther)
+Votes: 96
+83.5%
+Total voters 
+ 115 
+1 
+2 
+3 
+… 
+Go to page
+Go 
+6 
+Next 
+1 of 6
+Go to page
+Go 
+Next 
+Last 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Oct 24, 2026 
+#1
+This is a review and detailed measurements of the Topping KB22 professional audio interface (ADC/DAC), headphone amplifier and keyboard. It was sent to me by the company and costs US $269.
+Yes, this is an audio interface stuffed into a keyboard! I expected the keyboard to be cheap but the unit feels very substantial. The metal case gives it incredible heft, sharply increasing its chances of staying put once you dangle your cables from it. I am not into keyboard but this comes in two variations with different switch mechanism, replaceable switches, key mapping, etc. Sadly for me at least, it lacks direct playback controls (pause, play, skip, etc.). They are available as shifted function keys and such which make them not useful as I can by then use the mouse. Would have been great if on the top unused area we had such keys.
+A very visible, though small, display lets you configure the modes and many operational aspects of the interface. You can however do that from its PC software. Audio interfaces can be overwhelming to use as just a DAC. Topping deals with this with a mode switch which highly simplifies the UI if you put it in "audiophile mode." Another mode for gaming exists which I could not figure out.
+Software support inside the app is extensive and I am not qualified to characterize it. Suffice it to say, it seems to have a ton of effects/processing. Importantly we have parametric EQ.
+Connectivity is nice with such features as OTG and USB hub:
+On one side you have a power switch and on the other, 3.5mm and 1/4 headphone jacks.
+I tested the unit with USB data and power over one cable. At first, I had a heck of a time getting more than 2 volts output of it. Then I realized the volume setting in Windows was defaulting to 67 every time I started a new test (opened the device). Same was happening on the input. This is through WASAPI interface. Maybe works better through ASIO, I don't. Either way, this shouldn't be happening. Sample rate was also limited to just 44.1 kHz in WASAPI. KB22 app has a drop down for other sample rates but the device itself needs to expose all rates. I am communicating with Topping on what is going on here.
+I am going to run a subset of my tests since I can't run above 44.1 kHz anyway. Even if that was not the case, I would have had to triple the ticket prices given how much functionality there is here.
+Topping KB22 DAC Measurements 
+Using our standard dashboard, we see DAC performance that finishes at the top of the class for an audio interface:
+Distortion is extremely low and below threshold of hearing at -120 dB. 
+Dynamic range is superb for any DAC let alone an audio interface
+We are talking 20+ bits here!
+IMD test shows a hint of "ESS IMD Hump" in one channel:
+It is a minor thing and as noted, this is excellent results for an interface.
+Filter out of band attenuation is superb for a DAC:
+Resulting in this excellent wideband THD+N response:
+Yes, there is a slight rise at low frequencies but still, this is really, really good result.
+Topping KB22 ADC Measurements 
+Let's start with our dashboard here as well:
+Here, I could not reach the stated spec of 24 dBu with the ADC clipping at slightly above 2.2 volt. Perhaps I have some setting wrong. Regardless, we land at nearly top of the class here:
+Dynamic range is once again excellent for a DAC:
+Computed EIN is a hair better than the spec at 150 ohm input loading.
+IMD sweep delivers startlingly good results:
+Albeit, level limited as noted.
+Wideband noise+distortion is beyond excellent:
+Topping KB22 Headphone Amplifier Measurements 
+Budget audio interfaces tend to have dismal headphone outputs. Let's see how Topping does:
+We have ample amount of power together with very low noise and distortion! You can drive all but the most demanding headphones with ease.
+Conclusions 
+Combination of audio interface and keyboard may be odd but saves a lot of desk space. At the retail price of KB22, you expect a cheap keyboard, audio interface, or both. You get the exact opposite: KB22 embarrasses most ADC and DACs in audio interfaces. While I am not qualified to review the keyboard, it is seems to run should to shoulder with premium specialty/gaming keyboards. 
+Topping is clearly flexing its DAC muscles in audio interface world now. Its competitors better start to take them seriously. Very seriously!
+I am happy to recommend the Topping KB22 keyboard and audio interface. It is a category busting device!
+-----------
+As always, questions, comments, recommendations, etc. are welcome.
+Any donations are much appreciated using : https://www.audiosciencereview.com/forum/index.php?threads/how-to-support-audio-science-review.8150/ 
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ Torin Krell , ChalupaRiddems , Sonny1 and 84 others 
+respice finem 
+Major Contributor 
+Joined 
+ Feb 1, 2021 
+Messages 
+ 4,591 
+Likes 
+ 9,184 
+Oct 24, 2026 
+#2
+Interesting idea, less desk clutter (will require several cables though).
+For Europe I see a problem: there are too many different keyboard layouts.
+And, more generally, if the keyboard part fails, the whole device is "done".
+Aging objectivist, hearing realist, eager learner, reluctant buyer (not limited to audio), rather minimalistic, no FOMO whatsoever. 
+Setup 1: Treated room, PC only source, 2.0 desktop config, 1.3 m stereo triangle, DAC/preamp/HPA/DSP RME ADI-2 DAC FS, loudspeakers Neumann KH 310A, headphones Beyerdynamic T1 Mk. 2. Setup 2: Moderately treated living room, 2.0 setup w. TV (65" TCL), 2 m stereo triangle, DAC/preamp/HPA/DSP RME ADI-2 DAC FS, loudspeakers JBL 308P Mk.2, sources: fanless HTPC, UHD Blu-Ray player Sony X800, TechniSat Digitradio 143 CD, turntable AT-LP120XUSB, headphones Beyerdynamic DT 1990 Pro. Setup 3: Headphones only, bedroom, DAC/preamp/HPA Topping EX5, sources: fanless PC, BT streaming via smartphone/BT, headphones: AKG K371 , Truthear Zero blue/red. 
+trolls etc. will be ignored without warning or notice ​
+Reactions: 
+ theBoomer , Karmacoma , silverak and 10 others 
+Sokel 
+Grand Contributor 
+Joined 
+ Sep 8, 2021 
+Messages 
+ 12,140 
+Likes 
+ 13,574 
+Oct 24, 2026 
+#3
+I suppose that the steep rise of "content creators" has opened a whole new bag of needs, so something like that is maybe not the worst idea?
+Really nice performance, both DAC and ADC.
+At the keyboard part, it would personally last a week or so at my vandal hands (I'm not the typical desk user, there are times I take keyboards on my lap, specially when measuring around )
+(are keyboards so small these days? Even if I exclude the numerical pad and a bunch of keys (the ones Amir would like) the ones I usual have is double the size? Is that the norm now?)
+Thanks Amir!
+No.
+OP 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Oct 24, 2026 
+Thread Starter 
+#4
+respice finem said: 
+And, more generally, if the keyboard part fails, the whole device is "done".
+Click to expand... 
+What part you mean? They have swappable keys:
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ AnalogSteph , Ziroz , Veri and 21 others 
+B 
+Bruce Morgen 
+Major Contributor 
+ Forum Donor 
+Joined 
+ Aug 3, 2019 
+Messages 
+ 1,849 
+Likes 
+ 2,919 
+Oct 24, 2026 
+#5
+I'm spoiled by my full-size wireless keyboard(s), but the DAC/ADC functions are impressively solid.
+Reactions: 
+ cbrworm , Veri , EJ3 and 2 others 
+morillon 
+Major Contributor 
+Joined 
+ Apr 19, 2022 
+Messages 
+ 2,417 
+Likes 
+ 651 
+Oct 24, 2026 
+#6
+This aligns with recent trends showing significant advancements in available, affordable ADCs—such as those from MiniDSP—in terms of their measured performance
+. These represent new milestones... and should help shape the future development of many pro-audio brands, particularly as they adopt new ADC chips (like those from ESS, etc.).
+;-)
+"au royaume des aveugles, les borgnes sont rois"​ 
+Reactions: 
+ xanalog 
+Limopard 
+Active Member 
+Joined 
+ Apr 22, 2021 
+Messages 
+ 295 
+Likes 
+ 348 
+Location 
+Germany 
+Oct 24, 2026 
+#7
+I would miss the numeric block on the right, but aside from that this one's intriguing. Now bring on a German key layout. Ümläuts are more metal!
+Reactions: 
+ mischa , cbrworm , Mnyb and 10 others 
+I 
+iGmole 
+Active Member 
+Joined 
+ Nov 18, 2024 
+Messages 
+ 109 
+Likes 
+ 162 
+Oct 24, 2026 
+#8
+WHAT
+This is absolutely perfect. I've joked around I want my interface be integrated in my peripherals, be it display or keyboard. But them mad lads of Topping actually did it. And the performance is miles ahead of.. well, mostly everything?
+Reactions: 
+ Gatordaddy , cbrworm , tmtomh and 4 others 
+OP 
+amirm 
+Founder/Admin 
+ Staff Member 
+CFO (Chief Fun Officer) 
+Joined 
+ Feb 13, 2016 
+Messages 
+ 51,900 
+Likes 
+ 312,520 
+Location 
+Seattle Area 
+Oct 24, 2026 
+Thread Starter 
+#9
+That is where it nets out. And the thing is attractive too (won a "red dot" award for what it is worth).
+Amir
+Founder, Audio Science Review
+Founder, Madrona Digital
+Review Thread Rules 
+My Technical Background 
+My YouTube Channel 
+Reactions: 
+ cbrworm , seank , D-Livs and 5 others 
+M 
+MiqaFox 
+Member 
+Joined 
+ Apr 12, 2020 
+Messages 
+ 7 
+Likes 
+ 29 
+Oct 24, 2026 
+#10
+Sokel said: 
+(are keyboards so small these days? Even if I exclude the numerical pad and a bunch of keys (the ones Amir would like) the ones I usual have is double the size? Is that the norm now?)
+Click to expand... 
+Tenkeyless (TKL) keyboards are very popular. They give a more ergonomic position of your shoulders as you do not have to keep the left hand on the keyboard and the mouse as far apart. 
+It also makes more space for a large mousepad which is nice if you play games requiring a lot of mouse movement.
+Reactions: 
+ PoorishDecision , alvester , azzy_mazzy and 6 others 
+Jiraya369 
+Addicted to Fun and Learning 
+Joined 
+ Sep 2, 2025 
+Messages 
+ 603 
+Likes 
+ 571 
+Oct 24, 2026 
+#11
+topping be makin anything BUT a dac/amp that has subwoofer inputs/bass management
+Reactions: 
+ Ziroz , Svend P , ObscuredByClouds and 6 others 
+Sokel 
+Grand Contributor 
+Joined 
+ Sep 8, 2021 
+Messages 
+ 12,140 
+Likes 
+ 13,574 
+Oct 24, 2026 
+#12
+MiqaFox said: 
+Tenkeyless (TKL) keyboards are very popular. They give a more ergonomic position of your shoulders as you do not have to keep the left hand on the keyboard and the mouse as far apart.
+It also makes more space for a large mousepad which is nice if you play games requiring a lot of mouse movement.
+Click to expand... 
+I guess you're right, If I had a single desk that would be the way.
+But habits die hard, and I use a three "floor" desk with the keyboard at the bottom deck which is movable back and forth and the mousepad at the second "floor" (whick can go sideways also) for complete freedom (not a gamer obviously, it would be weird this way)
+No.
+Reactions: 
+ EJ3 
+I 
+iGmole 
+Active Member 
+Joined 
+ Nov 18, 2024 
+Messages 
+ 109 
+Likes 
+ 162 
+Oct 24, 2026 
+#13
+Oh noes, I was about to order but either I am missing something or there is not a Scandinavian (well, Finnish) keyboard layout available. If anyone at Topping is seeing this, please fix.
+BeeKay 
+Major Contributor 
+ Forum Donor 
+Joined 
+ Dec 30, 2021 
+Messages 
+ 1,189 
+Likes 
+ 2,445 
+Location 
+Germany, Europe, planet Earth 
+Oct 24, 2026 
+#14
+iGmole said: 
+Oh noes, I was about to order but either I am missing something or there is not a Scandinavian (well, Finnish) keyboard layout available. If anyone at Topping is seeing this, please fix.
+Click to expand... 
+I may be wrong and I am certainly not a keyboard nerd, but isn’t it that with that type of keyboard switches keycaps are easily swappable?
+Spoiler: Stuff 
+Roon on ROCK (elderly Intel NUC)
+* iPhone 15 pro max -> Tanchjim SPACE -> 7Hz x Crinacle Zero:2
+* Luxsin X9
+-> DCA Aeon2 Noire
+-> Topping B200 -> Buchardt S400 SE (+ PSB SubSeries 450) 
+respice finem 
+Major Contributor 
+Joined 
+ Feb 1, 2021 
+Messages 
+ 4,591 
+Likes 
+ 9,184 
+Oct 24, 2026 
+#15
+amirm said: 
+What part you mean? They have swappable keys:
+Click to expand... 
+That`s a higher technical level than I expected (if the switches are available when needed, and the layouts are programmable).
+Aging objectivist, hearing realist, eager learner, reluctant buyer (not limited to audio), rather minimalistic, no FOMO whatsoever. 
+Setup 1: Treated room, PC only source, 2.0 desktop config, 1.3 m stereo triangle, DAC/preamp/HPA/DSP RME ADI-2 DAC FS, loudspeakers Neumann KH 310A, headphones Beyerdynamic T1 Mk. 2. Setup 2: Moderately treated living room, 2.0 setup w. TV (65" TCL), 2 m stereo triangle, DAC/preamp/HPA/DSP RME ADI-2 DAC FS, loudspeakers JBL 308P Mk.2, sources: fanless HTPC, UHD Blu-Ray player Sony X800, TechniSat Digitradio 143 CD, turntable AT-LP120XUSB, headphones Beyerdynamic DT 1990 Pro. Setup 3: Headphones only, bedroom, DAC/preamp/HPA Topping EX5, sources: fanless PC, BT streaming via smartphone/BT, headphones: AKG K371 , Truthear Zero blue/red. 
+trolls etc. will be ignored without warning or notice ​
+morillon 
+Major Contributor 
+Joined 
+ Apr 19, 2022 
+Messages 
+ 2,417 
+Likes 
+ 651 
+Oct 24, 2026 
+#16
+(then there’s the issue of cables and the bulkiness of having cables connected directly to the keyboard... if it were connected to—and controlled by—an external hardware module, that would make a lot more sense... 
+just "remote"...
+;-) )
+"au royaume des aveugles, les borgnes sont rois"​ 
+Reactions: 
+ thewas and MCH 
+I 
+iGmole 
+Active Member 
+Joined 
+ Nov 18, 2024 
+Messages 
+ 109 
+Likes 
+ 162 
+Oct 24, 2026 
+#17
+BeeKay said: 
+I may be wrong and I am certainly not a keyboard nerd, but isn’t it that with that type of keyboard switches keycaps are easily swappable?
+Click to expand... 
+This could be done I guess. However, a correct layout out of the box is my very strong personal preference. Strong enough to be a deal breaker. I'd have to buy new key caps too, can't just move stuff around.
+S 
+sairp 
+Member 
+Joined 
+ Mar 12, 2020 
+Messages 
+ 8 
+Likes 
+ 12 
+Location 
+India 
+Oct 24, 2026 
+#18
+What will they think of next? 
+Interface in a mouse.
+Reactions: 
+ Jiraya369 , tmtomh , D-Livs and 3 others 
+Fletcher Munson 
+Active Member 
+Joined 
+ Mar 20, 2021 
+Messages 
+ 127 
+Likes 
+ 242 
+Oct 24, 2026 
+#19
+I don't need one but i kinda wish i did, thats a good product they have invented. if it had mac keys and number pad i'd get one quick
+Wiim Pro (extremely impressive with 10 band PEQ and room correction) Or Marantz CD52mkii as CD transport > Fosi ZH3 pre-amp/DAC/HP amp > Apollon Purifi Eigentakt 1ET6525SA ST >> B&W 800 Matrix (93 dB, 2.83v/1m) Or KEF Concerto Q Meta or Dali Kupid (cute)
+Fletcher Munson 
+Active Member 
+Joined 
+ Mar 20, 2021 
+Messages 
+ 127 
+Likes 
+ 242 
+Oct 24, 2026 
+#20
+built in room correction please on top of the PEQ
+Wiim Pro (extremely impressive with 10 band PEQ and room correction) Or Marantz CD52mkii as CD transport > Fosi ZH3 pre-amp/DAC/HP amp > Apollon Purifi Eigentakt 1ET6525SA ST >> B&W 800 Matrix (93 dB, 2.83v/1m) Or KEF Concerto Q Meta or Dali Kupid (cute)
+Reactions: 
+ GWolfman 
+1 
+2 
+3 
+… 
+Go to page
+Go 
+6 
+Next 
+1 of 6
+Go to page
+Go 
+Next 
+Last 
+You must log in or register to reply here.
+Similar threads
+Poll 
+ Poll 
+Topping M62 Portable Audio Interface Review
+amirm 
+Sep 13, 2026 
+Pro Audio Forum 
+6 
+7 
+8 
+Replies 
+ 142 
+Views 
+ 25K 
+Oct 21, 2026 
+jerryfreak 
+Need suggestion for Audio Interface
+Renauta 
+Oct 2, 2026 
+Audio Interfaces (ADC & DAC) 
+Replies 
+ 13 
+Views 
+ 2K 
+Oct 15, 2026 
+john61ct 
+J 
+K 
+Good headphone amp and output for studio monitor
+kurokiblack 
+Oct 9, 2026 
+Audio Interfaces (ADC & DAC) 
+2 
+Replies 
+ 21 
+Views 
+ 2K 
+Oct 13, 2026 
+john61ct 
+J 
+H 
+Douk Audio U2 (XU316) - does macOS system volume control work over optical out?
+hajir 
+Sep 8, 2026 
+Audio Interfaces (ADC & DAC) 
+Replies 
+ 2 
+Views 
+ 660 
+Sep 9, 2026 
+hajir 
+H 
+D 
+Measuring phono amps: what's going on here?
+ddaudio 
+Oct 11, 2026 
+Audio Interfaces (ADC & DAC) 
+Replies 
+ 7 
+Views 
+ 1K 
+Oct 14, 2026 
+Salt 
+Share: 
+Facebook 
+Bluesky 
+LinkedIn 
+Reddit 
+Pinterest 
+Tumblr 
+WhatsApp 
+Email 
+Share 
+Link 
+Forums 
+Audio, Audio, Audio! 
+DACs, Streamers, Servers, Players, Audio Interface 
+Audio Interfaces (ADC & DAC) 
+Light Theme
+Contact us 
+Terms and rules 
+Privacy policy 
+Help 
+RSS 
+Community platform by XenForo ® © 2010-2026 XenForo Ltd. 
+ Copyright © Audio Science Review LLC 
+XenPorta 2 PRO © Jason Axelrod of
+ 8WAYRUN 
+Back 
+Top 
+Bottom 
+

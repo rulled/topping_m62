@@ -1,0 +1,1006 @@
+{
+  "at": "2026-11-06T20:00:28.123Z",
+  "seconds": 70,
+  "stats": {
+    "reads": 4549,
+    "writes": 42,
+    "parseErrors": 0,
+    "idle": 2982,
+    "started": "2026-11-06T19:59:18.107Z"
+  },
+  "total_tags": 38,
+  "entries": [
+    {
+      "tt": 17,
+      "pp": 26,
+      "tt_hex": "0x11",
+      "pp_hex": "0x1a",
+      "count": 8,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 8
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 17,
+      "pp": 28,
+      "tt_hex": "0x11",
+      "pp_hex": "0x1c",
+      "count": 2,
+      "changes": 0,
+      "min": 1,
+      "max": 1,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 1,
+          "seen": 2
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 17,
+      "pp": 30,
+      "tt_hex": "0x11",
+      "pp_hex": "0x1e",
+      "count": 1,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 17,
+      "pp": 34,
+      "tt_hex": "0x11",
+      "pp_hex": "0x22",
+      "count": 1,
+      "changes": 0,
+      "min": 1,
+      "max": 1,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 1,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 18,
+      "pp": 1,
+      "tt_hex": "0x12",
+      "pp_hex": "0x01",
+      "count": 6,
+      "changes": 0,
+      "min": 100,
+      "max": 100,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 100,
+          "seen": 6
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 18,
+      "pp": 2,
+      "tt_hex": "0x12",
+      "pp_hex": "0x02",
+      "count": 5,
+      "changes": 0,
+      "min": 135,
+      "max": 135,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 135,
+          "seen": 5
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 18,
+      "pp": 3,
+      "tt_hex": "0x12",
+      "pp_hex": "0x03",
+      "count": 5,
+      "changes": 0,
+      "min": 5,
+      "max": 5,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 5,
+          "seen": 5
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 18,
+      "pp": 4,
+      "tt_hex": "0x12",
+      "pp_hex": "0x04",
+      "count": 3,
+      "changes": 0,
+      "min": 69,
+      "max": 69,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 69,
+          "seen": 3
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 18,
+      "pp": 5,
+      "tt_hex": "0x12",
+      "pp_hex": "0x05",
+      "count": 5,
+      "changes": 0,
+      "min": 72,
+      "max": 72,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 72,
+          "seen": 5
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 18,
+      "pp": 6,
+      "tt_hex": "0x12",
+      "pp_hex": "0x06",
+      "count": 4,
+      "changes": 0,
+      "min": 39,
+      "max": 39,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 39,
+          "seen": 4
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 33,
+      "pp": 1,
+      "tt_hex": "0x21",
+      "pp_hex": "0x01",
+      "count": 103,
+      "changes": 102,
+      "min": -619,
+      "max": -391,
+      "distinct": 79,
+      "sample_values": [
+        {
+          "value": -552,
+          "seen": 4
+        },
+        {
+          "value": -571,
+          "seen": 3
+        },
+        {
+          "value": -544,
+          "seen": 3
+        },
+        {
+          "value": -546,
+          "seen": 3
+        },
+        {
+          "value": -490,
+          "seen": 3
+        },
+        {
+          "value": -461,
+          "seen": 2
+        },
+        {
+          "value": -511,
+          "seen": 2
+        },
+        {
+          "value": -598,
+          "seen": 2
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 33,
+      "pp": 4,
+      "tt_hex": "0x21",
+      "pp_hex": "0x04",
+      "count": 4,
+      "changes": 0,
+      "min": 55,
+      "max": 55,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 55,
+          "seen": 4
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 33,
+      "pp": 6,
+      "tt_hex": "0x21",
+      "pp_hex": "0x06",
+      "count": 3,
+      "changes": 0,
+      "min": 1,
+      "max": 1,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 1,
+          "seen": 3
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 35,
+      "pp": 6,
+      "tt_hex": "0x23",
+      "pp_hex": "0x06",
+      "count": 3,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 3
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 51,
+      "pp": 21,
+      "tt_hex": "0x33",
+      "pp_hex": "0x15",
+      "count": 107,
+      "changes": 106,
+      "min": -702,
+      "max": -360,
+      "distinct": 75,
+      "sample_values": [
+        {
+          "value": -568,
+          "seen": 5
+        },
+        {
+          "value": -541,
+          "seen": 5
+        },
+        {
+          "value": -536,
+          "seen": 4
+        },
+        {
+          "value": -584,
+          "seen": 3
+        },
+        {
+          "value": -475,
+          "seen": 3
+        },
+        {
+          "value": -596,
+          "seen": 2
+        },
+        {
+          "value": -607,
+          "seen": 2
+        },
+        {
+          "value": -526,
+          "seen": 2
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 52,
+      "pp": 21,
+      "tt_hex": "0x34",
+      "pp_hex": "0x15",
+      "count": 125,
+      "changes": 121,
+      "min": -673,
+      "max": -320,
+      "distinct": 80,
+      "sample_values": [
+        {
+          "value": -638,
+          "seen": 4
+        },
+        {
+          "value": -584,
+          "seen": 4
+        },
+        {
+          "value": -564,
+          "seen": 3
+        },
+        {
+          "value": -661,
+          "seen": 3
+        },
+        {
+          "value": -452,
+          "seen": 3
+        },
+        {
+          "value": -515,
+          "seen": 3
+        },
+        {
+          "value": -538,
+          "seen": 3
+        },
+        {
+          "value": -466,
+          "seen": 3
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 53,
+      "pp": 21,
+      "tt_hex": "0x35",
+      "pp_hex": "0x15",
+      "count": 105,
+      "changes": 102,
+      "min": -686,
+      "max": -438,
+      "distinct": 60,
+      "sample_values": [
+        {
+          "value": -568,
+          "seen": 7
+        },
+        {
+          "value": -616,
+          "seen": 5
+        },
+        {
+          "value": -591,
+          "seen": 4
+        },
+        {
+          "value": -667,
+          "seen": 4
+        },
+        {
+          "value": -503,
+          "seen": 3
+        },
+        {
+          "value": -507,
+          "seen": 3
+        },
+        {
+          "value": -541,
+          "seen": 3
+        },
+        {
+          "value": -561,
+          "seen": 3
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 54,
+      "pp": 21,
+      "tt_hex": "0x36",
+      "pp_hex": "0x15",
+      "count": 98,
+      "changes": 94,
+      "min": -679,
+      "max": -458,
+      "distinct": 66,
+      "sample_values": [
+        {
+          "value": -554,
+          "seen": 4
+        },
+        {
+          "value": -570,
+          "seen": 4
+        },
+        {
+          "value": -613,
+          "seen": 3
+        },
+        {
+          "value": -552,
+          "seen": 3
+        },
+        {
+          "value": -509,
+          "seen": 3
+        },
+        {
+          "value": -527,
+          "seen": 3
+        },
+        {
+          "value": -582,
+          "seen": 3
+        },
+        {
+          "value": -532,
+          "seen": 3
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 68,
+      "pp": 1,
+      "tt_hex": "0x44",
+      "pp_hex": "0x01",
+      "count": 1,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 2,
+      "tt_hex": "0x44",
+      "pp_hex": "0x02",
+      "count": 2,
+      "changes": 0,
+      "min": -90,
+      "max": -90,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": -90,
+          "seen": 2
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 3,
+      "tt_hex": "0x44",
+      "pp_hex": "0x03",
+      "count": 2,
+      "changes": 0,
+      "min": -90,
+      "max": -90,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": -90,
+          "seen": 2
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 6,
+      "tt_hex": "0x44",
+      "pp_hex": "0x06",
+      "count": 1,
+      "changes": 0,
+      "min": 35,
+      "max": 35,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 35,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 8,
+      "tt_hex": "0x44",
+      "pp_hex": "0x08",
+      "count": 1,
+      "changes": 0,
+      "min": 30,
+      "max": 30,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 30,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 9,
+      "tt_hex": "0x44",
+      "pp_hex": "0x09",
+      "count": 1,
+      "changes": 0,
+      "min": 4,
+      "max": 4,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 4,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 10,
+      "tt_hex": "0x44",
+      "pp_hex": "0x0a",
+      "count": 2,
+      "changes": 0,
+      "min": 11,
+      "max": 11,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 11,
+          "seen": 2
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 11,
+      "tt_hex": "0x44",
+      "pp_hex": "0x0b",
+      "count": 1,
+      "changes": 0,
+      "min": 1,
+      "max": 1,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 1,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 12,
+      "tt_hex": "0x44",
+      "pp_hex": "0x0c",
+      "count": 1,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 68,
+      "pp": 13,
+      "tt_hex": "0x44",
+      "pp_hex": "0x0d",
+      "count": 212,
+      "changes": 209,
+      "min": -623,
+      "max": -322,
+      "distinct": 123,
+      "sample_values": [
+        {
+          "value": -511,
+          "seen": 7
+        },
+        {
+          "value": -566,
+          "seen": 5
+        },
+        {
+          "value": -441,
+          "seen": 4
+        },
+        {
+          "value": -573,
+          "seen": 4
+        },
+        {
+          "value": -479,
+          "seen": 4
+        },
+        {
+          "value": -491,
+          "seen": 4
+        },
+        {
+          "value": -419,
+          "seen": 3
+        },
+        {
+          "value": -475,
+          "seen": 3
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 68,
+      "pp": 14,
+      "tt_hex": "0x44",
+      "pp_hex": "0x0e",
+      "count": 204,
+      "changes": 191,
+      "min": -842,
+      "max": -345,
+      "distinct": 98,
+      "sample_values": [
+        {
+          "value": -782,
+          "seen": 9
+        },
+        {
+          "value": -694,
+          "seen": 8
+        },
+        {
+          "value": -807,
+          "seen": 7
+        },
+        {
+          "value": -842,
+          "seen": 7
+        },
+        {
+          "value": -711,
+          "seen": 7
+        },
+        {
+          "value": -686,
+          "seen": 7
+        },
+        {
+          "value": -616,
+          "seen": 6
+        },
+        {
+          "value": -702,
+          "seen": 6
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 70,
+      "pp": 9,
+      "tt_hex": "0x46",
+      "pp_hex": "0x09",
+      "count": 110,
+      "changes": 43,
+      "min": -800,
+      "max": -492,
+      "distinct": 30,
+      "sample_values": [
+        {
+          "value": -800,
+          "seen": 81
+        },
+        {
+          "value": -524,
+          "seen": 1
+        },
+        {
+          "value": -532,
+          "seen": 1
+        },
+        {
+          "value": -571,
+          "seen": 1
+        },
+        {
+          "value": -605,
+          "seen": 1
+        },
+        {
+          "value": -680,
+          "seen": 1
+        },
+        {
+          "value": -599,
+          "seen": 1
+        },
+        {
+          "value": -642,
+          "seen": 1
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 70,
+      "pp": 10,
+      "tt_hex": "0x46",
+      "pp_hex": "0x0a",
+      "count": 105,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 105
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 70,
+      "pp": 12,
+      "tt_hex": "0x46",
+      "pp_hex": "0x0c",
+      "count": 102,
+      "changes": 97,
+      "min": -842,
+      "max": -255,
+      "distinct": 70,
+      "sample_values": [
+        {
+          "value": -642,
+          "seen": 5
+        },
+        {
+          "value": -762,
+          "seen": 4
+        },
+        {
+          "value": -842,
+          "seen": 3
+        },
+        {
+          "value": -733,
+          "seen": 3
+        },
+        {
+          "value": -782,
+          "seen": 3
+        },
+        {
+          "value": -610,
+          "seen": 3
+        },
+        {
+          "value": -573,
+          "seen": 3
+        },
+        {
+          "value": -711,
+          "seen": 3
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 70,
+      "pp": 13,
+      "tt_hex": "0x46",
+      "pp_hex": "0x0d",
+      "count": 122,
+      "changes": 116,
+      "min": -902,
+      "max": -417,
+      "distinct": 50,
+      "sample_values": [
+        {
+          "value": -807,
+          "seen": 11
+        },
+        {
+          "value": -782,
+          "seen": 11
+        },
+        {
+          "value": -842,
+          "seen": 8
+        },
+        {
+          "value": -746,
+          "seen": 5
+        },
+        {
+          "value": -902,
+          "seen": 5
+        },
+        {
+          "value": -679,
+          "seen": 5
+        },
+        {
+          "value": -762,
+          "seen": 5
+        },
+        {
+          "value": -733,
+          "seen": 5
+        }
+      ],
+      "type": "meter"
+    },
+    {
+      "tt": 98,
+      "pp": 4,
+      "tt_hex": "0x62",
+      "pp_hex": "0x04",
+      "count": 1,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 98,
+      "pp": 6,
+      "tt_hex": "0x62",
+      "pp_hex": "0x06",
+      "count": 1,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 100,
+      "pp": 4,
+      "tt_hex": "0x64",
+      "pp_hex": "0x04",
+      "count": 1,
+      "changes": 0,
+      "min": 0,
+      "max": 0,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 0,
+          "seen": 1
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 100,
+      "pp": 6,
+      "tt_hex": "0x64",
+      "pp_hex": "0x06",
+      "count": 7,
+      "changes": 0,
+      "min": 1,
+      "max": 1,
+      "distinct": 1,
+      "sample_values": [
+        {
+          "value": 1,
+          "seen": 7
+        }
+      ],
+      "type": "static"
+    },
+    {
+      "tt": 155,
+      "pp": 11,
+      "tt_hex": "0x9b",
+      "pp_hex": "0x0b",
+      "count": 102,
+      "changes": 99,
+      "min": -646,
+      "max": -382,
+      "distinct": 79,
+      "sample_values": [
+        {
+          "value": -470,
+          "seen": 4
+        },
+        {
+          "value": -465,
+          "seen": 3
+        },
+        {
+          "value": -507,
+          "seen": 3
+        },
+        {
+          "value": -512,
+          "seen": 3
+        },
+        {
+          "value": -411,
+          "seen": 2
+        },
+        {
+          "value": -455,
+          "seen": 2
+        },
+        {
+          "value": -503,
+          "seen": 2
+        },
+        {
+          "value": -493,
+          "seen": 2
+        }
+      ],
+      "type": "meter"
+    }
+  ]
+}

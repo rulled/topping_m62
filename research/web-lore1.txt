@@ -1,0 +1,267 @@
+﻿<html><head><title>[PATCH v3 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls - Mikhail Gavrilov</title><link
+rel=alternate
+title="Atom feed"
+href="../new.atom"
+type="application/atom+xml"/><style>pre{white-space:pre-wrap}*{font-size:100%;font-family:monospace}</style></head><body><form
+action="../"><pre><a
+href="../?t=20260823194832"><b>mirror of https://lore.kernel.org/lkml/</b></a>
+<input
+name=q
+type=text /><input
+type=submit
+value=search /> <a
+href="../_/text/help/">help</a> / <a
+href="../_/text/color/">color</a> / <a
+id=mirror
+href="../_/text/mirror/">mirror</a> / <a
+href="../new.atom">Atom feed</a></pre></form><pre
+id=b>From: Mikhail Gavrilov &lt;mikhail.v.gavrilov@gmail.com&gt;
+To: tiwai@suse.com
+Cc: perex@perex.cz, jikos@kernel.org, bentiss@kernel.org,
+	linux-sound@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mikhail Gavrilov &lt;mikhail.v.gavrilov@gmail.com&gt;
+Subject: <a
+href="#r"
+id=t>[PATCH v3 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a>
+Date: Mon, 24 Aug 2026 00:48:20 +0500	<a
+href="#r">[thread overview]</a>
+Message-ID: &lt;20260823194822.29430-1-mikhail.v.gavrilov@gmail.com&gt; (<a
+href="raw">raw</a>)
+In-Reply-To: &lt;<a
+href="../20260823142216.79704-1-mikhail.v.gavrilov@gmail.com/">20260823142216.79704-1-mikhail.v.gavrilov@gmail.com</a>&gt;
+
+v3 answers the automated review of v2. Four of its five findings were
+real, and one of them was a bug a user would have met on every boot.
+
+  - The enum refused &#34;Unknown&#34;, which is the value it reports until a
+    hand has chosen. alsactl stores and restores that value like any
+    other, so the refusal failed a restore of the driver&#39;s own report
+    -- observed here as &#34;Cannot write control ... Invalid argument&#34;
+    from alsactl. Writing &#34;Unknown&#34; is now a quiet no-op rather than an
+    error, since it is a report and not a choice either way.
+
+  - The hardware is reached under snd_usb_lock_shutdown(), the way the
+    rest of this directory reaches it. Without it nothing made the
+    teardown wait for a control callback already in flight.
+
+  - Suspend and resume are handled rather than survived: the URB does
+    not outlive a system sleep, so notifications stopped for good after
+    the first one. The resume path resubmits, subscribes again and asks
+    for the state, which also refreshes a cache that may have gone
+    stale while the panel was reachable and the driver was not.
+
+  - The claimed interface is released, on the error path and at
+    teardown, so unbind and bind again works instead of failing at the
+    claim. That needed a release helper beside snd_usb_claim_iface(),
+    for the same reason the claim needed one.
+
+  - A mutex spans each write from the comparison to the cache update.
+    The review called two writers reaching the device in one order and
+    the cache in the other a race, and it is one, though a narrow one.
+
+Nothing else changed since v2; the questions in that cover letter about
+the third form of the driver and about a control that can be written
+but not read still stand.
+
+Tested on the hardware as before: values arrive by themselves after
+probe, a front panel knob still reaches the driver ten minutes later, a
+write reaches the analogue stage -- one source recorded at gain 30 and
+at gain 60 differs by 29.7 dB against the 30.0 dB the taper table
+predicts -- and for 2/2 the audible test, where pointing an output away
+from the bus being played silences it and pointing it back returns the
+sound. On a KASAN and lockdep kernel, including unplug while a stream
+was running, and now also across a suspend and resume cycle; no
+reports.
+
+Mikhail Gavrilov (2):
+  ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer
+    controls
+  ALSA: usb-audio: let the M62&#39;s outputs say what they listen to
+
+ MAINTAINERS               |   6 +
+ drivers/hid/hid-ids.h     |   3 +
+ drivers/hid/hid-quirks.c  |   2 +
+ sound/usb/Makefile        |   1 +
+ sound/usb/card.c          |  19 +
+ sound/usb/mixer_quirks.c  |   5 +
+ sound/usb/mixer_topping.c | 709 ++++++++++++++++++++++++++++++++++++++
+ sound/usb/mixer_topping.h |   7 +
+ sound/usb/usbaudio.h      |   4 +
+ 9 files changed, 756 insertions(+)
+ create mode 100644 sound/usb/mixer_topping.c
+ create mode 100644 sound/usb/mixer_topping.h
+
+
+base-commit: 2709dd5ae32f0828f386327c76bba9f39f63a1c6
+-- 
+2.55.0
+
+</pre><hr><pre><a
+href="../20260823194822.29430-2-mikhail.v.gavrilov@gmail.com/"
+rel=next>next</a> <a
+href="../20260823142216.79704-3-mikhail.v.gavrilov@gmail.com/"
+rel=prev>prev</a> <a
+href="../20260823142216.79704-1-mikhail.v.gavrilov@gmail.com/">parent</a> <a
+href="#R">reply</a>	other threads:[<a
+href="../?t=20260823194832">~2026-08-23 19:48 UTC</a>|<a
+href="../">newest</a>]
+
+<b>Thread overview: </b>53+ messages / expand[<a
+href="T/#u">flat</a>|<a
+href="t/#u">nested</a>]  <a
+href="t.mbox.gz">mbox.gz</a>  <a
+href="t.atom">Atom feed</a>  <a
+href="#b">top</a>
+     [not found] &lt;<a
+href="../87y0eaxz39.wl-tiwai@suse.de/">87y0eaxz39.wl-tiwai@suse.de</a>&gt;
+2026-08-20 15:13 ` <a
+href="../20260820151329.18332-1-mikhail.v.gavrilov@gmail.com/">[RFC 0/2] Two ways to reach the Topping M62&#39;s analogue gains</a> Mikhail Gavrilov
+2026-08-20 15:13   ` <a
+href="../20260820151329.18332-2-mikhail.v.gavrilov@gmail.com/">[RFC 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-20 15:13   ` <a
+href="../20260820151329.18332-3-mikhail.v.gavrilov@gmail.com/">[RFC 2/2] HID: topping: driver for the M62&#39;s vendor control channel</a> Mikhail Gavrilov
+2026-08-21 11:23   ` <a
+href="../CABXGCsMXRZaM9yKsyyffkfyXXDjHXhyixXZ-jz9BY=xJn0R7DA@mail.gmail.com/">[RFC 0/2] Two ways to reach the Topping M62&#39;s analogue gains</a> Mikhail Gavrilov
+2026-08-23  8:50   ` <a
+href="../87o6etw79d.wl-tiwai@suse.de/">Takashi Iwai</a>
+2026-08-23 14:22   ` <a
+href="../20260823142216.79704-1-mikhail.v.gavrilov@gmail.com/">[PATCH v2 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-08-23 14:22     ` <a
+href="../20260823142216.79704-2-mikhail.v.gavrilov@gmail.com/">[PATCH v2 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-23 14:22     ` <a
+href="../20260823142216.79704-3-mikhail.v.gavrilov@gmail.com/">[PATCH v2 2/2] ALSA: usb-audio: let the M62&#39;s outputs say what they listen to</a> Mikhail Gavrilov
+<b>2026-08-23 19:48     ` <a
+id=r
+href="#t">Mikhail Gavrilov [this message]</a></b>
+2026-08-23 19:48       ` <a
+href="../20260823194822.29430-2-mikhail.v.gavrilov@gmail.com/">[PATCH v3 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-23 19:48       ` <a
+href="../20260823194822.29430-3-mikhail.v.gavrilov@gmail.com/">[PATCH v3 2/2] ALSA: usb-audio: let the M62&#39;s outputs say what they listen to</a> Mikhail Gavrilov
+2026-08-23 22:29       ` <a
+href="../20260823222946.171345-1-mikhail.v.gavrilov@gmail.com/">[PATCH v4 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-08-23 22:29         ` <a
+href="../20260823222946.171345-2-mikhail.v.gavrilov@gmail.com/">[PATCH v4 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-23 22:29         ` <a
+href="../20260823222946.171345-3-mikhail.v.gavrilov@gmail.com/">[PATCH v4 2/2] ALSA: usb-audio: let the M62&#39;s outputs say what they listen to</a> Mikhail Gavrilov
+2026-08-24 20:13         ` <a
+href="../20260824201331.304705-1-mikhail.v.gavrilov@gmail.com/">[PATCH v5 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-08-24 20:13           ` <a
+href="../20260824201331.304705-2-mikhail.v.gavrilov@gmail.com/">[PATCH v5 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-24 20:13           ` <a
+href="../20260824201331.304705-3-mikhail.v.gavrilov@gmail.com/">[PATCH v5 2/2] ALSA: usb-audio: let the M62&#39;s outputs say what they listen to</a> Mikhail Gavrilov
+2026-08-24 22:31           ` <a
+href="../20260824223107.406504-1-mikhail.v.gavrilov@gmail.com/">[PATCH v6 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-08-24 22:31             ` <a
+href="../20260824223107.406504-2-mikhail.v.gavrilov@gmail.com/">[PATCH v6 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-24 22:31             ` <a
+href="../20260824223107.406504-3-mikhail.v.gavrilov@gmail.com/">[PATCH v6 2/2] ALSA: usb-audio: let the M62&#39;s outputs say what they listen to</a> Mikhail Gavrilov
+2026-08-25  8:56             ` <a
+href="../20260825085659.52675-1-mikhail.v.gavrilov@gmail.com/">[PATCH v7 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-08-25  8:56               ` <a
+href="../20260825085659.52675-2-mikhail.v.gavrilov@gmail.com/">[PATCH v7 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-25  8:56               ` <a
+href="../20260825085659.52675-3-mikhail.v.gavrilov@gmail.com/">[PATCH v7 2/2] ALSA: usb-audio: let the M62&#39;s outputs say what they listen to</a> Mikhail Gavrilov
+2026-08-25 11:12               ` <a
+href="../20260825111239.24834-1-mikhail.v.gavrilov@gmail.com/">[PATCH v8 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-08-25 11:12                 ` <a
+href="../20260825111239.24834-2-mikhail.v.gavrilov@gmail.com/">[PATCH v8 1/2] ALSA: usb-audio: expose the Topping M62&#39;s analogue gains as mixer controls</a> Mikhail Gavrilov
+2026-08-25 11:12                 ` <a
+href="../20260825111239.24834-3-mikhail.v.gavrilov@gmail.com/">[PATCH v8 2/2] ALSA: usb-audio: let the M62&#39;s outputs say what they listen to</a> Mikhail Gavrilov
+2026-08-26 18:06                 ` <a
+href="../20260826180607.324604-1-mikhail.v.gavrilov@gmail.com/">[PATCH v8 0/2] ALSA: usb-audio: the Topping M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-09-03  8:30                   ` <a
+href="../87se3q91oq.wl-tiwai@suse.de/">Takashi Iwai</a>
+2026-09-03  9:35                     ` <a
+href="../20260903093510.23387-1-mikhail.v.gavrilov@gmail.com/">Mikhail Gavrilov</a>
+2026-09-03 10:02                       ` <a
+href="../87mrty8xf2.wl-tiwai@suse.de/">Takashi Iwai</a>
+2026-09-03 10:19                         ` <a
+href="../20260903101929.34492-1-mikhail.v.gavrilov@gmail.com/">Mikhail Gavrilov</a>
+2026-09-04  0:18                         ` <a
+href="../20260904001818.66423-1-mikhail.v.gavrilov@gmail.com/">Mikhail Gavrilov</a>
+2026-09-04  7:05                           ` <a
+href="../20260904070530.195389-1-mikhail.v.gavrilov@gmail.com/">Mikhail Gavrilov</a>
+2026-09-04 11:26                             ` <a
+href="../20260904112610.3286659-1-mikhail.v.gavrilov@gmail.com/">[RFC PATCH 0/2] the Topping M62&#39;s vendor controls, on the component framework</a> Mikhail Gavrilov
+2026-09-04 11:26                               ` <a
+href="../20260904112610.3286659-2-mikhail.v.gavrilov@gmail.com/">[RFC PATCH 1/2] HID: topping-m62: driver for the M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-09-04 11:26                               ` <a
+href="../20260904112610.3286659-3-mikhail.v.gavrilov@gmail.com/">[RFC PATCH 2/2] ALSA: usb-audio: bind the Topping</a> &#34; Mikhail Gavrilov
+2026-09-04 14:11                               ` <a
+href="../20260904141158.33398-1-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v2 0/2] the Topping M62&#39;s vendor controls, on the component framework</a> Mikhail Gavrilov
+2026-09-04 14:11                                 ` <a
+href="../20260904141158.33398-2-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v2 1/2] HID: topping-m62: driver for the M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-09-04 14:11                                 ` <a
+href="../20260904141158.33398-3-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v2 2/2] ALSA: usb-audio: bind the Topping</a> &#34; Mikhail Gavrilov
+2026-09-04 14:42                                 ` <a
+href="../20260904144300.529289-1-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v3 0/2] the Topping M62&#39;s vendor controls, on the component framework</a> Mikhail Gavrilov
+2026-09-04 14:42                                   ` <a
+href="../20260904144300.529289-2-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v3 1/2] HID: topping-m62: driver for the M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-09-04 14:43                                   ` <a
+href="../20260904144300.529289-3-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v3 2/2] ALSA: usb-audio: bind the Topping</a> &#34; Mikhail Gavrilov
+2026-09-04 15:30                                   ` <a
+href="../20260904153051.1785280-1-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v4 0/2] the Topping M62&#39;s vendor controls, on the component framework</a> Mikhail Gavrilov
+2026-09-04 15:30                                     ` <a
+href="../20260904153051.1785280-2-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v4 1/2] HID: topping-m62: driver for the M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-09-04 15:30                                     ` <a
+href="../20260904153051.1785280-3-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v4 2/2] ALSA: usb-audio: bind the Topping</a> &#34; Mikhail Gavrilov
+2026-09-04 16:22                                     ` <a
+href="../20260904162236.3212370-1-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v5 0/2] the Topping M62&#39;s vendor controls, on the component framework</a> Mikhail Gavrilov
+2026-09-04 16:22                                       ` <a
+href="../20260904162236.3212370-2-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v5 1/2] HID: topping-m62: driver for the M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-09-04 16:22                                       ` <a
+href="../20260904162236.3212370-3-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v5 2/2] ALSA: usb-audio: bind the Topping</a> &#34; Mikhail Gavrilov
+2026-09-04 16:58                                       ` <a
+href="../20260904165848.3940603-1-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v6 0/2] the Topping M62&#39;s vendor controls, on the component framework</a> Mikhail Gavrilov
+2026-09-04 16:58                                         ` <a
+href="../20260904165848.3940603-2-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v6 1/2] HID: topping-m62: driver for the M62&#39;s vendor controls</a> Mikhail Gavrilov
+2026-09-04 16:58                                         ` <a
+href="../20260904165848.3940603-3-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v6 2/2] ALSA: usb-audio: bind the Topping</a> &#34; Mikhail Gavrilov
+2026-09-29 17:29                                         ` <a
+href="../20260929172902.210581-1-mikhail.v.gavrilov@gmail.com/">[RFC PATCH v6 0/2] the Topping M62&#39;s vendor controls, on the component framework</a> Mikhail Gavrilov
+2026-09-30 13:32                                           ` <a
+href="../87mrsy50gy.wl-tiwai@suse.de/">Takashi Iwai</a>
+</pre><hr><pre
+id=R><b>Reply instructions:</b>
+
+You may reply publicly to <a
+href=#t>this message</a> via plain-text email
+using any one of the following methods:
+
+* Save the following mbox file, import it into your mail client,
+  and reply-to-all from there: <a
+href=raw>mbox</a>
+
+  Avoid top-posting and favor interleaved quoting:
+  <a
+href="https://en.wikipedia.org/wiki/Posting_style#Interleaved_style">https://en.wikipedia.org/wiki/Posting_style#Interleaved_style</a>
+
+* Reply using the <b>--to</b>, <b>--cc</b>, and <b>--in-reply-to</b>
+  switches of git-send-email(1):
+
+  git send-email \
+    --in-reply-to=20260823194822.29430-1-mikhail.v.gavrilov@gmail.com \
+    --to=mikhail.v.gavrilov@gmail.com \
+    --cc=bentiss@kernel.org \
+    --cc=jikos@kernel.org \
+    --cc=linux-input@vger.kernel.org \
+    --cc=linux-kernel@vger.kernel.org \
+    --cc=linux-sound@vger.kernel.org \
+    --cc=perex@perex.cz \
+    --cc=tiwai@suse.com \
+    /path/to/YOUR_REPLY
+
+  <a
+href="https://kernel.org/pub/software/scm/git/docs/git-send-email.html">https://kernel.org/pub/software/scm/git/docs/git-send-email.html</a>
+
+* If your mail client supports setting the <b>In-Reply-To</b> header
+  via mailto: links, try the <a
+href="mailto:mikhail.v.gavrilov@gmail.com?In-Reply-To=%3C20260823194822.29430-1-mikhail.v.gavrilov@gmail.com%3E&#38;Cc=bentiss%40kernel.org%2Cjikos%40kernel.org%2Clinux-input%40vger.kernel.org%2Clinux-kernel%40vger.kernel.org%2Clinux-sound%40vger.kernel.org%2Cperex%40perex.cz%2Ctiwai%40suse.com&#38;Subject=Re%3A%20%5BPATCH%20v3%200%2F2%5D%20ALSA%3A%20usb-audio%3A%20the%20Topping%20M62%27s%20vendor%20controls">mailto: link</a>
+</pre>
+
+  Be sure your reply has a <b>Subject:</b> header at the top and a blank line
+  before the message body.
+<hr><pre>This is a public inbox, see <a
+href="../_/text/mirror/">mirroring instructions</a>
+for how to clone and mirror all data and code used for this inbox</pre><hr><pre><a href="/">all inboxes</a> | Powered by <a href="https://jethome.ru/">JetHome&reg;</a></pre></body></html>

@@ -1,0 +1,406 @@
+﻿окно EQ открыто до: true
+
+всего элементов в дереве: 367
+
+=== ЭЛЕМЕНТЫ ОБЛАСТИ EQ (89) ===
+[226] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_IN1.frame.lineEdit" (95,106) 150x33 pats=[Invoke,Value,Text] val="IN 1"
+[242] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_IN2.frame.lineEdit" (250,106) 150x33 pats=[Invoke,Value,Text] val="IN 2"
+[266] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_AUX.frame.lineEdit" (378,106) 96x33 pats=[Invoke,Value,Text] val="AUX"
+[276] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_BT.frame.lineEdit" (479,106) 96x33 pats=[Invoke,Value,Text] val="BT"
+[286] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_OTGIN.frame.lineEdit" (580,106) 96x33 pats=[Invoke,Value,Text] val="OTG IN"
+[239] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_IN1.frame.widgetHSlider.QLineEdit" (122,344) 57x13 pats=[Invoke,Value,Text] val="C"
+[256] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_IN2.frame.widgetHSlider.QLineEdit" (276,344) 57x13 pats=[Invoke,Value,Text] val="C"
+[61] Edit cls=QLineEdit name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.widgetRight.slider.QLineEdit" (1304,344) 31x21 pats=[Invoke,Value,Text] val="0"
+[233] Group cls=DialS1M5 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_IN1.frame.widgetDial" (95,401) 150x78 pats=[Invoke,Value] 
+[250] Group cls=DialS1M5 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_IN2.frame.widgetDial" (250,401) 150x78 pats=[Invoke,Value] 
+[261] Group cls=DialS1M6 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_AUX.frame.widgetDial" (378,401) 96x78 pats=[Invoke,Value] 
+[271] Group cls=DialS1M6 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_BT.frame.widgetDial" (479,401) 96x78 pats=[Invoke,Value] 
+[281] Group cls=DialS1M6 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldInput.QScrollArea.qt_scrollarea_viewport.QWidget.Input_OTGIN.frame.widgetDial" (580,401) 96x78 pats=[Invoke,Value] 
+[20] Text cls=QLabel name="1" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.QLabel" (850,482) 81x21 pats=[Invoke] 
+[28] Text cls=QLabel name="2" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.QLabel" (932,482) 81x21 pats=[Invoke] 
+[69] Group cls=QWidget name="" aid="QApplication.MainWindow_M62.centralWidget" (968,503) 1920x944 pats=[Invoke,Value] 
+[70] Custom cls=QStackedWidget name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget" (968,503) 1920x944 pats=[Invoke,Value] 
+[71] Group cls=QWidget name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive" (968,503) 1920x944 pats=[Invoke,Value] 
+[22] Edit cls=QLineEdit name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3.QLineEdit" (844,508) 63x18 pats=[Invoke,Value,Text] val="peaking"
+[21] ComboBox cls=ComboBoxS1M3 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3" (849,508) 72x18 pats=[Invoke,Value,Exp] val="peaking"
+[30] Edit cls=QLineEdit name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3.QLineEdit" (926,508) 63x18 pats=[Invoke,Value,Text] val="peaking"
+[29] ComboBox cls=ComboBoxS1M3 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3" (931,508) 72x18 pats=[Invoke,Value,Exp] val="peaking"
+[38] Edit cls=QLineEdit name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3.QLineEdit" (1008,508) 63x18 pats=[Invoke,Value,Text] val="peaking"
+[37] ComboBox cls=ComboBoxS1M3 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3" (1013,508) 72x18 pats=[Invoke,Value,Exp] val="peaking"
+[46] Edit cls=QLineEdit name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3.QLineEdit" (1090,508) 63x18 pats=[Invoke,Value,Text] val="peaking"
+[45] ComboBox cls=ComboBoxS1M3 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.ComboBoxS1M3" (1095,508) 72x18 pats=[Invoke,Value,Exp] val="peaking"
+[51] Text cls=QLabel name="Type" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QLabel" (788,509) 43x18 pats=[Invoke] 
+[0] Window cls=EqualizerBase name="TOPPING Professional Control Center" aid="QApplication.EQ_IN1" (968,515) 798x652 pats=[Invoke,Value] 
+[1] Custom cls=QFrame name="" aid="QApplication.EQ_IN1.contentWidget" (968,515) 788x642 pats=[Invoke,Value] 
+[2] Group cls=QWidget name="" aid="QApplication.EQ_IN1.contentWidget.mWidget" (968,515) 788x642 pats=[Invoke,Value] 
+[364] Thumb cls=QSplitterHandle name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.qt_splithandle_" (897,518) 4x907 pats=[Invoke,Value] 
+[83] Custom cls=QSplitter name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO" (968,518) 1920x907 pats=[Invoke,Value] 
+[7] Group cls=QWidget name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.widgetLeft" (668,530) 126x533 pats=[Invoke,Value] 
+[11] Group cls=QWidget name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widget" (754,530) 23x533 pats=[Invoke,Value] 
+[12] Group cls=QWidget name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft" (964,530) 395x533 pats=[Invoke,Value] 
+[10] Group cls=EqualizerPanelS1M1 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1" (968,530) 450x533 pats=[Invoke,Value] 
+[180] Text cls=QLabel name="Loopback" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QLabel" (952,532) 83x23 pats=[Invoke] 
+[9] Group cls=VolumeMeterS1M6 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.widgetLeft.widgetMeter" (668,552) 50x427 pats=[Invoke,Value] 
+[315] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget2.lineEditNoiseReduction" (284,562) 147x33 pats=[Invoke,Value,Text] val="Noise Reduction"
+[323] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget5.lineEditCompress" (434,562) 147x33 pats=[Invoke,Value,Text] val="Compressor"
+[344] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget3.lineEditReverb" (586,562) 147x33 pats=[Invoke,Value,Text] val="Reverb"
+[356] Text cls=QLabel name="FX
+IN" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget4.labelFxIn" (687,562) 48x33 pats=[Invoke] 
+[357] Text cls=QLabel name="FX
+OUT" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget4.labelFxOut" (735,562) 48x33 pats=[Invoke] 
+[52] Text cls=QLabel name="Gain" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QLabel" (788,562) 43x72 pats=[Invoke] 
+[128] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB12.frame.lineEdit" (960,562) 105x33 pats=[Invoke,Value,Text] val="Loopback 1/2"
+[141] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB34.frame.lineEdit" (1070,562) 105x33 pats=[Invoke,Value,Text] val="Loopback 3/4"
+[154] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB56.frame.lineEdit" (1180,562) 105x33 pats=[Invoke,Value,Text] val="Loopback 5/6"
+[167] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB78.frame.lineEdit" (1290,562) 105x33 pats=[Invoke,Value,Text] val="Loopback 7/8"
+[93] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldOutput.QScrollArea.qt_scrollarea_viewport.QWidget.Output_HP.frame.lineEdit" (1526,562) 105x33 pats=[Invoke,Value,Text] val="HP"
+[107] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldOutput.QScrollArea.qt_scrollarea_viewport.QWidget.Output_OTGOUT.frame.lineEdit" (1636,562) 105x33 pats=[Invoke,Value,Text] val="OTG OUT"
+[23] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (850,564) 81x73 pats=[Invoke,Value] 
+[31] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (932,564) 81x73 pats=[Invoke,Value] 
+[39] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (1014,564) 81x73 pats=[Invoke,Value] 
+[47] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (1096,564) 81x73 pats=[Invoke,Value] 
+[137] Group cls=ToolButtonS1M1 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB12.frame.widgetToolButton" (960,602) 105x33 pats=[Invoke,Value] 
+[138] Button cls=QToolButton name="FX" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB12.frame.widgetToolButton.QToolButton" (960,602) 105x33 pats=[Invoke,Value] 
+[135] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB12.frame.widgetLinkedVSlider.QLineEdit" (960,626) 25x17 pats=[Invoke,Value,Text] val="0"
+[148] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB34.frame.widgetLinkedVSlider.QLineEdit" (1070,626) 25x17 pats=[Invoke,Value,Text] val="0"
+[161] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB56.frame.widgetLinkedVSlider.QLineEdit" (1180,626) 25x17 pats=[Invoke,Value,Text] val="0"
+[174] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB78.frame.widgetLinkedVSlider.QLineEdit" (1290,626) 25x17 pats=[Invoke,Value,Text] val="0"
+[100] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldOutput.QScrollArea.qt_scrollarea_viewport.QWidget.Output_HP.frame.widgetLinkedVSlider.QLineEdit" (1526,626) 25x17 pats=[Invoke,Value,Text] val="-5.0"
+[114] Edit cls=QLineEdit name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldOutput.QScrollArea.qt_scrollarea_viewport.QWidget.Output_OTGOUT.frame.widgetLinkedVSlider.QLineEdit" (1636,626) 25x17 pats=[Invoke,Value,Text] val="-∞"
+[19] Custom cls=EqWidgetIem name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem" (850,628) 81x312 pats=[Invoke,Value] 
+[27] Custom cls=EqWidgetIem name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem" (932,628) 81x312 pats=[Invoke,Value] 
+[18] Group cls=QWidget name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget" (973,628) 328x312 pats=[Invoke,Value] 
+[316] Group cls=DialS1M5 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget2.dialNoiseReduction" (283,633) 78x78 pats=[Invoke,Value] 
+[345] Group cls=DialS1M5 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget3.dialDryWet" (585,633) 78x78 pats=[Invoke,Value] 
+[15] Group cls=EqualizerControllerS1M1 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1" (964,634) 395x325 pats=[Invoke,Value] 
+[16] Group cls=QScrollArea name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea" (985,634) 352x325 pats=[Invoke,Value] 
+[17] Group cls=QWidget name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport" (985,634) 352x325 pats=[Invoke,Value] 
+[53] Text cls=QLabel name="Freq" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QLabel" (788,640) 43x72 pats=[Invoke] 
+[24] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (850,642) 81x73 pats=[Invoke,Value] 
+[32] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (932,642) 81x73 pats=[Invoke,Value] 
+[40] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (1014,642) 81x73 pats=[Invoke,Value] 
+[48] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (1096,642) 81x73 pats=[Invoke,Value] 
+[54] Text cls=QLabel name="Q" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QLabel" (788,718) 43x72 pats=[Invoke] 
+[25] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (850,720) 81x73 pats=[Invoke,Value] 
+[33] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (932,720) 81x73 pats=[Invoke,Value] 
+[41] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (1014,720) 81x73 pats=[Invoke,Value] 
+[49] Group cls=DialS1M5 name="" aid="QApplication.EQ_IN1.contentWidget.mWidget.EQ_IN1.widgetLeft.EQ_IN1.QScrollArea.qt_scrollarea_viewport.QWidget.EqWidgetIem.DialS1M5" (1096,720) 81x73 pats=[Invoke,Value] 
+[346] Group cls=DialS1M1 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget3.dialRoom" (584,722) 41x41 pats=[Invoke,Value] 
+[326] Group cls=DialS1M1 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget5.dialThreshold" (434,746) 41x41 pats=[Invoke,Value] 
+[358] Group cls=VolumeMeterS1M7 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget4.widgetVolumeMeter" (710,750) 65x327 pats=[Invoke,Value] 
+[355] Group cls=QWidget name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget4" (711,752) 96x414 pats=[Invoke,Value] 
+[126] Group cls=LoopbackS1M1 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB12" (960,752) 105x414 pats=[Invoke,Value] 
+[127] Custom cls=QFrame name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameMLO.PageLiveFrameLO.PageLiveSplitterL_O.FieldLoopback.QScrollArea.qt_scrollarea_viewport.QWidget.Loopback_LB12.frame" (960,752) 105x414 pats=[Invoke,Value] 
+[347] Group cls=DialS1M1 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget3.dialDecay" (548,792) 73x41 pats=[Invoke,Value] 
+[353] Group cls=DialS1M1 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget3.dialWidth" (622,792) 73x41 pats=[Invoke,Value] 
+[331] Group cls=DialS1M1 name="" aid="QApplication.MainWindow_M62.centralWidget.stackedWidget.PageLive.PageLiveSplitterIE_MLO.PageLiveFrameIE.FieldEffect.QScrollArea.qt_scrollarea_viewport.QWidget.Effect_Integration.frameMain.widget5.dialGain" (434,838) 41x41 pats=[Invoke,Value] 
+
+=== ВСЕ ЭЛЕМЕНТЫ С Range ИЛИ Value В ОКНЕ ===
+[77] ComboBox cls=ComboBoxS1M1 name="" (1362,44) pats=[Invoke,Value,Exp] val="main"
+[82] Button cls=ToolButtonS1M2 name="" (1466,44) pats=[Invoke,Value] 
+[78] ComboBox cls=ComboBoxS1M2 name="" (1633,44) pats=[Invoke,Value,Exp] val="44100"
+[79] ComboBox cls=ComboBoxS1M2 name="" (1804,44) pats=[Invoke,Value,Exp] val="32"
+[81] Button cls=QPushButton name="" (1908,44) pats=[Invoke,Value] 
+[80] Group cls=BatteryS1M1 name="" (1873,45) pats=[Invoke,Value] 
+[72] Group cls=FieldHeadS1M1 name="" (968,46) pats=[Invoke,Value] 
+[226] Edit cls=QLineEdit name="" (95,106) pats=[Invoke,Value,Text] val="IN 1"
+[242] Edit cls=QLineEdit name="" (250,106) pats=[Invoke,Value,Text] val="IN 2"
+[257] Group cls=QWidget name="" (250,106) pats=[Invoke,Value] 
+[266] Edit cls=QLineEdit name="" (378,106) pats=[Invoke,Value,Text] val="AUX"
+[267] Group cls=QWidget name="" (378,106) pats=[Invoke,Value] 
+[276] Edit cls=QLineEdit name="" (479,106) pats=[Invoke,Value,Text] val="BT"
+[277] Group cls=QWidget name="" (479,106) pats=[Invoke,Value] 
+[286] Edit cls=QLineEdit name="" (580,106) pats=[Invoke,Value,Text] val="OTG IN"
+[287] Group cls=QWidget name="" (580,106) pats=[Invoke,Value] 
+[229] CheckBox cls=QPushButton name="" (120,140) pats=[Invoke,Toggle,Value] 
+[227] Group cls=PushButtonGroupS1M9 name="" (120,162) pats=[Invoke,Value] 
+[228] Custom cls=QFrame name="" (120,162) pats=[Invoke,Value] 
+[230] CheckBox cls=QPushButton name="" (120,162) pats=[Invoke,Toggle,Value] 
+[231] CheckBox cls=QPushButton name="" (120,186) pats=[Invoke,Toggle,Value] 
+[222] CheckBox cls=QPushButton name="" (122,210) pats=[Invoke,Toggle,Value] 
+[245] CheckBox cls=QPushButton name="" (278,210) pats=[Invoke,Toggle,Value] 
+[4] CheckBox cls=QPushButton name="" (600,218) pats=[Invoke,Toggle,Value] 
+[6] Button cls=QPushButton name="" (1338,218) pats=[Invoke,Value] 
+[3] Group cls=QWidget name="" (968,229) pats=[Invoke,Value] 
+[232] Group cls=VolumeMeterS1M1 name="" (56,240) pats=[Invoke,Value] 
+[224] CheckBox cls=QPushButton name="" (122,240) pats=[Invoke,Toggle,Value] 
+[249] Group cls=VolumeMeterS1M1 name="" (211,240) pats=[Invoke,Value] 
+[247] CheckBox cls=QPushButton name="" (278,240) pats=[Invoke,Toggle,Value] 
+[260] Group cls=VolumeMeterS1M2 name="" (376,240) pats=[Invoke,Value] 
+[270] Group cls=VolumeMeterS1M2 name="" (478,240) pats=[Invoke,Value] 
+[280] Group cls=VolumeMeterS1M2 name="" (578,240) pats=[Invoke,Value] 
+[220] Group cls=PushButtonGroupS1M11 name="" (122,255) pats=[Invoke,Value] 
+[221] Custom cls=QFrame name="" (122,255) pats=[Invoke,Value] 
+[243] Group cls=PushButtonGroupS1M11 name="" (277,255) pats=[Invoke,Value] 
+[244] Custom cls=QFrame name="" (277,255) pats=[Invoke,Value] 
+[225] CheckBox cls=QPushButton name="" (122,270) pats=[Invoke,Toggle,Value] 
+[248] CheckBox cls=QPushButton name="" (278,270) pats=[Invoke,Toggle,Value] 
+[56] Button cls=QToolButton name="" (1174,286) pats=[Invoke,Value] 
+[214] Group cls=FieldInputS1M1 name="" (454,290) pats=[Invoke,Value] 
+[198] Group cls=FieldMixerS1M1 name="" (1412,290) pats=[Invoke,Value] 
+[218] Group cls=InputS1M1 name="" (95,296) pats=[Invoke,Value] 
+[219] Custom cls=QFrame name="" (95,296) pats=[Invoke,Value] 
+[240] Group cls=InputS1M2 name="" (250,296) pats=[Invoke,Value] 
+[241] Custom cls=QFrame name="" (250,296) pats=[Invoke,Value] 
+[258] Group cls=InputS1M3 name="" (378,296) pats=[Invoke,Value] 
+[259] Custom cls=QFrame name="" (378,296) pats=[Invoke,Value] 
+[268] Group cls=InputS1M3 name="" (479,296) pats=[Invoke,Value] 
+[269] Custom cls=QFrame name="" (479,296) pats=[Invoke,Value] 
+[278] Group cls=InputS1M3 name="" (580,296) pats=[Invoke,Value] 
+[279] Custom cls=QFrame name="" (580,296) pats=[Invoke,Value] 
+[202] Group cls=ButtonBoxS1M1 name="" (964,296) pats=[Invoke,Value] 
+[203] Custom cls=QFrame name="" (964,296) pats=[Invoke,Value] 
+[204] Button cls=QPushButton name="+" (964,296) pats=[Invoke,Value] 
+[217] Group cls=QWidget name="" (324,298) pats=[Invoke,Value] 
+[216] Group cls=QWidget name="" (454,298) pats=[Invoke,Value] 
+[201] Group cls=QWidget name="" (964,298) pats=[Invoke,Value] 
+[200] Group cls=QWidget name="" (1412,298) pats=[Invoke,Value] 
+[223] CheckBox cls=QPushButton name="" (122,300) pats=[Invoke,Toggle,Value] 
+[246] CheckBox cls=QPushButton name="" (278,300) pats=[Invoke,Toggle,Value] 
+[215] Group cls=QScrollArea name="" (454,302) pats=[Invoke,Value] 
+[199] Group cls=QScrollArea name="" (1412,302) pats=[Invoke,Value] 
+[238] Group cls=HSliderS1M1 name="" (122,338) pats=[Invoke,Value] 
+[255] Group cls=HSliderS1M1 name="" (276,338) pats=[Invoke,Value] 
+[239] Edit cls=QLineEdit name="" (122,344) pats=[Invoke,Value,Text] val="C"
+[256] Edit cls=QLineEdit name="" (276,344) pats=[Invoke,Value,Text] val="C"
+[61] Edit cls=QLineEdit name="" (1304,344) pats=[Invoke,Value,Text] val="0"
+[13] Group cls=Chart name="" (964,368) pats=[Invoke,Value] 
+[14] Group cls=QWidget name="" (964,368) pats=[Invoke,Value] 
+[233] Group cls=DialS1M5 name="" (95,401) pats=[Invoke,Value] 
+[250] Group cls=DialS1M5 name="" (250,401) pats=[Invoke,Value] 
+[261] Group cls=DialS1M6 name="" (378,401) pats=[Invoke,Value] 
+[271] Group cls=DialS1M6 name="" (479,401) pats=[Invoke,Value] 
+[281] Group cls=DialS1M6 name="" (580,401) pats=[Invoke,Value] 
+[237] CheckBox cls=QPushButton name="" (94,454) pats=[Invoke,Toggle,Value] 
+[254] CheckBox cls=QPushButton name="" (250,454) pats=[Invoke,Toggle,Value] 
+[265] CheckBox cls=QPushButton name="" (378,454) pats=[Invoke,Toggle,Value] 
+[275] CheckBox cls=QPushButton name="" (478,454) pats=[Invoke,Toggle,Value] 
+[285] CheckBox cls=QPushButton name="" (580,454) pats=[Invoke,Toggle,Value] 
+[234] Group cls=PushButtonGroupS1M2 name="" (94,468) pats=[Invoke,Value] 
+[235] Custom cls=QFrame name="" (94,468) pats=[Invoke,Value] 
+[251] Group cls=PushButtonGroupS1M2 name="" (250,468) pats=[Invoke,Value] 
+[252] Custom cls=QFrame name="" (250,468) pats=[Invoke,Value] 
+[262] Group cls=PushButtonGroupS1M2 name="" (378,469) pats=[Invoke,Value] 
+[263] Custom cls=QFrame name="" (378,469) pats=[Invoke,Value] 
+[272] Group cls=PushButtonGroupS1M2 name="" (478,469) pats=[Invoke,Value] 
+[273] Custom cls=QFrame name="" (478,469) pats=[Invoke,Value] 
+[282] Group cls=PushButtonGroupS1M2 name="" (580,469) pats=[Invoke,Value] 
+[283] Custom cls=QFrame name="" (580,469) pats=[Invoke,Value] 
+[236] CheckBox cls=QPushButton name="" (94,482) pats=[Invoke,Toggle,Value] 
+[253] CheckBox cls=QPushButton name="" (250,482) pats=[Invoke,Toggle,Value] 
+[264] CheckBox cls=QPushButton name="" (378,484) pats=[Invoke,Toggle,Value] 
+[274] CheckBox cls=QPushButton name="" (478,484) pats=[Invoke,Toggle,Value] 
+[284] CheckBox cls=QPushButton name="" (580,484) pats=[Invoke,Toggle,Value] 
+[69] Group cls=QWidget name="" (968,503) pats=[Invoke,Value] 
+[70] Custom cls=QStackedWidget name="" (968,503) pats=[Invoke,Value] 
+[71] Group cls=QWidget name="" (968,503) pats=[Invoke,Value] 
+[22] Edit cls=QLineEdit name="" (844,508) pats=[Invoke,Value,Text] val="peaking"
+[21] ComboBox cls=ComboBoxS1M3 name="" (849,508) pats=[Invoke,Value,Exp] val="peaking"
+[30] Edit cls=QLineEdit name="" (926,508) pats=[Invoke,Value,Text] val="peaking"
+[29] ComboBox cls=ComboBoxS1M3 name="" (931,508) pats=[Invoke,Value,Exp] val="peaking"
+[38] Edit cls=QLineEdit name="" (1008,508) pats=[Invoke,Value,Text] val="peaking"
+[37] ComboBox cls=ComboBoxS1M3 name="" (1013,508) pats=[Invoke,Value,Exp] val="peaking"
+[46] Edit cls=QLineEdit name="" (1090,508) pats=[Invoke,Value,Text] val="peaking"
+[45] ComboBox cls=ComboBoxS1M3 name="" (1095,508) pats=[Invoke,Value,Exp] val="peaking"
+[288] Group cls=QWidget name="" (454,512) pats=[Invoke,Value] 
+[289] ScrollBar cls=QScrollBar name="" (454,512) pats=[Invoke,Range,Value] val="0" range=0|min=0|max=0
+[205] Group cls=QWidget name="" (1412,512) pats=[Invoke,Value] 
+[206] ScrollBar cls=QScrollBar name="" (1412,512) pats=[Invoke,Range,Value] val="0" range=0|min=0|max=0
+[0] Window cls=EqualizerBase name="TOPPING Professional Control Center" (968,515) pats=[Invoke,Value] 
+[1] Custom cls=QFrame name="" (968,515) pats=[Invoke,Value] 
+[2] Group cls=QWidget name="" (968,515) pats=[Invoke,Value] 
+[213] Custom cls=QFrame name="" (452,518) pats=[Invoke,Value] 
+[364] Thumb cls=QSplitterHandle name="" (897,518) pats=[Invoke,Value] 
+[83] Custom cls=QSplitter name="" (968,518) pats=[Invoke,Value] 
+[84] Custom cls=QFrame name="" (1414,518) pats=[Invoke,Value] 
+[7] Group cls=QWidget name="" (668,530) pats=[Invoke,Value] 
+[11] Group cls=QWidget name="" (754,530) pats=[Invoke,Value] 
+[12] Group cls=QWidget name="" (964,530) pats=[Invoke,Value] 
+[10] Group cls=EqualizerPanelS1M1 name="" (968,530) pats=[Invoke,Value] 
+[55] Group cls=QWidget name="" (1177,530) pats=[Invoke,Value] 
+[57] Group cls=QWidget name="" (1268,530) pats=[Invoke,Value] 
+[59] Group cls=VolumeMeterS1M6 name="" (1257,550) pats=[Invoke,Value] 
+[60] Group cls=VSliderS1M1 name="" (1304,550) pats=[Invoke,Value] 
+[9] Group cls=VolumeMeterS1M6 name="" (668,552) pats=[Invoke,Value] 
+[62] Slider cls=QSlider name="" (1302,561) pats=[Invoke,Range,Value] val="0" range=0|min=-90|max=12
+[315] Edit cls=QLineEdit name="" (284,562) pats=[Invoke,Value,Text] val="Noise Reduction"
+[323] Edit cls=QLineEdit name="" (434,562) pats=[Invoke,Value,Text] val="Compressor"
+[344] Edit cls=QLineEdit name="" (586,562) pats=[Invoke,Value,Text] val="Reverb"
+[128] Edit cls=QLineEdit name="" (960,562) pats=[Invoke,Value,Text] val="Loopback 1/2"
+[141] Edit cls=QLineEdit name="" (1070,562) pats=[Invoke,Value,Text] val="Loopback 3/4"
+[154] Edit cls=QLineEdit name="" (1180,562) pats=[Invoke,Value,Text] val="Loopback 5/6"
+[167] Edit cls=QLineEdit name="" (1290,562) pats=[Invoke,Value,Text] val="Loopback 7/8"
+[93] Edit cls=QLineEdit name="" (1526,562) pats=[Invoke,Value,Text] val="HP"
+[104] Group cls=QWidget name="" (1526,562) pats=[Invoke,Value] 
+[107] Edit cls=QLineEdit name="" (1636,562) pats=[Invoke,Value,Text] val="OTG OUT"
+[118] Group cls=QWidget name="" (1636,562) pats=[Invoke,Value] 
+[23] Group cls=DialS1M5 name="" (850,564) pats=[Invoke,Value] 
+[31] Group cls=DialS1M5 name="" (932,564) pats=[Invoke,Value] 
+[39] Group cls=DialS1M5 name="" (1014,564) pats=[Invoke,Value] 
+[47] Group cls=DialS1M5 name="" (1096,564) pats=[Invoke,Value] 
+[186] Button cls=QToolButton name="Chat" (1848,598) pats=[Invoke,Value] 
+[137] Group cls=ToolButtonS1M1 name="" (960,602) pats=[Invoke,Value] 
+[138] Button cls=QToolButton name="FX" (960,602) pats=[Invoke,Value] 
+[150] Group cls=ToolButtonS1M1 name="" (1070,602) pats=[Invoke,Value] 
+[151] Button cls=QToolButton name="Mix A" (1070,602) pats=[Invoke,Value] 
+[163] Group cls=ToolButtonS1M1 name="" (1180,602) pats=[Invoke,Value] 
+[164] Button cls=QToolButton name="Mix A" (1180,602) pats=[Invoke,Value] 
+[176] Group cls=ToolButtonS1M1 name="" (1290,602) pats=[Invoke,Value] 
+[177] Button cls=QToolButton name="Mix A" (1290,602) pats=[Invoke,Value] 
+[102] Group cls=ToolButtonS1M1 name="" (1526,602) pats=[Invoke,Value] 
+[103] Button cls=QToolButton name="Playback 1/2" (1526,602) pats=[Invoke,Value] 
+[116] Group cls=ToolButtonS1M1 name="" (1636,602) pats=[Invoke,Value] 
+[117] Button cls=QToolButton name="Mix A" (1636,602) pats=[Invoke,Value] 
+[184] Group cls=MenuS1M1 name="" (1848,602) pats=[Invoke,Value] 
+[187] Group cls=QWidget name="" (1846,618) pats=[Invoke,Value] 
+[135] Edit cls=QLineEdit name="" (960,626) pats=[Invoke,Value,Text] val="0"
+[148] Edit cls=QLineEdit name="" (1070,626) pats=[Invoke,Value,Text] val="0"
+[161] Edit cls=QLineEdit name="" (1180,626) pats=[Invoke,Value,Text] val="0"
+[174] Edit cls=QLineEdit name="" (1290,626) pats=[Invoke,Value,Text] val="0"
+[100] Edit cls=QLineEdit name="" (1526,626) pats=[Invoke,Value,Text] val="-5.0"
+[114] Edit cls=QLineEdit name="" (1636,626) pats=[Invoke,Value,Text] val="-∞"
+[19] Custom cls=EqWidgetIem name="" (850,628) pats=[Invoke,Value] 
+[27] Custom cls=EqWidgetIem name="" (932,628) pats=[Invoke,Value] 
+[18] Group cls=QWidget name="" (973,628) pats=[Invoke,Value] 
+[35] Custom cls=EqWidgetIem name="" (1014,628) pats=[Invoke,Value] 
+[43] Custom cls=EqWidgetIem name="" (1096,628) pats=[Invoke,Value] 
+[316] Group cls=DialS1M5 name="" (283,633) pats=[Invoke,Value] 
+[345] Group cls=DialS1M5 name="" (585,633) pats=[Invoke,Value] 
+[15] Group cls=EqualizerControllerS1M1 name="" (964,634) pats=[Invoke,Value] 
+[16] Group cls=QScrollArea name="" (985,634) pats=[Invoke,Value] 
+[17] Group cls=QWidget name="" (985,634) pats=[Invoke,Value] 
+[324] Group cls=Chart name="" (434,638) pats=[Invoke,Value] 
+[325] Group cls=QWidget name="" (434,638) pats=[Invoke,Value] 
+[188] Button cls=QToolButton name="Vocal" (1848,638) pats=[Invoke,Value] 
+[24] Group cls=DialS1M5 name="" (850,642) pats=[Invoke,Value] 
+[32] Group cls=DialS1M5 name="" (932,642) pats=[Invoke,Value] 
+[40] Group cls=DialS1M5 name="" (1014,642) pats=[Invoke,Value] 
+[48] Group cls=DialS1M5 name="" (1096,642) pats=[Invoke,Value] 
+[25] Group cls=DialS1M5 name="" (850,720) pats=[Invoke,Value] 
+[33] Group cls=DialS1M5 name="" (932,720) pats=[Invoke,Value] 
+[41] Group cls=DialS1M5 name="" (1014,720) pats=[Invoke,Value] 
+[49] Group cls=DialS1M5 name="" (1096,720) pats=[Invoke,Value] 
+[346] Group cls=DialS1M1 name="" (584,722) pats=[Invoke,Value] 
+[191] Button cls=QToolButton name="Load preset1" (1848,726) pats=[Invoke,Value] 
+[326] Group cls=DialS1M1 name="" (434,746) pats=[Invoke,Value] 
+[291] Group cls=FieldEffectS1M1 name="" (454,746) pats=[Invoke,Value] 
+[122] Group cls=FieldLoopbackS1M1 name="" (1180,746) pats=[Invoke,Value] 
+[86] Custom cls=QSplitter name="" (1334,746) pats=[Invoke,Value] 
+[85] Custom cls=QFrame name="" (1412,746) pats=[Invoke,Value] 
+[181] Thumb cls=QSplitterHandle name="" (1464,746) pats=[Invoke,Value] 
+[87] Group cls=FieldOutputS1M1 name="" (1618,746) pats=[Invoke,Value] 
+[192] Group cls=QWidget name="" (1846,746) pats=[Invoke,Value] 
+[183] Group cls=QWidget name="" (1848,746) pats=[Invoke,Value] 
+[182] Group cls=M62_PrivateWidget2 name="" (1849,746) pats=[Invoke,Value] 
+[358] Group cls=VolumeMeterS1M7 name="" (710,750) pats=[Invoke,Value] 
+[297] Group cls=QWidget name="" (113,752) pats=[Invoke,Value] 
+[313] Group cls=QWidget name="" (284,752) pats=[Invoke,Value] 
+[295] Group cls=M62_PrivateWidget3 name="" (390,752) pats=[Invoke,Value] 
+[296] Custom cls=QFrame name="" (390,752) pats=[Invoke,Value] 
+[322] Group cls=QWidget name="" (434,752) pats=[Invoke,Value] 
+[339] Group cls=QWidget name="" (586,752) pats=[Invoke,Value] 
+[355] Group cls=QWidget name="" (711,752) pats=[Invoke,Value] 
+[126] Group cls=LoopbackS1M1 name="" (960,752) pats=[Invoke,Value] 
+[127] Custom cls=QFrame name="" (960,752) pats=[Invoke,Value] 
+[139] Group cls=LoopbackS1M1 name="" (1070,752) pats=[Invoke,Value] 
+[140] Custom cls=QFrame name="" (1070,752) pats=[Invoke,Value] 
+[152] Group cls=LoopbackS1M1 name="" (1180,752) pats=[Invoke,Value] 
+[153] Custom cls=QFrame name="" (1180,752) pats=[Invoke,Value] 
+[165] Group cls=LoopbackS1M1 name="" (1290,752) pats=[Invoke,Value] 
+[166] Custom cls=QFrame name="" (1290,752) pats=[Invoke,Value] 
+[91] Group cls=OutputS1M1 name="" (1526,752) pats=[Invoke,Value] 
+[92] Custom cls=QFrame name="" (1526,752) pats=[Invoke,Value] 
+[105] Group cls=OutputS1M1 name="" (1636,752) pats=[Invoke,Value] 
+[106] Custom cls=QFrame name="" (1636,752) pats=[Invoke,Value] 
+[294] Group cls=QWidget name="" (390,753) pats=[Invoke,Value] 
+[293] Group cls=QWidget name="" (454,753) pats=[Invoke,Value] 
+[125] Group cls=QWidget name="" (1124,753) pats=[Invoke,Value] 
+[124] Group cls=QWidget name="" (1180,753) pats=[Invoke,Value] 
+[90] Group cls=QWidget name="" (1582,753) pats=[Invoke,Value] 
+[89] Group cls=QWidget name="" (1618,753) pats=[Invoke,Value] 
+[318] Button cls=QPushButton name="" (284,754) pats=[Invoke,Value] 
+[292] Group cls=QScrollArea name="" (454,757) pats=[Invoke,Value] 
+[123] Group cls=QScrollArea name="" (1180,757) pats=[Invoke,Value] 
+[88] Group cls=QScrollArea name="" (1618,757) pats=[Invoke,Value] 
+[298] Slider cls=QSlider name="" (38,758) pats=[Invoke,Range,Value] val="0" range=0|min=-90|max=12
+[302] Slider cls=QSlider name="" (76,758) pats=[Invoke,Range,Value] val="-90" range=-90|min=-90|max=12
+[306] Slider cls=QSlider name="" (112,758) pats=[Invoke,Range,Value] val="-90" range=-90|min=-90|max=12
+[308] Slider cls=QSlider name="" (150,758) pats=[Invoke,Range,Value] val="-90" range=-90|min=-90|max=12
+[311] Slider cls=QSlider name="" (186,758) pats=[Invoke,Range,Value] val="-90" range=-90|min=-90|max=12
+[134] Group cls=VSliderS1M1 name="" (960,764) pats=[Invoke,Value] 
+[147] Group cls=VSliderS1M1 name="" (1070,764) pats=[Invoke,Value] 
+[160] Group cls=VSliderS1M1 name="" (1180,764) pats=[Invoke,Value] 
+[173] Group cls=VSliderS1M1 name="" (1290,764) pats=[Invoke,Value] 
+[99] Group cls=VSliderS1M2 name="" (1526,764) pats=[Invoke,Value] 
+[113] Group cls=VSliderS1M2 name="" (1636,764) pats=[Invoke,Value] 
+[26] CheckBox cls=QCheckBox name="" (848,766) pats=[Invoke,Toggle,Value] 
+[34] CheckBox cls=QCheckBox name="" (930,766) pats=[Invoke,Toggle,Value] 
+[42] CheckBox cls=QCheckBox name="" (1012,766) pats=[Invoke,Toggle,Value] 
+[50] CheckBox cls=QCheckBox name="" (1094,766) pats=[Invoke,Toggle,Value] 
+[193] Button cls=QToolButton name="Load preset2" (1848,766) pats=[Invoke,Value] 
+[189] Group cls=MenuS1M1 name="" (1848,769) pats=[Invoke,Value] 
+[317] Group cls=QWidget name="" (284,770) pats=[Invoke,Value] 
+[132] Group cls=VolumeMeterS1M4 name="" (928,774) pats=[Invoke,Value] 
+[133] Group cls=VolumeMeterS1M5 name="" (992,774) pats=[Invoke,Value] 
+[145] Group cls=VolumeMeterS1M4 name="" (1038,774) pats=[Invoke,Value] 
+[146] Group cls=VolumeMeterS1M5 name="" (1102,774) pats=[Invoke,Value] 
+[158] Group cls=VolumeMeterS1M4 name="" (1148,774) pats=[Invoke,Value] 
+[159] Group cls=VolumeMeterS1M5 name="" (1212,774) pats=[Invoke,Value] 
+[171] Group cls=VolumeMeterS1M4 name="" (1258,774) pats=[Invoke,Value] 
+[172] Group cls=VolumeMeterS1M5 name="" (1322,774) pats=[Invoke,Value] 
+[97] Group cls=VolumeMeterS1M4 name="" (1494,774) pats=[Invoke,Value] 
+[98] Group cls=VolumeMeterS1M5 name="" (1558,774) pats=[Invoke,Value] 
+[111] Group cls=VolumeMeterS1M4 name="" (1604,774) pats=[Invoke,Value] 
+[112] Group cls=VolumeMeterS1M5 name="" (1668,774) pats=[Invoke,Value] 
+[136] Slider cls=QSlider name="" (959,776) pats=[Invoke,Range,Value] val="0" range=0|min=-90|max=0
+[149] Slider cls=QSlider name="" (1069,776) pats=[Invoke,Range,Value] val="0" range=0|min=-90|max=0
+[162] Slider cls=QSlider name="" (1179,776) pats=[Invoke,Range,Value] val="0" range=0|min=-90|max=0
+[175] Slider cls=QSlider name="" (1289,776) pats=[Invoke,Range,Value] val="0" range=0|min=-90|max=0
+[101] Slider cls=QSlider name="" (1526,776) pats=[Invoke,Range,Value] val="-28" range=-28|min=-198|max=0
+[115] Slider cls=QSlider name="" (1636,776) pats=[Invoke,Range,Value] val="-178" range=-178|min=-178|max=0
+[194] Group cls=QWidget name="" (1846,785) pats=[Invoke,Value] 
+[319] Button cls=QPushButton name="" (284,786) pats=[Invoke,Value] 
+[347] Group cls=DialS1M1 name="" (548,792) pats=[Invoke,Value] 
+[353] Group cls=DialS1M1 name="" (622,792) pats=[Invoke,Value] 
+[195] Button cls=QToolButton name="Save preset1" (1848,805) pats=[Invoke,Value] 
+[196] Group cls=QWidget name="" (1846,824) pats=[Invoke,Value] 
+[331] Group cls=DialS1M1 name="" (434,838) pats=[Invoke,Value] 
+[349] Button cls=QPushButton name="" (585,842) pats=[Invoke,Value] 
+[197] Button cls=QToolButton name="Save preset2" (1848,844) pats=[Invoke,Value] 
+[350] Button cls=QPushButton name="" (585,874) pats=[Invoke,Value] 
+[348] Group cls=QWidget name="" (585,890) pats=[Invoke,Value] 
+[338] Button cls=QPushButton name="MORE" (434,903) pats=[Invoke,Value] 
+[351] Button cls=QPushButton name="" (585,905) pats=[Invoke,Value] 
+[129] Group cls=PushButtonGroupS1M4 name="" (959,931) pats=[Invoke,Value] 
+[130] Custom cls=QFrame name="" (959,931) pats=[Invoke,Value] 
+[142] Group cls=PushButtonGroupS1M4 name="" (1069,931) pats=[Invoke,Value] 
+[143] Custom cls=QFrame name="" (1069,931) pats=[Invoke,Value] 
+[155] Group cls=PushButtonGroupS1M4 name="" (1179,931) pats=[Invoke,Value] 
+[156] Custom cls=QFrame name="" (1179,931) pats=[Invoke,Value] 
+[168] Group cls=PushButtonGroupS1M4 name="" (1289,931) pats=[Invoke,Value] 
+[169] Custom cls=QFrame name="" (1289,931) pats=[Invoke,Value] 
+[94] Group cls=PushButtonGroupS1M4 name="" (1526,931) pats=[Invoke,Value] 
+[95] Custom cls=QFrame name="" (1526,931) pats=[Invoke,Value] 
+[108] Group cls=PushButtonGroupS1M4 name="" (1636,931) pats=[Invoke,Value] 
+[109] Custom cls=QFrame name="" (1636,931) pats=[Invoke,Value] 
+[131] CheckBox cls=QPushButton name="" (960,932) pats=[Invoke,Toggle,Value] 
+[144] CheckBox cls=QPushButton name="" (1070,932) pats=[Invoke,Toggle,Value] 
+[157] CheckBox cls=QPushButton name="" (1180,932) pats=[Invoke,Toggle,Value] 
+[170] CheckBox cls=QPushButton name="" (1290,932) pats=[Invoke,Toggle,Value] 
+[96] CheckBox cls=QPushButton name="" (1526,932) pats=[Invoke,Toggle,Value] 
+[110] CheckBox cls=QPushButton name="" (1636,932) pats=[Invoke,Toggle,Value] 
+[320] Group cls=QWidget name="" (284,936) pats=[Invoke,Value] 
+[334] Group cls=QWidget name="" (434,936) pats=[Invoke,Value] 
+[352] CheckBox cls=QPushButton name="" (585,936) pats=[Invoke,Toggle,Value] 
+[359] Group cls=QWidget name="" (710,936) pats=[Invoke,Value] 
+[321] CheckBox cls=QPushButton name="" (284,937) pats=[Invoke,Toggle,Value] 
+[335] CheckBox cls=QPushButton name="" (434,937) pats=[Invoke,Toggle,Value] 
+[360] CheckBox cls=QPushButton name="" (710,937) pats=[Invoke,Toggle,Value] 
+[361] Group cls=QWidget name="" (454,967) pats=[Invoke,Value] 
+[362] ScrollBar cls=QScrollBar name="" (454,967) pats=[Invoke,Range,Value] val="0" range=0|min=0|max=0
+[178] Group cls=QWidget name="" (1180,967) pats=[Invoke,Value] 
+[179] ScrollBar cls=QScrollBar name="" (1180,967) pats=[Invoke,Range,Value] val="0" range=0|min=0|max=0
+[119] Group cls=QWidget name="" (1618,967) pats=[Invoke,Value] 
+[120] ScrollBar cls=QScrollBar name="" (1618,967) pats=[Invoke,Range,Value] val="0" range=0|min=0|max=0
+[365] StatusBar cls=QStatusBar name="" (968,986) pats=[Invoke,Value] 
+[366] Thumb cls=QSizeGrip name="" (1920,990) pats=[Invoke,Value] 

@@ -1,0 +1,142 @@
+﻿
+
+The Topping M62 keeps its analogue input gains, output volumes and
+output source selectors behind a vendor protocol on a HID interface,
+outside the USB Audio Class. On Linux they can only be set by hand on
+the front panel; the one capture gain snd-usb-audio exposes is a
+digital trim after the converter.
+
+This series makes them ordinary ALSA controls on the card
+snd-usb-audio already creates. 1/2 is a HID driver that speaks the
+protocol. 2/2 makes the M62's mixer quirk a component master, which
+hands the HID driver its struct snd_card at bind time and takes the
+controls away at unbind; neither driver needs to know about the
+other's disconnect.
+
+This is the first posting without RFC. The split was Takashi's
+suggestion in the thread of an earlier series that did the same job
+as a mixer quirk claiming the HID interface. After RFC v6 he wrote,
+for the audio side:
+
+  If the implementation with the component works actually, I'm for
+  it. So, from the audio side, feel free to submit patches for
+  upstreaming without RFC.
+
+  https://lore.kernel.org/all/87mrsy50gy.wl-tiwai@suse.de/
+
+and left the question of which tree takes it until the HID side is
+settled. So this posting is mainly for Jiri and Benjamin.
+
+The one HID question the RFC carried is gone. RFC v6 cleared
+intf->needs_remote_wakeup after hid_hw_open(), so that the card could
+runtime-suspend although it has no remote wakeup. That was wrong for
+this driver. The card reports every turn of a front-panel knob, and a
+suspended card without remote wakeup cannot deliver one; after resume
+it re-reports the gains of connected inputs but not the output
+volumes, so a headphone volume changed while it slept would stay stale
+in its control. v7 leaves the flag as usbhid_open() sets it, which is
+what every other driver in drivers/hid does -- none of them touches
+it -- and runtime autosuspend of the card is refused while the driver
+is bound.
+
+On the tree question: the two patches depend on each other neither at
+build time nor at run time. 1/2 alone binds, speaks to the card and
+creates no controls; 2/2 alone registers a master that never matches.
+They can go through one tree or each through its own.
+
+Changes since RFC v6
+(https://lore.kernel.org/all/20260904165848.3940603-1-mikhail.v.gavrilov@gmail.com/):
+
+  - the needs_remote_wakeup clear in probe is gone, with the comment
+    that carried it, as above. Nothing else changed.
+
+What the card reports
+
+After a subscribe the card reports itself in two waves: jacks at about
+0.9 s, then at about 5.2 s the jacks again, the output mutes and the
+gain of each input whose jack is present. Every turn of a front-panel
+knob is reported as it happens. A source selector is never reported:
+the card reports events, and a selector has no front-panel control.
+So the controls are published at bind and carry whatever alsactl
+restores, and the selectors start at an "Unknown" item until something
+writes them. 1/2's commit message has the details.
+
+One problem outside the kernel, now fixed there: removing controls
+from a live card -- which is what unbinding this driver does --
+corrupted the heap of any process holding the card through alsa-lib's
+ctl remap plugin, and UCM profiles that use MixerRemap put WirePlumber
+in exactly that position. It crashed some time later, inside unrelated
+free() calls. The cause is a one-line slip in
+remap_forget_numid_child(), present since alsa-lib 1.2.14; the fix is
+posted:
+
+  https://lore.kernel.org/alsa-devel/20260930212624.30308-1-mikhail.v.gavrilov@gmail.com/
+
+Tested
+
+Fedora, 7.3.0-rc5-551c722f4080 plus this series, with KASAN (generic),
+lockdep and UBSAN; M62 firmware V87.05.45.48.27. The loaded module was
+matched against the installed file by build ID, so everything below
+ran on the code posted here.
+
+All nine controls present, and front-panel knobs reported to ALSA as
+they turn.
+
+Fifty cycles of module unload and load against a live card with
+PipeWire running: fifty binds and nothing in the kernel log. With stock
+alsa-lib WirePlumber crashes during this, for the reason above; with
+the fix, ten cycles under valgrind run clean.
+
+System suspend to RAM and back: the headphone source selector kept its
+value across it, and the front panel still reports afterwards.
+
+The cable pulled out twice while a control was being written in a
+loop: no write errors logged, and the card binds again when plugged
+back in.
+
+Two M62s on one host, on different hub ports, one in Pro Audio mode
+and one in Mobile Mode: each binds to its own HID device and carries
+its own nine controls, a knob on the second card's panel produces
+events on that card only, and unplugging the first leaves the second's
+controls in place.
+
+With no UCM profile involved -- the card in Mobile Mode, where none
+applies -- PipeWire's stock analog-output-headphones path finds
+"Headphone Playback Volume" by name, and the desktop volume drives the
+card's analogue headphone stage through the driver.
+
+Not tested:
+
+  - an audio-side unbind and rebind with the HID driver left bound;
+  - hibernation, and with it .reset_resume, which shares
+    topping_resume() with .resume: this machine powers off instead of
+    saving an image, for reasons unrelated to this series;
+  - kmemleak, compiled in here but disabled at boot;
+  - a card whose battery has run down;
+  - a big-endian host.
+
+Mikhail Gavrilov (2):
+  HID: topping-m62: driver for the M62's vendor controls
+  ALSA: usb-audio: bind the Topping M62's vendor controls
+
+ MAINTAINERS                   |   9 +
+ drivers/hid/Kconfig           |  19 +
+ drivers/hid/Makefile          |   1 +
+ drivers/hid/hid-ids.h         |   3 +
+ drivers/hid/hid-quirks.c      |   3 +
+ drivers/hid/hid-topping-m62.c | 911 ++++++++++++++++++++++++++++++++++
+ sound/usb/Makefile            |   1 +
+ sound/usb/mixer_quirks.c      |   5 +
+ sound/usb/mixer_topping.c     | 236 +++++++++
+ sound/usb/mixer_topping.h     |   7 +
+ 10 files changed, 1195 insertions(+)
+ create mode 100644 drivers/hid/hid-topping-m62.c
+ create mode 100644 sound/usb/mixer_topping.c
+ create mode 100644 sound/usb/mixer_topping.h
+
+-- 
+2.55.0
+
+
+
+

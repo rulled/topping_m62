@@ -1,0 +1,952 @@
+
+===== PAGE 1 =====
+使用指南
+Reference Guide V1.1
+M Control Center
+===== PAGE 2 =====
+4
+5
+5
+6
+7
+8
+9
+9
+9
+11
+13
+14
+14
+16
+16
+17
+20
+21
+21
+21
+24
+28
+30
+31
+32
+32
+34
+37
+38
+1. Installing and Launching M Control Center 
+2. M62 Operating Modes
+2.1 Mode Comparison
+2.2 Switching Modes
+2.3 Overview
+3. Basic Operations
+4. Settings
+4.1 Accessing Settings
+4.2 System settings
+4.3 Device settings
+4.4 ASIO settings
+4.5 About
+5. Top Control Bar
+6. Mobile Mode
+6.1 Signal Routing
+6.2 Input Section
+6.3 Effects Section
+6.4 Output Section
+7. Live Streaming Mode
+7.1 Input Section
+7.2 Mixer Section
+7.3 Effects Section
+7.4 Loopback Section
+7.5 Output Section
+8. Pro Audio Mode
+8.1 Input Section
+8.2 Mixer Section
+8.3 Loopback Section
+8.4 Output Section
+9. Advanced Features 40
+Table of Contents
+2 of 54
+===== PAGE 3 =====
+40
+41
+43
+46
+48
+49
+51
+52
+9.1 AUTO Gain Detection
+9.2 EQ (Microphone Input)
+9.3 EQ (Headphone Output)
+9.4 DUCKING
+9.5 Noise Reduction
+9.6 Compressor
+9.7 Reverb
+9.8 Scene
+9.9 User presets 53
+3 of 54
+===== PAGE 4 =====
+1. Installing and Launching M Control
+Center
+System Requirements
+macOS 12 or later / Windows 10 or later
+CPU: Intel-based Mac or PC (Pentium or equivalent), ≥ 1 GHz
+RAM: 2 GB minimum, 4 GB or more recommended
+USB Port: One available USB 2.0 / 3.0 port
+Storage: At least 512 GB of free space recommended
+Download and Installation
+1. Go to https://topping.pro/download and download M Control Center.
+2. Extract the file, double-click the installer, and follow the prompts.
+3. Connect the device to your computer via the supplied USB-C cable.
+4. Double-click the M Control Center desktop shortcut to launch the app.
+5. When connected to the Internet and the device is powered on, the software
+will notify you if a firmware update is available.
+Note:  The  Windows  version  includes  a  buffer  size  option  not  available  on
+macOS. All other functions are identical.
+Troubleshooting
+If you see “Please install driver” or “Device not connected”, check the following:
+Ensure your OS meets the requirements. (macOS 12 or later / Windows 10
+or later)
+Verify the USB cable is fully inserted and connected to the correct port
+(not the OTG port).
+Confirm the device is powered on.
+Temporarily disable antivirus software, uninstall, then reinstall M Control
+Center.
+Try another USB cable (under 2 m).
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+4 of 54
+===== PAGE 5 =====
+Use a different USB port—preferably on the back of the computer.
+If possible, test on another computer.
+2. M62 Operating Modes
+2.1 Mode Comparison
+To meet different user needs, the device offers three operating modes, which
+can be switched according to actual use scenarios.The default mode is Mobile
+Mode.
+• 
+• 
+MODE MOBILE MODE LIVE STREAMINGMODE PRO AUDIO MODE
+FEATURES
+Simple UI, intuitive
+use; saves settings to
+device; no PC
+required.
+Optimized for
+streaming; supports
+multi-mix and effects
+Up to 96 kHz with mic
+4-band PEQ plus
+headphone 10-band
+EQ
+SAMPLE RATES 44.1/48 kHz 44.1/48 kHz 44.1/48/88.2/96 kHz
+INPUTS IN1, IN2, AUX, BT, OTG,Playback 1/2 IN1, IN2, AUX, BT, OTG,Playback 1/2–9/10 IN1, IN2, AUX, BT, OTG,Playback 1/2–9/10
+MIXER None Mix A–E (5 buses) Mix A–C (3 buses)
+LOOPBACK Recording Loopback 1/2, 3/4, 5/6,7/8 Loopback 1/2, 3/4, 5/6,7/8
+EFFECTS
+Noise Reduction,
+Compressor, Reverb
+(adjustable)
+Noise Reduction,
+Compressor, Reverb
+(adjustable). Supports
+input signal level
+adjustment.
+None
+PEQ Mic input: 4-bandPEQ Mic input: 4-bandPEQ
+Mic input: 4-band
+PEQ
+Headphone out: 10-
+band PEQ
+DUCKING Supported(adjustable) Supported(adjustable) Not supported
+PRESETS Chat, Vocal Chat, Vocal None
+5 of 54
+===== PAGE 6 =====
+2.2 Switching Modes
+MODE MOBILE MODE LIVE STREAMINGMODE PRO AUDIO MODE
+SCENARIOS For calls, meetings,mobile streaming, etc. For streaming For pro users:recording, musicproduction, etc.
+6 of 54
+===== PAGE 7 =====
+2.3 Overview
+Mobile Mode
+7 of 54
+===== PAGE 8 =====
+Live streaming mode
+Pro audio mode
+3. Basic Operations
+Click a button to enable or disable the corresponding function.
+Click a knob, then drag up or down (or use the mouse scroll wheel) to
+adjust it.
+Double-click a knob or fader to restore its default value.
+Click the numeric value beside a fader to edit it directly.
+• 
+• 
+• 
+• 
+8 of 54
+===== PAGE 9 =====
+4. Settings
+4.1 Accessing Settings
+Click the Settings icon in the upper-right corner of the main interface to open
+the settings menu.
+4.2 System settings
+Language
+Select the interface language (English or Simplified Chinese).
+9 of 54
+===== PAGE 10 =====
+UI Scale
+Adjust the display scale of the software interface (e.g., 100%, 125%, 150%).
+Follow System UI Scaling
+When enabled, the software automatically adjusts its scale according to your
+system settings.
+Auto Save Workspace
+Automatically saves all workspace changes without manual operation.
+Launch at Startup
+When  enabled,  M  Control  Center  starts  automatically  when  the  computer
+boots.
+Auto Check for Updates
+Automatically  checks  for  software  and  firmware  updates  when  an  Internet
+connection is available.
+10 of 54
+===== PAGE 11 =====
+4.3 Device settings
+Bluetooth
+Turn the device’s Bluetooth function on or off.
+Brightness
+Adjusts the brightness of the device indicator lights.
+OTG Port Power Setting
+When  set  to  Discharge,  the  M62  supplies  power  through  the  OTG  port  to
+external devices (for example, charging a smartphone).
+11 of 54
+===== PAGE 12 =====
+USB-C Port Power Setting
+Charge: Charges the M62’s internal battery.
+Discharge: The M62 supplies power to external devices via the USB-C port.
+Off: Disables both charging and power output.
+Mode Select
+Choose between Mobile Mode, Live Streaming Mode, or Pro Audio Mode.
+Auto Power On/Off
+Prevents  unnecessary  battery  drain.When  no  input  signal  above  –40  dB  is
+detected from the microphone or AUX input, and no device is connected via
+OTG,  USB-C,  or  Bluetooth,  the  M62  will  automatically  power  off  after  10
+minutes.The unit powers on automatically once a valid USB-C signal is detected.
+Reset to Factory Default
+Restores the device to its original factory settings.
+Main Button Single-Click Customization
+Assign a preferred shortcut function (e.g., Battery Level) to the main button for
+quick access.
+Main Button Double-Click Customization
+Assign a secondary shortcut function (e.g., Mute IN1 & IN2) to the main button
+for faster operation.
+12 of 54
+===== PAGE 13 =====
+4.4 ASIO settings
+Sample Rate
+Mobile Mode and Live Streaming Mode support 44.1 kHz and 48 kHz.Pro Audio
+Mode  supports  44.1  kHz,  48  kHz,  88.2  kHz,  and  96  kHz.Higher  sample  rates
+deliver better fidelity but require more storage and system resources.
+Buffer Size (Windows only)
+Smaller  buffer  sizes  reduce  latency  but  increase  CPU  load.If  you  experience
+audio dropouts or glitches, increase the buffer size for improved stability.
+Safe Mode
+Enhances  system  stability  and  reduces  the  risk  of  audio  distortion  or
+interruptions.
+13 of 54
+===== PAGE 14 =====
+4.5 About
+You can view the device model, hardware version, firmware version, and the
+current version of M Control Center. You may also check for updates or visit the
+Topping Professional official website for more information.
+5. Top Control Bar
+Create and Loading Workspaces
+You  can  save  different  M  Control  Center  settings—inputs,  mixers,  loopback,
+effects, and outputs—for various use cases. When switching workspaces, your
+saved configuration can be recalled instantly without readjusting each section.
+14 of 54
+===== PAGE 15 =====
+Save/Download/Import or Export workspace
+Save:
+If Auto Save Workspace is off, click Save manually after making changes.
+Download:
+Click the Download icon to save the current setup to the device. When the
+device  powers  on  without  M  Control  Center,  it  automatically  loads  this
+saved configuration.
+Create a new workspace from...:
+Select the workspace template file to import. The software will copy the
+template  files  to  the  storage  directory.  The  newly  created  workspace  is
+independent of the original files, and any subsequent modifications will
+not affect the original workspace files.
+Export workspace template:
+Export the current workspace files for easy sharing and backup.
+15 of 54
+===== PAGE 16 =====
+Sample Rate
+Mobile Mode and Live Streaming Mode support 44.1 kHz and 48 kHz.Pro Audio
+Mode  supports  44.1  kHz,  48  kHz,  88.2  kHz,  and  96  kHz.Higher  sample  rates
+deliver better fidelity but require more storage and system resources.
+Buffer Size (Windows only)
+Smaller  buffer  sizes  reduce  latency  but  increase  CPU  load.If  you  experience
+audio dropouts or glitches, increase the buffer size for improved stability.
+Battery Indicator
+Each bar represents 20% of total battery capacity.
+Save Button
+If Auto Save Workspace is off, click Save manually after making changes.
+6. Mobile Mode
+6.1 Signal Routing
+HP OTG OUT RECORDING
+PROCESSED IN1 √ √ √
+PROCESSED IN2 √ √ √
+AUX √ √ √
+BT √ √ √
+OTG IN √ √
+PLAYBACK 1/2 √ √
+16 of 54
+===== PAGE 17 =====
+Note:
+Only IN1 and IN2 pass through the effect processor.
+If both effect channels are set to BYPASS, the final output will be a clean,
+unprocessed dry signal.
+6.2 Input Section
+You can configure the hardware inputs and Playback 1/2 settings in this area.
+Channel Name
+When no device is connected, the channel name appears grayed out.
+Level Meter
+Displays the real-time signal level (in dBFS). The top clip indicator lights up
+when the level exceeds 0 dBFS. Mono inputs show a single meter; stereo inputs
+display two meters representing left and right channels.
+IN1 Input Source Selection
+IN1 can be switched between Mic1, Mic-3.5, or Mic-HP.
+• 
+• 
+17 of 54
+===== PAGE 18 =====
+48V Phantom Power
+Click to enable or disable phantom power for the selected input.
+Mic1 / Mic2: Supplies 48V phantom power for condenser microphones.
+Mic-3.5 / Mic-HP: Supplies 2.5V bias voltage for plug-in-power microphones.
+⚠️ 
+Caution:
+Enabling phantom power (2.5V or 48V) for devices that do not require it may
+cause damage. Only activate this function if your microphone explicitly requires
+such power.
+Before connecting or disconnecting a microphone, reduce the output volume
+to minimum and turn off phantom power to avoid damage or noise.
+AUTO Gain Detection
+Automatically adjusts microphone gain based on input signal level. See Section
+9: Advanced Features for details.
+EQ (Equalizer)
+Each microphone input includes a 4-band PEQ, allowing adjustment of gain,
+frequency, and Q factor for each band—ideal for clean, natural vocal tone. The
+processed signal can be recorded directly to a phone or computer.
+Click the EQ button to enable or disable the EQ.
+Double-click  or  right-click  to  open  the  EQ  settings  page.  See  9.  Advanced
+Features – EQ (Microphone Input) for more details.
+18 of 54
+===== PAGE 19 =====
+DUCKING
+When enabled, this function automatically lowers the volume of background
+audio (such as music or system sound) whenever microphone input (IN1/2) is
+detected. This keeps speech clear and intelligible during live streaming or chat
+sessions.
+Click to enable or disable.
+Double-click or right-click to open the Ducking settings page. See 9. Advanced
+Features – Ducking for details.
+Gain / Volume
+Adjust the gain or output level for each input channel.
+Mute
+When illuminated, the channel is muted. Click MUTE again or adjust the volume
+to unmute.
+19 of 54
+===== PAGE 20 =====
+6.3 Effects Section
+After the microphone signal is captured, three processors—Noise Reduction,
+Compressor, and Reverb—optimize the sound for clarity, dynamics, and space.
+Noise Reduction
+Suppresses background and ambient noise while keeping the voice clear.
+Compressor
+Controls dynamic range by reducing peaks above a set threshold and applying
+gain compensation for a more even loudness.
+Reverb
+Adds natural reflections and depth, simulating spaces such as studio, live stage,
+or hall.
+For details, see 9. Advanced Features.
+20 of 54
+===== PAGE 21 =====
+6.4 Output Section
+Channel Name
+When no device is connected, the channel name appears grayed out.
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS.
+Fader
+Adjusts the output level of the corresponding channel.
+MUTE
+When illuminated, the channel is muted. Click MUTE again or adjust the fader
+to unmute.
+7. Live Streaming Mode
+7.1 Input Section
+You can configure the device’s hardware input settings here
+21 of 54
+===== PAGE 22 =====
+Channel Name
+When no device is connected, the channel name appears grayed out.
+Level Meter
+Displays the input signal level in dBFS. The clip indicator lights up when the
+level exceeds 0 dBFS. Mono inputs show one level bar; stereo inputs display two
+bars representing the left and right channels.
+IN1 Mic Input Selection
+IN1 can be switched between Mic1, Mic-3.5, or Mic-HP.
+48V Phantom Power
+Click to enable or disable phantom power for the selected input.
+Mic1 / Mic2: Supplies 48V phantom power for condenser microphones.
+22 of 54
+===== PAGE 23 =====
+Mic-3.5 / Mic-HP: Supplies 2.5V bias voltage for plug-in-power microphones.
+⚠️ 
+Caution:
+Enabling phantom power (2.5V or 48V) for devices that do not require it may
+cause damage. Only activate this feature if your microphone requires it.
+Before connecting or disconnecting a microphone, reduce the output volume
+to minimum and turn off phantom power to avoid damage or noise.
+AUTO Gain Detection
+Automatically adjusts microphone gain based on the input signal level. See 9.
+Advanced Features. for details.
+EQ (Equalizer)
+Each microphone input provides a 4-band PEQ, allowing precise control of gain,
+frequency, and Q value for each band to achieve a clean and professional tone.
+The processed signal can be recorded directly to a phone or computer.
+Click EQ to enable or disable.
+Double-click  or  right-click  to  open  the  EQ  settings  page.  See  9.  Advanced
+Features – EQ (Microphone Input). for details.
+DUCKING
+When  enabled,  it  automatically  lowers  background  or  system  audio  when
+microphone  input  (IN1/2)  is  detected,  ensuring  the  voice  remains  clear  and
+audible—ideal for live streaming and chat.
+Click to enable or disable.
+Double-click or right-click to open the Ducking settings page. See 9. Advanced
+Features – Ducking. for details.
+23 of 54
+===== PAGE 24 =====
+Pan
+Adjusts stereo positioning for the IN (IN1 + IN2) track in the mixer. This controls
+the left-right balance of the signal: fully left sends all signal to the left channel,
+fully right sends it to the right channel, and center splits it evenly between both
+channels.
+Gain / Volume
+Adjusts the gain or output level for the corresponding channel.
+SOLO
+Mutes  all  other  channels  except  the  one(s)  currently  in  solo  mode.  Multiple
+channels can be soloed simultaneously.
+MUTE
+When illuminated, the channel is muted. Click MUTE again or adjust the fader
+to unmute.
+7.2 Mixer Section
+The  mixer  allows  multiple  input  sources—including  hardware  inputs  and
+computer playback signals—to be blended into a single output mix.
+24 of 54
+===== PAGE 25 =====
+Mixer Selection
+Multiple mixers are available. They share the same input sources, but each mixer
+can have independent settings.
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS. Each channel shows two pairs of meters: the outer meters
+display input levels, and the inner meters display output levels for the selected
+mix.
+Fader
+Adjusts the signal level sent from each channel to the selected mixer.
+SOLO
+Mutes  all  other  channels  except  the  one(s)  currently  in  solo  mode.  Multiple
+channels can be soloed at the same time.
+25 of 54
+===== PAGE 26 =====
+MUTE
+When illuminated, the channel is muted. Click MUTE again or adjust the fader
+to unmute.
+Remove Channel
+To keep the interface clean and manageable, channels can be freely removed as
+needed. Hover over a channel name to reveal a delete icon in the upper-right
+corner, then click it to remove the channel.
+Add Channel
+To add a new channel, click the “+” icon on the right side of the mixer and select
+the desired input to include.
+26 of 54
+===== PAGE 27 =====
+27 of 54
+===== PAGE 28 =====
+7.3 Effects Section
+The five faders on the left control how much of each input is sent to the FX
+section. All inputs are mixed and processed as a dual mono signal named FX.
+Effect Input 
+Shows total input level before processing.
+Effect Output 
+Shows total output level after processing.
+MUTE FX 
+Mutes the FX channel.
+Noise Reduction
+Suppresses background and ambient noise while keeping the voice clear.
+Compressor
+Controls dynamic range by reducing peaks above a set threshold and applying
+gain compensation for a more even loudness.
+28 of 54
+===== PAGE 29 =====
+Reverb
+Adds natural reflections and depth, simulating spaces such as studio, live stage,
+or hall.
+For details, see 9. Advanced Features.
+Using FX
+The processed FX signal can be selected directly in the Mixer Section, loopback
+channels, or output channels, allowing flexible routing and output.
+29 of 54
+===== PAGE 30 =====
+7.4 Loopback Section
+This section sends hardware input signals, computer playback audio (such as
+from media players or browsers), or FX signals back to the computer.It allows
+routing these signals to a DAW for recording.
+Loopback Channel Selection
+Select which signal to send back to the computer. Options include: · All mixer
+outputs · All hardware inputs (mono inputs are assigned equally to left and right
+channels) · All computer playback signals · FX signal
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS. Each channel has two pairs of meters: the outer meters show
+input levels, and the inner meters show output levels.
+Fader
+Adjusts the level of each channel sent to the selected mixer.
+MUTE
+When illuminated, the channel is muted. Click MUTE again or move the fader to
+unmute.
+30 of 54
+===== PAGE 31 =====
+7.5 Output Section
+Configure the headphone output (HP) and OTG output (OTG OUT) of the M62.
+Channel Name
+When no device is connected, the channel name appears grayed out.
+Output Channel Selection
+Choose which signal to send to the headphone or OTG output. Options include:
+· All mixer outputs · All hardware inputs (mono inputs are assigned equally to
+left and right channels) · All computer playback signals · FX signal
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS. Each channel has two pairs of meters: the outer meters show
+input levels, and the inner meters show output levels.
+Fader
+Adjusts the output level of the corresponding channel.
+31 of 54
+===== PAGE 32 =====
+MUTE
+When illuminated, the channel is muted. Click MUTE again or move the fader to
+unmute.
+8. Pro Audio Mode
+8.1 Input Section
+You can configure the hardware input settings of the device here.
+Channel Name
+When no device is connected, the channel name appears grayed out.
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS. Mono inputs show one meter; stereo inputs display two meters
+for left and right channels.
+IN1 Mic Input Selection
+IN1 can be switched between Mic1, Mic-3.5, or Mic-HP.
+32 of 54
+===== PAGE 33 =====
+48V Phantom Power
+Click to enable or disable phantom power for the selected input.
+Mic1 / Mic2: Supplies 48V phantom power for condenser microphones.
+Mic-3.5 / Mic-HP: Supplies 2.5V bias voltage for plug-in-power microphones.
+⚠️ 
+Caution:
+Enabling phantom power (2.5V or 48V) for devices that do not require it may
+cause damage. Only activate this feature if your microphone needs such power.
+Before connecting or disconnecting a microphone, lower the volume and turn
+off phantom power to avoid damage or noise.
+AUTO Gain Detection
+Automatically adjusts microphone gain according to input signal strength. See
+9. Advanced Features. for details.
+EQ (Equalizer)
+Each microphone input includes a 4-band PEQ, allowing fine adjustment of
+gain, frequency, and Q for a clean and natural tone. The processed signal can be
+recorded directly to a phone or computer.
+Click EQ to enable or disable.
+Double-click  or  right-click  to  open  the  EQ  settings  page.  See  9.  Advanced
+Features – EQ (Microphone Input). for details.
+33 of 54
+===== PAGE 34 =====
+Gain / Volume
+Adjusts the gain or output level for the corresponding channel.
+Phase Invert
+When illuminated, inverts the phase of the signal by 180°.
+SOLO
+Mutes all other channels except the one(s) in solo mode. Multiple channels can
+be soloed at the same time.
+MUTE
+When illuminated, the channel is muted. Click MUTE again or move the fader to
+unmute.
+8.2 Mixer Section
+The  mixer  allows  multiple  input  sources—including  hardware  inputs  and
+computer playback signals—to be blended into a single output mix.
+Mixer Selection
+Three independent mixers are available. They share the same input sources, but
+each mixer can have different settings.
+34 of 54
+===== PAGE 35 =====
+Link (Stereo Link Control)
+When  enabled,  the  two  adjacent  channels  are  linked  as  a  stereo  pair.  Both
+channels are then controlled together with a single fader, eliminating the need
+to  adjust  each  channel  separately.  Once  linked,  the  Pan  knobs  for  the  two
+channels automatically set to hard left and hard right.
+Pan (Balance Control)
+Adjusts stereo positioning of the audio signal. Turning fully left sends the signal
+entirely to the left output; turning fully right sends it to the right output. When
+centered, the signal is distributed equally between both channels.
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS. Each channel has two meters: the outer meter shows input
+level, and the inner meter shows the output level for the selected mix.
+Fader
+Adjusts the signal level sent from each channel to the selected mixer.
+Phase Invert
+When illuminated, inverts the signal polarity by 180°.
+SOLO
+Mutes  all  other  channels  except  the  one(s)  currently  in  solo  mode.  Multiple
+channels can be soloed at the same time.
+MUTE
+When illuminated, the channel is muted.
+Remove Channel
+To maintain a clean and efficient interface, channels can be freely removed as
+needed. Hover over a channel name to reveal a delete icon in the top-right
+corner, then click it to remove the channel.
+35 of 54
+===== PAGE 36 =====
+Add Channel
+To add a new channel, click the “+” icon on the right side of the mixer and select
+the desired input to include.
+36 of 54
+===== PAGE 37 =====
+8.3 Loopback Section
+This section sends hardware input signals and computer playback audio (such
+as  from  media  players  or  browsers)  back  to  the  computer.  It  allows  routing
+these signals to a DAW for recording.
+Loopback Channel Selection
+Select which signal to send back to the computer. Options include: · All mixer
+outputs · All hardware inputs (mono inputs are assigned equally to left and right
+channels) · All computer playback signals
+37 of 54
+===== PAGE 38 =====
+Link (Stereo Link Control)
+When  enabled,  the  two  adjacent  channels  are  linked  as  a  stereo  pair.  Both
+channels  can  then  be  controlled  with  a  single  fader,  and  their  Pan  controls
+automatically set to hard left and hard right.
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS. Each channel includes two meters: the outer meter shows
+input level, and the inner meter shows the output level.
+Fader
+Adjusts the signal level sent from each channel to the selected mixer.
+MUTE
+When illuminated, the channel is muted. Click MUTE again or move the fader to
+unmute.
+8.4 Output Section
+38 of 54
+===== PAGE 39 =====
+Channel Name
+When no device is connected, the channel name appears grayed out.
+Output Channel Selection
+Choose which signal to send to the headphone output (HP) or OTG output (OTG
+OUT). Options include: · All mixer outputs · All hardware inputs (mono inputs are
+assigned equally to left and right channels) · All computer playback signals
+EQ (Equalizer)
+The headphone output provides a 10-band PEQ for fine-tuning your listening
+experience. This EQ affects only what you hear in your headphones—it does not
+alter the recorded signal. It allows you to create a comfortable and accurate
+personalized monitoring environment.
+Click EQ to enable or disable.
+Double-click  or  right-click  to  open  the  EQ  settings  page.  See  9.  Advanced
+Features – EQ (Headphone Output). for details.
+Level Meter
+Displays the signal level in dBFS. The clip indicator lights up when the level
+exceeds 0 dBFS. Each channel includes two meters: the outer meter shows
+input level, and the inner meter shows output level.
+Fader
+Adjusts the output level of the corresponding channel.
+MUTE
+When illuminated, the channel is muted. Click MUTE again or move the fader to
+unmute.
+39 of 54
+===== PAGE 40 =====
+9. Advanced Features
+9.1 AUTO Gain Detection
+Make sure the microphone is connected to the M62, and that IN1 Mic Input
+Selection and 48V Phantom Power are set correctly.
+Click AUTO to start automatic gain detection.
+During  detection,  speak  or  sing  normally  at  your  usual  distance  to  ensure
+accurate gain adjustment.
+When complete, the system applies the optimal gain for your microphone. If
+detection fails, you’ll be prompted to retry.
+40 of 54
+===== PAGE 41 =====
+9.2 EQ (Microphone Input)
+The microphone input provides a 4-band PEQ, allowing adjustment of gain,
+frequency, and Q value for each band to achieve a clean, clear, and professional
+sound. The processed signal can be recorded directly to a phone or computer.
+Click EQ to enable or disable the function. Double-click or right-click EQ to open
+the EQ settings page, as shown below.
+41 of 54
+===== PAGE 42 =====
+Power Button 
+Turns the EQ on or off.
+Input Meter 
+Displays the real-time microphone input level.
+Graph Display 
+Shows the frequency response curve. The orange line represents current EQ
+adjustments. The vertical axis shows Gain (dB) and the horizontal axis shows
+Frequency (Hz).
+EQ Settings
+Each numbered column (1–4) represents a separate EQ band with the following
+adjustable parameters:
+Type –  Selects  filter  type:  Peaking,  Low-pass,  High-pass,  Low-shelf,  or
+High-shelf.
+Gain – Adjusts the boost or cut of the selected frequency band.
+Freq – Sets the center frequency of the band.
+Q  – Controls bandwidth. Lower Q values affect a wider range; higher Q
+values narrow the range for more focused adjustment.
+• 
+• 
+• 
+• 
+42 of 54
+===== PAGE 43 =====
+Output Meter 
+Displays the signal level after EQ processing. Use the fader on the right to adjust
+output volume.
+Import / Export
+Click the three-dot menu to open options for saving or loading EQ settings:
+Import Filter – Load a saved EQ preset file (Gain, Frequency, Q, and filter
+types).
+Export Filter – Save the current EQ configuration for use on other projects
+or devices.
+9.3 EQ (Headphone Output)
+Note: Available only in Pro Audio Mode.
+The headphone output provides a 10-band PEQ, allowing precise control of the
+sound you hear in your headphones. It does not affect the recorded signal —
+only  the  monitoring  sound.  Use  it  to  create  a  comfortable,  accurate,  and
+personalized monitoring environment.
+Click EQ to enable or disable the function. Double-click or right-click to open
+the EQ window as shown below.
+Power Button 
+Turns the EQ on or off.
+• 
+• 
+43 of 54
+===== PAGE 44 =====
+Input Meter 
+Displays the real-time input level.
+Curve Display Area 
+Shows the frequency response curve. The orange curve represents the current
+EQ  state.  The  vertical  axis  shows  Gain  (dB)  and  the  horizontal  axis  shows
+Frequency (Hz).
+Target Curve 
+Displays the desired frequency response as a reference or tuning goal.
+Source Response Curve 
+Shows the raw input frequency response before EQ adjustment.
+Per-Filter Curve 
+Displays the response of each individual filter (bands 1–10).
+Combined Filter Curve 
+Displays the overall response of all active filters combined.
+Post-Filter Response Curve 
+Shows the final frequency response after EQ adjustment.
+Original / Compensation 
+When Compensation is enabled, displays the difference between the post-filter
+response and the target curve for precise tuning.
+EQ Settings
+Each of the 10 columns represents one EQ band with adjustable parameters:
+Type: Peaking, Low-pass, High-pass, Low-shelf, or High-shelf.
+Gain: Adjusts the boost or cut of the selected frequency band.
+• 
+• 
+44 of 54
+===== PAGE 45 =====
+Frequency: Sets the center frequency where EQ processing occurs.
+Q: Controls the bandwidth of the frequency band. Lower Q = wider range,
+smoother transitions. Higher Q = narrower range, sharper changes.
+Import / Export Functions
+The  import/export  feature  allows  quick  reuse  of  EQ  configurations  across
+different sessions or devices — ideal for backup, reference, or sharing. Click the
+three-dot menu to open options:
+Import:
+Target: Load a predefined target curve file as a reference for tuning.
+Source Response:  Import  external  source  frequency  response  data  for
+comparison or multi-audio matching.
+Filter: Load a saved EQ filter configuration (including gain, frequency, Q,
+and type).
+Export:
+Filter: Save the current 1–10 band filter settings (type, gain, frequency, Q,
+and enable state) as a preset file for future use.
+Filter Curve: Export the combined EQ curve as data for reference or use in
+other audio tools.
+Output Meter 
+Displays the headphone output level after EQ processing. Use the fader on the
+right to adjust output volume for optimal monitoring.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+45 of 54
+===== PAGE 46 =====
+9.4 DUCKING
+This feature automatically lowers the volume of other audio sources (such as
+background  music  or  system  sounds)  when  microphone  input  (IN1/IN2)  is
+detected, ensuring the main signal stays clear and audible. It’s commonly used
+in live streaming and chat.
+Click once to turn Ducking on or off; double-click or right-click to open the
+Ducking settings page.
+Power Button
+Turns the Ducking function on or off.
+IN1+2
+Displays  real-time  microphone  input  levels  to  check  whether  the  trigger
+threshold has been reached.
+46 of 54
+===== PAGE 47 =====
+Ducking Threshold
+When the microphone input level exceeds this value, Ducking is activated and
+other sources are automatically lowered.
+Attack Time
+Determines how quickly Ducking takes full effect after the input exceeds the
+threshold. Smaller values result in faster response.
+Ducking Depth
+Controls  how  much  the  other  sources  are  reduced.  Higher  values  result  in
+stronger attenuation.
+Release Time
+Sets how long it takes for the volume to return to normal once the input falls
+below the threshold. Larger values produce smoother recovery.
+Ducking Map
+Specifies which channels will automatically lower their volume when IN1 or IN2
+triggers Ducking. As shown, when IN1 exceeds the threshold, the system will
+automatically lower the AUX input volume.
+47 of 54
+===== PAGE 48 =====
+9.5 Noise Reduction
+NC1
+AI-based  noise  reduction.  Intelligently  distinguishes  vocals  from  background
+noise,  filtering  out  unwanted  ambient  sounds.  This  mode  introduces  slight
+latency.
+NC2
+Traditional noise gate–based noise reduction.
+Level
+Controls  the  strength  of  the  noise  reduction.  Higher  levels  provide  stronger
+suppression but may slightly affect audio quality.
+BYPASS
+Bypasses the noise reduction module, leaving the input signal unprocessed.
+48 of 54
+===== PAGE 49 =====
+Adjustment Tips
+NC1 generally works better for speech and chatting, while NC2 may suit
+singing or musical use.
+Adjust the reduction level as needed for the best balance between clarity
+and natural tone.
+9.6 Compressor
+The compressor controls the sound’s dynamic range, keeping volume changes
+smooth and consistent while maintaining clarity and punch.
+• 
+• 
+49 of 54
+===== PAGE 50 =====
+Threshold
+The level at which compression begins. Signals above this level are reduced;
+those below remain unchanged.
+Ratio
+Defines  how  much  the  signal  is  reduced  once  it  passes  the  threshold.  For
+example, a 4:1 ratio means a 4 dB increase above the threshold results in only 1
+dB output. Higher ratios mean stronger compression.
+Attack Time
+How quickly compression starts after exceeding the threshold. Shorter times
+(e.g., 1 ms) react instantly, while longer times (e.g., 50–100 ms) preserve transient
+details.
+Release Time
+How  long  it  takes  to  stop  compressing  once  the  signal  drops  below  the
+threshold. Faster times restore volume quickly; slower times sound smoother
+and more natural.
+50 of 54
+===== PAGE 51 =====
+Gain
+Adds makeup gain to restore overall loudness. Click Auto to let the compressor
+automatically adjust gain based on the current settings.
+Mix
+Balances the unprocessed (dry) and compressed (wet) signals for optimal tone
+and dynamics.
+9.7 Reverb
+Reverb simulates acoustic reflections to add space and depth.
+Dry/Wet Balance
+Adjusts the blend between the original (dry) and processed (wet) signal. Lower
+values give a closer, more intimate sound; higher values create a more spacious,
+ambient effect.
+51 of 54
+===== PAGE 52 =====
+Room Size
+Simulates different acoustic spaces. Smaller settings produce a tight studio-like
+feel, while larger ones emulate concert halls or wide environments.
+Decay
+Sets how long the reverb tail lasts after the sound stops. Longer decay gives a
+lingering, atmospheric feel; shorter decay sounds clean and controlled.
+Width
+Controls  the  stereo  spread  of  the  reverb.  A  wider  setting  creates  a  broader
+stereo image; a narrower setting centers the reverb for focus and clarity.
+Presets
+STUDIO: small-room style.
+LIVE: stage/medium space.
+HALL: large, expansive space.
+BYPASS
+Routes the input around the reverb processor (no processing).
+Adjustment Tips
+Start with a preset (STUDIO/LIVE/HALL), then fine-tune.
+Monitor while adjusting and set conservatively to maintain clarity.
+9.8 Scene
+Note: This feature is not available in Pro Audio Mode.
+• 
+• 
+• 
+• 
+• 
+52 of 54
+===== PAGE 53 =====
+Chat:
+Enables Ducking and disables Reverb.
+Vocal:
+Disables Ducking.
+Note: Scene presets only change the on/off state of Ducking and Reverb —
+specific parameter settings are not saved.
+9.9 User presets
+The M62 provides three operating modes, and each mode supports two user
+presets.User 1 and User 2 correspond to the User1 and User2 buttons on the
+remote  control,  allowing  quick  switching  between  two  complete  device
+configurations.
+Saved Settings:
+All adjustable parameters available on the M62 hardware, such as channel
+volumes and 48V phantom power (excluding custom single/double press
+functions of the power button).
+Mute states of IN1 and IN2.
+All  parameters  for  EQ,  Noise  Reduction,  Compressor,  and  Reverb  (if
+supported in the current mode).
+Phase invert settings for IN1 and IN2 (Pro Audio Mode only).
+Playback 1/2 and Recording Channel Volume (Mobile Mode Only)
+• 
+• 
+• 
+• 
+• 
+53 of 54
+===== PAGE 54 =====
+Loading Presets:
+Presets can be loaded via the M Control Center by clicking the desired preset, or
+by pressing the User1 or User2 button on the remote.
+54 of 54

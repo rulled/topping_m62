@@ -1,0 +1,3415 @@
+{
+ "scale": 1,
+ "items": [
+  {
+   "i": 0,
+   "cls": "CompressorS1M1",
+   "name": "TOPPING Professional Control Center",
+   "lx": 968,
+   "ly": 514,
+   "w": 798,
+   "h": 519,
+   "pats": "IV"
+  },
+  {
+   "i": 1,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 968,
+   "ly": 514,
+   "w": 788,
+   "h": 509,
+   "pats": "IV"
+  },
+  {
+   "i": 2,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 968,
+   "ly": 514,
+   "w": 788,
+   "h": 509,
+   "pats": "IV"
+  },
+  {
+   "i": 3,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 968,
+   "ly": 290,
+   "w": 788,
+   "h": 60,
+   "pats": "IV"
+  },
+  {
+   "i": 4,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 600,
+   "ly": 284,
+   "w": 27,
+   "h": 27,
+   "pats": "ITV"
+  },
+  {
+   "i": 5,
+   "cls": "QLabel",
+   "name": "COMP",
+   "lx": 966,
+   "ly": 285,
+   "w": 185,
+   "h": 30,
+   "pats": "I"
+  },
+  {
+   "i": 6,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 1334,
+   "ly": 285,
+   "w": 30,
+   "h": 30,
+   "pats": "IV"
+  },
+  {
+   "i": 7,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 968,
+   "ly": 544,
+   "w": 788,
+   "h": 449,
+   "pats": "IV"
+  },
+  {
+   "i": 8,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 846,
+   "ly": 544,
+   "w": 455,
+   "h": 449,
+   "pats": "IV"
+  },
+  {
+   "i": 9,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 846,
+   "ly": 526,
+   "w": 455,
+   "h": 411,
+   "pats": "IV"
+  },
+  {
+   "i": 10,
+   "cls": "VolumeMeterS1M6",
+   "name": "",
+   "lx": 642,
+   "ly": 526,
+   "w": 46,
+   "h": 411,
+   "pats": "IV"
+  },
+  {
+   "i": 11,
+   "cls": "QProgressBar",
+   "name": "",
+   "lx": 668,
+   "ly": 526,
+   "w": 5,
+   "h": 411,
+   "pats": "IRV"
+  },
+  {
+   "i": 12,
+   "cls": "Chart",
+   "name": "",
+   "lx": 849,
+   "ly": 526,
+   "w": 342,
+   "h": 411,
+   "pats": "IV"
+  },
+  {
+   "i": 13,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 849,
+   "ly": 526,
+   "w": 342,
+   "h": 411,
+   "pats": "IV"
+  },
+  {
+   "i": 14,
+   "cls": "VolumeMeterS1M1",
+   "name": "",
+   "lx": 1051,
+   "ly": 526,
+   "w": 46,
+   "h": 411,
+   "pats": "IV"
+  },
+  {
+   "i": 15,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1216,
+   "ly": 544,
+   "w": 231,
+   "h": 449,
+   "pats": "IV"
+  },
+  {
+   "i": 16,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1282,
+   "ly": 644,
+   "w": 100,
+   "h": 109,
+   "pats": "IV"
+  },
+  {
+   "i": 17,
+   "cls": "QLabel",
+   "name": "Mix",
+   "lx": 1282,
+   "ly": 600,
+   "w": 100,
+   "h": 21,
+   "pats": "I"
+  },
+  {
+   "i": 18,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 1282,
+   "ly": 656,
+   "w": 100,
+   "h": 86,
+   "pats": "IV"
+  },
+  {
+   "i": 19,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1282,
+   "ly": 374,
+   "w": 100,
+   "h": 108,
+   "pats": "IV"
+  },
+  {
+   "i": 20,
+   "cls": "QLabel",
+   "name": "Ratio",
+   "lx": 1282,
+   "ly": 330,
+   "w": 100,
+   "h": 21,
+   "pats": "I"
+  },
+  {
+   "i": 21,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 1282,
+   "ly": 386,
+   "w": 100,
+   "h": 85,
+   "pats": "IV"
+  },
+  {
+   "i": 22,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1282,
+   "ly": 509,
+   "w": 100,
+   "h": 108,
+   "pats": "IV"
+  },
+  {
+   "i": 23,
+   "cls": "QLabel",
+   "name": "Release",
+   "lx": 1282,
+   "ly": 466,
+   "w": 100,
+   "h": 21,
+   "pats": "I"
+  },
+  {
+   "i": 24,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 1282,
+   "ly": 520,
+   "w": 100,
+   "h": 85,
+   "pats": "IV"
+  },
+  {
+   "i": 25,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1151,
+   "ly": 374,
+   "w": 100,
+   "h": 108,
+   "pats": "IV"
+  },
+  {
+   "i": 26,
+   "cls": "QLabel",
+   "name": "Threshold",
+   "lx": 1151,
+   "ly": 330,
+   "w": 100,
+   "h": 21,
+   "pats": "I"
+  },
+  {
+   "i": 27,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 1151,
+   "ly": 386,
+   "w": 100,
+   "h": 85,
+   "pats": "IV"
+  },
+  {
+   "i": 28,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1151,
+   "ly": 509,
+   "w": 100,
+   "h": 108,
+   "pats": "IV"
+  },
+  {
+   "i": 29,
+   "cls": "QLabel",
+   "name": "Attack",
+   "lx": 1151,
+   "ly": 466,
+   "w": 100,
+   "h": 21,
+   "pats": "I"
+  },
+  {
+   "i": 30,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 1151,
+   "ly": 520,
+   "w": 100,
+   "h": 85,
+   "pats": "IV"
+  },
+  {
+   "i": 31,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1151,
+   "ly": 644,
+   "w": 100,
+   "h": 109,
+   "pats": "IV"
+  },
+  {
+   "i": 32,
+   "cls": "QLabel",
+   "name": "Gain",
+   "lx": 1151,
+   "ly": 600,
+   "w": 100,
+   "h": 21,
+   "pats": "I"
+  },
+  {
+   "i": 33,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 1151,
+   "ly": 656,
+   "w": 100,
+   "h": 86,
+   "pats": "IV"
+  },
+  {
+   "i": 34,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1216,
+   "ly": 738,
+   "w": 231,
+   "h": 61,
+   "pats": "IV"
+  },
+  {
+   "i": 35,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1151,
+   "ly": 718,
+   "w": 100,
+   "h": 20,
+   "pats": "IV"
+  },
+  {
+   "i": 36,
+   "cls": "QPushButton",
+   "name": "Auto",
+   "lx": 1151,
+   "ly": 718,
+   "w": 56,
+   "h": 20,
+   "pats": "ITV"
+  },
+  {
+   "i": 37,
+   "cls": "",
+   "name": "M Control Center",
+   "lx": 968,
+   "ly": 20,
+   "w": 1920,
+   "h": 23,
+   "pats": ""
+  },
+  {
+   "i": 38,
+   "cls": "",
+   "name": "System Menu Bar",
+   "lx": 19,
+   "ly": 19,
+   "w": 22,
+   "h": 22,
+   "pats": ""
+  },
+  {
+   "i": 39,
+   "cls": "",
+   "name": "System",
+   "lx": 19,
+   "ly": 19,
+   "w": 22,
+   "h": 22,
+   "pats": "E"
+  },
+  {
+   "i": 40,
+   "cls": "",
+   "name": "Minimize",
+   "lx": 1812,
+   "ly": 16,
+   "w": 47,
+   "h": 30,
+   "pats": "I"
+  },
+  {
+   "i": 41,
+   "cls": "",
+   "name": "Maximize",
+   "lx": 1859,
+   "ly": 16,
+   "w": 46,
+   "h": 30,
+   "pats": "I"
+  },
+  {
+   "i": 42,
+   "cls": "",
+   "name": "Close",
+   "lx": 1906,
+   "ly": 16,
+   "w": 47,
+   "h": 30,
+   "pats": "I"
+  },
+  {
+   "i": 43,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 968,
+   "ly": 503,
+   "w": 1920,
+   "h": 944,
+   "pats": "IV"
+  },
+  {
+   "i": 44,
+   "cls": "QStackedWidget",
+   "name": "",
+   "lx": 968,
+   "ly": 503,
+   "w": 1920,
+   "h": 944,
+   "pats": "IV"
+  },
+  {
+   "i": 45,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 968,
+   "ly": 503,
+   "w": 1920,
+   "h": 944,
+   "pats": "IV"
+  },
+  {
+   "i": 46,
+   "cls": "FieldHeadS1M1",
+   "name": "",
+   "lx": 968,
+   "ly": 46,
+   "w": 1920,
+   "h": 29,
+   "pats": "IV"
+  },
+  {
+   "i": 47,
+   "cls": "QLabel",
+   "name": "",
+   "lx": 135,
+   "ly": 46,
+   "w": 232,
+   "h": 29,
+   "pats": "I"
+  },
+  {
+   "i": 48,
+   "cls": "QLabel",
+   "name": "Workspace",
+   "lx": 1236,
+   "ly": 44,
+   "w": 75,
+   "h": 19,
+   "pats": "I"
+  },
+  {
+   "i": 49,
+   "cls": "QLabel",
+   "name": "Sample Rate",
+   "lx": 1548,
+   "ly": 44,
+   "w": 86,
+   "h": 19,
+   "pats": "I"
+  },
+  {
+   "i": 50,
+   "cls": "QLabel",
+   "name": "Buffer Size",
+   "lx": 1732,
+   "ly": 44,
+   "w": 74,
+   "h": 19,
+   "pats": "I"
+  },
+  {
+   "i": 51,
+   "cls": "ComboBoxS1M1",
+   "name": "",
+   "lx": 1362,
+   "ly": 44,
+   "w": 171,
+   "h": 19,
+   "pats": "IVE"
+  },
+  {
+   "i": 52,
+   "cls": "ComboBoxS1M2",
+   "name": "",
+   "lx": 1633,
+   "ly": 44,
+   "w": 76,
+   "h": 19,
+   "pats": "IVE"
+  },
+  {
+   "i": 53,
+   "cls": "ComboBoxS1M2",
+   "name": "",
+   "lx": 1804,
+   "ly": 44,
+   "w": 62,
+   "h": 19,
+   "pats": "IVE"
+  },
+  {
+   "i": 54,
+   "cls": "BatteryS1M1",
+   "name": "",
+   "lx": 1873,
+   "ly": 45,
+   "w": 28,
+   "h": 14,
+   "pats": "IV"
+  },
+  {
+   "i": 55,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 1908,
+   "ly": 44,
+   "w": 23,
+   "h": 23,
+   "pats": "IV"
+  },
+  {
+   "i": 56,
+   "cls": "ToolButtonS1M2",
+   "name": "",
+   "lx": 1466,
+   "ly": 44,
+   "w": 29,
+   "h": 23,
+   "pats": "IV"
+  },
+  {
+   "i": 57,
+   "cls": "QSplitter",
+   "name": "",
+   "lx": 968,
+   "ly": 518,
+   "w": 1920,
+   "h": 907,
+   "pats": "IV"
+  },
+  {
+   "i": 58,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1414,
+   "ly": 518,
+   "w": 1029,
+   "h": 907,
+   "pats": "IV"
+  },
+  {
+   "i": 59,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1412,
+   "ly": 746,
+   "w": 1025,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 60,
+   "cls": "QSplitter",
+   "name": "",
+   "lx": 1334,
+   "ly": 746,
+   "w": 871,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 61,
+   "cls": "FieldOutputS1M1",
+   "name": "",
+   "lx": 1618,
+   "ly": 746,
+   "w": 304,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 62,
+   "cls": "QScrollArea",
+   "name": "",
+   "lx": 1618,
+   "ly": 757,
+   "w": 304,
+   "h": 428,
+   "pats": "IV"
+  },
+  {
+   "i": 63,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1618,
+   "ly": 753,
+   "w": 304,
+   "h": 420,
+   "pats": "IV"
+  },
+  {
+   "i": 64,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1582,
+   "ly": 753,
+   "w": 231,
+   "h": 420,
+   "pats": "IV"
+  },
+  {
+   "i": 65,
+   "cls": "OutputS1M1",
+   "name": "",
+   "lx": 1526,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 66,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1526,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 67,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1526,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 68,
+   "cls": "PushButtonGroupS1M4",
+   "name": "",
+   "lx": 1526,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 69,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1526,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 70,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 1526,
+   "ly": 932,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 71,
+   "cls": "VolumeMeterS1M4",
+   "name": "",
+   "lx": 1494,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 72,
+   "cls": "VolumeMeterS1M5",
+   "name": "",
+   "lx": 1558,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 73,
+   "cls": "VSliderS1M2",
+   "name": "",
+   "lx": 1526,
+   "ly": 764,
+   "w": 25,
+   "h": 293,
+   "pats": "IV"
+  },
+  {
+   "i": 74,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1526,
+   "ly": 626,
+   "w": 25,
+   "h": 17,
+   "pats": "IV"
+  },
+  {
+   "i": 75,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 1526,
+   "ly": 776,
+   "w": 20,
+   "h": 260,
+   "pats": "IRV"
+  },
+  {
+   "i": 76,
+   "cls": "ToolButtonS1M1",
+   "name": "",
+   "lx": 1526,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 77,
+   "cls": "QToolButton",
+   "name": "Playback 1/2",
+   "lx": 1526,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 78,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1526,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 79,
+   "cls": "OutputS1M1",
+   "name": "",
+   "lx": 1636,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 80,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1636,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 81,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1636,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 82,
+   "cls": "PushButtonGroupS1M4",
+   "name": "",
+   "lx": 1636,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 83,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1636,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 84,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 1636,
+   "ly": 932,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 85,
+   "cls": "VolumeMeterS1M4",
+   "name": "",
+   "lx": 1604,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 86,
+   "cls": "VolumeMeterS1M5",
+   "name": "",
+   "lx": 1668,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 87,
+   "cls": "VSliderS1M2",
+   "name": "",
+   "lx": 1636,
+   "ly": 764,
+   "w": 25,
+   "h": 293,
+   "pats": "IV"
+  },
+  {
+   "i": 88,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1636,
+   "ly": 626,
+   "w": 25,
+   "h": 17,
+   "pats": "IV"
+  },
+  {
+   "i": 89,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 1636,
+   "ly": 776,
+   "w": 20,
+   "h": 260,
+   "pats": "IRV"
+  },
+  {
+   "i": 90,
+   "cls": "ToolButtonS1M1",
+   "name": "",
+   "lx": 1636,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 91,
+   "cls": "QToolButton",
+   "name": "Mix A",
+   "lx": 1636,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 92,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1636,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 93,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1618,
+   "ly": 967,
+   "w": 304,
+   "h": 8,
+   "pats": "IV"
+  },
+  {
+   "i": 94,
+   "cls": "QScrollBar",
+   "name": "",
+   "lx": 1618,
+   "ly": 967,
+   "w": 304,
+   "h": 8,
+   "pats": "IRV"
+  },
+  {
+   "i": 95,
+   "cls": "QLabel",
+   "name": "Output",
+   "lx": 1507,
+   "ly": 532,
+   "w": 60,
+   "h": 23,
+   "pats": "I"
+  },
+  {
+   "i": 96,
+   "cls": "FieldLoopbackS1M1",
+   "name": "",
+   "lx": 1180,
+   "ly": 746,
+   "w": 563,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 97,
+   "cls": "QScrollArea",
+   "name": "",
+   "lx": 1180,
+   "ly": 757,
+   "w": 563,
+   "h": 428,
+   "pats": "IV"
+  },
+  {
+   "i": 98,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1180,
+   "ly": 753,
+   "w": 563,
+   "h": 420,
+   "pats": "IV"
+  },
+  {
+   "i": 99,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1124,
+   "ly": 753,
+   "w": 451,
+   "h": 420,
+   "pats": "IV"
+  },
+  {
+   "i": 100,
+   "cls": "LoopbackS1M1",
+   "name": "",
+   "lx": 960,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 101,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 960,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 102,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 960,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 103,
+   "cls": "PushButtonGroupS1M4",
+   "name": "",
+   "lx": 959,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 104,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 959,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 105,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 960,
+   "ly": 932,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 106,
+   "cls": "VolumeMeterS1M4",
+   "name": "",
+   "lx": 928,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 107,
+   "cls": "VolumeMeterS1M5",
+   "name": "",
+   "lx": 992,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 108,
+   "cls": "VSliderS1M1",
+   "name": "",
+   "lx": 960,
+   "ly": 764,
+   "w": 25,
+   "h": 293,
+   "pats": "IV"
+  },
+  {
+   "i": 109,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 960,
+   "ly": 626,
+   "w": 25,
+   "h": 17,
+   "pats": "IV"
+  },
+  {
+   "i": 110,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 959,
+   "ly": 776,
+   "w": 20,
+   "h": 260,
+   "pats": "IRV"
+  },
+  {
+   "i": 111,
+   "cls": "ToolButtonS1M1",
+   "name": "",
+   "lx": 960,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 112,
+   "cls": "QToolButton",
+   "name": "FX",
+   "lx": 960,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 113,
+   "cls": "LoopbackS1M1",
+   "name": "",
+   "lx": 1070,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 114,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1070,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 115,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1070,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 116,
+   "cls": "PushButtonGroupS1M4",
+   "name": "",
+   "lx": 1069,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 117,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1069,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 118,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 1070,
+   "ly": 932,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 119,
+   "cls": "VolumeMeterS1M4",
+   "name": "",
+   "lx": 1038,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 120,
+   "cls": "VolumeMeterS1M5",
+   "name": "",
+   "lx": 1102,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 121,
+   "cls": "VSliderS1M1",
+   "name": "",
+   "lx": 1070,
+   "ly": 764,
+   "w": 25,
+   "h": 293,
+   "pats": "IV"
+  },
+  {
+   "i": 122,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1070,
+   "ly": 626,
+   "w": 25,
+   "h": 17,
+   "pats": "IV"
+  },
+  {
+   "i": 123,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 1069,
+   "ly": 776,
+   "w": 20,
+   "h": 260,
+   "pats": "IRV"
+  },
+  {
+   "i": 124,
+   "cls": "ToolButtonS1M1",
+   "name": "",
+   "lx": 1070,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 125,
+   "cls": "QToolButton",
+   "name": "Mix A",
+   "lx": 1070,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 126,
+   "cls": "LoopbackS1M1",
+   "name": "",
+   "lx": 1180,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 127,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1180,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 128,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1180,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 129,
+   "cls": "PushButtonGroupS1M4",
+   "name": "",
+   "lx": 1179,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 130,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1179,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 131,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 1180,
+   "ly": 932,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 132,
+   "cls": "VolumeMeterS1M4",
+   "name": "",
+   "lx": 1148,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 133,
+   "cls": "VolumeMeterS1M5",
+   "name": "",
+   "lx": 1212,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 134,
+   "cls": "VSliderS1M1",
+   "name": "",
+   "lx": 1180,
+   "ly": 764,
+   "w": 25,
+   "h": 293,
+   "pats": "IV"
+  },
+  {
+   "i": 135,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1180,
+   "ly": 626,
+   "w": 25,
+   "h": 17,
+   "pats": "IV"
+  },
+  {
+   "i": 136,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 1179,
+   "ly": 776,
+   "w": 20,
+   "h": 260,
+   "pats": "IRV"
+  },
+  {
+   "i": 137,
+   "cls": "ToolButtonS1M1",
+   "name": "",
+   "lx": 1180,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 138,
+   "cls": "QToolButton",
+   "name": "Mix A",
+   "lx": 1180,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 139,
+   "cls": "LoopbackS1M1",
+   "name": "",
+   "lx": 1290,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 140,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1290,
+   "ly": 752,
+   "w": 105,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 141,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1290,
+   "ly": 562,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 142,
+   "cls": "PushButtonGroupS1M4",
+   "name": "",
+   "lx": 1289,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 143,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 1289,
+   "ly": 931,
+   "w": 90,
+   "h": 52,
+   "pats": "IV"
+  },
+  {
+   "i": 144,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 1290,
+   "ly": 932,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 145,
+   "cls": "VolumeMeterS1M4",
+   "name": "",
+   "lx": 1258,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 146,
+   "cls": "VolumeMeterS1M5",
+   "name": "",
+   "lx": 1322,
+   "ly": 774,
+   "w": 35,
+   "h": 277,
+   "pats": "IV"
+  },
+  {
+   "i": 147,
+   "cls": "VSliderS1M1",
+   "name": "",
+   "lx": 1290,
+   "ly": 764,
+   "w": 25,
+   "h": 293,
+   "pats": "IV"
+  },
+  {
+   "i": 148,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 1290,
+   "ly": 626,
+   "w": 25,
+   "h": 17,
+   "pats": "IV"
+  },
+  {
+   "i": 149,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 1289,
+   "ly": 776,
+   "w": 20,
+   "h": 260,
+   "pats": "IRV"
+  },
+  {
+   "i": 150,
+   "cls": "ToolButtonS1M1",
+   "name": "",
+   "lx": 1290,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 151,
+   "cls": "QToolButton",
+   "name": "Mix A",
+   "lx": 1290,
+   "ly": 602,
+   "w": 105,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 152,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1180,
+   "ly": 967,
+   "w": 563,
+   "h": 8,
+   "pats": "IV"
+  },
+  {
+   "i": 153,
+   "cls": "QScrollBar",
+   "name": "",
+   "lx": 1180,
+   "ly": 967,
+   "w": 563,
+   "h": 8,
+   "pats": "IRV"
+  },
+  {
+   "i": 154,
+   "cls": "QLabel",
+   "name": "Loopback",
+   "lx": 952,
+   "ly": 532,
+   "w": 83,
+   "h": 23,
+   "pats": "I"
+  },
+  {
+   "i": 155,
+   "cls": "QSplitterHandle",
+   "name": "",
+   "lx": 1464,
+   "ly": 746,
+   "w": 4,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 156,
+   "cls": "M62_PrivateWidget2",
+   "name": "",
+   "lx": 1849,
+   "ly": 746,
+   "w": 150,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 157,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1848,
+   "ly": 746,
+   "w": 149,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 158,
+   "cls": "MenuS1M1",
+   "name": "",
+   "lx": 1848,
+   "ly": 602,
+   "w": 119,
+   "h": 110,
+   "pats": "IV"
+  },
+  {
+   "i": 159,
+   "cls": "QLabel",
+   "name": "Scene",
+   "lx": 1848,
+   "ly": 564,
+   "w": 119,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 160,
+   "cls": "QToolButton",
+   "name": "Chat",
+   "lx": 1848,
+   "ly": 598,
+   "w": 119,
+   "h": 37,
+   "pats": "IV"
+  },
+  {
+   "i": 161,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1846,
+   "ly": 618,
+   "w": 95,
+   "h": 1,
+   "pats": "IV"
+  },
+  {
+   "i": 162,
+   "cls": "QToolButton",
+   "name": "Vocal",
+   "lx": 1848,
+   "ly": 638,
+   "w": 119,
+   "h": 37,
+   "pats": "IV"
+  },
+  {
+   "i": 163,
+   "cls": "MenuS1M1",
+   "name": "",
+   "lx": 1848,
+   "ly": 769,
+   "w": 119,
+   "h": 188,
+   "pats": "IV"
+  },
+  {
+   "i": 164,
+   "cls": "QLabel",
+   "name": "User presets",
+   "lx": 1848,
+   "ly": 692,
+   "w": 119,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 165,
+   "cls": "QToolButton",
+   "name": "Load preset1",
+   "lx": 1848,
+   "ly": 726,
+   "w": 119,
+   "h": 36,
+   "pats": "IV"
+  },
+  {
+   "i": 166,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1846,
+   "ly": 746,
+   "w": 95,
+   "h": 2,
+   "pats": "IV"
+  },
+  {
+   "i": 167,
+   "cls": "QToolButton",
+   "name": "Load preset2",
+   "lx": 1848,
+   "ly": 766,
+   "w": 119,
+   "h": 36,
+   "pats": "IV"
+  },
+  {
+   "i": 168,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1846,
+   "ly": 785,
+   "w": 95,
+   "h": 2,
+   "pats": "IV"
+  },
+  {
+   "i": 169,
+   "cls": "QToolButton",
+   "name": "Save preset1",
+   "lx": 1848,
+   "ly": 805,
+   "w": 119,
+   "h": 36,
+   "pats": "IV"
+  },
+  {
+   "i": 170,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1846,
+   "ly": 824,
+   "w": 95,
+   "h": 2,
+   "pats": "IV"
+  },
+  {
+   "i": 171,
+   "cls": "QToolButton",
+   "name": "Save preset2",
+   "lx": 1848,
+   "ly": 844,
+   "w": 119,
+   "h": 36,
+   "pats": "IV"
+  },
+  {
+   "i": 172,
+   "cls": "FieldMixerS1M1",
+   "name": "",
+   "lx": 1412,
+   "ly": 290,
+   "w": 1025,
+   "h": 452,
+   "pats": "IV"
+  },
+  {
+   "i": 173,
+   "cls": "QScrollArea",
+   "name": "",
+   "lx": 1412,
+   "ly": 302,
+   "w": 1025,
+   "h": 429,
+   "pats": "IV"
+  },
+  {
+   "i": 174,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1412,
+   "ly": 298,
+   "w": 1025,
+   "h": 421,
+   "pats": "IV"
+  },
+  {
+   "i": 175,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 964,
+   "ly": 298,
+   "w": 129,
+   "h": 421,
+   "pats": "IV"
+  },
+  {
+   "i": 176,
+   "cls": "ButtonBoxS1M1",
+   "name": "",
+   "lx": 964,
+   "ly": 296,
+   "w": 113,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 177,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 964,
+   "ly": 296,
+   "w": 113,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 178,
+   "cls": "QPushButton",
+   "name": "+",
+   "lx": 964,
+   "ly": 296,
+   "w": 113,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 179,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 1412,
+   "ly": 512,
+   "w": 1025,
+   "h": 8,
+   "pats": "IV"
+  },
+  {
+   "i": 180,
+   "cls": "QScrollBar",
+   "name": "",
+   "lx": 1412,
+   "ly": 512,
+   "w": 1025,
+   "h": 8,
+   "pats": "IRV"
+  },
+  {
+   "i": 181,
+   "cls": "QLabel",
+   "name": "Mixer",
+   "lx": 934,
+   "ly": 76,
+   "w": 47,
+   "h": 23,
+   "pats": "I"
+  },
+  {
+   "i": 182,
+   "cls": "QLabel",
+   "name": "Mix A",
+   "lx": 991,
+   "ly": 77,
+   "w": 46,
+   "h": 18,
+   "pats": "I"
+  },
+  {
+   "i": 183,
+   "cls": "QLabel",
+   "name": "Mix B",
+   "lx": 1048,
+   "ly": 77,
+   "w": 47,
+   "h": 18,
+   "pats": "I"
+  },
+  {
+   "i": 184,
+   "cls": "QLabel",
+   "name": "Mix C",
+   "lx": 1106,
+   "ly": 77,
+   "w": 47,
+   "h": 18,
+   "pats": "I"
+  },
+  {
+   "i": 185,
+   "cls": "QLabel",
+   "name": "Mix D",
+   "lx": 1164,
+   "ly": 77,
+   "w": 47,
+   "h": 18,
+   "pats": "I"
+  },
+  {
+   "i": 186,
+   "cls": "QLabel",
+   "name": "Mix E",
+   "lx": 1222,
+   "ly": 77,
+   "w": 46,
+   "h": 18,
+   "pats": "I"
+  },
+  {
+   "i": 187,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 452,
+   "ly": 518,
+   "w": 887,
+   "h": 907,
+   "pats": "IV"
+  },
+  {
+   "i": 188,
+   "cls": "FieldInputS1M1",
+   "name": "",
+   "lx": 454,
+   "ly": 290,
+   "w": 883,
+   "h": 452,
+   "pats": "IV"
+  },
+  {
+   "i": 189,
+   "cls": "QScrollArea",
+   "name": "",
+   "lx": 454,
+   "ly": 302,
+   "w": 883,
+   "h": 429,
+   "pats": "IV"
+  },
+  {
+   "i": 190,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 454,
+   "ly": 298,
+   "w": 883,
+   "h": 421,
+   "pats": "IV"
+  },
+  {
+   "i": 191,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 324,
+   "ly": 298,
+   "w": 624,
+   "h": 421,
+   "pats": "IV"
+  },
+  {
+   "i": 192,
+   "cls": "InputS1M1",
+   "name": "",
+   "lx": 95,
+   "ly": 296,
+   "w": 150,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 193,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 95,
+   "ly": 296,
+   "w": 150,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 194,
+   "cls": "PushButtonGroupS1M11",
+   "name": "",
+   "lx": 122,
+   "ly": 255,
+   "w": 90,
+   "h": 150,
+   "pats": "IV"
+  },
+  {
+   "i": 195,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 122,
+   "ly": 255,
+   "w": 90,
+   "h": 150,
+   "pats": "IV"
+  },
+  {
+   "i": 196,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 122,
+   "ly": 210,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 197,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 122,
+   "ly": 300,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 198,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 122,
+   "ly": 240,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 199,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 122,
+   "ly": 270,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 200,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 95,
+   "ly": 106,
+   "w": 150,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 201,
+   "cls": "PushButtonGroupS1M9",
+   "name": "",
+   "lx": 120,
+   "ly": 162,
+   "w": 57,
+   "h": 57,
+   "pats": "IV"
+  },
+  {
+   "i": 202,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 120,
+   "ly": 162,
+   "w": 57,
+   "h": 57,
+   "pats": "IV"
+  },
+  {
+   "i": 203,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 120,
+   "ly": 140,
+   "w": 57,
+   "h": 11,
+   "pats": "ITV"
+  },
+  {
+   "i": 204,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 120,
+   "ly": 162,
+   "w": 57,
+   "h": 11,
+   "pats": "ITV"
+  },
+  {
+   "i": 205,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 120,
+   "ly": 186,
+   "w": 57,
+   "h": 11,
+   "pats": "ITV"
+  },
+  {
+   "i": 206,
+   "cls": "VolumeMeterS1M1",
+   "name": "",
+   "lx": 56,
+   "ly": 240,
+   "w": 48,
+   "h": 236,
+   "pats": "IV"
+  },
+  {
+   "i": 207,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 95,
+   "ly": 401,
+   "w": 150,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 208,
+   "cls": "PushButtonGroupS1M2",
+   "name": "",
+   "lx": 94,
+   "ly": 468,
+   "w": 89,
+   "h": 74,
+   "pats": "IV"
+  },
+  {
+   "i": 209,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 94,
+   "ly": 468,
+   "w": 89,
+   "h": 74,
+   "pats": "IV"
+  },
+  {
+   "i": 210,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 94,
+   "ly": 482,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 211,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 94,
+   "ly": 454,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 212,
+   "cls": "HSliderS1M1",
+   "name": "",
+   "lx": 122,
+   "ly": 338,
+   "w": 57,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 213,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 122,
+   "ly": 344,
+   "w": 57,
+   "h": 13,
+   "pats": "IV"
+  },
+  {
+   "i": 214,
+   "cls": "InputS1M2",
+   "name": "",
+   "lx": 250,
+   "ly": 296,
+   "w": 150,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 215,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 250,
+   "ly": 296,
+   "w": 150,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 216,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 250,
+   "ly": 106,
+   "w": 150,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 217,
+   "cls": "PushButtonGroupS1M11",
+   "name": "",
+   "lx": 277,
+   "ly": 255,
+   "w": 90,
+   "h": 150,
+   "pats": "IV"
+  },
+  {
+   "i": 218,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 277,
+   "ly": 255,
+   "w": 90,
+   "h": 150,
+   "pats": "IV"
+  },
+  {
+   "i": 219,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 278,
+   "ly": 210,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 220,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 278,
+   "ly": 300,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 221,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 278,
+   "ly": 240,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 222,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 278,
+   "ly": 270,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 223,
+   "cls": "VolumeMeterS1M1",
+   "name": "",
+   "lx": 211,
+   "ly": 240,
+   "w": 48,
+   "h": 236,
+   "pats": "IV"
+  },
+  {
+   "i": 224,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 250,
+   "ly": 401,
+   "w": 150,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 225,
+   "cls": "PushButtonGroupS1M2",
+   "name": "",
+   "lx": 250,
+   "ly": 468,
+   "w": 89,
+   "h": 74,
+   "pats": "IV"
+  },
+  {
+   "i": 226,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 250,
+   "ly": 468,
+   "w": 89,
+   "h": 74,
+   "pats": "IV"
+  },
+  {
+   "i": 227,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 250,
+   "ly": 482,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 228,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 250,
+   "ly": 454,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 229,
+   "cls": "HSliderS1M1",
+   "name": "",
+   "lx": 276,
+   "ly": 338,
+   "w": 57,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 230,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 276,
+   "ly": 344,
+   "w": 57,
+   "h": 13,
+   "pats": "IV"
+  },
+  {
+   "i": 231,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 250,
+   "ly": 106,
+   "w": 150,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 232,
+   "cls": "InputS1M3",
+   "name": "",
+   "lx": 378,
+   "ly": 296,
+   "w": 96,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 233,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 378,
+   "ly": 296,
+   "w": 96,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 234,
+   "cls": "VolumeMeterS1M2",
+   "name": "",
+   "lx": 376,
+   "ly": 240,
+   "w": 65,
+   "h": 236,
+   "pats": "IV"
+  },
+  {
+   "i": 235,
+   "cls": "DialS1M6",
+   "name": "",
+   "lx": 378,
+   "ly": 401,
+   "w": 96,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 236,
+   "cls": "PushButtonGroupS1M2",
+   "name": "",
+   "lx": 378,
+   "ly": 469,
+   "w": 91,
+   "h": 76,
+   "pats": "IV"
+  },
+  {
+   "i": 237,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 378,
+   "ly": 469,
+   "w": 91,
+   "h": 76,
+   "pats": "IV"
+  },
+  {
+   "i": 238,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 378,
+   "ly": 484,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 239,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 378,
+   "ly": 454,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 240,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 378,
+   "ly": 106,
+   "w": 96,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 241,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 378,
+   "ly": 106,
+   "w": 96,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 242,
+   "cls": "InputS1M3",
+   "name": "",
+   "lx": 479,
+   "ly": 296,
+   "w": 96,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 243,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 479,
+   "ly": 296,
+   "w": 96,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 244,
+   "cls": "VolumeMeterS1M2",
+   "name": "",
+   "lx": 478,
+   "ly": 240,
+   "w": 65,
+   "h": 236,
+   "pats": "IV"
+  },
+  {
+   "i": 245,
+   "cls": "DialS1M6",
+   "name": "",
+   "lx": 479,
+   "ly": 401,
+   "w": 96,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 246,
+   "cls": "PushButtonGroupS1M2",
+   "name": "",
+   "lx": 478,
+   "ly": 469,
+   "w": 91,
+   "h": 76,
+   "pats": "IV"
+  },
+  {
+   "i": 247,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 478,
+   "ly": 469,
+   "w": 91,
+   "h": 76,
+   "pats": "IV"
+  },
+  {
+   "i": 248,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 478,
+   "ly": 484,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 249,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 478,
+   "ly": 454,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 250,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 479,
+   "ly": 106,
+   "w": 96,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 251,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 479,
+   "ly": 106,
+   "w": 96,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 252,
+   "cls": "InputS1M3",
+   "name": "",
+   "lx": 580,
+   "ly": 296,
+   "w": 96,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 253,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 580,
+   "ly": 296,
+   "w": 96,
+   "h": 415,
+   "pats": "IV"
+  },
+  {
+   "i": 254,
+   "cls": "VolumeMeterS1M2",
+   "name": "",
+   "lx": 578,
+   "ly": 240,
+   "w": 65,
+   "h": 236,
+   "pats": "IV"
+  },
+  {
+   "i": 255,
+   "cls": "DialS1M6",
+   "name": "",
+   "lx": 580,
+   "ly": 401,
+   "w": 96,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 256,
+   "cls": "PushButtonGroupS1M2",
+   "name": "",
+   "lx": 580,
+   "ly": 469,
+   "w": 91,
+   "h": 76,
+   "pats": "IV"
+  },
+  {
+   "i": 257,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 580,
+   "ly": 469,
+   "w": 91,
+   "h": 76,
+   "pats": "IV"
+  },
+  {
+   "i": 258,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 580,
+   "ly": 484,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 259,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 580,
+   "ly": 454,
+   "w": 57,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 260,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 580,
+   "ly": 106,
+   "w": 96,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 261,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 580,
+   "ly": 106,
+   "w": 96,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 262,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 454,
+   "ly": 512,
+   "w": 883,
+   "h": 8,
+   "pats": "IV"
+  },
+  {
+   "i": 263,
+   "cls": "QScrollBar",
+   "name": "",
+   "lx": 454,
+   "ly": 512,
+   "w": 883,
+   "h": 8,
+   "pats": "IRV"
+  },
+  {
+   "i": 264,
+   "cls": "QLabel",
+   "name": "Input",
+   "lx": 46,
+   "ly": 76,
+   "w": 46,
+   "h": 23,
+   "pats": "I"
+  },
+  {
+   "i": 265,
+   "cls": "FieldEffectS1M1",
+   "name": "",
+   "lx": 454,
+   "ly": 746,
+   "w": 883,
+   "h": 451,
+   "pats": "IV"
+  },
+  {
+   "i": 266,
+   "cls": "QScrollArea",
+   "name": "",
+   "lx": 454,
+   "ly": 757,
+   "w": 883,
+   "h": 428,
+   "pats": "IV"
+  },
+  {
+   "i": 267,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 454,
+   "ly": 753,
+   "w": 883,
+   "h": 420,
+   "pats": "IV"
+  },
+  {
+   "i": 268,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 390,
+   "ly": 753,
+   "w": 755,
+   "h": 420,
+   "pats": "IV"
+  },
+  {
+   "i": 269,
+   "cls": "M62_PrivateWidget3",
+   "name": "",
+   "lx": 390,
+   "ly": 752,
+   "w": 739,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 270,
+   "cls": "QFrame",
+   "name": "",
+   "lx": 390,
+   "ly": 752,
+   "w": 739,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 271,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 113,
+   "ly": 752,
+   "w": 186,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 272,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 38,
+   "ly": 758,
+   "w": 21,
+   "h": 360,
+   "pats": "IRV"
+  },
+  {
+   "i": 273,
+   "cls": "QLabel",
+   "name": "IN1",
+   "lx": 38,
+   "ly": 562,
+   "w": 35,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 274,
+   "cls": "QLabel",
+   "name": "0",
+   "lx": 38,
+   "ly": 948,
+   "w": 35,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 275,
+   "cls": "QLabel",
+   "name": "-∞",
+   "lx": 76,
+   "ly": 948,
+   "w": 35,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 276,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 76,
+   "ly": 758,
+   "w": 21,
+   "h": 360,
+   "pats": "IRV"
+  },
+  {
+   "i": 277,
+   "cls": "QLabel",
+   "name": "IN2",
+   "lx": 76,
+   "ly": 562,
+   "w": 35,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 278,
+   "cls": "QLabel",
+   "name": "-∞",
+   "lx": 112,
+   "ly": 948,
+   "w": 35,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 279,
+   "cls": "QLabel",
+   "name": "AUX",
+   "lx": 112,
+   "ly": 562,
+   "w": 35,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 280,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 112,
+   "ly": 758,
+   "w": 21,
+   "h": 360,
+   "pats": "IRV"
+  },
+  {
+   "i": 281,
+   "cls": "QLabel",
+   "name": "BT",
+   "lx": 150,
+   "ly": 562,
+   "w": 35,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 282,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 150,
+   "ly": 758,
+   "w": 21,
+   "h": 360,
+   "pats": "IRV"
+  },
+  {
+   "i": 283,
+   "cls": "QLabel",
+   "name": "-∞",
+   "lx": 150,
+   "ly": 948,
+   "w": 35,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 284,
+   "cls": "QLabel",
+   "name": "OTG",
+   "lx": 186,
+   "ly": 562,
+   "w": 35,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 285,
+   "cls": "QSlider",
+   "name": "",
+   "lx": 186,
+   "ly": 758,
+   "w": 21,
+   "h": 360,
+   "pats": "IRV"
+  },
+  {
+   "i": 286,
+   "cls": "QLabel",
+   "name": "-∞",
+   "lx": 186,
+   "ly": 948,
+   "w": 35,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 287,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 284,
+   "ly": 752,
+   "w": 147,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 288,
+   "cls": "QLabel",
+   "name": "Level",
+   "lx": 282,
+   "ly": 681,
+   "w": 73,
+   "h": 24,
+   "pats": "I"
+  },
+  {
+   "i": 289,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 284,
+   "ly": 562,
+   "w": 147,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 290,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 283,
+   "ly": 633,
+   "w": 78,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 291,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 284,
+   "ly": 770,
+   "w": 93,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 292,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 284,
+   "ly": 754,
+   "w": 59,
+   "h": 22,
+   "pats": "IV"
+  },
+  {
+   "i": 293,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 284,
+   "ly": 786,
+   "w": 59,
+   "h": 22,
+   "pats": "IV"
+  },
+  {
+   "i": 294,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 284,
+   "ly": 936,
+   "w": 93,
+   "h": 54,
+   "pats": "IV"
+  },
+  {
+   "i": 295,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 284,
+   "ly": 937,
+   "w": 59,
+   "h": 22,
+   "pats": "ITV"
+  },
+  {
+   "i": 296,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 434,
+   "ly": 752,
+   "w": 147,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 297,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 434,
+   "ly": 562,
+   "w": 147,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 298,
+   "cls": "Chart",
+   "name": "",
+   "lx": 434,
+   "ly": 638,
+   "w": 117,
+   "h": 100,
+   "pats": "IV"
+  },
+  {
+   "i": 299,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 434,
+   "ly": 638,
+   "w": 117,
+   "h": 100,
+   "pats": "IV"
+  },
+  {
+   "i": 300,
+   "cls": "DialS1M1",
+   "name": "",
+   "lx": 434,
+   "ly": 746,
+   "w": 41,
+   "h": 41,
+   "pats": "IV"
+  },
+  {
+   "i": 301,
+   "cls": "QLabel",
+   "name": "Threshold",
+   "lx": 434,
+   "ly": 713,
+   "w": 147,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 302,
+   "cls": "QLabel",
+   "name": "Small",
+   "lx": 387,
+   "ly": 759,
+   "w": 52,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 303,
+   "cls": "QLabel",
+   "name": "Large",
+   "lx": 480,
+   "ly": 759,
+   "w": 55,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 304,
+   "cls": "QLabel",
+   "name": "Max",
+   "lx": 480,
+   "ly": 850,
+   "w": 55,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 305,
+   "cls": "DialS1M1",
+   "name": "",
+   "lx": 434,
+   "ly": 838,
+   "w": 41,
+   "h": 41,
+   "pats": "IV"
+  },
+  {
+   "i": 306,
+   "cls": "QLabel",
+   "name": "Min",
+   "lx": 387,
+   "ly": 850,
+   "w": 52,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 307,
+   "cls": "QLabel",
+   "name": "Gain",
+   "lx": 434,
+   "ly": 805,
+   "w": 147,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 308,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 434,
+   "ly": 936,
+   "w": 93,
+   "h": 54,
+   "pats": "IV"
+  },
+  {
+   "i": 309,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 434,
+   "ly": 937,
+   "w": 59,
+   "h": 22,
+   "pats": "ITV"
+  },
+  {
+   "i": 310,
+   "cls": "QLabel",
+   "name": "-28",
+   "lx": 434,
+   "ly": 777,
+   "w": 41,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 311,
+   "cls": "QLabel",
+   "name": "10",
+   "lx": 434,
+   "ly": 869,
+   "w": 41,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 312,
+   "cls": "QPushButton",
+   "name": "MORE",
+   "lx": 434,
+   "ly": 903,
+   "w": 59,
+   "h": 22,
+   "pats": "IV"
+  },
+  {
+   "i": 313,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 586,
+   "ly": 752,
+   "w": 147,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 314,
+   "cls": "QLabel",
+   "name": "Dry",
+   "lx": 536,
+   "ly": 658,
+   "w": 27,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 315,
+   "cls": "QLabel",
+   "name": "Room Size",
+   "lx": 586,
+   "ly": 691,
+   "w": 147,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 316,
+   "cls": "QLabel",
+   "name": "Decay",
+   "lx": 548,
+   "ly": 761,
+   "w": 73,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 317,
+   "cls": "QLabel",
+   "name": "Wet",
+   "lx": 636,
+   "ly": 658,
+   "w": 27,
+   "h": 20,
+   "pats": "I"
+  },
+  {
+   "i": 318,
+   "cls": "QLineEdit",
+   "name": "",
+   "lx": 586,
+   "ly": 562,
+   "w": 147,
+   "h": 33,
+   "pats": "IV"
+  },
+  {
+   "i": 319,
+   "cls": "DialS1M5",
+   "name": "",
+   "lx": 585,
+   "ly": 633,
+   "w": 78,
+   "h": 78,
+   "pats": "IV"
+  },
+  {
+   "i": 320,
+   "cls": "DialS1M1",
+   "name": "",
+   "lx": 584,
+   "ly": 722,
+   "w": 41,
+   "h": 41,
+   "pats": "IV"
+  },
+  {
+   "i": 321,
+   "cls": "DialS1M1",
+   "name": "",
+   "lx": 548,
+   "ly": 792,
+   "w": 73,
+   "h": 41,
+   "pats": "IV"
+  },
+  {
+   "i": 322,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 585,
+   "ly": 890,
+   "w": 94,
+   "h": 141,
+   "pats": "IV"
+  },
+  {
+   "i": 323,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 585,
+   "ly": 842,
+   "w": 60,
+   "h": 21,
+   "pats": "IV"
+  },
+  {
+   "i": 324,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 585,
+   "ly": 874,
+   "w": 60,
+   "h": 22,
+   "pats": "IV"
+  },
+  {
+   "i": 325,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 585,
+   "ly": 905,
+   "w": 60,
+   "h": 22,
+   "pats": "IV"
+  },
+  {
+   "i": 326,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 585,
+   "ly": 936,
+   "w": 60,
+   "h": 21,
+   "pats": "ITV"
+  },
+  {
+   "i": 327,
+   "cls": "DialS1M1",
+   "name": "",
+   "lx": 622,
+   "ly": 792,
+   "w": 73,
+   "h": 41,
+   "pats": "IV"
+  },
+  {
+   "i": 328,
+   "cls": "QLabel",
+   "name": "Width",
+   "lx": 622,
+   "ly": 761,
+   "w": 73,
+   "h": 16,
+   "pats": "I"
+  },
+  {
+   "i": 329,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 711,
+   "ly": 752,
+   "w": 96,
+   "h": 414,
+   "pats": "IV"
+  },
+  {
+   "i": 330,
+   "cls": "QLabel",
+   "name": "FX\nIN",
+   "lx": 687,
+   "ly": 562,
+   "w": 48,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 331,
+   "cls": "QLabel",
+   "name": "FX\nOUT",
+   "lx": 735,
+   "ly": 562,
+   "w": 48,
+   "h": 33,
+   "pats": "I"
+  },
+  {
+   "i": 332,
+   "cls": "VolumeMeterS1M7",
+   "name": "",
+   "lx": 710,
+   "ly": 750,
+   "w": 65,
+   "h": 327,
+   "pats": "IV"
+  },
+  {
+   "i": 333,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 710,
+   "ly": 936,
+   "w": 93,
+   "h": 54,
+   "pats": "IV"
+  },
+  {
+   "i": 334,
+   "cls": "QPushButton",
+   "name": "",
+   "lx": 710,
+   "ly": 937,
+   "w": 59,
+   "h": 22,
+   "pats": "ITV"
+  },
+  {
+   "i": 335,
+   "cls": "QWidget",
+   "name": "",
+   "lx": 454,
+   "ly": 967,
+   "w": 883,
+   "h": 8,
+   "pats": "IV"
+  },
+  {
+   "i": 336,
+   "cls": "QScrollBar",
+   "name": "",
+   "lx": 454,
+   "ly": 967,
+   "w": 883,
+   "h": 8,
+   "pats": "IRV"
+  },
+  {
+   "i": 337,
+   "cls": "QLabel",
+   "name": "FX",
+   "lx": 33,
+   "ly": 532,
+   "w": 20,
+   "h": 23,
+   "pats": "I"
+  },
+  {
+   "i": 338,
+   "cls": "QSplitterHandle",
+   "name": "",
+   "lx": 897,
+   "ly": 518,
+   "w": 4,
+   "h": 907,
+   "pats": "IV"
+  },
+  {
+   "i": 339,
+   "cls": "QStatusBar",
+   "name": "",
+   "lx": 968,
+   "ly": 986,
+   "w": 1920,
+   "h": 23,
+   "pats": "IV"
+  },
+  {
+   "i": 340,
+   "cls": "QSizeGrip",
+   "name": "",
+   "lx": 1920,
+   "ly": 990,
+   "w": 16,
+   "h": 16,
+   "pats": "IV"
+  }
+ ]
+}

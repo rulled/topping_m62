@@ -1,0 +1,153 @@
+﻿From mboxrd@z Thu Jan  1 00:00:00 1970
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6823335A3B1
+	for <linux-kernel@vger.kernel.org>; Sun, 23 Aug 2026 19:48:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787514517; cv=none; b=cN1Y+oJWXFZ0UyiIKShF8Jj5oqnR6hyeFeN9h5KfWQsSwnSw643GDLWwfPva4JwWIzZvKrpzRTFs/HAVj07++QccljXVRtcuL5LrBNxQsXnLDNhxLl1SsLcL1NQXYePnglgwgD8gZuCbtB0AO6SUYJQCG2qOhEAwtMt9N3JT5h8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787514517; c=relaxed/simple;
+	bh=9eE802/mdqD1szWpDk9wP2FgV9BPvfuFoeY4cWiDP5o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SZqfB7UKfzdQSsXsVJVvQaSvYTteQSrLtyFkUr4BdOZ382RKKSPr8kkncwu1VCw/zfkXMKi7SYZwAlIyGKHGk/jaO8iZPhQfrhRYu85t+0QcRNL1wvkc/SZ5X8hqI7CSWWE4EKta9+iW1Uecih2AQCbXRpI4saCVdywzi7EH60s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DOY+oGGE; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DOY+oGGE"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b0148201fbso2617543e87.3
+        for <linux-kernel@vger.kernel.org>; Sun, 23 Aug 2026 12:48:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787514509; x=1788119309; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=v1N+xmknAerLXLrkm4c+ef9Ke+sN2GRf6fH6nUtDpvs=;
+        b=DOY+oGGEXF8SsybJR6bRaJAp2XarMA6NAw+VUKcjM7lDXcp7Gy7AXQ75f+Of+XO88D
+         oLVvbJBadzUmnkwRwS9rv0btOgFV6zvi6jZanfdhKdxYd0VWgbNLRvBSAZvx/3ETMsBS
+         uf5Ju9IvMduSqDApORjvvoC2jkhDD4kki2qI98dZf78hrTacfBOgNva/QnjQUwkSHD9n
+         QrUdjIg6imFNYuDS74esg/9JQNtR3UqHWrKhCxmuWLxecLn/E+munGiBSC/scMzC3SBN
+         CDruIbRJ8WTGo9UL24Pi6XXtp7HzEb9uVL4iJgU/vLViuF5oHQzUmtVhY4xJRhtbZ9BL
+         1zjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787514509; x=1788119309;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=v1N+xmknAerLXLrkm4c+ef9Ke+sN2GRf6fH6nUtDpvs=;
+        b=OppWkfyGXiKpXXxk0bvfGguOz9L6cLvT10+rrF6XKQsUKmtn3YdwTBgqFPiwE5lDDI
+         32PRnZkAmizxqxtLOl2jQq3IpPe1GZls82HB2hkgdvlMnEC3tpDMoUjUNx4d9a0/Ce93
+         FQgSnuTIJNEApKlp1YRGB3eIBHuaafAoee9fIO64/kyrEjE1gvLRb96NcGNf3ArwiM7d
+         Q0CIyQTZ4/dOmcj/SZQH73FpxAVnyUgoZkboeFw6QXGquNGKQoXBmY4xH+wqKk93KMDj
+         JDhznX62DeBqxEOjJnlLBlQaUs9MYxDoHae8SOF8QdwQPbM0w5gSc7rLpoHpedNvzHfU
+         Xp0w==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7UkRbsoVJZcY5NzPdQGhLnRjREY5Xj8OSZSFMsHYHSlw/TDu76MRHHOW+2T8bLvmjuL0ea7BuDAT9yVA=@vger.kernel.org
+X-Gm-Message-State: AFuF++ln/WMDz/Lx4/byebXp6fmQW+FZnpJM2elzPbuMMw8i1Hi4vSNS
+	lVtXorlV5kR8dxSgtWq8qFPGlUWhqyyyOOc6IcHERScdhO1rNnNLextO
+X-Gm-Gg: AR+sD13Q5bSTiLTjSvsHZrkgIYJwA+vPdEW4irwPG/INsogDHXxeNU3OYyzAX3qhNI3
+	u9V6cdUPxmquQwhHgcKwuO1VaRuLLIZyy3LP4S57nGx6HgOkEN3MAQuG2urfQI04Cu4fDPvvXqN
+	ztFiLHqlk0vVnGpWUDxQpeeO7XJ7IE9zAI4TCwxBo7dil3P2OqH+Y9r8brDVJy9xxx8wSHK3Mw1
+	5B+2jxlppV04Grsc9Vmf0KAws1wvc6n3ixuT3XlnRPEYEioOb0LBoiSWdQOFY83zTd3781SptwE
+	TdSlb5uQVsBdusD7yZ1VhxGuThnUTJQhCFszHWXwK410kB579sBJ2azk2xaSekCfdOXQHbnGOmM
+	PfS3mt9ERjErQPA6OolBv0rcSfev6Gr4cVPeJg3jp+P+G9xsB5LbZSr+gTG70h4P5m9m1MqS0ue
+	EJ7JE3KfcyOdV3upxOM/Dhw9aZOuIKi9Ot+4zgSzMxCPiinLtexPvNM4MlTmSr3gpBkpumA23+D
+	bsZFTJav2xR5uTC00cCLqWIbMIs1wNqGR5sVwcRzkFPIjTZ9itTpL7ewHP8
+X-Received: by 2002:a05:6512:3c94:b0:5b2:e5b7:2419 with SMTP id 2adb3069b0e04-5b4841e99d8mr6452510e87.5.1787514508303;
+        Sun, 23 Aug 2026 12:48:28 -0700 (PDT)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b48cda2b8bsm1199260e87.26.2026.08.23.12.48.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 12:48:26 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: tiwai@suse.com
+Cc: perex@perex.cz,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH v3 0/2] ALSA: usb-audio: the Topping M62's vendor controls
+Date: Mon, 24 Aug 2026 00:48:20 +0500
+Message-ID: <20260823194822.29430-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260823142216.79704-1-mikhail.v.gavrilov@gmail.com>
+References: <20260823142216.79704-1-mikhail.v.gavrilov@gmail.com>
+Precedence: bulk
+X-Mailing-List: linux-kernel@vger.kernel.org
+List-Id: <linux-kernel.vger.kernel.org>
+List-Subscribe: <mailto:linux-kernel+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-kernel+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+v3 answers the automated review of v2. Four of its five findings were
+real, and one of them was a bug a user would have met on every boot.
+
+  - The enum refused "Unknown", which is the value it reports until a
+    hand has chosen. alsactl stores and restores that value like any
+    other, so the refusal failed a restore of the driver's own report
+    -- observed here as "Cannot write control ... Invalid argument"
+    from alsactl. Writing "Unknown" is now a quiet no-op rather than an
+    error, since it is a report and not a choice either way.
+
+  - The hardware is reached under snd_usb_lock_shutdown(), the way the
+    rest of this directory reaches it. Without it nothing made the
+    teardown wait for a control callback already in flight.
+
+  - Suspend and resume are handled rather than survived: the URB does
+    not outlive a system sleep, so notifications stopped for good after
+    the first one. The resume path resubmits, subscribes again and asks
+    for the state, which also refreshes a cache that may have gone
+    stale while the panel was reachable and the driver was not.
+
+  - The claimed interface is released, on the error path and at
+    teardown, so unbind and bind again works instead of failing at the
+    claim. That needed a release helper beside snd_usb_claim_iface(),
+    for the same reason the claim needed one.
+
+  - A mutex spans each write from the comparison to the cache update.
+    The review called two writers reaching the device in one order and
+    the cache in the other a race, and it is one, though a narrow one.
+
+Nothing else changed since v2; the questions in that cover letter about
+the third form of the driver and about a control that can be written
+but not read still stand.
+
+Tested on the hardware as before: values arrive by themselves after
+probe, a front panel knob still reaches the driver ten minutes later, a
+write reaches the analogue stage -- one source recorded at gain 30 and
+at gain 60 differs by 29.7 dB against the 30.0 dB the taper table
+predicts -- and for 2/2 the audible test, where pointing an output away
+from the bus being played silences it and pointing it back returns the
+sound. On a KASAN and lockdep kernel, including unplug while a stream
+was running, and now also across a suspend and resume cycle; no
+reports.
+
+Mikhail Gavrilov (2):
+  ALSA: usb-audio: expose the Topping M62's analogue gains as mixer
+    controls
+  ALSA: usb-audio: let the M62's outputs say what they listen to
+
+ MAINTAINERS               |   6 +
+ drivers/hid/hid-ids.h     |   3 +
+ drivers/hid/hid-quirks.c  |   2 +
+ sound/usb/Makefile        |   1 +
+ sound/usb/card.c          |  19 +
+ sound/usb/mixer_quirks.c  |   5 +
+ sound/usb/mixer_topping.c | 709 ++++++++++++++++++++++++++++++++++++++
+ sound/usb/mixer_topping.h |   7 +
+ sound/usb/usbaudio.h      |   4 +
+ 9 files changed, 756 insertions(+)
+ create mode 100644 sound/usb/mixer_topping.c
+ create mode 100644 sound/usb/mixer_topping.h
+
+
+base-commit: 2709dd5ae32f0828f386327c76bba9f39f63a1c6
+-- 
+2.55.0
+
+
+

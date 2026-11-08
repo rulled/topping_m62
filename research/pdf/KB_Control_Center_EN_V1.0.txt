@@ -1,0 +1,959 @@
+
+===== PAGE 1 =====
+V1.0 User manual
+KB Control Center 
+===== PAGE 2 =====
+Contents
+1. Install and open KB Control Center ..................................................................... 3
+2. Mode introduction ............................................................................................. 4
+2.1 Model comparison ............................................................................................................ 4
+2.2 Mode switch ..................................................................................................................... 5
+2.3 Page overview .................................................................................................................. 5
+3. Basic operations ................................................................................................ 6
+4. System settings ................................................................................................. 7
+4.1 Go to settings ................................................................................................................... 7
+4.2 System settings ............................................................................................................... 7
+4.3 Device settings ................................................................................................................ 8
+4.4 ASIO settings .................................................................................................................... 8
+4.5 About ............................................................................................................................... 9
+5. Global Status Bar ............................................................................................... 9
+6. HIFI mode ........................................................................................................ 11
+6.1 Device and Output Control ............................................................................................. 11
+6.2 Gain and Preset Management ........................................................................................ 12
+6.3 Curves and Equipment Settings ..................................................................................... 13
+6.4 Chart Area ...................................................................................................................... 14
+7. Game mode ..................................................................................................... 14
+7.1 Signal routing ................................................................................................................. 14
+7.2 Input ............................................................................................................................... 16
+7.3 Playback ......................................................................................................................... 17
+7.4 Output ............................................................................................................................ 18
+8. Professional mode ........................................................................................... 20
+8.1 Input ............................................................................................................................... 20
+8.2 Mixer .............................................................................................................................. 29
+8.3 Effect area ...................................................................................................................... 32
+8.4 Internal recording area ................................................................................................... 37
+8.5 Output ............................................................................................................................ 38
+KB Control Center User Guide
+2 of 39
+===== PAGE 3 =====
+1. Install and open KB Control Center
+System requirements
+macOS 12 or later / Windows 10 or later
+CPU: Intel-based Mac or PC(Pentium or equivalent), ≥ 1 GHz
+RAM: 2 GB minimum,4 GB or more recommended
+USB Port: One available USB 2.0 / 3.0 port
+Storage: At least 512 GB of free space recommended
+Download and install
+Visit the website to download the KB Control Center application.
+Win: https://topping.pro/download/Roy05zQ
+Mac: https://topping.pro/download/Em1vree
+Unzip and double-click to run the installation package, and follow the prompts to install
+KB Control Center.
+Use the included USB cable to connect the USB-C port of your computer and device.
+Double-click the KB Control Center shortcut on your computer desktop to launch KB
+Control Center.
+When the computer is connected to the Internet, connected to the device and turned
+on, KB Control Center will notify you if new firmware is available for update.
+Note: The Windows version of KB Control Center has more buffering settings than the Mac
+version, but the rest are the same.
+Error message description
+If "Please install driver" or "Device not connected" is displayed when opening KB Control
+Center, please check:
+Check whether the operating system meets the requirements: macOS version 12 or
+higher; Windows 10 or higher.
+Check that the USB cable is fully inserted and that it is connected to the USB-C port on
+the device, not the OTG port.
+Check if the device is powered on.
+Close all anti-virus software, uninstall and delete KB Control Center, and reinstall KB
+Control Center.
+Check whether the USB cable is damaged and try using another USB cable no longer
+than 2 meters.
+Try connecting the POWER interface on the back of KB22 to a DC 5V independent power
+supply.
+• 
+• 
+• 
+• 
+• 
+1. 
+1. 
+2. 
+3. 
+4. 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+KB Control Center User Guide
+3 of 39
+===== PAGE 4 =====
+Try using another USB port on your computer. It is best to use the USB port on the back
+of the computer host.
+Check whether it is a computer problem, and if conditions permit, try to connect to
+another computer.
+2. Mode introduction
+2.1 Model comparison
+In order to meet the needs of different users, the device is equipped with three working
+modes, which can be switched according to actual usage scenarios. The default is
+professional mode.
+model HiFi mode Professionalmode eSports mode
+Applicable scenarios
+Suitable for daily
+listening to music
+and other lightweight
+needs
+For professional
+users, suitable for
+recording studios,
+multi-channel routing
+and music
+production
+For game scenarios,
+suitable for various
+game live broadcast
+needs
+Sampling rate
+PCM 44.1-384kHz
+DSD Native 64-256/
+Dop 64-128
+44.1-192kHz 44.1kHz/48kHz
+Input channel USB-C、OTG
+IN1、IN2、3.5-Mic、
+OTG、Playback
+1/2~7/8
+IN1、IN2、3.5-Mic、
+OTG、Playback
+1/2~5/6
+mix channel none Mix A–C (3 sets) 3 groups
+internal recording none Loopback 1/2、3/4、5/6 Recording
+Effect EQ
+EQ, ducking, noise
+reduction,
+compression,
+expansion, delay,
+reverb
+ducking, noise
+reduction, vocal
+enhancement，
+output audio effect
+enhancement,
+output spatial
+enhancement
+7. 
+8. 
+KB Control Center User Guide
+4 of 39
+===== PAGE 5 =====
+model HiFi mode Professionalmode eSports mode
+PEQ adjustment
+Headphones/Line
+Out: 10-band PEQ
+Microphone input: 4-
+band PEQ
+Headphone output:
+10-band PEQ
+none
+2.2 Mode switch
+2.3 Page overview
+HIFI mode
+KB Control Center User Guide
+5 of 39
+===== PAGE 6 =====
+Game mode
+Pro audio mode
+3. Basic operations
+·Click the button to turn on/off the corresponding function.
+·Click the knob, drag the mouse up and down or roll the mouse wheel to turn the knob.
+·Double-click a knob/fader to return to its default position.
+·Click the value corresponding to the push rod to modify the value directly.
+KB Control Center User Guide
+6 of 39
+===== PAGE 7 =====
+4. System settings
+4.1 Go to settings
+Click the settings icon in the upper right corner of the page to enter settings.
+The system setting items in different modes may be different. Please refer to the actual
+software interface for details. The following pictures take HIFI mode as an example.
+4.2 System settings
+In this settings page, you can configure teaching prompts, language selection, auto-start
+at boot, automatic check for updates, etc. For related settings, please refer to the picture
+example below.
+KB Control Center User Guide
+7 of 39
+===== PAGE 8 =====
+4.3 Device settings
+Please refer to the picture below for relevant device settings. There may be differences in
+different modes. The specific settings in the actual software shall prevail. For specific
+setting instructions, please refer to "6. Menu Settings" in the KB22 manual.
+4.4 ASIO settings
+Sampling rate
+The gaming mode can be set to 44.1 or 48kHz, and the professional recording mode can
+be set to 44.1, 48, 88.2, 96, 176.4 or 192kHz. The higher the sampling rate, the higher the
+fidelity of the recorded audio, but at the same time, audio recorded at a high sampling rate
+requires more storage space.
+KB Control Center User Guide
+8 of 39
+===== PAGE 9 =====
+Buffer size (Windows OS only)
+The smaller the buffer, the smaller the delay, but the higher the requirements on computer
+performance. When you experience playback stuttering/crackling, try increasing the buffer
+size.
+Safe mode
+T urning on safe mode can improve stability and reduce the probability of cracking sound.
+4.5 About
+You can view the device model, device software version and KB Control Center version.
+You can check for updates or visit the T opping Professional official website for more
+information.
+5. Global Status Bar
+Saving and Loading Configurations (Gaming Mode and Professional Mode)
+This feature is designed for users with multiple usage scenarios; you can save settings for
+input, the mixer, internal recording, and output within the KB Control Center for different
+scenarios. 
+When switching scenarios, you can quickly load the corresponding settings without having
+to adjust each parameter individually.
+New Config / Load Config / Save Config / Save Config As / Config Templates /
+Recent Configs
+KB Control Center User Guide
+9 of 39
+===== PAGE 10 =====
+New Config: Create a new configuration. 
+Enter a name and press Enter to finalize creation; this configuration will then become the
+active one.
+Load Config: Load a selected configuration file and apply it to the current interface.
+Save Config: Save the current interface state to the configuration file currently in use.
+Save Config As: Save the current settings as a new configuration. 
+Enter a new name and press Enter to save; the original configuration remains unchanged.
+Config T emplates: Save current settings as a template, or select an existing template to
+quickly apply preset settings.
+Recent Configs: View and quickly open recently loaded configurations.
+Sampling rate
+The gaming mode can be set to 44.1 or 48kHz, and the professional recording mode can
+be set to 44.1, 48, 88.2, 96, 176.4 or 192kHz. The higher the sampling rate, the higher the
+fidelity of the recorded audio, but at the same time, audio recorded at a high sampling rate
+requires more storage space.
+Buffer size (Windows OS only)
+The smaller the buffer, the smaller the delay, but the higher the requirements on computer
+performance. When you experience playback stuttering/crackling, try increasing the buffer
+size.
+KB Control Center User Guide
+10 of 39
+===== PAGE 11 =====
+6. HIFI mode
+Overview
+6.1 Device and Output Control
+Device Volume: Adjusts the current device output volume.
+Sampling Rate: Displays the current audio sampling rate.
+Left and Right Channel Level Meter: Displays the left and right channel levels.
+Input Selection: Switches between USB and OTG inputs.
+Function Mode: Selects the headphone amplifier gain, PEQ, and filter.
+KB Control Center User Guide
+11 of 39
+===== PAGE 12 =====
+Output Switch: Selects 3.5 mm, 6.35 mm, line output, or mute.
+6.2 Gain and Preset Management
+1.Preamplifier Gain
+Refers to the overall gain or attenuation. Adjustment applies to all frequencies, and the
+adjustment range is ±12dB.
+2.Import
+Click "Import" to import the source frequency response curve, target curve, and filter
+parameters to both the local system and the device.
+3.Export
+Click "Export" to export the frequency response curve and filter parameters to your local
+storage and the device.
+4. Manage local and preset PEQ
+1. Local configuration
+This function is suitable for users with different listening habits, music types and usage
+scenarios. You can configure different frequency response curves according to your own
+needs. When switching scenes, you can quickly select different configurations without
+having to reconfigure them one by one.
+Create local configuration
+KB Control Center User Guide
+12 of 39
+===== PAGE 13 =====
+Click the + sign to the right of the local configuration to create it successfully.
+Click the X to delete the local configuration, click the copy icon to copy the local
+configuration, and click the download icon to choose the local configuration to overwrite
+the original configuration.
+2.Device configuration
+This module is used to display device configurations that are available to the device when
+offline. Three configurations are provided by default and cannot be deleted.
+6.3 Curves and Equipment Settings
+1. Source frequency response curve file
+You can select your desired source frequency response curve file.
+2.Target curve file
+You can select the target curve file you want. For example, Harman OE is the Harman over-
+ear target curve.
+3.Set up
+System settings:For detailed instructions, please refer to the "4.2 System Settings"
+chapter.
+Device settings:For specific settings, please refer to the "6. Menu Settings" chapter in
+the KB22 manual.
+about:Please refer to the "4.5 About" chapter for detailed instructions.
+KB Control Center User Guide
+13 of 39
+===== PAGE 14 =====
+6.4 Chart Area
+PEQ mode
+L+R: Set the PEQ parameters of the left and right channels uniformly.
+L/R: Click L/R to set the PEQ parameters of the left/right channels respectively.
+PEQ setting area
+Drag the operating point to adjust the frequency/gain/Q value; right-click to switch filter
+types or delete frequency bands, double-click in the blank space to create a new
+frequency band, and click to view detailed frequency band parameters.
+Zoom button 
+Adjust the viewing area of the chart.
+7. Game mode
+7.1 Signal routing
+Users can choose different signal sources to output to headphones, OTG output or
+RECORDING according to their needs.
+Users can select the target output channel for each signal in the input area or playback
+area. Click in the corresponding signal row Headphone icon, OTG output icon or
+Recording icon, the signal can be sent to the corresponding channel.
+Input signal: IN1/IN2, OTG IN
+Playback signal: Playback 1/2, Playback 3/4, Playback 5/6
+T arget channels: Headphone amplifier output, OTG output, Recording channel
+For example: the processed IN1/IN2 input signal, OTG IN, and playback signal: Playback
+1. 
+2. 
+3. 
+• 
+• 
+• 
+KB Control Center User Guide
+14 of 39
+===== PAGE 15 =====
+1/2, Playback 3/4, Playback 5/6
+Send to the headphone amp output. As shown below:
+The supported audio routing distribution relationships are as shown in the table below.
+Users can route different signals to HP, OTG OUT or Recording according to actual needs.
+T o avoid audio loops, OTG IN does not support routing to OTG OUT.
+HP OTG OUT Recording
+IN1 after effects
+processing
+✓ ✓ ✓
+IN2 after effects
+processing
+✓ ✓ ✓
+OTG IN ✓ ✓
+Playback 1/2 ✓ ✓ ✓
+Playback 3/4 ✓ ✓ ✓
+Playback 5/6 ✓ ✓ ✓
+KB Control Center User Guide
+15 of 39
+===== PAGE 16 =====
+7.2 Input 
+The hardware input of the device can be configured.
+Channel name
+Displays the name of the input channel.
+M
+Mute this channel when the M button is lit. Light the M button again or adjust the volume
+to cancel mute.
+Output channel selection
+You can select the signal channel you want to output to the headphone jack (HP), OTG jack
+(OTG OUT) or RECORDING.
+Gain/volume control
+Adjust the gain/volume of the corresponding channel.
+VU display
+Used to display the audio signal level of the current channel.
+Microphone switch
+For microphones or line-level inputs, turn this button on.
+High impedance switch
+For high impedance inputs, such as musical instruments, turn this button on.
+48V phantom power switch
+Click this button to turn on or off the phantom power supply of the corresponding input
+interface.
+KB Control Center User Guide
+16 of 39
+===== PAGE 17 =====
+IN1 / IN2: When 48V is turned on, 48V phantom power will be provided to the connected
+microphone.
+Notes:
+If the connected device does not require phantom power (48V), turning on phantom
+power may cause damage to the device. Please only enable this feature if you are sure
+that your microphone requires corresponding power.
+Before unplugging or unplugging the microphone, please turn the device volume to
+minimum and turn off phantom power to avoid device damage or noise.
+Noise reduction
+Attenuate irrelevant noise in the environment (such as background noise, environmental
+interference sounds), retain the human voice captured by the microphone, and improve
+the clarity of the sound。
+The higher the Level, the stronger the noise reduction effect and the greater the sound
+quality loss to the original signal.
+Vocal enhancement
+Enhance the input vocal signal to make the vocal clearer and more prominent.
+The higher the value： the stronger the vocal enhancement effect.: the stronger the
+vocal enhancement effect.
+The lower the value: the weaker the vocal enhancement effect.
+Ducking
+This function can automatically reduce the volume of other sound sources (such as
+background music, system audio, etc.) when it detects an input signal from the
+microphone (IN1/2), thereby ensuring that the signal is continuously audible and not
+masked by other sound sources. It is often used in live chat and other scenarios. Click to
+turn on or off the DUCKING function.
+T urn the knob up: background sounds are muffled more and vocals stand out more.
+T urn the knob down: the background sound is suppressed less, and the overall listening
+experience is more natural.
+7.3 Playback
+• 
+• 
+• 
+• 
+• 
+• 
+KB Control Center User Guide
+17 of 39
+===== PAGE 18 =====
+Channel name
+Display the name of the playback channel.
+Output channel selection
+You can select the signal channel you want to output to the headphone jack (HP), OTG jack
+(OTG OUT) or RECORDING.
+Gain/volume control
+Adjust the gain/volume of the corresponding channel.
+VU display
+Used to display the audio signal level of the current channel.
+Mute
+Mute this channel when the light is on. Click the MUTE button again or adjust the volume
+to unmute.
+7.4 Output
+Channel name
+Displays the name of the output channel.
+Crossfeed
+Headphone amp effects can be selected according to different needs
+Mode weak (LOW), mode (MID), mode strong (HIGH), mode customization (CUSTOM), off
+(BYPASS)
+Click the settings icon shown in the image on the right to open the CUSTOM settings.
+Adjust Low Frequencies, Mid Frequencies, High Frequencies, and Enhancement to suit the
+game’s audio characteristics, your headphones’ performance, and your listening
+KB Control Center User Guide
+18 of 39
+===== PAGE 19 =====
+preferences. These adjustments can make key sounds, such as footsteps and gunfire,
+easier to distinguish, helping you determine enemy positions and movements and make
+timely tactical decisions.
+Low Frequencies: Adjusts the low-frequency level of sounds such as footsteps. Increase
+this setting slightly when complex ambient sounds mask footstep details.
+Mid Frequencies: Adjusts the mid-frequency range of sounds such as footsteps and
+reloading, helping you identify nearby actions and track enemy movement.
+High Frequencies: Adjusts the high-frequency detail of gunfire.
+Enhancement: Adjusts the amount of audio compression. Higher settings reduce the
+difference between loud and quiet sounds, making subtle sounds such as footsteps
+easier to notice. Lower settings preserve more of the dynamic range, helping you judge
+distance based on differences in volume.
+Gain/volume control
+Adjust the gain/volume of the corresponding channel.
+VU display
+Used to display the audio signal level of the current channel.
+Mute
+Mute this channel when the light is on. Click the MUTE button again or adjust the volume
+to unmute.
+Headphone gain
+When the light is off, it is low gain; when the light is on, it is high gain.
+Output settings
+There is output when it is on, and it is silent when it is off.
+• 
+• 
+• 
+• 
+KB Control Center User Guide
+19 of 39
+===== PAGE 20 =====
+mutual feedback effect
+Only effective for headphone amps, you can choose STUDIO, ROOM, or OFF .
+8. Professional mode
+8.1 Input 
+Device hardware inputs can be configured.
+Channel name
+Displays the name of the input channel.
+IN2 input switching
+IN2 selectable XLR/TRS or Mic-HP .
+Mic-HP: Provides a 2.5V bias voltage when headset microphone input is enabled.
+Level indication
+Displays the current signal level (in dBFS). When it exceeds 0dBFS, the clipping indicator
+light at the top lights up. The mono input displays 1 level bar, and the stereo input displays
+2 level bars, corresponding to the left and right channels respectively.
+KB Control Center User Guide
+20 of 39
+===== PAGE 21 =====
+High impedance switch
+For high impedance inputs, such as musical instruments, turn this button on.
+48V phantom power switch
+Click this button to turn on or off the phantom power supply of the corresponding input
+interface.
+IN1 / IN2: When 48V is turned on, 48V phantom power will be provided to the
+connected microphone.
+Notes:
+If the connected device does not require phantom power (48V), turning on phantom
+power may cause damage to the device. Please only enable this feature if you are sure
+that your microphone requires corresponding power.
+Before unplugging or unplugging the microphone, please turn the device volume to
+minimum and turn off phantom power to avoid device damage or noise.
+Noise reduction (44.1-48kHz)
+Adjust the intensity of noise reduction as needed for the best experience.
+Noise reduction effect processor processing capacity. The higher the Level, the stronger
+the noise reduction effect and the greater the sound quality loss to the original signal.
+EQ（44.1-48kHz）
+The microphone input offers 4-band PEQ adjustment, allowing the gain, frequency and Q of
+each band to be adjusted for a clean, clear, professional base dry sound. The adjusted
+effects can be recorded to the computer.
+Click the EQ button to turn on or off the EQ function; double-click or right-click to enter the
+EQ setting page, as follows:
+• 
+• 
+• 
+KB Control Center User Guide
+21 of 39
+===== PAGE 22 =====
+Switch button:Enable or disable this EQ function.
+enter:Real-time display of microphone input level.
+Curve display area:Displays the frequency response curve of the audio signal, allowing
+you to visually view and adjust the gain of the frequency. The orange curve in the figure
+represents the current frequency adjustment status. The vertical axis represents gain (dB)
+and the horizontal axis represents frequency (Hz), reflecting the change in signal strength
+at each frequency point.
+EQ settings
+The 4 columns represent the PEQ settings of the four frequency bands, and each
+frequency band can be set
+type:Peak, low pass, high pass, low shelf and high shelf.
+Gain: Adjust the gain or attenuation of a specific frequency band and control the
+loudness of the frequency.
+frequency: The target frequency point you want to adjust, or the center point of the
+range, determines where in the spectrum the EQ processing will occur.
+Q value: Adjust the bandwidth of the frequency band to determine the frequency
+range of the frequency band. The lower the Q value, the wider the frequency range of
+the influence and the gentler the change; the higher the Q value, the narrower the
+frequency range of the influence and the sharper the change.
+Output:The microphone output level after EQ adjustment is displayed in real time, and
+the volume of the output signal can be adjusted through the fader on the right to ensure
+that the final output audio volume is appropriate.
+Import and export functions
+The import and export function is used to quickly reuse equalizer parameter
+configurations, supports the migration of adjusted filter settings between different audio
+• 
+• 
+• 
+• 
+KB Control Center User Guide
+22 of 39
+===== PAGE 23 =====
+processing scenarios and devices, improves audio processing efficiency, and facilitates
+parameter backup and sharing.
+Click the three-dot icon on the interface to expand the submenu:
+Import filter: Import the saved equalizer filter parameter configuration file (including
+gain, frequency, Q value, etc. settings), and reuse the previously debugged frequency
+band adjustment scheme with one click, without having to manually set parameters
+again.
+Export filter: Save 1 - 4 groups of filter parameters (type, gain, frequency, Q value and
+enabled status) in the current equalizer as files, so that they can be easily imported
+and used in the equalizers of other audio projects and devices, and the parameters can
+be reused across scenarios.
+Compression (44.1-48kHz)
+The core function of a compressor is to control the dynamic range of the sound, making
+the volume fluctuations smoother and the loudness more uniform, while retaining the
+strength and texture of the sound. The following is the function description of each
+parameter:
+Threshold
+The "volume threshold" that triggers compression. When the level of the input sound
+exceeds the threshold, the compressor is activated to "reduce" the excessive volume;
+sounds below the threshold remain in their original state and are not compressed.
+• 
+• 
+KB Control Center User Guide
+23 of 39
+===== PAGE 24 =====
+Ratio
+Represents how "compressed" sounds are that exceed the threshold. For example: if the
+input sound exceeds the threshold by 4dB, after 4:1 compression, the output sound will
+only increase by 1dB. The larger the ratio, the stronger the compression.
+Attack
+How long it takes for the compressor to achieve full compression once the signal exceeds
+the threshold. A fast attack time (such as 1ms) will cause the compressor to start
+compressing the audio signal almost immediately, while a slower attack time (such as
+50ms or 100ms) will cause the compressor to delay compressing for a while. This setting is
+critical and affects the transient feel of the audio (such as the punch of a drum beat).
+Release
+Release time determines how soon the compressor stops compressing after the signal
+drops below the threshold. A fast release time (such as 20ms) will cause the compressor to
+stop compressing quickly, which is suitable for fast dynamic changes; while a slower
+release time (such as 500ms or longer) will cause the compressor to stop compressing
+slowly, which is suitable for smoother signals. The release time setting affects the natural
+feel of the audio.
+Gain
+After compression, the overall volume of the audio signal is restored by increasing the
+compensation gain to maintain the overall balance.
+Click "Auto" below to turn on automatic gain compensation. The compressor automatically
+calculates and applies appropriate gain based on the current threshold, compression ratio
+and other parameters to compensate for the "overall volume loss caused by compressing
+large volumes."
+Mix
+Adjust the mixing ratio of "original dry sound" and "compressed wet sound".
+Expander (44.1-48kHz)
+The expander plug-in is used to automatically reduce the volume of the signal when it falls
+below a set threshold, making background noise, ambient sounds and weak interference
+quieter, thus improving the clarity and dynamic contrast of the sound. The following is the
+function description of each parameter:
+KB Control Center User Guide
+24 of 39
+===== PAGE 25 =====
+Threshold
+The threshold is used to set the level limit at which the expander begins to operate. When
+the input signal is below this threshold, the expander begins to reduce the signal volume;
+when the input signal is above this threshold, the signal usually remains the same or is
+less affected.
+Expansion ratio
+The expansion ratio determines how much signals below the threshold are reduced. The
+larger the expansion ratio, the more obviously low-level signals are suppressed.
+Attack
+Attack time determines how quickly the expander starts reducing the volume once the
+signal falls below the threshold.
+Release
+The release time determines how soon the expander returns to a state of no or less
+processing when the signal returns above the threshold.
+Gain
+Adjust the overall output volume of the processed signal. Increasing gain increases overall
+loudness, while decreasing gain avoids overloading or clipping the output. Pay attention to
+the output level when using it to avoid distortion caused by excessive gain.
+Click "Auto" below to turn on automatic gain compensation. The expander will
+automatically calculate and apply appropriate output gain based on the current threshold,
+expansion ratio and other parameters to compensate for the overall loudness change
+caused by the attenuation of low-level signals, so that the volume sense before and after
+processing remains relatively consistent.
+KB Control Center User Guide
+25 of 39
+===== PAGE 26 =====
+Mix
+Adjust the mixing ratio of the original signal and the expanded signal.
+Ducking (44.1-48kHz)
+This function can automatically reduce the volume of other sound sources (such as
+background music, system audio, etc.) when it detects an input signal from the
+microphone (IN1/2), thereby ensuring that the signal is continuously audible and not
+masked by other sound sources. It is often used in live chat and other scenarios.
+Click to turn on or off the DUCKING function; double-click or right-click to enter the
+DUCKING setting page, as follows:
+Switch button: Enable or disable ducking functionality.
+IN1+2：Real-time display of microphone input level to determine whether trigger
+conditions are met.
+Threshold:When the microphone input level exceeds the ducking threshold, the ducking
+function is triggered and automatically starts to suppress other sound sources.
+Attack:When the input level exceeds the ducking threshold, the time required for the
+process from initiating ducking to fully taking effect. The smaller the value, the faster the
+response.
+Reduction:The level attenuation of the suppressed bass source. The larger the value, the
+more obvious the suppression.
+Release:When the input level is lower than the ducking threshold, the time required for
+the process from turning off ducking to completely ineffective ducking. The larger the
+value, the smoother the recovery.
+Ducking Map:You can set which channels automatically reduce the volume after IN1/IN2
+reaches the ducking trigger condition. As shown in the figure, when it is detected that the
+KB Control Center User Guide
+26 of 39
+===== PAGE 27 =====
+IN1 channel reaches the ducking trigger condition, the system will automatically reduce
+the volume of the OTG input.
+Gain/Volume settings
+Adjust the gain/volume of the corresponding channel.
+Phase reversal
+Inverts the polarity of the signal 180° when the light is on.
+AUTO automatic gain detection
+This function can intelligently adjust the gain level of the microphone according to the
+input signal strength.
+Make sure the microphone has been connected to KB22 and the IN1 selection and 48V
+switch settings are correct. If you don't know, you can first check the connecting
+microphone in 4.2 of the KB22 manual.
+Click AUTO to enter the automatic gain detection process
+KB Control Center User Guide
+27 of 39
+===== PAGE 28 =====
+It is recommended to simulate actual usage situations (such as recording and live
+broadcasting) during testing, and speak/sing at a normal volume and a normal distance
+from the device to ensure more accurate gain matching.
+If the detection process is normal, the program will provide the appropriate gain for your
+microphone to achieve the ideal recording level for the current state. If the detection
+process is abnormal, you will be prompted to try again.
+KB Control Center User Guide
+28 of 39
+===== PAGE 29 =====
+SOLO
+Will mute all channels except the channel currently SOLOing. Multiple channels can be
+SOLOed at the same time.
+MUTE
+Mute this channel when the light is on. Click the MUTE button again or adjust the volume
+to unmute.
+8.2 Mixer
+The mixer supports mixing multiple audio input signals (including hardware input signals
+and computer audio signals) into one output.
+Mixer selection
+Three different mixers are available. The three mixers share the same input, but different
+mixers can have different settings.
+Link stereo linkage control
+Lighting this button will set the two adjacent input channels to one stereo channel to
+achieve linkage control. For example, one fader can control the signal levels of two
+adjacent inputs at the same time without having to push two faders. In addition, after
+turning on Link, the pan knobs of the two channels will automatically be set to extreme left
+and extreme right respectively.
+Pan pan adjustment knob
+Used to adjust the left and right distribution of sound sources. For example, when it is
+turned to the extreme left, it means that all the signals of this channel are transmitted to
+the left channel output. Similarly, when it is turned to the extreme right, it means that all
+the signals of this channel are transmitted to the right channel output. When it is in the
+KB Control Center User Guide
+29 of 39
+===== PAGE 30 =====
+middle position, it means that the signals of this channel are outputted by both the left
+and right channels.
+Level indication
+Displays the current signal level (in dBFS). When it exceeds 0dBFS, the clipping indicator
+light at the top lights up.
+The left and right are the level indicators of the two channels respectively. One channel
+has two level indicators, the outside is the input level indicator and the inside is the output
+level indicator.
+Putter
+The fader controls the level that the corresponding channel sends to the selected mixer.
+Phase reversal
+Inverts the polarity of the signal 180° when the light is on.
+SOLO
+Will mute all channels except the channel currently SOLOing. Multiple channels can be
+SOLOed at the same time.
+MUTE
+Mute this channel when the light is on.
+Delete channel
+There are many channels available in the mixing area. In order to facilitate operation and
+simplify the interface, users can freely add or delete mixing channels according to actual
+needs.
+When the mouse is hovering over the channel name, a delete icon will appear in the upper
+right corner. Click this icon to delete the channel.
+KB Control Center User Guide
+30 of 39
+===== PAGE 31 =====
+Add channel
+There are many channels available in the mixing area. In order to facilitate operation and
+simplify the interface, users can freely add or delete mixing channels according to actual
+needs.
+Click the "+" on the right to choose to add the desired channel.
+KB Control Center User Guide
+31 of 39
+===== PAGE 32 =====
+8.3 Effect area
+Delay and reverb effects can be added to the KB22’s hardware input signals.
+The 2 faders on the left are used to adjust the level of the input track sent to the effects
+processing section (FX). After all input signals enter the effects area, they will be mixed
+and output as dual mono signals, and the processed signals are named "FX".
+effects input: Displays the total level of the 2 input tracks before entering effect
+processing.
+Effect output: Displays the total level of the FX area output after processing.
+MUTE FX: Mute the FX channel.
+Effect processing:
+1. Delay (44.1-48kHz)
+Delay plug-ins are used to repeatedly play the input signal at set time intervals to produce
+echo, spatial or rhythmic repetition effects. By adjusting the dry to delay ratio, delay time,
+and feedback amount, you can control how much the original sound is mixed with the
+delayed sound, how long the echo appears, and how many times it is repeated.
+The following are the functions and operation instructions of this delay effect:
+• 
+• 
+• 
+KB Control Center User Guide
+32 of 39
+===== PAGE 33 =====
+Parameter adjustment area
+Dry/Delay Balance Knob
+Adjust the mix between the original and delayed signals. Dry represents the original,
+unprocessed sound, and Delay represents the repetitive sound produced after processing
+with effects.
+Small value: more original sound, weaker delay/echo effect, more natural and forward
+sound.
+Large values: more delayed sounds, more obvious echo effects, and a stronger sense of
+space and repetition.
+TAP
+Used to quickly set the delay time by clicking. When clicking the TAP button continuously,
+the system will calculate the delay time based on the click interval.
+In BPM mode, TAP can be used to set the sync speed so that the delay effect matches the
+click rhythm; in time mode, TAP will convert the click interval directly into a millisecond
+value and apply it to the delay time parameter.
+feedback
+Sets the proportion of the delayed signal returned to the delay processor, which is used to
+control the number of echo repetitions.
+The higher the feedback value, the more often and longer the echo will repeat.
+The lower the feedback value, the fewer echo repetitions and faster decay.
+Excessive feedback may cause echoes to continue to stack up, or even cause self-
+excitation or overload. Please adjust appropriately according to actual needs.
+• 
+• 
+• 
+• 
+KB Control Center User Guide
+33 of 39
+===== PAGE 34 =====
+Delay mode
+Used to select how delayed sounds are played in the left and right channels. Different
+modes will change the sound image position and spatial feeling of the delayed signal.
+PINGPONG: Ping pong delay mode, the delayed sound will alternately repeat between
+the left and right channels, producing a stereo echo effect that moves back and forth
+from left to right.
+RIGHT: Right start mode. existPINGPONG When on, the first delay starts on the right
+channel and then repeats alternately between the left and right channels.
+LEFT : Left start mode. existPINGPONG When on, the first delay starts on the left
+channel and then repeats alternately between the left and right channels.
+Sequential processing:Delay is processed first and then reverb is processed in the order
+of the signal chain; therefore, the signal generated by the delay will also enter the reverb.
+andRow processing:Delay and reverberation act on the original signal at the same time,
+and they are independent of each other and do not affect each other.
+• 
+• 
+• 
+KB Control Center User Guide
+34 of 39
+===== PAGE 35 =====
+Adjustment suggestions
+First general Dry to delay ratio T urn it down to ensure the original sound is clear.
+Set a suitable time, or use TAP Click along with the beat to set the delay time.
+slowly increase feedback, until the number of echoes meets the needs.
+Choose according to the desired spatial effect PINGPONG mode and set it after turning
+it on RIGHT/LEFT 。
+Final fine-tuningDry to wet ratio, to prevent the delayed sound from overpowering the
+original sound.
+2. Reverb (44.1-48kHz)
+Simulate the reflection and attenuation process of sound in different acoustic spaces, add
+natural reflection to "dry" sound, and create a sense of space and depth. The following are
+the functions and operation instructions of this reverb effector:
+Parameter adjustment area
+Dry/Reverb balance knob
+Dry sound: refers to the original sound without added reverberation effect; reverberation:
+refers to the sound with added spatial reflection effect. Adjust this knob to control the ratio
+of "dry" to "reverbed" sounds:
+The smaller the value, the higher the proportion of dry sound, and the sound will sound
+“dry” and “closer”.
+The larger the value, the higher the proportion of reverberation sound, and the sound
+will sound "wet" and "distant" (suitable for creating a sense of atmosphere, but too
+much can easily lead to muddy sound, so it needs to be balanced according to needs).
+1. 
+2. 
+3. 
+4. 
+5. 
+• 
+• 
+KB Control Center User Guide
+35 of 39
+===== PAGE 36 =====
+Space size
+The physical size of the simulated space (such as a small room, a hall) has 6 levels from
+small to large.
+T urn the knob up: The sense of space is stronger, and the sound seems to be
+reverberating in a "large space" (such as a hall).
+T urn the knob smaller: The space feels more compact, and the sound seems to be
+reflected in a "small space" (such as a bedroom).
+Attenuation
+Controls the duration of reverberation (the time a sound goes from loud to dead).
+T urn the knob up: the reverberation time is longer and the sound "died" (like the long
+echo of a cathedral).
+T urn the knob down: the reverberation time is shorter and the sound "dies out
+quickly" (like a brief reflection in a small room).
+Width
+Adjusts the stereo width of the reverb (the diffuseness of the left and right channels).
+T urn the knob up: the reverb is more "open", filling the left and right channels, creating
+a wider sense of space.
+T urn the knob down: the reverb is more "focused", leaning towards the middle channel,
+and the sound is tighter.
+Preset mode button
+Just click the button to quickly apply the preset classic reverb scene, which is suitable for
+novices to get started quickly:
+STUDIO：Close room reverberation creates a specific small space.
+LIVE：Mid-range stage reverberation gives the sound a sense of presence and creates
+a medium-sized space.
+HALL：The long-distance hall reverberation gives the sound overwhelming momentum
+and creates a large space.
+BYPASS：After clicking, the input signal will bypass the effector (ie not be processed by
+the effector).
+Adjustment suggestions
+Start with a preset: click firstSTUDIO/LIVE/HALL Choose a rough scene, then fine-tune
+the knobs to optimize the details.
+Adjust while listening: Keep the sound playing (such as playing music, talking) while
+adjusting the knob, and gradually adjust according to the listening experience to avoid
+excessive reverberation.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+KB Control Center User Guide
+36 of 39
+===== PAGE 37 =====
+8.4 Internal recording area
+Sends hardware input signals and computer audio signals (such as playback software or
+browser audio signals) back to the computer for transmission to a DAW for recording.
+Internal recording channel selection
+Select the signal that needs to be transmitted back to the computer.
+Options:
+·All mixes
+·All hardware input signals (if you select mono input, the mono signal will be assigned to
+the left and right channels.)
+·All computer playback signals
+Link stereo linkage control
+Lighting this button will set the two adjacent input channels to one stereo channel to
+achieve linkage control. For example, one fader can control the signal levels of two
+adjacent inputs at the same time without having to push two faders. In addition, after
+turning on Link, the pan knobs of the two channels will automatically be set to extreme left
+and extreme right respectively.
+Level indication
+Displays the current signal level (in dBFS). When it exceeds 0dBFS, the clipping indicator
+light at the top lights up.
+The left and right are the level indicators of the two channels respectively. One channel
+has two level indicators, the outside is the input level indicator and the inside is the output
+level indicator.
+Putter
+The fader controls the level that the corresponding channel sends to the selected mixer.
+KB Control Center User Guide
+37 of 39
+===== PAGE 38 =====
+MUTE
+Mute this channel when the light is on. Click the MUTE button again to unmute.
+8.5 Output 
+Channel name
+Displays the channel name of the output area.
+Output channel selection
+Select the signal channel you want to output to the headphone jack (HP) or OTG jack (OTG
+OUT).
+Options:
+·All mixes
+·All hardware input signals (if you select mono input, the mono signal will be assigned to
+the left and right channels.)
+·All computer playback signals
+Output options toggle button
+Click this button to quickly switch between different output options. The available output
+options are: all, line, amp 6.35, amp 3.5, amp all, line + amp 6.35, line + amp 3.5.
+KB Control Center User Guide
+38 of 39
+===== PAGE 39 =====
+EQ
+The headphone output provides 10-band PEQ adjustment to adjust the sound you hear in
+your headphones without changing the original signal recorded to your computer. Used to
+create a comfortable, accurate and personalized monitoring environment.
+Click the EQ button to turn on or off the EQ function; double-click or right-click to enter the
+EQ setting page.
+Headphone gain setting
+When the light is off, it is low gain; when the light is on, it is high gain.
+Level indication
+Displays the current signal level (in dBFS). When it exceeds 0dBFS, the clipping indicator
+light at the top lights up.
+The left and right are the level indicators of the two channels respectively. One channel
+has two level indicators, the outside is the input level indicator and the inside is the output
+level indicator.
+Putter
+The fader controls the output level of the corresponding channel.
+MUTE
+Mute this channel when the light is on. Click the MUTE button again or adjust the volume
+to unmute.
+Output settings
+There is output when it is on, and it is silent when it is off.
+KB Control Center User Guide
+39 of 39

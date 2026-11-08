@@ -1,0 +1,14 @@
+﻿import sys, struct
+sys.path.insert(0, r"E:\Programming shit\Topping\_re")
+from pe import PE
+from capstone import Cs, CS_ARCH_X86, CS_MODE_64
+pe = PE(r"C:\Program Files\TOPPING Pro\USB Audio Device Driver\x64\ToppingProUsbAudioapi_x64.dll")
+md = Cs(CS_ARCH_X86, CS_MODE_64)
+# OpenDeviceByIndex -> find it, then look at what it stores into [dev+0x68]
+rva = pe.exports['TUSBAUDIO_OpenDeviceByIndex']
+o=pe.rva2off(rva)
+print('OpenDeviceByIndex rva 0x%X' % rva)
+n=0
+for ins in md.disasm(pe.data[o:o+260], pe.imagebase+rva):
+    print('  0x%X  %-9s %s' % (ins.address, ins.mnemonic, ins.op_str)); n+=1
+    if n>45: break

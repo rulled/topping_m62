@@ -58,3 +58,6 @@ desktop.ini
 .env.local
 *.pem
 *.key
+
+# Временные файлы сообщений коммитов
+.git-msg-*.txt

@@ -1,0 +1,60 @@
+# ═══════════════════ ЗАВИСИМОСТИ ═══════════════════
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ═══════════════════ МУСОР ═══════════════════
+# Пустые файлы-артефакты отладки (124 пустых .txt в research/)
+*.pyc
+__pycache__/
+
+# Логи серверов и отладочные дампы.
+# В research/ накопились сотни файлов вида s2.txt, t7e.txt, u1.txt —
+# это перехваченный stdout `node src/server.js` при разных запусках
+# (строка "[m62] HTTP http://127.0.0.1:87xx"). Ценности не имеют.
+research/s[0-9]*.txt
+research/t[0-9]*.txt
+research/u[0-9]*.txt
+research/v[0-9]*.txt
+research/w[0-9]*.txt
+research/d[0-9].txt
+research/toe.txt
+research/tpe.txt
+research/tie.txt
+
+# Логи серверов и отладочные дампы
+server-out.log
+server-err.log
+srv_out.txt
+srv_err.txt
+logger-out.txt
+logger-err.txt
+logger2-out.txt
+logger2-err.txt
+logger-pid.txt
+settings-log.txt
+
+# ═══════════════════ ОС И РЕДАКТОРЫ ═══════════════════
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~
+
+# ═══════════════════ БЭКАПЫ WORKSPACE MCC ═══════════════════
+# Копии INI-файлов, которые делает сам MCC при правках.
+# В репозитории достаточно самих рабочих INI из research/workspace*.
+*.autobak
+*.bak
+*.bak2
+*.bak-*
+*.tEPROc
+*.decide.bak
+
+# ═══════════════════ СЕКРЕТЫ (на всякий случай) ═══════════════════
+.env
+.env.local
+*.pem
+*.key

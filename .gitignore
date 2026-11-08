@@ -61,3 +61,5 @@ desktop.ini
 
 # Временные файлы сообщений коммитов
 .git-msg-*.txt
+
+test1.pcap

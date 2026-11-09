@@ -63,3 +63,6 @@ desktop.ini
 .git-msg-*.txt
 
 test1.pcap
+
+# Временный файл сообщения коммита
+.gitmsg.tmp

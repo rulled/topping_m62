@@ -76,12 +76,19 @@ import {
   buildDuckingFrames,
   buildLoopbackFrames,
   describeDuckingLoopback,
+  describeMask,
   LOOPBACK_PAIRS,
   LOOPBACK_PAIR_NAMES,
   sourceCode,
   dbToQ25,
   q25ToDb,
 } from './duck-loopback-hid.js';
+import {
+  buildPhantomFrames,
+  describePhantom,
+  PHANTOM_CHANNELS,
+  readPhantomState,
+} from './phantom-hid.js';
 
 const PORT = Number(process.env.M62_PORT ?? 8787);
 const HOST = process.env.M62_HOST ?? '127.0.0.1';
@@ -445,6 +452,72 @@ const server = http.createServer(async (req, res) => {
     //
     // Структура восстановлена из захвата USBPcap (docs/MIXER.md):
     //   5 шин x 11 источников, значение в Q25.
+    // ═══ 48V (ФАНТОМ) ═══
+    //
+    // Команда найдена захватом 2026-11-10: 0x21:0x03 (1=вкл, 0=выкл).
+    // Это ТОЛЬКО команда — устройство не сообщает состояние в потоке.
+    //
+    // ОПАСНО: фантом подаётся на микрофонный вход. Если подключена
+    // линия или инструмент — можно повредить. Поэтому требуем
+    // подтверждения и проверяем, что джек выглядит как микрофонный.
+
+    if (req.method === 'GET' && url.pathname === '/api/phantom') {
+      const snap = transport.snapshot();
+      const state = {};
+      for (const ch of PHANTOM_CHANNELS) {
+        state[ch] = readPhantomState(snap, ch);
+      }
+      return json(res, 200, { ok: true, channels: state, ...describePhantom() });
+    }
+
+    if (req.method === 'POST' && url.pathname === '/api/phantom') {
+      const body = await readBody(req);
+      const channel = String(body.channel ?? 'IN1');
+      if (!PHANTOM_CHANNELS.includes(channel)) {
+        return json(res, 400, {
+          ok: false,
+          error: `неизвестный вход: ${channel}`,
+          known: PHANTOM_CHANNELS,
+        });
+      }
+      if (typeof body.on !== 'boolean') {
+        return json(res, 400, {
+          ok: false,
+          error: 'укажи on: true или false',
+          warning: 'фантом может повредить линейный вход или инструмент',
+        });
+      }
+      if (body.confirm !== true) {
+        return json(res, 400, {
+          ok: false,
+          error: 'фантомное питание требует подтверждения',
+          hint: 'передайте confirm: true, если уверены, что к входу '
+            + 'подключён микрофон, а не линия или инструмент',
+        });
+      }
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+      try {
+        const frames = buildPhantomFrames(channel, body.on);
+        const out = transport.writeFrames(frames);
+        stateStore.update('prefs', { [`phantom_${channel}`]: body.on });
+        broadcast({ type: 'ack', op: 'phantom', channel, on: body.on, via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          channel,
+          on: body.on,
+          via: 'hid',
+          frames: out.frames,
+          stateKnown: false,
+          note: '48V — команда без обратной связи. Устройство не сообщает '
+            + 'изменение в потоке, состояние хранится у клиента.',
+        });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
+    }
+
     // ═══ ЗАПИСЬ DUCKING И LOOPBACK В УСТРОЙСТВО ═══
     //
     // До 2026-11-10 этих маршрутов не было: состояние только хранилось

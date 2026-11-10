@@ -64,6 +64,67 @@ export const DUCK_FIELDS = {
 
 export const DUCK_FIELD_NAMES = Object.keys(DUCK_FIELDS);
 
+/**
+ * МАСКИ DUCKING — ДВЕ, А НЕ ОДНА.
+ *
+ * Доказано захватом 2026-11-10 (`capture-48v-and-mask.ps1`):
+ * в INI выключили РОВНО ОДИН флаг (IN1AUX=false), и после запуска
+ * MCC под захватом маска стала:
+ *
+ *     0x43:0x05 = 254   (1111 1110 — выключен бит 0)
+ *     0x43:0x06 = 255   (все биты)
+ *
+ * Значит:
+ *     0x43:0x05 = маска источников для IN1
+ *     0x43:0x06 = маска источников для IN2
+ *
+ * Это НЕ младший и старший байт одной маски, а две отдельные.
+ *
+ * Соответствие битов источникам: **AUX = бит 0** (доказано).
+ * Остальные биты не проверены по одному — порядок отличается от
+ * порядка в MIXER_SOURCES (там AUX был бы битом 4, а он бит 0).
+ */
+export const DUCK_MASK = {
+  in1: { prop: 0x05, note: 'маска входов для IN1' },
+  in2: { prop: 0x06, note: 'маска входов для IN2' },
+  /** Доказанное соответствие. Остальные биты — неизвестны. */
+  knownBits: {
+    0: 'AUX',
+  },
+};
+
+/**
+ * Собирает маску из списка источников.
+ *
+ * РАБОТАЕТ ТОЛЬКО ДЛЯ AUX: остальные биты не проверены, поэтому
+ * функция требует явного списка битов, а не имён.
+ *
+ * @param {number[]} bits  номера битов (0..7)
+ * @returns {number} байт маски
+ */
+export function buildMaskFromBits(bits) {
+  let v = 0;
+  for (const b of bits) {
+    if (!Number.isInteger(b) || b < 0 || b > 7) {
+      throw new Error(`бит должен быть 0..7, получили ${b}`);
+    }
+    v |= 1 << b;
+  }
+  return v;
+}
+
+/** Расшифровывает байт маски в список битов с известными именами. */
+export function describeMask(value) {
+  if (value === null || value === undefined) return null;
+  const bits = [];
+  for (let i = 0; i < 8; i += 1) {
+    if (value & (1 << i)) {
+      bits.push({ bit: i, name: DUCK_MASK.knownBits[i] ?? null });
+    }
+  }
+  return { value, bits, known: DUCK_MASK.knownBits };
+}
+
 /** Пары loopback: имя -> (группа L, группа R). */
 export const LOOPBACK_PAIRS = {
   lb12: { l: 0x51, r: 0x52, label: 'Loopback 1/2' },

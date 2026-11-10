@@ -34,7 +34,7 @@ import { classifyTag, COMP_METER_ROLES, describeTags, gainReductionDb, meterToDb
 import { M62Transport } from './transport.js';
 import { describeMixer, MIXER_SOURCES, MIXER_BUSES, SOURCE_CODES } from './mixer-tags.js';
 import { buildBandFrames, describeEqHp, EQ_HP_BANDS, readAllBands } from './eq-hp.js';
-import { clickByName, describeUiControls, nudgeReverb, REVERB_BUTTONS, REVERB_DIALS, REVERB_TYPE_BY_TAG, setReverbType } from './ui-control.js';
+import { clickByName, describeUiControls } from './ui-control.js';
 import { AUDIO_OPTIONS as AUDIO_OPTIONS_FOR_API, readAllAudioParams, setAudioParam } from './audio-params.js';
 import { bandEnableState, describeEq, dialIndexMap, EQ_LAYOUT, FILE_SETTLE_MS, isEqWindowOpen, nudgeEqParam, openEqWindow, pressDial, readEqSwitch, readEqTypes, setEqParamTo, setEqSwitch } from './eq-control.js';
 import * as comp from './comp-control.js';
@@ -54,12 +54,23 @@ import {
   readCompressor as readCompressorHid,
   validateCompValue,
 } from './comp-hid.js';
+import {
+  buildReverbBatch,
+  buildReverbFrames,
+  describeReverbHid,
+  readReverb,
+  REVERB_BYPASS,
+  REVERB_FIELDS,
+  REVERB_TYPES,
+  typeCode,
+} from './reverb-hid.js';
 import { Q_MAX, Q_MIN } from './eq-scales.js';
 import { describeScales } from './eq-scales.js';
 import { checkModeConsistency, describeMode, detectModeFromHid } from './modes.js';
 import { PRELUDE, ps } from './tools/uia.js';
 import { createWorkspace, deleteWorkspace, switchWorkspace } from './workspace.js';
 import { WorkspaceService } from './workspace-service.js';
+import * as stateStore from './state-store.js';
 
 const PORT = Number(process.env.M62_PORT ?? 8787);
 const HOST = process.env.M62_HOST ?? '127.0.0.1';
@@ -423,6 +434,89 @@ const server = http.createServer(async (req, res) => {
     //
     // Структура восстановлена из захвата USBPcap (docs/MIXER.md):
     //   5 шин x 11 источников, значение в Q25.
+    // ═══ СОБСТВЕННОЕ ХРАНИЛИЩЕ СОСТОЯНИЯ ═══
+    //
+    // Микшер, loopback и ducking из устройства не читаются (IN=0 во
+    // всех захватах). Раньше их состоянием был workspace-INI MCC, что
+    // привязывало бекенд к установленному M Control Center.
+    //
+    // Теперь это отдельный JSON в %APPDATA%\m62\state.json.
+    // MCC не нужен ни запущенным, ни установленным.
+    if (req.method === 'GET' && url.pathname === '/api/state') {
+      return json(res, 200, { ok: true, ...stateStore.describe() });
+    }
+
+    // Полное содержимое состояния (микшер, loopback, ducking).
+    if (req.method === 'GET' && url.pathname === '/api/state/full') {
+      const st = stateStore.load();
+      return json(res, 200, { ok: true, state: st });
+    }
+
+    // Импорт из workspace MCC (однократно, для миграции).
+    if (req.method === 'POST' && url.pathname === '/api/state/import') {
+      try {
+        const ws = workspace.describe();
+        if (!ws.available) {
+          return json(res, 400, {
+            ok: false,
+            error: 'workspace MCC недоступен — импортировать нечего',
+            hint: 'если MCC не установлен, состояние начнётся с пустого',
+          });
+        }
+        const out = stateStore.importFromWorkspace(ws);
+        workspace.invalidate();
+        broadcast({ type: 'ack', op: 'state-import', ...out });
+        return json(res, 200, { ok: true, ...out, ...stateStore.describe() });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
+    }
+
+    // Сохранить матрицу микшера в своё хранилище (без записи в устройство).
+    if (req.method === 'POST' && url.pathname === '/api/state/mixer') {
+      const body = await readBody(req);
+      if (!body.buses || typeof body.buses !== 'object') {
+        return json(res, 400, { ok: false, error: 'нужно поле buses: { bus: { source: db } }' });
+      }
+      try {
+        const st = stateStore.setMixer(body.buses);
+        broadcast({ type: 'ack', op: 'state-mixer' });
+        return json(res, 200, { ok: true, buses: Object.keys(st.mixer.buses).length });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
+    }
+
+    // Сохранить loopback в своё хранилище.
+    if (req.method === 'POST' && url.pathname === '/api/state/loopback') {
+      const body = await readBody(req);
+      if (!body.pairs || typeof body.pairs !== 'object') {
+        return json(res, 400, { ok: false, error: 'нужно поле pairs: { lb12: { source, gain } }' });
+      }
+      try {
+        const st = stateStore.setLoopback(body.pairs);
+        broadcast({ type: 'ack', op: 'state-loopback' });
+        return json(res, 200, { ok: true, pairs: Object.keys(st.loopback.pairs).length });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
+    }
+
+    // Сохранить ducking в своё хранилище.
+    if (req.method === 'POST' && url.pathname === '/api/state/ducking') {
+      const body = await readBody(req);
+      if (!body.values || typeof body.values !== 'object') {
+        return json(res, 400, { ok: false, error: 'нужно поле values: { ... }' });
+      }
+      try {
+        const st = stateStore.setDucking(body.values);
+        broadcast({ type: 'ack', op: 'state-ducking' });
+        return json(res, 200, { ok: true, keys: Object.keys(st.ducking.values).length });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
+    }
+
     //   Пишется ТОЛЬКО пакетом внутри bulk push (0x11:0x20).
     //   Обратно НЕ читается — состояние хранит клиент.
     if (req.method === 'GET' && url.pathname === '/api/mixer') {
@@ -724,26 +818,113 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
+    // ═══ РЕВЕРБ ЧЕРЕЗ HID ═══
+    //
+    // Проверено 2026-11-10: пишется прямой записью в 0x44, окно MCC
+    // не нужно. Карта из дизассемблера MCC (NOTES §11.5):
+    //
+    //   0x44:08 DryWet   0x44:09 Room   0x44:0a Decay
+    //   0x44:0b тип      0x44:0c MuteFX 0x44:0f Width (x100)
+    //
+    // ЛОВУШКА: при типе Bypass (1) параметры НЕ принимаются —
+    // устройство молча их игнорирует. Именно из-за этого первая
+    // проверка дала ложный вывод «реверб не пишется через HID».
+    // Правильный порядок: сначала включить тип, потом параметры.
     if (req.method === 'POST' && url.pathname === '/api/reverb') {
       const body = await readBody(req);
-      const out = setReverbType(body.type);
-      workspace.invalidate();
-      broadcast({ type: 'ack', op: 'reverb', type: body.type });
-      return json(res, 200, { ok: true, type: body.type, result: out });
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+      try {
+        const code = typeCode(body.type);
+        const snap = transport.snapshot();
+        const before = readReverb(snap);
+        const frames = buildReverbFrames('type', code);
+        const out = transport.writeFrames(frames);
+        broadcast({ type: 'ack', op: 'reverb', type: body.type, code, via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          type: REVERB_TYPES[code],
+          code,
+          before: before.typeName,
+          via: 'hid',
+          frames: out.frames,
+        });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
     }
 
-    // Параметры реверба: dial'ы Level/DryWet/Decay/Width (NOTES §71).
-    // Работают только когда реверб не в Bypass — сначала выберите тип.
-    // Дельта относительная: dial не даёт задать абсолютное значение.
+    // Параметры реверба: DryWet / Room / Decay / Width.
+    //
+    // Принимаем value (абсолютное) и delta (относительное — оставлено
+    // для совместимости с прежним API).
     if (req.method === 'POST' && url.pathname === '/api/reverb/param') {
       const body = await readBody(req);
       if (!body.param) return json(res, 400, { ok: false, error: 'укажи param' });
-      const delta = Number(body.delta);
-      if (!Number.isFinite(delta)) return json(res, 400, { ok: false, error: 'укажи числовой delta' });
-      const out = nudgeReverb(String(body.param), delta);
-      workspace.invalidate();
-      broadcast({ type: 'ack', op: 'reverb-param', ...out });
-      return json(res, 200, { ok: true, ...out });
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+      try {
+        const field = String(body.param);
+        if (!REVERB_FIELDS[field] || field === 'type' || field === 'muteFx') {
+          return json(res, 400, {
+            ok: false,
+            error: `неизвестный параметр: ${field}`,
+            known: ['dryWet', 'room', 'decay', 'width'],
+            hint: 'тип реверба меняется через POST /api/reverb',
+          });
+        }
+
+        const snap = transport.snapshot();
+        const cur = readReverb(snap);
+
+        // ГЛАВНОЕ: при Bypass параметры не применяются. Не делаем вид,
+        // что записали — говорим прямо.
+        if (cur.bypass) {
+          return json(res, 409, {
+            ok: false,
+            error: 'реверб в Bypass — параметры не применяются',
+            hint: 'сначала включите тип: POST /api/reverb {type:"LIVE"}',
+            currentType: cur.typeName,
+          });
+        }
+
+        let target;
+        if (body.value !== undefined && body.value !== null) {
+          target = Number(body.value);
+        } else if (body.delta !== undefined) {
+          const d = Number(body.delta);
+          if (!Number.isFinite(d) || d === 0) {
+            return json(res, 400, { ok: false, error: 'delta должно быть числом ≠ 0' });
+          }
+          const curVal = cur[field];
+          if (curVal === null || curVal === undefined) {
+            return json(res, 409, { ok: false, error: `текущее значение ${field} неизвестно — задайте value` });
+          }
+          target = field === 'width' ? curVal + d : curVal + d;
+        } else {
+          return json(res, 400, { ok: false, error: 'нужен value или delta' });
+        }
+
+        // Width в API дробный (0..1), в устройстве x100.
+        const frames = buildReverbFrames(field, target);
+        const out = transport.writeFrames(frames);
+        broadcast({
+          type: 'ack', op: 'reverb-param', param: field,
+          before: cur[field], after: target, via: 'hid',
+        });
+        return json(res, 200, {
+          ok: true,
+          param: field,
+          before: cur[field],
+          after: target,
+          via: 'hid',
+          frames: out.frames,
+        });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
     }
 
     // Аудиопараметры драйвера: sample rate и buffer size.
@@ -780,19 +961,27 @@ const server = http.createServer(async (req, res) => {
       }
     }
     if (req.method === 'GET' && url.pathname === '/api/reverb') {
-      const ws = workspace.describe();
-      const fx = ws.available ? ws.effects : null;
+      // ═══ ЧТЕНИЕ ЧЕРЕЗ HID ═══
+      //
+      // Все параметры реверба приходят тегами 0x44 — файл MCC не нужен.
+      const snap = transport.snapshot();
+      const cur = readReverb(snap);
+      const anyHid = Object.entries(cur)
+        .some(([k, v]) => !['typeName', 'bypass'].includes(k) && v !== null && v !== undefined);
+
       return json(res, 200, {
         ok: true,
-        types: Object.keys(REVERB_BUTTONS),
-        typeByTag: REVERB_TYPE_BY_TAG,
-        params: REVERB_DIALS,
-        current: fx?.reverb ?? null,
+        via: 'hid',
+        types: Object.keys(REVERB_TYPES).map((c) => REVERB_TYPES[c]),
+        typeCodes: REVERB_TYPES,
+        params: ['dryWet', 'room', 'decay', 'width'],
+        current: anyHid ? cur : null,
+        hid: describeReverbHid(),
         caveats: [
-          'параметры реверба меняются только ОТНОСИТЕЛЬНО (delta), не абсолютно',
-          'при ReverbType=Bypass dial-ы не реагируют — сначала выберите тип',
-          'точность каждого изменения ±1 шаг (см. perNotch)',
-          'требуется запущенный M Control Center',
+          'ПРИ Bypass параметры НЕ применяются — сначала выберите тип '
+            + '(это же верно для дилов в самом MCC, NOTES §71)',
+          'Width задаётся дробным 0..1 в API, в устройство уходит как x100',
+          'MCC не нужен: чтение и запись идут через HID',
         ],
       });
     }
@@ -1195,19 +1384,21 @@ const server = http.createServer(async (req, res) => {
 
     // Параметры EQ — из файла workspace (единственный источник значений)
     if (req.method === 'GET' && url.pathname === '/api/eq/params') {
-      const ws = workspace.describe();
-      if (!ws.available) return json(res, 400, { ok: false, error: 'workspace недоступен' });
-      const eq = ws.eq ?? [];
-      const out = { ok: true, layout: EQ_LAYOUT, blocks: [] };
-      for (const block of eq) {
+      // ═══ ИЗ HID ═══
+      //
+      // Раньше маршрут падал с 400, если не было файла MCC. Теперь
+      // данные берутся из тегов, файл не нужен.
+      const snap = transport.snapshot();
+      const out = { ok: true, via: 'hid', layout: EQ_LAYOUT, blocks: [] };
+      for (const [id, channel] of [['EQ_IN1', 'IN1'], ['EQ_IN2', 'IN2']]) {
         out.blocks.push({
-          id: block.id,
-          format: block.format,
-          bands: (block.bands ?? []).map((b) => ({
+          id,
+          channel,
+          bands: readChannelBands(snap, channel).map((b) => ({
             band: b.band,
-            raw: b.raw,
+            enable: b.enable,
             type: b.type,
-            typeName: EQ_LAYOUT.filterTypes[b.type] ?? null,
+            typeName: b.typeName,
             freq: b.freq,
             q: b.q,
             gain: b.gain,
@@ -1550,9 +1741,16 @@ wss.on('connection', (ws) => {
         broadcast({ type: 'ack', op: 'command', ...out });
       } else if (msg.type === 'setReverb') {
         const typeName = msg.reverbType ?? msg.value;
-        const out = setReverbType(typeName);
-        workspace.invalidate();
-        broadcast({ type: 'ack', op: 'reverb', type: typeName, result: out });
+        // Через HID: тот же путь, что POST /api/reverb.
+        try {
+          const code = typeCode(typeName);
+          const out = transport.writeFrames(buildReverbFrames('type', code));
+          broadcast({
+            type: 'ack', op: 'reverb', type: REVERB_TYPES[code], code, via: 'hid', frames: out.frames,
+          });
+        } catch (err) {
+          ws.send(JSON.stringify({ type: 'error', op: 'reverb', error: String(err?.message ?? err) }));
+        }
       } else if (msg.type === 'getState') {
         // Полный контекст: контролы, настройки, workspace, режим.
         // Фронту это нужно при подключении, чтобы сразу отрисовать всё.

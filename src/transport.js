@@ -357,6 +357,9 @@ export class M62Transport extends EventEmitter {
     this.send(0x11, PP_BULK_BEGIN, 1);
     for (const f of frames) {
       this.send(f.target, f.prop, f.value);
+      if (opts.updateCache !== false) {
+        this.cache.set(`${f.target}:${f.prop}`, f.value);
+      }
     }
     this.send(0x11, PP_BULK_BEGIN, 0);
     if (opts.announce !== false) {
@@ -369,13 +372,22 @@ export class M62Transport extends EventEmitter {
   /**
    * Записать кадры одиночными посылками, без брекета.
    *
-   * Для EQ входов и компрессора брекет НЕ обязателен — проверено
-   * 2026-11-10: и то и другое пишется прямой записью. Брекет оставлен
-   * как опция (`viaBracket`), потому что для некоторых полей он может
-   * понадобиться; по умолчанию путь без него.
+   * Для EQ входов, компрессора и реверба брекет НЕ обязателен —
+   * проверено 2026-11-10: всё пишется прямой записью.
+   *
+   * ВАЖНО: после записи кеш обновляется вручную.
+   *
+   * Почему: устройство не подтверждает запись событием, а следующий
+   * ANNOUNCE приходит не сразу (и в случае EQ — только раз в сессию).
+   * Без обновления кеша второй же вызов читает СТАРОЕ значение и
+   * принимает неверное решение: например, «реверб в Bypass, менять
+   * параметры нельзя», хотя тип только что включён.
+   *
+   * Устройство всё равно остаётся источником истины: когда придёт
+   * настоящее событие, оно перезапишет кеш своим значением.
    *
    * @param {Array<{target:number, prop:number, value:number}>} frames
-   * @param {{viaBracket?: boolean, announce?: boolean}} [opts]
+   * @param {{viaBracket?: boolean, announce?: boolean, updateCache?: boolean}} [opts]
    */
   writeFrames(frames, opts = {}) {
     if (!Array.isArray(frames) || frames.length === 0) {
@@ -386,6 +398,10 @@ export class M62Transport extends EventEmitter {
     }
     for (const f of frames) {
       this.send(f.target, f.prop, f.value);
+      // оптимистично обновляем кеш
+      if (opts.updateCache !== false) {
+        this.cache.set(`${f.target}:${f.prop}`, f.value);
+      }
     }
     if (opts.announce !== false) {
       this.send(0x11, PP_ANNOUNCE, 1);

@@ -1043,6 +1043,79 @@ EQ, джеки, громкости, селекторы.
 3. **Не читается обратно.** Состояние хранит клиент. MCC при старте
    перезаписывает микшер своей матрицей из workspace-INI.
 
+## Состояние, которое нельзя прочитать из устройства
+
+Микшер, loopback и ducking **не читаются из HID** — проверено, `IN=0`
+во всех захватах. Значит их состояние надо хранить самим.
+
+Раньше им был workspace-INI MCC, из-за чего 7 маршрутов падали без
+установленного M Control Center. Теперь это отдельный JSON:
+
+```
+%APPDATA%\m62\state.json
+```
+
+**MCC не нужен ни запущенным, ни установленным.**
+
+### `GET /api/state`
+
+Сводка хранилища.
+
+```json
+{ "ok": true,
+  "dir": "C:\\Users\\<user>\\AppData\\Roaming\\m62",
+  "file": "...\\state.json",
+  "version": 1, "updatedAt": "2026-11-10T13:09:12.824Z",
+  "source": "imported from MCC workspace",
+  "mixer": { "buses": ["A","B","C","D","E"], "sources": 50, "lastWrittenAt": null },
+  "loopback": { "pairs": 4, "lastWrittenAt": null },
+  "ducking": { "keys": 8, "lastWrittenAt": null },
+  "prefs": 0 }
+```
+
+### `GET /api/state/full`
+
+Полное содержимое, включая матрицу микшера.
+
+### `POST /api/state/import`
+
+Однократный импорт из workspace MCC — для перехода со старого способа.
+Если состояние уже заполнено, ничего не затирает.
+
+```json
+{ "ok": true, "imported": true,
+  "mixerBuses": 5, "loopbackPairs": 4, "duckingKeys": 8 }
+```
+
+### `POST /api/state/mixer`
+
+Сохранить матрицу микшера в своё хранилище (без записи в устройство).
+
+```json
+{ "buses": { "A": { "PB12": 0, "IN12": -6 } } }
+```
+
+Запись в само устройство — отдельно, через `POST /api/mixer`
+(он требует полную матрицу, потому что микшер пишется одним пакетом).
+
+### `POST /api/state/loopback`
+
+Сохранить loopback в своё хранилище.
+
+```json
+{ "pairs": { "lb12": { "source": 17, "gain": 0 } } }
+```
+
+### `POST /api/state/ducking`
+
+Сохранить параметры ducking в своё хранилище.
+
+```json
+{ "values": { "switch": 0, "threshold": -30 } }
+```
+
+---
+
 ### `GET /api/mixer`
 
 Карта микшера: источники, шины, блоки, порядок групп, шкала.

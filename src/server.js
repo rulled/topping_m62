@@ -71,6 +71,17 @@ import { PRELUDE, ps } from './tools/uia.js';
 import { createWorkspace, deleteWorkspace, switchWorkspace } from './workspace.js';
 import { WorkspaceService } from './workspace-service.js';
 import * as stateStore from './state-store.js';
+import {
+  buildAllLoopbackFrames,
+  buildDuckingFrames,
+  buildLoopbackFrames,
+  describeDuckingLoopback,
+  LOOPBACK_PAIRS,
+  LOOPBACK_PAIR_NAMES,
+  sourceCode,
+  dbToQ25,
+  q25ToDb,
+} from './duck-loopback-hid.js';
 
 const PORT = Number(process.env.M62_PORT ?? 8787);
 const HOST = process.env.M62_HOST ?? '127.0.0.1';
@@ -434,6 +445,94 @@ const server = http.createServer(async (req, res) => {
     //
     // Структура восстановлена из захвата USBPcap (docs/MIXER.md):
     //   5 шин x 11 источников, значение в Q25.
+    // ═══ ЗАПИСЬ DUCKING И LOOPBACK В УСТРОЙСТВО ═══
+    //
+    // До 2026-11-10 этих маршрутов не было: состояние только хранилось
+    // в файле (`/api/state/ducking`, `/api/state/loopback`). Протокол
+    // записи проверен скриптом-пробой, теперь вынесен в бекенд.
+    //
+    // ОГРАНИЧЕНИЕ: обратного чтения нет (`IN=0` во всех захватах).
+    // Запись принимается, но подтвердить применение можно только
+    // захватом USBPcap. Ответ поэтому говорит applied: 'unknown'.
+
+    if (req.method === 'POST' && url.pathname === '/api/ducking') {
+      const body = await readBody(req);
+      if (!body.values || typeof body.values !== 'object') {
+        return json(res, 400, {
+          ok: false,
+          error: 'нужно поле values: { threshold, attack, reduction, release, switch, maskLo, maskHi }',
+        });
+      }
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+      try {
+        const frames = buildDuckingFrames(body.values);
+        const out = transport.writeFrames(frames);
+        // сохраняем в своё хранилище: из устройства не прочитать
+        stateStore.setDucking(body.values);
+        broadcast({ type: 'ack', op: 'ducking', values: body.values, via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          via: 'hid',
+          frames: out.frames,
+          values: body.values,
+          applied: 'unknown',
+          note: 'ducking не читается из устройства — подтвердить применение можно только захватом',
+        });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
+    }
+
+    if (req.method === 'POST' && url.pathname === '/api/loopback') {
+      const body = await readBody(req);
+
+      // Две формы: одна пара {pair, source, gainDb} или всё сразу {pairs:{...}}
+      let frames;
+      let saved;
+      if (body.pairs && typeof body.pairs === 'object') {
+        frames = buildAllLoopbackFrames(body.pairs);
+        saved = body.pairs;
+      } else {
+        const pair = String(body.pair ?? '');
+        if (!LOOPBACK_PAIRS[pair]) {
+          return json(res, 400, {
+            ok: false,
+            error: `неизвестная пара: ${pair || '(не указана)'}`,
+            known: LOOPBACK_PAIR_NAMES,
+            hint: 'можно передать {pairs:{lb12:{source:"FX",gainDb:0}}} для нескольких сразу',
+          });
+        }
+        frames = buildLoopbackFrames(pair, { source: body.source, gainDb: body.gainDb });
+        saved = { [pair]: { source: body.source, gainDb: body.gainDb } };
+      }
+
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+      try {
+        const out = transport.writeFrames(frames);
+        stateStore.setLoopback(saved);
+        broadcast({ type: 'ack', op: 'loopback', pairs: saved, via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          via: 'hid',
+          frames: out.frames,
+          pairs: saved,
+          applied: 'unknown',
+          note: 'loopback не читается из устройства — подтвердить применение можно только захватом',
+        });
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+      }
+    }
+
+    // Справочник по ducking и loopback: адреса, коды источников, шкала.
+    if (req.method === 'GET' && url.pathname === '/api/duck-loopback') {
+      return json(res, 200, { ok: true, ...describeDuckingLoopback() });
+    }
+
     // ═══ СОБСТВЕННОЕ ХРАНИЛИЩЕ СОСТОЯНИЯ ═══
     //
     // Микшер, loopback и ducking из устройства не читаются (IN=0 во

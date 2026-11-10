@@ -56,8 +56,10 @@ const IMPOSSIBLE = new Map([
   ['POST /api/state/import', 'импорт из INI MCC'],
   ['GET /api/workspace', 'читает INI MCC'],
 
-  // --- смена режима: требует остановки и запуска MCC ---
-  ['POST /api/mode', 'останавливает MCC, шлёт 0x11:0x1d, запускает MCC заново'],
+  // --- смена режима: ПРОВЕРЕНО 2026-11-10, работает без MCC ---
+  // было: ['POST /api/mode', 'останавливает MCC, шлёт 0x11:0x1d, запускает MCC заново'],
+  // стало: устройство перезагружается и восстанавливается само
+  // (см. prove-mode-change.js, NOTES §139). Маршрут доступен в браузере.
 
   // --- окна MCC через UIAutomation ---
   ['POST /api/mcc/click', 'клик по окну MCC'],
@@ -65,9 +67,9 @@ const IMPOSSIBLE = new Map([
   ['POST /api/compressor/open', 'открывает окно компрессора'],
   ['POST /api/compressor/close', 'закрывает окно компрессора'],
 
-  // --- sample rate: только клавиатурой UIAutomation ---
-  ['GET /api/audio-params', 'sample rate через UIAutomation'],
-  ['POST /api/audio-params', 'sample rate через UIAutomation'],
+  // --- sample rate: настройка Windows, а не протокол M62 ---
+  ['GET /api/audio-params', 'sample rate — это WAVEFORMATEX в реестре Windows'],
+  ['POST /api/audio-params', 'запись требует перезапуска аудиослужбы'],
 ]);
 
 /**

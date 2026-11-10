@@ -836,7 +836,10 @@ const server = http.createServer(async (req, res) => {
       }
       const out = await settings.setMode(body.mode, {
         waitMs: body.waitMs,
-        mccFriendly: body.mccFriendly !== false,
+        // mccFriendly по умолчанию FALSE: проверено 2026-11-10,
+        // что устройство перезагружается и восстанавливается само.
+        // Передайте mccFriendly: true, если нужен MCC вокруг смены.
+        mccFriendly: body.mccFriendly === true,
         verify: body.verify !== false,
       });
       workspace.invalidate();

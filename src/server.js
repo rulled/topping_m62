@@ -38,6 +38,22 @@ import { clickByName, describeUiControls, nudgeReverb, REVERB_BUTTONS, REVERB_DI
 import { AUDIO_OPTIONS as AUDIO_OPTIONS_FOR_API, readAllAudioParams, setAudioParam } from './audio-params.js';
 import { bandEnableState, describeEq, dialIndexMap, EQ_LAYOUT, FILE_SETTLE_MS, isEqWindowOpen, nudgeEqParam, openEqWindow, pressDial, readEqSwitch, readEqTypes, setEqParamTo, setEqSwitch } from './eq-control.js';
 import * as comp from './comp-control.js';
+import {
+  buildEqFrames,
+  describeEqHid,
+  DEVICE_TYPE_CODE,
+  eqTagAddress,
+  EQ_LIMITS as EQ_HID_LIMITS,
+  readChannelBands,
+  TYPE_BY_DEVICE_CODE,
+  validateEqValue,
+} from './eq-hid.js';
+import {
+  buildCompFrames,
+  describeCompHid,
+  readCompressor as readCompressorHid,
+  validateCompValue,
+} from './comp-hid.js';
 import { Q_MAX, Q_MIN } from './eq-scales.js';
 import { describeScales } from './eq-scales.js';
 import { checkModeConsistency, describeMode, detectModeFromHid } from './modes.js';
@@ -181,6 +197,52 @@ async function readBody(req) {
  *
  * @returns {{type:number, gain:number, freq:number, q:number, raw:string}|null}
  */
+/**
+ * Достаёт значение тега из снимка, понимая оба формата ключей.
+ *
+ * Ключи в снимке бывают hex ("9b:0f") и decimal ("155:15") —
+ * `transport.snapshot()` пишет decimal, наши скрипты hex.
+ * На этой путанице проект уже спотыкался (см. research/NOTES.md §134).
+ */
+function snapshotValue(snapshot, target, prop) {
+  if (!snapshot) return undefined;
+  const hexKey = `${target.toString(16).padStart(2, '0')}:${prop.toString(16).padStart(2, '0')}`;
+  if (snapshot[hexKey] !== undefined) return snapshot[hexKey];
+  const decKey = `${target}:${prop}`;
+  if (snapshot[decKey] !== undefined) return snapshot[decKey];
+  return undefined;
+}
+
+/**
+ * Достаёт человеческое значение поля из строки полосы.
+ *
+ * Строки приходят из двух источников с разными именами полей:
+ *   HID   (readChannelBands): { band, enable, type, gain, freq, q }
+ *   файл  (readEqBandsFromWorkspace): { type, gain, freq, q }
+ *
+ * `param` — это имя поля в терминах API: gain | freq | q.
+ */
+function eqHumanFromRow(row, param) {
+  if (!row) return null;
+  const v = row[param];
+  return v === undefined ? null : v;
+}
+
+/**
+ * Округляет значение до той точности, которую держит устройство.
+ *
+ *   gain  — целые дБ
+ *   freq  — целые Гц
+ *   q     — 4 знака (устройство хранит Q x 10000)
+ *
+ * Без этого «delta 0.5» на gain дало бы значение, которое устройство
+ * молча округлит в свою сторону, и ответ API разошёлся бы с фактом.
+ */
+function roundEqValue(param, value) {
+  if (param === 'q') return Math.round(value * 10000) / 10000;
+  return Math.round(value);
+}
+
 function readEqBandsFromWorkspace(which, band) {
   const ws = workspace.describe();
   if (!ws.available) return null;
@@ -739,25 +801,39 @@ const server = http.createServer(async (req, res) => {
     // (файл врёт Switch=1, HID не отдаёт вовсе) — NOTES §94/§97.
     if (req.method === 'GET' && url.pathname === '/api/eq') {
       try {
-        const in1 = readEqSwitch('IN1');
-        const in2 = readEqSwitch('IN2');
+        // ═══ ЧТЕНИЕ ЧЕРЕЗ HID ═══
+        //
+        // Раньше включение EQ читалось через UIAutomation (кнопка в окне
+        // MCC), поэтому без MCC маршрут падал. Теперь — из тегов
+        // 0x9b:0x0f / 0x9b:0x10.
+        const snap = transport.snapshot();
+        const sw = (prop) => {
+          const v = snapshotValue(snap, 0x9b, prop);
+          return {
+            enabled: v === 1,
+            raw: v ?? null,
+            source: v === undefined ? 'нет тега' : 'hid',
+          };
+        };
+        const in1 = { input: 'IN1', ...sw(0x0f) };
+        const in2 = { input: 'IN2', ...sw(0x10) };
+
         const body = {
           ok: true,
-          windowOpen: isEqWindowOpen(),
+          via: 'hid',
+          windowOpen: (() => {
+            try { return isEqWindowOpen(); } catch { return false; }
+          })(),
           switches: { in1, in2 },
+          bands: {
+            IN1: readChannelBands(snap, 'IN1'),
+            IN2: readChannelBands(snap, 'IN2'),
+          },
+          hid: describeEqHid(),
           ...describeEq(),
         };
-        // Типы фильтров доступны только при открытом окне.
-        // Если недоступны — явно говорим почему, а не молча опускаем поле.
-        if (body.windowOpen) {
-          try {
-            body.types = readEqTypes();
-          } catch (e) {
-            body.typesError = String(e?.message ?? e);
-          }
-        } else {
-          body.typesError = 'окно EQ закрыто — откройте его двойным кликом по кнопке EQ, чтобы прочитать типы фильтров';
-        }
+        // Типы фильтров теперь тоже из HID (свойство 0x02/0x07) —
+        // отдельный путь через окно больше не нужен.
         return json(res, 200, body);
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
@@ -768,12 +844,35 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && url.pathname === '/api/eq/switch') {
       const body = await readBody(req);
       const which = body.input === 'IN2' ? 'IN2' : 'IN1';
+
+      // ═══ ПУТЬ ЧЕРЕЗ HID ═══
+      //
+      // Общий включатель EQ входа: 0x9b:0x0f для IN1, 0x9b:0x10 для IN2.
+      // Проверено 2026-11-10: 0x9b:0f  0 -> 1 принято, откат ОК.
+      // Прежний путь (кнопка EQ в окне MCC через TogglePattern) удалён.
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+
       try {
-        const out = setEqSwitch(which, body.enabled);
-        await new Promise((r) => setTimeout(r, 1200));
-        const check = readEqSwitch(which);
-        broadcast({ type: 'ack', op: 'eq-switch', input: which, enabled: check.enabled });
-        return json(res, 200, { ok: true, ...out, verified: check.enabled });
+        const prop = which === 'IN2' ? 0x10 : 0x0f;
+        const snap = transport.snapshot();
+        const curRaw = snapshotValue(snap, 0x9b, prop);
+        const want = body.enabled === undefined
+          ? (curRaw === 1 ? 0 : 1)
+          : (body.enabled ? 1 : 0);
+
+        const out = transport.writeFrames([{ target: 0x9b, prop, value: want }]);
+        broadcast({ type: 'ack', op: 'eq-switch', input: which, enabled: want === 1, via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          input: which,
+          enabled: want === 1,
+          before: curRaw === undefined ? null : curRaw === 1,
+          changed: curRaw === undefined ? null : curRaw !== want,
+          via: 'hid',
+          frames: out.frames,
+        });
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
       }
@@ -787,19 +886,26 @@ const server = http.createServer(async (req, res) => {
     // Прочитать типы фильтров из ОТКРЫТОГО окна EQ.
     if (req.method === 'GET' && url.pathname === '/api/eq/types') {
       try {
-        if (!isEqWindowOpen()) {
-          return json(res, 409, {
-            ok: false,
-            error: 'окно EQ закрыто — сначала POST /api/eq/open',
-            hint: 'POST /api/eq/open {input:"IN1"}',
-          });
-        }
+        // ═══ ИЗ HID ═══
+        //
+        // Тип фильтра каждой полосы теперь читается из тегов
+        // (свойство 0x02 / 0x07), а не из открытого попапа MCC.
+        // Окно не нужно.
         const which = url.searchParams.get('input') === 'IN2' ? 'IN2' : 'IN1';
+        const snap = transport.snapshot();
+        const bands = readChannelBands(snap, which).map((b) => ({
+          band: b.band,
+          code: b.type,
+          type: b.typeName,
+        }));
         return json(res, 200, {
           ok: true,
+          via: 'hid',
           input: which,
-          types: readEqTypes(which),
+          bands,
+          types: bands.map((b) => ({ band: b.band, type: b.type })),
           filterTypes: EQ_LAYOUT.filterTypes,
+          typeCodes: DEVICE_TYPE_CODE,
         });
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
@@ -807,17 +913,40 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Дилы и чекбоксы полос: карта индексов для фронта (диагностика).
+    //
+    // Сама карта индексов имеет смысл только для UI-пути через MCC,
+    // поэтому отдаём её, если MCC запущен; без него — данные из HID
+    // и явный признак, что дилы недоступны.
     if (req.method === 'GET' && url.pathname === '/api/eq/dials') {
       try {
-        if (!isEqWindowOpen()) {
-          return json(res, 409, { ok: false, error: 'окно EQ закрыто — сначала POST /api/eq/open' });
-        }
         const which = url.searchParams.get('input') === 'IN2' ? 'IN2' : 'IN1';
+        const snap = transport.snapshot();
+        const bands = readChannelBands(snap, which);
+
+        // Карта дилов нужна только UI-пути. Пробуем, но не падаем:
+        // без MCC её просто нет, а данные полос есть всё равно.
+        let dials = null;
+        let dialsError = null;
+        let windowOpen = false;
+        try {
+          windowOpen = isEqWindowOpen();
+          if (windowOpen) {
+            dials = dialIndexMap(which);
+          } else {
+            dialsError = 'окно EQ закрыто — карта дилов недоступна (данные полос приходят из HID)';
+          }
+        } catch (e) {
+          dialsError = String(e?.message ?? e);
+        }
+
         return json(res, 200, {
           ok: true,
+          via: 'hid',
           input: which,
-          dials: dialIndexMap(which),
-          bands: bandEnableState(which),
+          windowOpen,
+          bands,
+          dials,
+          dialsError,
           settleMs: FILE_SETTLE_MS,
         });
       } catch (err) {
@@ -859,50 +988,53 @@ const server = http.createServer(async (req, res) => {
       if (!['gain', 'freq', 'q'].includes(param)) {
         return json(res, 400, { ok: false, error: 'param должен быть gain | freq | q' });
       }
-      if (!isEqWindowOpen()) {
-        return json(res, 409, {
+
+      // ═══ ПУТЬ ЧЕРЕЗ HID (основной) ═══
+      //
+      // Проверено 2026-11-10: все поля полос пишутся прямой записью
+      // в HID, окно MCC не нужно. Раньше здесь открывалось окно EQ
+      // и двигались дилы клавишами — это удалено.
+      //
+      // Если по какой-то причине HID-путь недоступен (устройство не
+      // открыто), вернём понятную ошибку, а не 409 про окно.
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, {
           ok: false,
-          error: 'окно EQ закрыто — сначала POST /api/eq/open',
-          hint: 'POST /api/eq/open {input:"IN1"}',
+          error: 'устройство не открыто — EQ пишется через HID',
+          hint: 'POST /api/connect',
         });
       }
 
       try {
+        // Текущее значение — из кеша HID, а не из файла MCC.
+        // Файл остаётся резервным источником, если тег ещё не пришёл.
+        const snap = transport.snapshot();
+        const curRow = readChannelBands(snap, which).find((b) => b.band === band);
+        const curFromHid = curRow ? eqHumanFromRow(curRow, param) : null;
+        const curWs = readEqBandsFromWorkspace(which, band);
+        const cur = curFromHid ?? (curWs ? eqHumanFromRow(curWs, param) : null);
+
         // Режим «задать абсолютное значение»
         if (body.value !== undefined && body.value !== null) {
           const target = Number(body.value);
           if (!Number.isFinite(target)) {
             return json(res, 400, { ok: false, error: 'value должно быть числом' });
           }
-          const cur = readEqBandsFromWorkspace(which, band);
-          if (!cur) {
-            return json(res, 409, { ok: false, error: `полоса ${band} не найдена в workspace` });
-          }
-
-          if (param === 'gain' && (target < -12 || target > 12)) {
-            return json(res, 400, { ok: false, error: 'gain должен быть -12..12' });
-          }
-          if (param === 'freq' && (target < 20 || target > 20000)) {
-            return json(res, 400, { ok: false, error: 'freq должен быть 20..20000' });
-          }
-          if (param === 'q' && (target < Q_MIN || target > Q_MAX)) {
-            return json(res, 400, { ok: false, error: `q должен быть ${Q_MIN}..${Q_MAX}` });
-          }
-
-          const out = setEqParamTo(which, band, param, target, cur);
-          if (!out.changed) {
-            return json(res, 200, { ok: true, ...out, current: cur });
-          }
-
-          await new Promise((r) => setTimeout(r, FILE_SETTLE_MS));
-          workspace.invalidate();
-          const after = readEqBandsFromWorkspace(which, band);
+          const frames = buildEqFrames(which, band, param, target);
+          const out = transport.writeFrames(frames);
           broadcast({
-            type: 'eq-band', input: which, band, param, target, presses: out.presses, after,
+            type: 'eq-band', input: which, band, param, target, via: 'hid', after: target,
           });
           return json(res, 200, {
-            ok: true, input: which, band, param,
-            requested: target, ...out, before: cur, after,
+            ok: true,
+            input: which,
+            band,
+            param,
+            via: 'hid',
+            requested: target,
+            before: cur,
+            after: target,
+            frames: out.frames,
           });
         }
 
@@ -911,18 +1043,40 @@ const server = http.createServer(async (req, res) => {
         if (!Number.isFinite(delta)) {
           return json(res, 400, { ok: false, error: 'нужно delta или value' });
         }
-        const out = nudgeEqParam(which, band, param, delta);
-        await new Promise((r) => setTimeout(r, FILE_SETTLE_MS));
-        workspace.invalidate();
-        const after = readEqBandsFromWorkspace(which, band);
-        broadcast({ type: 'eq-band', input: which, band, param, delta, after });
-        return json(res, 200, { ok: true, ...out, after });
+        if (cur === null || cur === undefined) {
+          return json(res, 409, {
+            ok: false,
+            error: `текущее значение полосы ${band} неизвестно — задайте value вместо delta`,
+            hint: `POST /api/eq/band {input:"${which}", band:${band}, param:"${param}", value:<число>}`,
+          });
+        }
+        const target = roundEqValue(param, cur + delta);
+        const frames = buildEqFrames(which, band, param, target);
+        const out = transport.writeFrames(frames);
+        broadcast({
+          type: 'eq-band', input: which, band, param, delta, after: target, via: 'hid',
+        });
+        return json(res, 200, {
+          ok: true,
+          input: which,
+          band,
+          param,
+          via: 'hid',
+          delta,
+          before: cur,
+          after: target,
+          frames: out.frames,
+        });
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
       }
     }
 
-    // Включить/выключить ПОЛОСУ EQ (QCheckBox полосы, TogglePattern).
+    // Включить/выключить ПОЛОСУ EQ.
+    //
+    // Через HID: 0x91..0x94 свойство 0x01 (полоса A) или 0x06 (полоса B).
+    // Проверено 2026-11-10: 0x91:01  0 -> 1 принято, откат ОК.
+    // Прежний путь (QCheckBox полосы через UIAutomation) удалён.
     if (req.method === 'POST' && url.pathname === '/api/eq/band/enable') {
       const body = await readBody(req);
       const which = body.input === 'IN2' ? 'IN2' : 'IN1';
@@ -930,23 +1084,30 @@ const server = http.createServer(async (req, res) => {
       if (!Number.isInteger(band) || band < 1 || band > 4) {
         return json(res, 400, { ok: false, error: 'band должен быть 1..4' });
       }
-      if (!isEqWindowOpen()) {
-        return json(res, 409, { ok: false, error: 'окно EQ закрыто — сначала POST /api/eq/open' });
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
       }
-      try {
-        const state = bandEnableState(which);
-        const target = state.find((b) => b.band === band);
-        if (!target) return json(res, 404, { ok: false, error: `полоса ${band} не найдена` });
 
-        const want = body.enabled === undefined ? !target.enabled : Boolean(body.enabled);
-        if (want !== target.enabled) {
-          psEqToggle(target.index);
-          await new Promise((r) => setTimeout(r, 800));
-        }
-        const after = bandEnableState(which).find((b) => b.band === band);
-        broadcast({ type: 'eq-band-enable', input: which, band, enabled: after?.enabled });
+      try {
+        const snap = transport.snapshot();
+        const row = readChannelBands(snap, which).find((b) => b.band === band);
+        const curRaw = row?.enable;
+        const want = body.enabled === undefined
+          ? (curRaw === 1 ? 0 : 1)
+          : (body.enabled ? 1 : 0);
+
+        const frames = buildEqFrames(which, band, 'enable', want);
+        const out = transport.writeFrames(frames);
+        broadcast({ type: 'eq-band-enable', input: which, band, enabled: want === 1, via: 'hid' });
         return json(res, 200, {
-          ok: true, input: which, band, enabled: after?.enabled, changed: want !== target.enabled,
+          ok: true,
+          input: which,
+          band,
+          enabled: want === 1,
+          before: curRaw === undefined ? null : curRaw === 1,
+          changed: curRaw === undefined ? null : curRaw !== want,
+          via: 'hid',
+          frames: out.frames,
         });
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
@@ -974,35 +1135,58 @@ const server = http.createServer(async (req, res) => {
           error: `type должен быть один из: ${EQ_LAYOUT.filterTypes.join(', ')}`,
         });
       }
-      if (!isEqWindowOpen()) {
-        return json(res, 409, { ok: false, error: 'окно EQ закрыто — сначала POST /api/eq/open' });
+
+      // ═══ ПУТЬ ЧЕРЕЗ HID ═══
+      //
+      // Тип фильтра — числовой код в HID: свойство 0x02 (полоса A)
+      // или 0x07 (полоса B). Проверено 2026-11-10: 0x91:02 1 -> 2
+      // принято, откат ОК.
+      //
+      // Числа типов берём из EQ_LAYOUT.filterTypes — порядок массива
+      // и есть код (peaking=0, lowpass=1, ...). Если окажется иначе,
+      // это выяснится при первом же тесте конкретного типа.
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
       }
 
       try {
-        const before = readEqTypes(which).find((t) => t.band === band);
-        if (before?.type === type) {
-          return json(res, 200, { ok: true, changed: false, input: which, band, type, reason: 'уже этот тип' });
+        // Код типа берём из таблицы устройства, а НЕ из индекса массива.
+        // Устройство нумерует типы с единицы: peaking=1, lowpass=2, ...
+        // Индекс массива filterTypes начинается с нуля и даёт сдвиг на 1
+        // (на этом уже была ошибка: peaking уходил как 0).
+        const code = DEVICE_TYPE_CODE[type];
+        if (code === undefined) {
+          return json(res, 400, {
+            ok: false,
+            error: `для типа "${type}" не задан код устройства`,
+            known: Object.keys(DEVICE_TYPE_CODE),
+          });
+        }
+        const snap = transport.snapshot();
+        const row = readChannelBands(snap, which).find((b) => b.band === band);
+        const before = row?.type ?? null;
+
+        if (before === code) {
+          return json(res, 200, {
+            ok: true, changed: false, input: which, band, type, code,
+            reason: 'уже этот тип', via: 'hid',
+          });
         }
 
-        // Развернуть список -> клик по пункту -> дождаться применения.
-        const out = psEqComboSelect(band, type, which);
-        await new Promise((r) => setTimeout(r, 1800));
-
-        const after = readEqTypes(which).find((t) => t.band === band);
-        workspace.invalidate();
-        broadcast({ type: 'eq-type', input: which, band, type, after: after?.type });
-
-        const ok = after?.type === type;
-        return json(res, ok ? 200 : 500, {
-          ok,
-          changed: ok,
+        const frames = buildEqFrames(which, band, 'type', code);
+        const out = transport.writeFrames(frames);
+        broadcast({ type: 'eq-type', input: which, band, type, code, via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          changed: true,
           input: which,
           band,
           requested: type,
-          before: before?.type,
-          after: after?.type,
-          detail: out,
-          note: ok ? undefined : 'клик не применился — проверьте, что окно EQ на переднем плане',
+          code,
+          before,
+          after: code,
+          via: 'hid',
+          frames: out.frames,
         });
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
@@ -1047,22 +1231,46 @@ const server = http.createServer(async (req, res) => {
     // Состояние + шкалы. Значения — из файла workspace (единственный источник).
     if (req.method === 'GET' && url.pathname === '/api/compressor') {
       try {
-        const values = comp.readCompressorValues();
+        // ═══ ЧТЕНИЕ ЧЕРЕЗ HID ═══
+        //
+        // Раньше значения читались из файла workspace MCC. Теперь —
+        // из кеша HID (теги 0x46), файл остаётся резервом, если
+        // устройство ещё не отдало блок.
+        const snap = transport.snapshot();
+        const hid = readCompressorHid(snap);
+        const hasHid = Object.values(hid).some((v) => v !== null && v !== undefined);
+
+        let values = hid;
+        let source = 'hid';
+        if (!hasHid) {
+          try {
+            values = comp.readCompressorValues();
+            source = 'workspace';
+          } catch {
+            values = hid;
+            source = 'none';
+          }
+        }
+
+        // Состояние окна — необязательная диагностика; без MCC её нет.
         let window = null;
         try { window = comp.compWindowState(); } catch { /* MCC не запущен */ }
+
         return json(res, 200, {
           ok: true,
+          source,
           values: {
-            Switch: values.Switch,
-            Threshold: values.Threshold,
-            Ratio: values.Ratio,
-            Attack: values.Attack,
-            Release: values.Release,
-            Gain: values.Gain,
-            Mix: values.Mix,
-            GainAuto: values.GainAuto,
+            switch: values.switch,
+            threshold: values.threshold,
+            ratio: values.ratio,
+            attack: values.attack,
+            release: values.release,
+            gain: values.gain,
+            gainAuto: values.gainAuto,
+            mix: values.mix,
           },
           window,
+          hid: describeCompHid(),
           scales: comp.describeCompressor(),
         });
       } catch (err) {
@@ -1098,34 +1306,82 @@ const server = http.createServer(async (req, res) => {
     // Установить параметр: {param, value} или {param, delta}
     if (req.method === 'POST' && url.pathname === '/api/compressor/param') {
       const body = await readBody(req);
-      const param = body.param;
-      if (!param) return json(res, 400, { ok: false, error: 'укажи param' });
-      if (!comp.COMP_PARAMS_ORDER.includes(param)) {
+      if (!body.param) return json(res, 400, { ok: false, error: 'укажи param' });
+
+      // ═══ СОВМЕСТИМОСТЬ ИМЁН ═══
+      //
+      // API исторически принимал имена в стиле MCC: Threshold, Ratio,
+      // Attack, Release, Gain, Mix (с большой буквы). HID-модуль
+      // использует строчные. Принимаем оба варианта — иначе старые
+      // клиенты и тесты сломаются на ровном месте.
+      const CANON = {
+        Threshold: 'threshold', threshold: 'threshold',
+        Ratio: 'ratio', ratio: 'ratio',
+        Attack: 'attack', attack: 'attack',
+        Release: 'release', release: 'release',
+        Gain: 'gain', gain: 'gain',
+        GainAuto: 'gainAuto', gainAuto: 'gainAuto',
+        Mix: 'mix', mix: 'mix',
+        Switch: 'switch', switch: 'switch',
+      };
+      const param = CANON[body.param];
+      if (!param) {
         return json(res, 400, {
           ok: false,
-          error: `неизвестный параметр: ${param}`,
-          known: comp.COMP_PARAMS_ORDER,
+          error: `неизвестный параметр: ${body.param}`,
+          known: Object.keys(comp.COMP_PARAMS_ORDER),
+          alsoAccepted: Object.keys(CANON).filter((k) => /^[a-z]/.test(k)),
         });
       }
+
+      // ═══ ПУТЬ ЧЕРЕЗ HID ═══
+      //
+      // Проверено 2026-11-10: Threshold, Ratio, Attack, Release, Mix
+      // пишутся прямой записью в 0x46, окно MCC не нужно. Чтение
+      // проверялось в новой сессии, откат ОК.
+      // Прежний путь (дилы окна компрессора через UIAutomation) удалён.
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+
       try {
-        let out;
+        const snap = transport.snapshot();
+        const cur = readCompressorHid(snap)[param];
+
+        let target;
         if (body.delta !== undefined) {
           const d = Number(body.delta);
-          if (!Number.isInteger(d) || d === 0) {
-            return json(res, 400, { ok: false, error: 'delta должно быть целым ≠ 0' });
+          if (!Number.isFinite(d) || d === 0) {
+            return json(res, 400, { ok: false, error: 'delta должно быть числом ≠ 0' });
           }
-          out = await comp.nudgeCompressorParam(param, d);
+          if (cur === null || cur === undefined) {
+            return json(res, 409, {
+              ok: false,
+              error: `текущее значение ${param} неизвестно — задайте value вместо delta`,
+              hint: `POST /api/compressor/param {param:"${param}", value:<число>}`,
+            });
+          }
+          target = cur + d;
         } else if (body.value !== undefined) {
-          out = await comp.setCompressorParam(param, Number(body.value));
+          target = Number(body.value);
         } else {
           return json(res, 400, { ok: false, error: 'нужен value или delta' });
         }
-        if (!out.changed) {
-          return json(res, 200, { ok: true, ...out, note: 'значение уже такое' });
-        }
-        workspace.invalidate();
-        broadcast({ type: 'ack', op: 'compressor', ...out });
-        return json(res, 200, { ok: true, ...out });
+
+        const frames = buildCompFrames(param, target);
+        const out = transport.writeFrames(frames);
+        broadcast({
+          type: 'ack', op: 'compressor', param, before: cur, after: target, via: 'hid',
+        });
+        return json(res, 200, {
+          ok: true,
+          param,
+          before: cur,
+          after: target,
+          changed: cur !== target,
+          via: 'hid',
+          frames: out.frames,
+        });
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
       }
@@ -1141,14 +1397,25 @@ const server = http.createServer(async (req, res) => {
       if (body.value === undefined) {
         return json(res, 400, { ok: false, error: 'укажи value (true/false)' });
       }
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
       try {
-        const out = id === 'switch'
-          ? await comp.setCompressorSwitch(Boolean(body.value))
-          : await comp.setCompressorGainAuto(Boolean(body.value));
-        if (!out.changed) return json(res, 200, { ok: true, id, ...out, note: 'уже так' });
-        workspace.invalidate();
-        broadcast({ type: 'ack', op: 'compressor-switch', id, ...out });
-        return json(res, 200, { ok: true, id, ...out });
+        const want = body.value ? 1 : 0;
+        const snap = transport.snapshot();
+        const curRaw = readCompressorHid(snap)[id];
+        const frames = buildCompFrames(id, want);
+        const out = transport.writeFrames(frames);
+        broadcast({ type: 'ack', op: 'compressor-switch', id, value: Boolean(body.value), via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          id,
+          before: curRaw === null || curRaw === undefined ? null : Boolean(curRaw),
+          value: Boolean(body.value),
+          changed: curRaw === null || curRaw === undefined ? null : Boolean(curRaw) !== Boolean(body.value),
+          via: 'hid',
+          frames: out.frames,
+        });
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
       }

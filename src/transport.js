@@ -329,9 +329,69 @@ export class M62Transport extends EventEmitter {
     return { frames: packet.length };
   }
 
-  /** Снимок кеша. */
+  /**
+   * Снимок кеша.
+   *
+   * ВНИМАНИЕ: ключи здесь — `${target}:${prop}` в ДЕСЯТИЧНОЙ системе
+   * (например "145:3" для 0x91:0x03). Многие модули ждут hex.
+   * `src/eq-hid.js` и `src/comp-hid.js` понимают оба формата.
+   */
   snapshot() {
     return Object.fromEntries(this.cache);
+  }
+
+  /**
+   * Записать набор кадров в одном bulk-push брекете.
+   *
+   * Брекет нужен микшеру (без него одиночные записи игнорируются)
+   * и безопасен для остального. После закрытия брекета шлётся
+   * announce, чтобы устройство отдало состояние заново.
+   *
+   * @param {Array<{target:number, prop:number, value:number}>} frames
+   * @param {{announce?: boolean}} [opts]
+   */
+  writeBulk(frames, opts = {}) {
+    if (!Array.isArray(frames) || frames.length === 0) {
+      throw new Error('writeBulk: пустой набор кадров');
+    }
+    this.send(0x11, PP_BULK_BEGIN, 1);
+    for (const f of frames) {
+      this.send(f.target, f.prop, f.value);
+    }
+    this.send(0x11, PP_BULK_BEGIN, 0);
+    if (opts.announce !== false) {
+      this.send(0x11, PP_ANNOUNCE, 1);
+    }
+    this.log.info?.(`[bulk] записано ${frames.length} кадров`);
+    return { frames: frames.length };
+  }
+
+  /**
+   * Записать кадры одиночными посылками, без брекета.
+   *
+   * Для EQ входов и компрессора брекет НЕ обязателен — проверено
+   * 2026-11-10: и то и другое пишется прямой записью. Брекет оставлен
+   * как опция (`viaBracket`), потому что для некоторых полей он может
+   * понадобиться; по умолчанию путь без него.
+   *
+   * @param {Array<{target:number, prop:number, value:number}>} frames
+   * @param {{viaBracket?: boolean, announce?: boolean}} [opts]
+   */
+  writeFrames(frames, opts = {}) {
+    if (!Array.isArray(frames) || frames.length === 0) {
+      throw new Error('writeFrames: пустой набор кадров');
+    }
+    if (opts.viaBracket) {
+      return this.writeBulk(frames, opts);
+    }
+    for (const f of frames) {
+      this.send(f.target, f.prop, f.value);
+    }
+    if (opts.announce !== false) {
+      this.send(0x11, PP_ANNOUNCE, 1);
+    }
+    this.log.info?.(`[write] записано ${frames.length} кадров`);
+    return { frames: frames.length };
   }
 
   /**

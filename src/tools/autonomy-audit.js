@@ -13,6 +13,16 @@
  * или только с файлами MCC.
  *
  * Запуск: node src/tools/autonomy-audit.js
+ *
+ * ⚠️ ЭТО ОЦЕНКА ПО КОДУ, А НЕ ФАКТ. Маршрут может вызывать
+ * `workspace.describe()` в try/catch и прекрасно работать без MCC —
+ * и наоборот, выглядеть чистым, но звать UIAutomation глубже.
+ *
+ * Проверенные вызовы блоков `try { ... } catch { }` здесь
+ * вырезаются, но полностью расхождение это не убирает.
+ *
+ * ФАКТ даёт `autonomy-behaviour.js`: он дёргает маршруты и смотрит
+ * код ответа. Для отчётов и документации верить надо ему.
  */
 
 import { readFileSync } from 'node:fs';
@@ -72,6 +82,27 @@ while ((m = routeRe.exec(server)) !== null) {
   routes.push({ method: m[1], path: m[2], body: m[3] });
 }
 
+/**
+ * Убирает из тела маршрута блоки try/catch, которые только логируют
+ * ошибку. Такой вызов не делает маршрут зависимым: если MCC нет,
+ * он молча пропускается и маршрут работает дальше.
+ *
+ * Без этого аудит давал ложные срабатывания: например, `GET /api/mode`
+ * вызывает workspace.describe() в try/catch для диагностики
+ * рассинхронизации — и попадал в «нужен установленный MCC», хотя
+ * работает без файла.
+ */
+function stripGuardedCalls(body) {
+  // убираем `try { ... } catch { ... }` целиком
+  let out = body;
+  let prev;
+  do {
+    prev = out;
+    out = out.replace(/try\s*\{[\s\S]*?\}\s*catch\s*(\([^)]*\))?\s*\{[\s\S]*?\}/g, '');
+  } while (out !== prev);
+  return out;
+}
+
 const seen = new Set();
 const rows = [];
 
@@ -79,9 +110,10 @@ for (const r of routes) {
   const id = `${r.method} ${r.path}`;
   if (seen.has(id)) continue;
   seen.add(id);
-  const ui = NEEDS_RUNNING_MCC.filter((k) => r.body.includes(k));
-  const files = NEEDS_MCC_FILES.filter((k) => r.body.includes(k));
-  const proc = MANAGES_MCC_PROCESS.filter((k) => r.body.includes(k));
+  const core = stripGuardedCalls(r.body);
+  const ui = NEEDS_RUNNING_MCC.filter((k) => core.includes(k));
+  const files = NEEDS_MCC_FILES.filter((k) => core.includes(k));
+  const proc = MANAGES_MCC_PROCESS.filter((k) => core.includes(k));
   rows.push({ id, ui, files, proc });
 }
 

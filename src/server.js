@@ -1307,7 +1307,123 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
-    // Переключить EQ входа (без движения курсора — TogglePattern)
+    // ═══════════════════════════════════════════════════════════════
+    // EQ НА ВХОДАХ: ТОЛЬКО ЧТЕНИЕ (проверено 2026-11-13)
+    // ═══════════════════════════════════════════════════════════════
+    //
+    // Все маршруты ниже РАНЬШЕ отвечали ok:true, но устройство
+    // запись не принимает. Причина ложного успеха: после записи
+    // значение бралось из оптимистичного кеша транспорта
+    // (`writeFrames` обновляет его сам), а не с устройства.
+    //
+    // Проверено ДЕВЯТЬЮ способами, все дали «не принято»:
+    //   1. одиночный кадр 0x91:03 = 3
+    //   2. брекет 0x11:20 вокруг полосы
+    //   3. брекет + все 4 полосы
+    //   4. брекет + save 0x11:05
+    //   5. гейт: сначала 0x9b:0f = 1, потом полоса
+    //   6. все поля полосы (enable/type/gain/freq/q)
+    //   7. простой 35 с, потом чтение в новой сессии
+    //   8. простой 65 с, потом чтение в новой сессии
+    //   9. дамп по 0x11:26 с ожиданием терминатора 0x11:25
+    //
+    // Плюс отдельно в PROF-режиме (там 100 адресов EQ наушников
+    // 0xa1..0xaa): 0xa1:03 = 6 тоже не принято.
+    //
+    // Аудит 11 захватов, 2512 исходящих кадров: MCC НИ РАЗУ не
+    // писал ни в 0x91..0x94, ни в 0x9b. Устройство эти блоки
+    // только ПРИСЫЛАЕТ — 40 адресов на первый ANNOUNCE.
+    //
+    // В публичной документации протокола (NTMan/topping-m62, CC0)
+    // EQ-блоки стоят в разделе «Still unknown».
+    //
+    // Поэтому маршруты записи отвечают 200 с ok:false и
+    // applied:'unverified', а кеш НЕ подменяется. Чтение работает.
+    const EQ_INPUT_WRITE_ROUTES = new Set([
+      '/api/eq/switch',
+      '/api/eq/band',
+      '/api/eq/band/enable',
+      '/api/eq/type',
+    ]);
+
+    if (
+      req.method === 'POST'
+      && EQ_INPUT_WRITE_ROUTES.has(url.pathname)
+      && (transport.isOpen?.() || transport.device)
+    ) {
+      const body = await readBody(req);
+      const which = body.input === 'IN2' ? 'IN2' : 'IN1';
+
+      // Отправляем кадр — вдруг прошивка его всё-таки примет.
+      // Но результат НЕ подтверждаем и кеш не трогаем.
+      let sent = 0;
+      try {
+        if (url.pathname === '/api/eq/band' && Number.isFinite(Number(body.value))) {
+          const band = Number(body.band);
+          const param = String(body.param ?? '');
+          if (Number.isInteger(band) && band >= 1 && band <= 4
+              && ['gain', 'freq', 'q'].includes(param)) {
+            const frames = buildEqFrames(which, band, param, Number(body.value));
+            const out = transport.writeFrames(frames, { updateCache: false });
+            sent = out.frames ?? frames.length;
+          }
+        } else if (url.pathname === '/api/eq/band/enable') {
+          const band = Number(body.band);
+          if (Number.isInteger(band) && band >= 1 && band <= 4) {
+            const base = which === 'IN2' ? 0x93 : 0x91;
+            const target = band <= 2 ? base : base + 1;
+            const prop = band % 2 === 1 ? 0x01 : 0x06;
+            const out = transport.writeFrames(
+              [{ target, prop, value: body.enabled ? 1 : 0 }],
+              { updateCache: false },
+            );
+            sent = out.frames ?? 1;
+          }
+        } else if (url.pathname === '/api/eq/switch') {
+          const prop = which === 'IN2' ? 0x10 : 0x0f;
+          const out = transport.writeFrames(
+            [{ target: 0x9b, prop, value: body.enabled ? 1 : 0 }],
+            { updateCache: false },
+          );
+          sent = out.frames ?? 1;
+        } else if (url.pathname === '/api/eq/type' && Number.isFinite(Number(body.type))) {
+          const band = Number(body.band);
+          if (Number.isInteger(band) && band >= 1 && band <= 4) {
+            const frames = buildEqFrames(which, band, 'type', Number(body.type));
+            const out = transport.writeFrames(frames, { updateCache: false });
+            sent = out.frames ?? frames.length;
+          }
+        }
+      } catch {
+        /* кадр не собрался — не важно, ответ всё равно про отказ */
+      }
+
+      const snap = transport.snapshot();
+      return json(res, 200, {
+        ok: false,
+        applied: 'unverified',
+        accepted: false,
+        readOnly: true,
+        input: which,
+        route: url.pathname,
+        framesSent: sent,
+        current: {
+          switch: snap.get?.('9b:0f') ?? null,
+          bands: readChannelBands(snap, which),
+        },
+        error: 'устройство не принимает запись EQ через HID',
+        detail:
+          'Проверено 9 способами (одиночный кадр, брекет 0x11:20, брекет+save, '
+          + 'гейт через 0x9b:0f, все поля полосы, простой 35 с и 65 с, дамп по 0x11:26) '
+          + 'и отдельно в Prof-режиме. Аудит 11 захватов (2512 кадров): MCC сам ни разу '
+          + 'не писал в 0x91..0x94. В публичной документации протокола EQ — «Still unknown».',
+        note: 'EQ на входах доступен ТОЛЬКО для чтения. Кадр отправлен, но не подтверждён.',
+        seeAlso: 'GET /api/eq — чтение работает',
+      });
+    }
+
+    // Переключить EQ входа — оставлено как справка для чтения.
+    // Запись перехватывается блоком выше и честно отвечает applied:'unverified'.
     if (req.method === 'POST' && url.pathname === '/api/eq/switch') {
       const body = await readBody(req);
       const which = body.input === 'IN2' ? 'IN2' : 'IN1';
@@ -1315,8 +1431,9 @@ const server = http.createServer(async (req, res) => {
       // ═══ ПУТЬ ЧЕРЕЗ HID ═══
       //
       // Общий включатель EQ входа: 0x9b:0x0f для IN1, 0x9b:0x10 для IN2.
-      // Проверено 2026-11-10: 0x9b:0f  0 -> 1 принято, откат ОК.
-      // Прежний путь (кнопка EQ в окне MCC через TogglePattern) удалён.
+      // ВНИМАНИЕ: проверка 2026-11-13 показала, что запись НЕ принимается
+      // (см. блок EQ_INPUT_WRITE_ROUTES выше). Код оставлен, чтобы было
+      // видно, что именно мы пробовали.
       if (!transport.isOpen?.() && !transport.device) {
         return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
       }

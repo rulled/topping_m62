@@ -92,15 +92,26 @@ export function buildFrame(target, prop, value, withCrc = true) {
 }
 
 /**
- * Оборачивает кадр в буфер, который ждёт Windows HID API:
+ * Оборачивает кадр в буфер, который ждёт HID API:
  * спереди байт report ID (0x00).
+ *
+ * ═══ ПОРТИРУЕМОСТЬ В БРАУЗЕР ═══
+ *
+ * Раньше здесь был `Buffer.alloc` / `Buffer.from().copy()` — это API
+ * Node.js, в браузере его нет. WebHID принимает `Uint8Array`, поэтому
+ * модуль молча ломался при попытке переиспользовать протокол на клиенте.
+ *
+ * Теперь чистый `Uint8Array`: одинаково работает и в Node (node-hid
+ * принимает Uint8Array через `[...arr]`), и в браузере (WebHID
+ * sendReport принимает DataView/Uint8Array).
+ *
  * @param {Uint8Array} frame 15 байт
- * @returns {Buffer} 16 байт
+ * @returns {Uint8Array} 16 байт
  */
 export function withReportId(frame) {
-  const out = Buffer.alloc(frame.length + 1);
+  const out = new Uint8Array(frame.length + 1);
   out[0] = 0x00;
-  Buffer.from(frame).copy(out, 1);
+  out.set(frame, 1);
   return out;
 }
 

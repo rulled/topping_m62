@@ -158,15 +158,24 @@ const FEATURES = [
     group: 'EQ входов',
     name: 'EQ IN1/IN2, 4 полосы x 5 полей',
     hid: '0x91..0x94',
-    status: 'FULL',
-    evidence: '7 из 7 полей проверено записью 2026-11-10',
+    status: 'READ',
+    evidence: 'ТОЛЬКО ЧТЕНИЕ. Проверено 2026-11-13 ДЕВЯТЬЮ способами, '
+      + 'все «не принято»: одиночный кадр, брекет 0x11:20, брекет+save, '
+      + 'гейт через 0x9b:0f, все поля полосы, простой 35 с и 65 с, '
+      + 'дамп по 0x11:26. Плюс Prof-режим — тоже нет. '
+      + 'Аудит 11 захватов (2512 кадров): MCC сам ни разу не писал '
+      + 'в 0x91..0x94. Прежнее «7 из 7 принято» — ошибка измерения: '
+      + 'читали из оптимистичного кеша, а не с устройства. '
+      + 'В публичной документации протокола EQ — «Still unknown»',
   },
   {
     group: 'EQ наушников',
     name: 'EQ HP, 10 полос x 2 канала x 5 полей',
     hid: '0xa1..0xaa',
-    status: 'FULL',
-    evidence: 'проверено; только в Prof-режиме',
+    status: 'READ',
+    evidence: 'ТОЛЬКО ЧТЕНИЕ. В Prof-режиме блоки приходят (100 адресов), '
+      + 'но запись не принимается: проверено 2026-11-13, 0xa1:03 = 6 -> '
+      + 'не принято. Только Prof-режим',
   },
   {
     group: 'EQ',
@@ -389,7 +398,11 @@ function main() {
   console.log('');
 
   const usable = counts.FULL + counts.READ + counts.WRITE;
-  console.log(`  управляемо через HID: ${usable} из ${total} = ${pct(usable)}%`);
+  const writable = counts.FULL + counts.WRITE;
+  const readable = counts.FULL + counts.READ;
+  console.log(`  доступно через HID:   ${usable} из ${total} = ${pct(usable)}%  (хоть как-то)`);
+  console.log(`    из них читаем:      ${readable} из ${total} = ${pct(readable)}%`);
+  console.log(`    из них пишем:       ${writable} из ${total} = ${pct(writable)}%  <- это и есть «управляемо»`);
   console.log(`  НЕ управляемо:        ${counts.PARTIAL + counts.NONE} из ${total} = ${pct(counts.PARTIAL + counts.NONE)}%`);
   console.log('');
 

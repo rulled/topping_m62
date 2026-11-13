@@ -88,20 +88,41 @@ async function main() {
   const band1Gain = eq0.json?.bands?.IN1?.[0]?.gain ?? 0;
   const eqTarget = band1Gain === 3 ? -3 : 3;
 
+  // ═══ EQ НА ВХОДАХ: ТОЛЬКО ЧТЕНИЕ (2026-11-13) ═══
+  //
+  // Раньше здесь проверялось, что запись применяется. Проверка была
+  // ложной: значение читалось из оптимистичного кеша транспорта.
+  // Устройство запись EQ не принимает — доказано 9 способами
+  // (см. NOTES §151 и docs/API.md).
+  //
+  // Теперь тест проверяет ГЛАВНОЕ СВОЙСТВО: маршрут не врёт.
+  // Он обязан ответить ok:false, applied:'unverified', readOnly:true.
   let r = await api('eq/band', 'POST', { input: 'IN1', band: 1, param: 'gain', value: eqTarget });
-  record('POST /api/eq/band (gain)', r.ok && r.json?.via === 'hid', `-> ${r.json?.after}`);
+  record(
+    'POST /api/eq/band честно отказывает',
+    r.ok && r.json?.ok === false && r.json?.applied === 'unverified' && r.json?.readOnly === true,
+    `applied=${r.json?.applied} readOnly=${r.json?.readOnly}`,
+  );
 
   let snap = await rereadSnapshot();
-  record('  проверка: gain применился', snap.eq?.IN1?.[0]?.gain === eqTarget,
-    `видим ${snap.eq?.IN1?.[0]?.gain}`);
+  record(
+    '  проверка: gain НЕ изменился (как и должно быть)',
+    snap.eq?.IN1?.[0]?.gain === band1Gain,
+    `было ${band1Gain}, видим ${snap.eq?.IN1?.[0]?.gain}`,
+  );
 
-  r = await api('eq/band', 'POST', { input: 'IN1', band: 1, param: 'gain', value: band1Gain });
-  record('  откат gain', r.ok, `-> ${r.json?.after}`);
+  record(
+    '  чтение EQ работает',
+    eq0.ok && eq0.json?.ok === true && (eq0.json?.bands?.IN1?.length ?? 0) === 4,
+    `полос IN1: ${eq0.json?.bands?.IN1?.length}`,
+  );
 
   r = await api('eq/band/enable', 'POST', { input: 'IN1', band: 2, enabled: true });
-  record('POST /api/eq/band/enable', r.ok && r.json?.via === 'hid', `enabled=${r.json?.enabled}`);
-  r = await api('eq/band/enable', 'POST', { input: 'IN1', band: 2, enabled: false });
-  record('  откат enable', r.ok, `enabled=${r.json?.enabled}`);
+  record(
+    'POST /api/eq/band/enable честно отказывает',
+    r.ok && r.json?.ok === false && r.json?.readOnly === true,
+    `readOnly=${r.json?.readOnly}`,
+  );
 
   // ═══ 2. Компрессор ═══
   console.log('');

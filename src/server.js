@@ -2311,12 +2311,27 @@ wss.on('connection', (ws) => {
 server.listen(PORT, HOST, () => {
   log.info(`HTTP  http://${HOST}:${PORT}`);
   log.info(`WS    ws://${HOST}:${PORT}/ws`);
-  const found = M62Transport.find();
-  if (found) {
-    log.info(`устройство найдено: iface=${found.interface}, открываю…`);
-    transport.open().catch((err) => log.error('не удалось открыть:', err.message));
+
+  // ═══ АВТОЗАХВАТ УСТРОЙСТВА: ТОЛЬКО ПО ФЛАГУ ═══
+  //
+  // Раньше сервер СРАЗУ открывал карту при старте. Это ломало
+  // веб-клиент: браузер с WebHID и сервер с node-hid оказывались
+  // двумя писателями на одном устройстве, со своими keepalive,
+  // announce и кешами — и перезаписывали настройки друг друга.
+  //
+  // Теперь автозахват только при M62_AUTOCONNECT=1 (режим агента,
+  // когда страница работает через HTTP, а не через WebHID).
+  if (process.env.M62_AUTOCONNECT === '1') {
+    const found = M62Transport.find();
+    if (found) {
+      log.info(`устройство найдено: iface=${found.interface}, открываю (M62_AUTOCONNECT=1)…`);
+      transport.open().catch((err) => log.error('не удалось открыть:', err.message));
+    } else {
+      log.warn('M62 не найден — подключите позже через POST /api/connect');
+    }
   } else {
-    log.warn('M62 не найден — сервер работает, устройство можно подключить позже');
+    log.info('автозахват выключен — устройство откроется по POST /api/connect');
+    log.info('(включить автозахват: M62_AUTOCONNECT=1)');
   }
 });
 

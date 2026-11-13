@@ -138,6 +138,34 @@ export function createWebHidAdapter(device) {
         /* уже закрыто */
       });
     },
+    /**
+     * ПЕРЕОТКРЫТЬ УСТРОЙСТВО.
+     *
+     * НУЖНО ДЛЯ ПОДТВЕРЖДЕНИЯ ЗАПИСИ EQ. Блоки 0x91..0x94 приходят
+     * ТОЛЬКО на первый announce в новой сессии (доказано
+     * `prove-announce-eq-rule.js`). Значит, чтобы прочитать правду
+     * после записи, HID-соединение надо закрыть и открыть заново.
+     *
+     * WebHID позволяет это: `close()` затем `open()` на том же
+     * HIDDevice. Разрешение пользователя при этом сохраняется —
+     * повторный выбор устройства не нужен.
+     */
+    async reopen() {
+      try {
+        device.removeEventListener('inputreport', onInputReport);
+      } catch {
+        /* уже */
+      }
+      try {
+        await device.close();
+      } catch {
+        /* уже закрыто */
+      }
+      await device.open();
+      closed = false;
+      device.addEventListener('inputreport', onInputReport);
+      return true;
+    },
     /** Отключить listen сразу (onData асинхронный). */
     detach() {
       this.close();

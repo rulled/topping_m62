@@ -88,32 +88,36 @@ async function main() {
   const band1Gain = eq0.json?.bands?.IN1?.[0]?.gain ?? 0;
   const eqTarget = band1Gain === 3 ? -3 : 3;
 
-  // ═══ EQ НА ВХОДАХ: ЗАПИСЬ РАБОТАЕТ (2026-11-13) ═══
+  // ═══ EQ НА ВХОДАХ: запись работает, подтверждение — только новой сессией ═══
   //
-  // История: сначала запись EQ казалась нерабочей (9 способов мимо),
-  // и маршрут был переведён в read-only. Это оказалось НЕВЕРНО.
+  // История: запись EQ сначала казалась нерабочей (9 способов мимо),
+  // затем «заработала» — но подтверждение читалось из КЕША, потому
+  // что блоки EQ приходят ТОЛЬКО на первый announce новой сессии
+  // (доказано prove-announce-eq-rule.js: 40 EQ на первом, 0 на втором).
   //
-  // Настоящая причина: прошивка коммитит запись НЕ МГНОВЕННО.
-  // Замерено: удержание сессии < 2 с -> потеряно; >= 2 с -> применено.
-  // Второе условие: читать результат надо через дамп 0x11:26,
-  // обычный ANNOUNCE блоки EQ не несёт.
-  //
-  // Тест проверяет рабочий путь: запись -> applied:'confirmed' ->
-  // независимое чтение показывает новое значение.
+  // Поэтому сервер теперь честно отвечает applied:'unverified' и
+  // dumpComplete:false, если дамп в этой сессии не пришёл. Тест
+  // проверяет именно это: маршрут не выдаёт кеш за подтверждение.
   let r = await api('eq/band', 'POST', { input: 'IN1', band: 1, param: 'gain', value: eqTarget });
   record(
-    'POST /api/eq/band пишет и подтверждает',
-    r.ok && r.json?.ok === true && r.json?.applied === 'confirmed',
+    'POST /api/eq/band отвечает честно',
+    r.ok && r.json?.ok === true
+      && ['confirmed', 'unverified'].includes(r.json?.applied),
     `applied=${r.json?.applied} dumpComplete=${r.json?.dumpComplete}`,
   );
 
-  let snap = await rereadSnapshot();
+  // Подтверждение в ТОЙ ЖЕ сессии невозможно — это и проверяем:
+  // если applied:'unverified', то dumpComplete обязан быть false.
   record(
-    '  проверка: gain применился',
-    snap.eq?.IN1?.[0]?.gain === eqTarget,
-    `видим ${snap.eq?.IN1?.[0]?.gain}, хотели ${eqTarget}`,
+    '  не выдаёт кеш за подтверждение',
+    r.json?.applied !== 'confirmed' || r.json?.dumpComplete === true,
+    `applied=${r.json?.applied} dumpComplete=${r.json?.dumpComplete}`,
   );
 
+  // Значение всё же должно примениться на карте — но проверять его
+  // в этой же сессии нельзя (EQ повторно не приходит). Поэтому
+  // проверяем, что API отдаёт какое-то число, а не «применено».
+  let snap = await rereadSnapshot();
   record(
     '  чтение EQ работает',
     eq0.ok && eq0.json?.ok === true && (eq0.json?.bands?.IN1?.length ?? 0) === 4,

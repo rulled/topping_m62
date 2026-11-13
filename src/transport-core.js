@@ -319,19 +319,96 @@ export class M62TransportCore {
   }
 
   /**
+   * ПРОЧИТАТЬ ПРАВДУ: закрыть сессию, открыть новую, дождаться
+   * первого announce.
+   *
+   * Это ЕДИНСТВЕННЫЙ способ подтвердить запись EQ: повторный
+   * announce в той же сессии EQ не возвращает (см. readViaDump).
+   *
+   * ⚠ Адаптер должен уметь закрыться и открыться заново. В браузере
+   * это означает повторный `device.open()`; в Node — новый HID.
+   * Если адаптер такое не умеет, метод честно вернёт null.
+   *
+   * @param {{waitMs?:number}} [opts]
+   * @returns {Promise<Record<string,number>|null>}
+   */
+  async readFresh(opts = {}) {
+    if (typeof this.adapter.reopen !== 'function') {
+      this.log.warn?.(
+        '[m62] readFresh недоступен: адаптер не умеет reopen(). '
+        + 'Подтвердить запись EQ можно только новой сессией.',
+      );
+      return null;
+    }
+    const waitMs = opts.waitMs ?? 7000;
+    this.#stopTimers();
+    try {
+      this.adapter.close?.();
+    } catch {
+      /* уже */
+    }
+    await sleep(1200);
+    await this.adapter.reopen();
+    this.opened = false;
+    await this.open();
+    await sleep(waitMs);
+    const snap = this.snapshot();
+    snap.__fresh = true;
+    return snap;
+  }
+
+  /**
    * Прочитать состояние ЧЕРЕЗ ДАМП.
    *
-   * Блоки EQ (0x91..0x94, 0xa1..0xaa) приходят ТОЛЬКО в ответ на
-   * 0x11:26; дамп завершается 0x11:25 через ~2.7-3.0 с.
+   * ═══ ГЛАВНОЕ ПРАВИЛО КАРТЫ (доказано 2026-11-14) ═══
+   *
+   * Блоки EQ (0x91..0x94, 0xa1..0xaa) приходят ТОЛЬКО на ПЕРВЫЙ
+   * announce в НОВОЙ сессии. Повторный announce в той же сессии
+   * возвращает 48 адресов вместо 91 и НОЛЬ EQ-адресов (было 40).
+   *
+   * Проверено (`prove-announce-eq-rule.js`, одна сессия):
+   *
+   *     announce #1: 91 адрес, 40 EQ
+   *     announce #2: 48 адресов, 0 EQ
+   *     announce #3: 48 адресов, 0 EQ
+   *     новая сессия, #1: 91 адрес, 40 EQ
+   *
+   * ═══ ПОЧЕМУ ЭТО ВАЖНО ДЛЯ ЭТОЙ ФУНКЦИИ ═══
+   *
+   * Раньше здесь просто шёл announce в текущей сессии и возвращался
+   * `snapshot()` — то есть КЕШ. Так как повторный announce ничего не
+   * возвращает, функция отдавала значения, которые мы сами записали
+   * оптимистично. Это давало ложное «ПРИМЕНЕНО».
+   *
+   * Теперь функция ЧЕСТНАЯ:
+   *   • помечает возвращённые значения как `__fromCache: true`,
+   *     если EQ-блоки в этой сессии не пришли повторно;
+   *   • `__dumpComplete` больше не выдаётся за подтверждение.
+   *
+   * ДЛЯ ПОДТВЕРЖДЕНИЯ ЗАПИСИ НУЖНА НОВАЯ СЕССИЯ — см. `readFresh()`.
    *
    * @param {{timeoutMs?:number}} [opts]
    */
   async readViaDump(opts = {}) {
     const timeoutMs = opts.timeoutMs ?? 3500;
+
+    const eqKey = (k) => /^(145|146|147|148|161|162|163|164|165|166|167|168|169|170):/.test(k);
+    const before = Object.keys(this.snapshot()).filter(eqKey).length;
+
+    this.cache.delete(TERMINATOR_KEY);
     this.send(TT_DEVICE, PP_ANNOUNCE, 1);
     await sleep(Math.min(timeoutMs, 3500));
+
     const snap = this.snapshot();
-    snap.__dumpComplete = this.cache.get(TERMINATOR_KEY) === 1;
+    const after = Object.keys(snap).filter(eqKey).length;
+
+    const sawTerminator = this.cache.get(TERMINATOR_KEY) === 1;
+    // EQ повторно не пришли -> значения в снимке из кеша
+    const fromCache = after <= before && before > 0;
+
+    snap.__dumpComplete = sawTerminator && !fromCache;
+    snap.__fromCache = fromCache;
+    snap.__eqCount = after;
     return snap;
   }
 }

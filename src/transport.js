@@ -476,22 +476,40 @@ export class M62Transport extends EventEmitter {
   async readViaDump(opts = {}) {
     const timeoutMs = opts.timeoutMs ?? 12000;
 
-    // ═══ ЧЕСТНАЯ ЛОГИКА ═══
+    // ═══ ЧЕСТНАЯ ЛОГИКА (исправлено 2026-11-14) ═══
     //
-    // Раньше здесь была попытка поймать «конец дампа» по терминатору
-    // 0x11:0x25 или по приросту EQ-адресов. Оба критерия ненадёжны:
-    // к моменту вызова EQ-адреса уже лежат в кеше (они пришли на
-    // первом ANNOUNCE сессии), поэтому «прироста» нет.
+    // ГЛАВНОЕ ПРАВИЛО КАРТЫ, доказанное `prove-announce-eq-rule.js`:
+    // блоки EQ (0x91..0x94) приходят ТОЛЬКО на ПЕРВЫЙ announce в
+    // НОВОЙ сессии. Повторный announce в той же сессии даёт 48
+    // адресов вместо 91 и НОЛЬ EQ-адресов (было 40).
     //
-    // Проще и правильнее: запросить дамп и подождать ФИКСИРОВАННОЕ
-    // время, за которое он гарантированно доезжает. Замерено:
-    // терминатор 0x11:0x25 приходит через ~2.7-3.0 с.
+    //     announce #1: 91 адрес, 40 EQ
+    //     announce #2: 48 адресов, 0 EQ
+    //     announce #3: 48 адресов, 0 EQ
+    //     новая сессия, #1: 91 адрес, 40 EQ
+    //
+    // Значит повторный announce НЕ обновляет EQ. Функция вернёт
+    // то, что лежит в кеше, а туда `writeEqWithCommit` положил наши
+    // значения. Это давало ложное «ПРИМЕНЕНО».
+    //
+    // Теперь возвращаемые значения помечаются: если EQ повторно не
+    // пришли, ставится __fromCache и __dumpComplete = false.
+    const eqKey = (k) => /^(145|146|147|148|161|162|163|164|165|166|167|168|169|170):/.test(k);
+    const before = [...this.cache.keys()].filter(eqKey).length;
+
+    this.cache.delete('17:37');
     this.send(0x11, PP_ANNOUNCE, 1);
     await new Promise((r) => setTimeout(r, Math.min(timeoutMs, 3500)));
 
     const snap = this.snapshot();
-    snap.__dumpComplete = this.cache.get('17:37') === 1;
-    snap.__terminatorSeen = snap.__dumpComplete;
+    const after = Object.keys(snap).filter(eqKey).length;
+    const sawTerminator = this.cache.get('17:37') === 1;
+    const fromCache = after <= before && before > 0;
+
+    snap.__dumpComplete = sawTerminator && !fromCache;
+    snap.__fromCache = fromCache;
+    snap.__eqCount = after;
+    snap.__terminatorSeen = sawTerminator;
     return snap;
   }
 

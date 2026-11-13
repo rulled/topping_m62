@@ -1,4 +1,4 @@
-/**
+﻿/**
  * АДАПТЕР: node-hid (Node.js, локальный сервер).
  *
  * Отделяет ввод-вывод от политики. Ядро (`transport-core.js`) про
@@ -48,7 +48,7 @@ export function createNodeHidAdapter(opts = {}) {
     );
   }
 
-  const device = new HID.HID(opts.path ?? info.path);
+  let device = new HID.HID(opts.path ?? info.path);
   let dataCb = null;
   let closed = false;
   let timer = null;
@@ -107,7 +107,32 @@ export function createNodeHidAdapter(opts = {}) {
         /* уже */
       }
     },
+    /**
+     * Переоткрыть устройство.
+     *
+     * НУЖНО ДЛЯ ПОДТВЕРЖДЕНИЯ ЗАПИСИ EQ: блоки 0x91..0x94 приходят
+     * только на ПЕРВЫЙ announce новой сессии. Чтобы прочитать правду
+     * после записи, сессию надо закрыть и открыть заново.
+     */
+    async reopen() {
+      closed = true;
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      try {
+        device.close();
+      } catch {
+        /* уже */
+      }
+      device = new HID.HID(opts.path ?? info.path);
+      closed = false;
+      timer = setTimeout(tick, 0);
+      timer.unref?.();
+      return true;
+    },
   };
 }
 
 export { VID, PID, VENDOR_INTERFACE };
+

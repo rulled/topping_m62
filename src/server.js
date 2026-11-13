@@ -1,4 +1,4 @@
-﻿/**
+/**
  * HTTP + WebSocket сервер.
  *
  * Бекенд отдаёт:
@@ -17,6 +17,8 @@
  */
 
 import http from 'node:http';
+import { existsSync, readFileSync } from 'node:fs';
+import { extname, resolve } from 'node:path';
 import { WebSocketServer } from 'ws';
 
 import { ControlService } from './controls-service.js';
@@ -207,6 +209,98 @@ function json(res, code, body) {  const s = JSON.stringify(body);
     'content-length': Buffer.byteLength(s),
   });
   res.end(s);
+}
+
+/**
+ * ═══ РАЗДАЧА СТАТИКИ ДЛЯ ВЕБ-КЛИЕНТА ═══
+ *
+ * Отдаём только два каталога и только безопасные расширения:
+ *
+ *     /            -> web/index.html
+ *     /web/*       -> web/*
+ *     /src/*       -> src/*   (клиент импортирует модули протокола)
+ *
+ * ЗАЩИТА ОТ ВЫХОДА ИЗ КАТАЛОГА: путь нормализуется, и итоговый
+ * абсолютный путь обязан начинаться с корня проекта. Иначе `..`
+ * позволил бы прочитать любой файл на диске.
+ *
+ * @returns {boolean} true, если ответ отправлен
+ */
+const STATIC_ROOT = resolve(process.cwd());
+const STATIC_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.ico': 'image/x-icon',
+  '.webmanifest': 'application/manifest+json',
+};
+/** Каталоги, которые разрешено отдавать. */
+const STATIC_DIRS = ['web', 'src'];
+
+/**
+ * В `src/` есть модули только для Node (UIA, workspace, state-store).
+ * Клиенту они не нужны и в браузере всё равно упадут — не отдаём.
+ */
+const STATIC_DENY = [
+  '/src/tools/',
+  '/src/ui-',
+  '/src/workspace',
+  '/src/state-store',
+  '/src/snapshots',
+  '/src/settings-service',
+  '/src/eq-control',
+  '/src/comp-control',
+  '/src/audio-params',
+  '/src/elevate',
+  '/src/adapter-nodehid',
+  '/src/transport.js',
+  '/src/server.js',
+  '/src/controls-service',
+  '/src/modes',
+  '/src/eq-mixer',
+  '/src/eq-hp',
+  '/src/eq-scales',
+  '/src/comp-scales',
+];
+
+function serveStatic(pathname, res) {
+  let rel = decodeURIComponent(pathname);
+  if (rel === '/' || rel === '') rel = '/web/index.html';
+
+  // только разрешённые каталоги
+  const first = rel.replace(/^\/+/, '').split('/')[0];
+  if (!STATIC_DIRS.includes(first)) return false;
+
+  // модули только для Node клиенту не отдаём
+  if (STATIC_DENY.some((d) => rel.startsWith(d))) return false;
+
+  const ext = extname(rel).toLowerCase();
+  const type = STATIC_TYPES[ext];
+  if (!type) return false;
+
+  const abs = resolve(STATIC_ROOT, `.${rel}`);
+  if (!abs.startsWith(STATIC_ROOT)) {
+    json(res, 403, { ok: false, error: 'forbidden' });
+    return true;
+  }
+  if (!existsSync(abs)) {
+    json(res, 404, { ok: false, error: 'not found' });
+    return true;
+  }
+
+  const body = readFileSync(abs);
+  res.writeHead(200, {
+    'content-type': type,
+    'content-length': body.length,
+    // протокол меняется — кеш только короткий
+    'cache-control': 'no-cache',
+  });
+  res.end(body);
+  return true;
 }
 
 async function readBody(req) {
@@ -2080,6 +2174,18 @@ const server = http.createServer(async (req, res) => {
       // final: true — человек явно отключил, не пытаемся переподключаться.
       transport.close({ final: true });
       return json(res, 200, { ok: true, connected: false, autoReconnect: false });
+    }
+
+    // ═══ СТАТИКА: ВЕБ-КЛИЕНТ ═══
+    //
+    // Отдаём `web/` и `src/` — клиент импортирует те же модули
+    // протокола, что и бекенд (они портируемы, см. transport-core.js).
+    // Это позволяет странице работать ДВУМЯ путями:
+    //   1) через WebHID напрямую (без сервера и без MCC);
+    //   2) через этот сервер как через localhost-агент.
+    if (req.method === 'GET' || req.method === 'HEAD') {
+      const served = serveStatic(url.pathname, res);
+      if (served) return;
     }
 
     json(res, 404, { ok: false, error: 'not found' });

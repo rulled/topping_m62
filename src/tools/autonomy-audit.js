@@ -73,6 +73,25 @@ const NEEDS_MCC_FILES = [
 /** Маршруты, которые сами управляют процессом MCC (особый класс). */
 const MANAGES_MCC_PROCESS = ['settings.setMode', 'stopMcc', 'mccFriendly'];
 
+/** Функции, которые читают реестр Windows (MCC не нужен). */
+const USES_REGISTRY = ['readAllAudioParams', 'readAudioParam', 'readAudioFormatSummary'];
+
+/**
+ * ⚠ ОГРАНИЧЕНИЕ ЭТОГО АУДИТА: он статический и смотрит только на
+ * имена функций в теле маршрута. Транзитивные зависимости он НЕ видит.
+ *
+ * Реальный провал: `GET /api/audio-params` вызывал readAllAudioParams(),
+ * а та внутри ходила через UIAutomation в окно MCC. Аудит относил
+ * маршрут к «чистому HID», хотя он падал с HTTP 400 без MCC —
+ * единственный такой из 69. Найдено только фактическим прогоном
+ * (autonomy-behaviour.js), а не этим скриптом.
+ *
+ * ПОЭТОМУ: статическому аудиту доверять нельзя, истина —
+ * `autonomy-behaviour.js` (реальные запросы при закрытом MCC).
+ *
+ * Исправлено 2026-11-13: audio-params теперь читает реестр.
+ */
+
 const routeRe =
   /if \(req\.method === '(\w+)' && url\.pathname === '([^']+)'\) \{([\s\S]*?)\n    \}/g;
 
@@ -114,7 +133,8 @@ for (const r of routes) {
   const ui = NEEDS_RUNNING_MCC.filter((k) => core.includes(k));
   const files = NEEDS_MCC_FILES.filter((k) => core.includes(k));
   const proc = MANAGES_MCC_PROCESS.filter((k) => core.includes(k));
-  rows.push({ id, ui, files, proc });
+  const reg = USES_REGISTRY.filter((k) => core.includes(k));
+  rows.push({ id, ui, files, proc, reg });
 }
 
 const buckets = { ui: [], proc: [], files: [], hid: [] };
@@ -160,3 +180,31 @@ console.log('');
 console.log(`  без запущенного MCC:  ${buckets.hid.length + buckets.files.length}/${total}`
   + ` = ${pct(buckets.hid.length + buckets.files.length)}%`);
 console.log(`  без MCC вообще:       ${buckets.hid.length}/${total} = ${pct(buckets.hid.length)}%`);
+
+// ─── единственный «нужен запущенный MCC» — это осознанно ───
+if (buckets.ui.length === 1 && buckets.ui[0].id === 'POST /api/mcc/click') {
+  console.log('');
+  console.log('  ПОЯСНЕНИЕ: единственный маршрут, требующий запущенного MCC —');
+  console.log('  POST /api/mcc/click. Он И ПО СМЫСЛУ кликает по окну MCC,');
+  console.log('  это не дефект автономности. Для нашего клиента он не нужен:');
+  console.log('  все его действия дублируются HID-маршрутами.');
+  console.log('  => фактическая автономность: 68/69 = 99% (все, кроме клика по MCC)');
+}
+
+// ─── честная приписка: статический аудит не видит транзитивных вызовов ───
+const regRoutes = rows.filter((r) => r.reg.length);
+if (regRoutes.length) {
+  console.log('');
+  console.log(`  читают реестр (MCC не нужен): ${regRoutes.length}`);
+  for (const r of regRoutes) console.log(`    ${r.id}`);
+}
+
+console.log('');
+console.log('-'.repeat(72));
+console.log('⚠ Этот аудит СТАТИЧЕСКИЙ: он ищет имена функций в теле маршрута');
+console.log('  и НЕ видит транзитивных зависимостей. Однажды это уже дало');
+console.log('  ложный результат: /api/audio-params считался «чистым HID»,');
+console.log('  а падал без MCC, потому что readAllAudioParams() внутри');
+console.log('  ходила через UIAutomation. Исправлено 2026-11-13.');
+console.log('  ИСТИНА — прогон autonomy-behaviour.js при закрытом MCC.');
+console.log('-'.repeat(72));

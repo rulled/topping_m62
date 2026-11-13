@@ -1181,23 +1181,38 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Аудиопараметры драйвера: sample rate и buffer size.
-    // Меняются ТОЛЬКО клавиатурой через UIAutomation (проверено, NOTES §79):
-    // SelectionItem и ValuePattern.SetValue возвращают успех, но не применяют.
+    // ═══ АУДИОПАРАМЕТРЫ: ЧТЕНИЕ БЕЗ MCC ═══
+    //
+    // ДО 2026-11-13 этот маршрут был единственным из 69, который
+    // падал без запущенного MCC: он читал комбобоксы окна через
+    // UI Automation. Теперь sample rate берётся из реестра
+    // (MMDevices\Audio\{Render|Capture}\{GUID}\Properties), а он
+    // читается всегда — MCC не нужен ни запущенным, ни установленным.
+    //
+    // ЗАПИСЬ по-прежнему невозможна: ACE с флагом CIID даёт
+    // администраторам права только на дочерние ключи. Проверено
+    // при admin=True/High integrity. См. NOTES §149.4.
     if (req.method === 'GET' && url.pathname === '/api/audio-params') {
       try {
         const cur = readAllAudioParams();
         return json(res, 200, {
           ok: true,
+          via: 'registry',
+          mccRequired: false,
           current: cur,
           options: AUDIO_OPTIONS_FOR_API,
           caveats: [
-            'меняются только через UIAutomation-клавиатуру',
-            'требуется запущенный M Control Center',
-            'изменение sample rate может прервать аудиопоток',
+            'sample rate читается из реестра Windows — MCC не нужен',
+            'у M62 несколько эндпоинтов, у каждого своя частота: '
+              + 'current.sampleRate = массив, если они различаются',
+            'устройство задаёт частоту на каждый поток отдельно, '
+              + '"одной частоты устройства" не существует',
+            'buffer size в реестре нет — он в драйвере',
+            'ЗАПИСЬ sample rate заблокирована системой (см. POST)',
           ],
         });
       } catch (err) {
-        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
+        return json(res, 500, { ok: false, error: String(err?.message ?? err) });
       }
     }
 
@@ -1207,6 +1222,16 @@ const server = http.createServer(async (req, res) => {
       if (body.value === undefined) return json(res, 400, { ok: false, error: 'укажи value' });
       try {
         const out = setAudioParam(String(body.name), Number(body.value));
+        // applied=false — это НЕ ошибка запроса, а честный отказ системы.
+        // 200 с ok:false, потому что маршрут отработал, но применить нельзя.
+        if (!out.ok) {
+          return json(res, 200, {
+            ok: false,
+            applied: false,
+            ...out,
+            note: 'это ограничение Windows, а не бекенда — см. howTo',
+          });
+        }
         broadcast({ type: 'ack', op: 'audio-param', ...out });
         return json(res, 200, { ok: true, ...out });
       } catch (err) {

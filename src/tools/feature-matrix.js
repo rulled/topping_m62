@@ -94,9 +94,14 @@ const FEATURES = [
     group: 'Настройки',
     name: 'Sample rate / buffer size',
     hid: 'не HID — WAVEFORMATEX в реестре Windows',
-    status: 'PARTIAL',
-    evidence: 'читается без MCC (samplerate-tool.ps1); запись через реестр + '
-      + 'перезапуск аудиослужбы. Это настройка ОС, а не протокол M62',
+    status: 'READ',
+    evidence: 'ЧТЕНИЕ работает без MCC через /api/audio-params (реестр '
+      + 'MMDevices). У M62 26 эндпоинтов, у каждого своя частота. '
+      + 'ЗАПИСЬ невозможна даже с админом: ACE для Администраторов имеет '
+      + 'флаг CIID (inherit-only) — права только на дочерние ключи. '
+      + 'Проверено при admin=True/High integrity (NOTES §149.4). '
+      + 'buffer size в реестре нет, он в драйвере. Это настройка ОС, '
+      + 'а не протокол M62, поэтому на «независимость от MCC» не влияет',
   },
   {
     group: 'Настройки',

@@ -490,9 +490,10 @@ UIAutomation-переключение через комбобокс **ломае
 }
 ```
 
-**Sample rate и buffer size** — параметры аудиодрайвера. Их **нет в HID**
-и **нет в workspace-файле** — только в UI MCC (комбобоксы в шапке).
-Прочитать можно инструментом `node src/tools/read-audio-params.js`.
+**Sample rate** — параметр аудиодрайвера, не протокол M62. Его **нет в HID**
+и **нет в workspace-файле**, но он **читается из реестра Windows без MCC**
+(см. `GET /api/audio-params`). `buffer size` в реестре отсутствует — только
+в драйвере. Запись sample rate заблокирована системой (см. `POST /api/audio-params`).
 
 ### `POST /api/mcc/click`
 
@@ -542,42 +543,80 @@ UIAutomation-переключение через комбобокс **ломае
 
 ### `GET /api/audio-params`
 
-Аудиопараметры драйвера.
+Аудиоформат эндпоинтов M62. **MCC не нужен** — читается из реестра
+Windows (с 2026-11-13).
 
 ```json
 {
   "ok": true,
-  "current": { "sampleRate": "44100", "bufferSize": "32" },
-  "options": {
+  "via": "registry",
+  "mccRequired": false,
+  "current": {
+    "available": true,
     "sampleRate": [44100, 48000],
-    "bufferSize": [8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+    "bufferSize": null,
+    "endpoints": 26,
+    "distribution": { "44100": 13, "48000": 13 },
+    "source": "registry"
   },
-  "caveats": [
-    "меняются только через UIAutomation-клавиатуру",
-    "требуется запущенный M Control Center",
-    "изменение sample rate может прервать аудиопоток"
-  ]
+  "options": { "sampleRate": [44100, 48000], "bufferSize": [8, 16, 32, ...] }
 }
 ```
+
+**У M62 несколько эндпоинтов** (Playback 1/2 … 9/10, Loopback 1/2 … 7/8,
+AUX, BT, Mobile), и **у каждого своя частота**. Поэтому `sampleRate` —
+массив, если они различаются, и число, если совпадают.
+«Одной частоты устройства» не существует.
+
+Откуда берётся:
+
+```
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\Audio\
+  {Render|Capture}\{GUID}\Properties
+    {f19f064d-082c-4e27-bc73-6882a1bb8e4c},0   = WAVEFORMATEX (48 байт)
+```
+
+Смещения: `+10` каналы, `+12` частота, `+22` битность.
+
+`bufferSize` в реестре **нет** — он живёт в драйвере
+(`ToppingProUsbAudioks.sys`), поэтому возвращается `null`.
 
 ### `POST /api/audio-params`
 
 ```json
-{ "name": "bufferSize", "value": 64 }
+{ "name": "sampleRate", "value": 48000 }
 ```
+
+**Запись невозможна.** Ответ `200` с `ok: false` — это честный отказ
+системы, а не ошибка запроса:
 
 ```json
-{ "ok": true, "name": "bufferSize", "target": 64, "position": 3, "result": "SET" }
+{
+  "ok": false,
+  "applied": false,
+  "error": "запись в реестр заблокирована системой (ACE с флагом inherit-only)",
+  "howTo": [
+    "задача от NT AUTHORITY\\SYSTEM (schtasks /ru SYSTEM)",
+    "через MCC — он меняет частоту своим драйвером",
+    "вручную: Панель управления → Звук → Свойства M62 → Дополнительно"
+  ]
+}
 ```
 
-**⚠️ Почему только клавиатурой:** проверены три способа —
-`SelectionItem.Select()` и `ValuePattern.SetValue()` **возвращают успех,
-но не применяют значение**. Работает только эмуляция клавиатуры
-(Expand → HOME → стрелки → ENTER).
+**⚠️ Почему не работает даже с админом:** в SDDL ключа `Properties`
+ACE для `BUILTIN\Администраторы` имеет вид
 
-**Проверено:** `bufferSize 32 → 64 → 32`.
+```
+(A;CIID;CCDCSWRPRC;;;BA)
+```
 
-**Требует запущенного MCC** — это UIAutomation, не HID.
+`CIID` = ContainerInherit + **InheritOnly** — права действуют только
+на дочерние ключи, а на сам ключ их нет. Проверено при `admin=True` и
+High integrity: `Set-ItemProperty`, `reg add`, `Registry.OpenSubKey($true)`
+— все дают «access denied». DENY-ACE в ACL нет, просто нет разрешения.
+Подробности: `research/NOTES.md` §149.4.
+
+Рабочие пути: задача от `SYSTEM`, MCC, либо панель звука Windows.
 
 ### `GET /api/eq`
 

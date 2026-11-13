@@ -6,309 +6,487 @@
 <title>M62 — веб-клиент</title>
 <style>
   :root {
-    --bg: #0e0f12;
-    --panel: #16181d;
-    --panel2: #1d2026;
-    --line: #2a2e36;
-    --text: #e6e8ec;
-    --muted: #8b919c;
-    --accent: #4ea1ff;
-    --ok: #3ecf8e;
-    --warn: #f5a623;
-    --err: #ff5c5c;
+    --bg: #0e0f12; --panel: #16181d; --panel2: #1d2026; --line: #2a2e36;
+    --text: #e6e8ec; --muted: #8b919c; --accent: #4ea1ff;
+    --ok: #3ecf8e; --warn: #f5a623; --err: #ff5c5c;
   }
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-  }
-  header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--line);
-    background: var(--panel);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  h1 { font-size: 16px; margin: 0; font-weight: 600; }
-  .badge {
-    font-size: 12px;
-    padding: 3px 9px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    color: var(--muted);
-  }
+  body { margin: 0; font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); }
+  header { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
+  h1 { font-size: 15px; margin: 0; font-weight: 600; }
+  .badge { font-size: 12px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
   .badge.on { color: var(--ok); border-color: var(--ok); }
-  .badge.off { color: var(--muted); }
+  .badge.warn { color: var(--warn); border-color: var(--warn); }
   .spacer { flex: 1; }
-  button {
-    font: inherit;
-    padding: 7px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--line);
-    background: var(--panel2);
-    color: var(--text);
-    cursor: pointer;
-  }
+  button { font: inherit; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); cursor: pointer; }
   button:hover:not(:disabled) { border-color: var(--accent); }
-  button:disabled { opacity: .45; cursor: default; }
+  button:disabled { opacity: .4; cursor: default; }
   button.primary { background: var(--accent); border-color: var(--accent); color: #04121f; font-weight: 600; }
-  main { padding: 20px; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); }
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 16px;
-  }
-  .card h2 { font-size: 13px; margin: 0 0 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
-  .row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+  button.on { background: var(--ok); border-color: var(--ok); color: #04121f; }
+  button.danger.on { background: var(--err); border-color: var(--err); color: #fff; }
+  main { padding: 16px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .card h2 { font-size: 12px; margin: 0 0 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
   .row:last-child { border-bottom: 0; }
-  .row .k { color: var(--muted); }
-  .row .v { font-variant-numeric: tabular-nums; }
-  .log {
-    grid-column: 1 / -1;
-    background: #0a0b0d;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 12px;
-    font: 12px/1.5 ui-monospace, "SF Mono", Consolas, monospace;
-    max-height: 260px;
-    overflow: auto;
-    white-space: pre-wrap;
-  }
-  .log .t { color: var(--muted); }
-  .log .ok { color: var(--ok); }
-  .log .err { color: var(--err); }
-  .log .warn { color: var(--warn); }
-  .hint {
-    grid-column: 1 / -1;
-    background: rgba(78,161,255,.08);
-    border: 1px solid rgba(78,161,255,.3);
-    border-radius: 12px;
-    padding: 14px 16px;
-    color: #cfe4ff;
-  }
-  .hint b { color: #fff; }
-  .slider { width: 100%; }
-  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .row .k { color: var(--muted); flex: 1; }
+  .row .v { font-variant-numeric: tabular-nums; min-width: 62px; text-align: right; }
+  .ctl { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
+  .ctl label { color: var(--muted); min-width: 82px; font-size: 13px; }
+  .ctl input[type=range] { flex: 1; accent-color: var(--accent); min-width: 60px; }
+  .ctl .val { min-width: 52px; text-align: right; font-variant-numeric: tabular-nums; font-size: 13px; }
+  .log { grid-column: 1 / -1; background: #0a0b0d; border: 1px solid var(--line); border-radius: 12px; padding: 10px; font: 11.5px/1.5 ui-monospace, Consolas, monospace; max-height: 200px; overflow: auto; white-space: pre-wrap; }
+  .log .t { color: var(--muted); } .log .ok { color: var(--ok); } .log .err { color: var(--err); } .log .warn { color: var(--warn); }
+  .hint { grid-column: 1 / -1; background: rgba(78,161,255,.08); border: 1px solid rgba(78,161,255,.3); border-radius: 12px; padding: 12px 14px; color: #cfe4ff; font-size: 13px; }
+  .warnbox { grid-column: 1 / -1; background: rgba(245,166,35,.1); border: 1px solid rgba(245,166,35,.4); border-radius: 12px; padding: 12px 14px; color: #ffe0b0; font-size: 13px; display: none; }
+  .warnbox.show { display: block; }
+  select { font: inherit; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+  .commit { font-size: 11px; color: var(--warn); }
 </style>
 </head>
 <body>
 
 <header>
   <h1>TOPPING M62</h1>
-  <span class="badge off" id="status">не подключено</span>
-  <span class="badge" id="mode"></span>
+  <span class="badge" id="status">не подключено</span>
+  <span class="badge" id="mode" style="display:none"></span>
   <div class="spacer"></div>
+  <button id="btnDump" disabled title="Запросить полный дамп (0x11:26)">Обновить</button>
   <button class="primary" id="btnConnect">Подключить</button>
   <button id="btnDisconnect" disabled>Отключить</button>
 </header>
 
 <main>
   <div class="hint" id="hint">
-    <b>Как это работает.</b> Страница общается с вашей M62 напрямую через
-    WebHID — данные карты не покидают браузер. Нужен Chrome или Edge 89+
-    и разрешение на доступ к устройству. Локальный сервер и M Control
-    Center не требуются.
+    <b>Управление M62 из браузера.</b> Страница общается с картой напрямую
+    через WebHID — данные не покидают ваш компьютер. Нужен Chrome или Edge 89+.
+    M Control Center не требуется (и должен быть закрыт: он занимает устройство).
+  </div>
+
+  <div class="warnbox" id="safety">
+    <b>⚠ Осторожно:</b> наушники подключены. Нажмите «Заглушить выход» ниже,
+    прежде чем менять параметры звука.
   </div>
 
   <section class="card">
     <h2>Устройство</h2>
-    <div class="row"><span class="k">состояние</span><span class="v" id="dState">—</span></div>
     <div class="row"><span class="k">адресов получено</span><span class="v" id="dTags">0</span></div>
     <div class="row"><span class="k">отчётов прочитано</span><span class="v" id="dReads">0</span></div>
     <div class="row"><span class="k">кадров отправлено</span><span class="v" id="dWrites">0</span></div>
+    <div class="row"><span class="k">последняя запись</span><span class="v" id="dLast">—</span></div>
   </section>
 
   <section class="card">
     <h2>Выходы</h2>
-    <div class="row"><span class="k">наушники подключены</span><span class="v" id="oHpJack">—</span></div>
-    <div class="row"><span class="k">наушники MUTE</span><span class="v" id="oHpMute">—</span></div>
-    <div class="row"><span class="k">OTG подключён</span><span class="v" id="oOtgJack">—</span></div>
-    <div class="row"><span class="k">OTG MUTE</span><span class="v" id="oOtgMute">—</span></div>
+    <div class="row"><span class="k">наушники</span><span class="v" id="oHpJack">—</span></div>
+    <div class="ctl">
+      <label>HP громкость</label>
+      <input type="range" id="oHpVol" min="0" max="99" value="0" disabled>
+      <span class="val" id="oHpVolV">—</span>
+    </div>
+    <div class="ctl">
+      <label>HP MUTE</label>
+      <button id="oHpMute" class="danger" disabled>выкл</button>
+      <span style="flex:1"></span>
+      <button id="oHpMuteOn" class="danger" disabled title="Заглушить HP (безопасно)">Заглушить</button>
+    </div>
+    <div class="row"><span class="k">OTG</span><span class="v" id="oOtgJack">—</span></div>
+    <div class="ctl">
+      <label>OTG MUTE</label>
+      <button id="oOtgMute" class="danger" disabled>выкл</button>
+    </div>
   </section>
 
   <section class="card">
-    <h2>Входы</h2>
-    <div class="row"><span class="k">IN 1</span><span class="v" id="iIn1">—</span></div>
-    <div class="row"><span class="k">IN 2</span><span class="v" id="iIn2">—</span></div>
-    <div class="row"><span class="k">AUX</span><span class="v" id="iAux">—</span></div>
-    <div class="row"><span class="k">BT</span><span class="v" id="iBt">—</span></div>
-    <div class="row"><span class="k">OTG IN</span><span class="v" id="iOtg">—</span></div>
+    <h2>Усиление входов</h2>
+    <div class="ctl"><label>IN 1</label><input type="range" id="gIn1" min="0" max="88" value="0" disabled><span class="val" id="gIn1V">—</span></div>
+    <div class="ctl"><label>IN 2</label><input type="range" id="gIn2" min="0" max="88" value="0" disabled><span class="val" id="gIn2V">—</span></div>
+    <div class="ctl"><label>AUX</label><input type="range" id="gAux" min="0" max="99" value="0" disabled><span class="val" id="gAuxV">—</span></div>
+    <div class="ctl"><label>BT</label><input type="range" id="gBt" min="0" max="99" value="0" disabled><span class="val" id="gBtV">—</span></div>
+    <div class="ctl"><label>OTG IN</label><input type="range" id="gOtg" min="0" max="99" value="0" disabled><span class="val" id="gOtgV">—</span></div>
   </section>
 
   <section class="card">
-    <h2>Эффекты</h2>
-    <div class="row"><span class="k">реверб</span><span class="v" id="fxReverb">—</span></div>
-    <div class="row"><span class="k">dry/wet</span><span class="v" id="fxWet">—</span></div>
-    <div class="row"><span class="k">компрессор</span><span class="v" id="fxComp">—</span></div>
-    <div class="row"><span class="k">шумоподавление</span><span class="v" id="fxNc">—</span></div>
+    <h2>Питание входов</h2>
+    <div class="ctl"><label>IN 1 48V</label><button id="p48v1" class="danger" disabled>выкл</button><span class="commit" id="p48v1n"></span></div>
+    <div class="ctl"><label>IN 2 48V</label><button id="p48v2" class="danger" disabled>выкл</button><span class="commit" id="p48v2n"></span></div>
+    <div class="hint" style="grid-column:auto;margin-top:8px;padding:8px 10px;font-size:12px">
+      ⚠ 48 В подаётся на микрофонный вход. Не включайте на линейном/инструментальном.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Реверб</h2>
+    <div class="ctl">
+      <label>тип</label>
+      <select id="rvType" disabled>
+        <option value="1">Bypass</option>
+        <option value="2">STUDIO</option>
+        <option value="3">LIVE</option>
+        <option value="4">HALL</option>
+      </select>
+      <span class="commit" id="rvNote"></span>
+    </div>
+    <div class="ctl"><label>dry/wet</label><input type="range" id="rvWet" min="0" max="100" value="30" disabled><span class="val" id="rvWetV">—</span></div>
+    <div class="ctl"><label>room</label><input type="range" id="rvRoom" min="1" max="6" value="4" disabled><span class="val" id="rvRoomV">—</span></div>
+    <div class="ctl"><label>decay</label><input type="range" id="rvDecay" min="0" max="18" value="11" disabled><span class="val" id="rvDecayV">—</span></div>
+    <div class="ctl"><label>width</label><input type="range" id="rvWidth" min="0" max="100" step="5" value="70" disabled><span class="val" id="rvWidthV">—</span></div>
+  </section>
+
+  <section class="card">
+    <h2>Компрессор</h2>
+    <div class="ctl"><label>вкл</label><button id="cpSwitch" class="danger" disabled>bypass</button></div>
+    <div class="ctl"><label>threshold</label><input type="range" id="cpThr" min="-36" max="0" value="-28" disabled><span class="val" id="cpThrV">—</span></div>
+    <div class="ctl"><label>ratio</label><input type="range" id="cpRatio" min="1" max="10" value="4" disabled><span class="val" id="cpRatioV">—</span></div>
+    <div class="ctl"><label>attack</label><input type="range" id="cpAtk" min="1" max="100" value="5" disabled><span class="val" id="cpAtkV">—</span></div>
+    <div class="ctl"><label>release</label><input type="range" id="cpRel" min="20" max="1000" value="200" disabled><span class="val" id="cpRelV">—</span></div>
+    <div class="ctl"><label>mix</label><input type="range" id="cpMix" min="0" max="100" value="100" disabled><span class="val" id="cpMixV">—</span></div>
   </section>
 
   <section class="card">
     <h2>EQ входа IN 1</h2>
-    <div class="row"><span class="k">полоса 1</span><span class="v" id="eq1">—</span></div>
-    <div class="row"><span class="k">полоса 2</span><span class="v" id="eq2">—</span></div>
-    <div class="row"><span class="k">полоса 3</span><span class="v" id="eq3">—</span></div>
-    <div class="row"><span class="k">полоса 4</span><span class="v" id="eq4">—</span></div>
+    <div class="ctl"><label>полоса 1</label><button id="eq1en" class="danger" disabled>выкл</button><input type="range" id="eq1gain" min="-12" max="12" value="0" disabled><span class="val" id="eq1v">—</span></div>
+    <div class="ctl"><label>полоса 2</label><button id="eq2en" class="danger" disabled>выкл</button><input type="range" id="eq2gain" min="-12" max="12" value="0" disabled><span class="val" id="eq2v">—</span></div>
+    <div class="ctl"><label>полоса 3</label><button id="eq3en" class="danger" disabled>выкл</button><input type="range" id="eq3gain" min="-12" max="12" value="0" disabled><span class="val" id="eq3v">—</span></div>
+    <div class="ctl"><label>полоса 4</label><button id="eq4en" class="danger" disabled>выкл</button><input type="range" id="eq4gain" min="-12" max="12" value="0" disabled><span class="val" id="eq4v">—</span></div>
+    <div class="commit">Запись EQ требует удержания сессии ~2.5 с</div>
   </section>
 
   <div class="log" id="log"></div>
 </main>
 
 <script type="module">
-import { M62TransportCore } from '../src/transport-core.js';
-import { requestDevice, openWebHidDevice, isWebHidSupported } from '../src/adapter-webhid.js';
+import { M62TransportCore } from '/src/transport-core.js';
+import { requestDevice, openWebHidDevice, isWebHidSupported } from '/src/adapter-webhid.js';
+import { buildEqFrames, readChannelBands } from '/src/eq-hid.js';
+import { buildCompFrames, readCompressor } from '/src/comp-hid.js';
+import { buildReverbFrames, readReverb, REVERB_TYPES } from '/src/reverb-hid.js';
+import { buildPhantomFrames } from '/src/phantom-hid.js';
 
 const $ = (id) => document.getElementById(id);
 const logEl = $('log');
-
-function log(msg, kind = '') {
-  const t = new Date().toLocaleTimeString('ru-RU');
-  const span = document.createElement('span');
-  span.className = kind;
-  span.textContent = `[${t}] ${msg}\n`;
-  logEl.appendChild(span);
+const log = (msg, kind = '') => {
+  const s = document.createElement('span');
+  s.className = kind;
+  s.textContent = `[${new Date().toLocaleTimeString('ru-RU')}] ${msg}\n`;
+  logEl.appendChild(s);
   logEl.scrollTop = logEl.scrollHeight;
+};
+const quiet = { info: () => {}, warn: (m) => log(m, 'warn'), error: (m) => log(String(m), 'err') };
+
+let t = null;
+let writeChain = Promise.resolve();
+
+/** Очередь записи: кадры не должны перебивать друг друга. */
+function queue(fn) {
+  writeChain = writeChain.then(fn).catch((e) => log(`запись: ${e?.message ?? e}`, 'err'));
+  return writeChain;
 }
 
-const quiet = {
-  info: (m) => log(m),
-  warn: (m) => log(m, 'warn'),
-  error: (m) => log(String(m), 'err'),
-};
+function setLast(txt) { $('dLast').textContent = txt; }
 
-let transport = null;
-let adapter = null;
+/** Отправить кадры и отметить в логе. */
+async function send(frames, label) {
+  if (!t) return;
+  try {
+    t.writeFrames(frames, { updateCache: true });
+    setLast(label);
+    log(`→ ${label}`, 'ok');
+    setTimeout(render, 400);
+  } catch (e) {
+    log(`ошибка записи: ${e?.message ?? e}`, 'err');
+  }
+}
 
-// ─── чтение значений из кеша ───
-const REVERB_TYPES = { 1: 'Bypass', 2: 'STUDIO', 3: 'LIVE', 4: 'HALL' };
-const NC_TYPES = { 0: 'Bypass', 15: 'NC1', 30: 'NC2' };
+/** Запись EQ — с удержанием сессии. */
+async function sendEq(frames, label) {
+  if (!t) return;
+  try {
+    setLast(`${label} (коммит…)`);
+    log(`→ ${label} (держим сессию 2.5 с)`, 'warn');
+    await t.writeEqWithCommit(frames);
+    await t.readViaDump();
+    setLast(label);
+    log(`✓ ${label}`, 'ok');
+    render();
+  } catch (e) {
+    log(`ошибка EQ: ${e?.message ?? e}`, 'err');
+  }
+}
 
+// ─── рендер ───
 function render() {
-  if (!transport) return;
-  const g = (t, p) => transport.get(t, p);
+  if (!t) return;
+  const g = (tt, pp) => t.get(tt, pp);
 
-  $('dTags').textContent = String(Object.keys(transport.snapshot()).length);
-  $('dReads').textContent = String(transport.stats.reads);
-  $('dWrites').textContent = String(transport.stats.writes);
+  $('dTags').textContent = Object.keys(t.snapshot()).length;
+  $('dReads').textContent = String(t.stats.reads);
+  $('dWrites').textContent = String(t.stats.writes);
 
-  $('oHpJack').textContent = g(0x64, 0x06) === 1 ? 'да' : 'нет';
-  $('oHpMute').textContent = g(0x64, 0x04) === 1 ? 'ВКЛ' : 'выкл';
-  $('oOtgJack').textContent = g(0x62, 0x06) === 1 ? 'да' : 'нет';
-  $('oOtgMute').textContent = g(0x62, 0x04) === 1 ? 'ВКЛ' : 'выкл';
+  const hpJack = g(0x64, 0x06);
+  $('oHpJack').textContent = hpJack === 1 ? 'подключены' : 'нет';
+  $('safety').classList.toggle('show', hpJack === 1 && g(0x64, 0x04) !== 1);
 
-  const inputFmt = (tt) => {
-    const jack = g(tt, 0x06);
-    const mute = g(tt, 0x05);
-    const gain = g(tt, 0x04);
-    const parts = [];
-    if (jack === 1) parts.push('jack');
-    if (mute === 1) parts.push('MUTE');
-    if (gain !== null && gain !== undefined) parts.push(`gain ${gain}`);
-    return parts.length ? parts.join(', ') : '—';
-  };
-  $('iIn1').textContent = inputFmt(0x21);
-  $('iIn2').textContent = inputFmt(0x22);
-  $('iAux').textContent = inputFmt(0x23);
-  $('iBt').textContent = inputFmt(0x25);
-  $('iOtg').textContent = inputFmt(0x27);
+  const hpMute = g(0x64, 0x04);
+  const hpMuteBtn = $('oHpMute');
+  hpMuteBtn.textContent = hpMute === 1 ? 'MUTE' : 'выкл';
+  hpMuteBtn.classList.toggle('on', hpMute === 1);
 
-  const rvType = g(0x44, 0x0b);
-  $('fxReverb').textContent = REVERB_TYPES[rvType] ?? (rvType === null ? '—' : String(rvType));
-  const wet = g(0x44, 0x08);
-  $('fxWet').textContent = wet === null ? '—' : String(wet);
-  const compSw = g(0x46, 0x01);
-  $('fxComp').textContent = compSw === null ? '—' : (compSw === 1 ? 'включён' : 'bypass');
-  const nc = g(0x44, 0x07);
-  $('fxNc').textContent = NC_TYPES[nc] ?? (nc === null ? '—' : String(nc));
+  const hpVol = g(0x64, 0x03);
+  if (hpVol !== null) { $('oHpVol').value = hpVol; $('oHpVolV').textContent = hpVol; }
 
-  // EQ полосы IN1: блоки 0x91 (1/2) и 0x92 (3/4)
-  const bandFmt = (block, isSecond) => {
-    const en = g(block, isSecond ? 0x06 : 0x01);
-    const gain = g(block, isSecond ? 0x08 : 0x03);
-    const freq = g(block, isSecond ? 0x09 : 0x04);
-    if (en === null && gain === null) return '—';
-    return `${en === 1 ? 'вкл' : 'выкл'}, ${gain ?? 0} дБ @ ${freq ?? '?'} Гц`;
-  };
-  $('eq1').textContent = bandFmt(0x91, false);
-  $('eq2').textContent = bandFmt(0x91, true);
-  $('eq3').textContent = bandFmt(0x92, false);
-  $('eq4').textContent = bandFmt(0x92, true);
+  $('oOtgJack').textContent = g(0x62, 0x06) === 1 ? 'подключён' : 'нет';
+  const otgMute = g(0x62, 0x04);
+  $('oOtgMute').textContent = otgMute === 1 ? 'MUTE' : 'выкл';
+  $('oOtgMute').classList.toggle('on', otgMute === 1);
+
+  // усиления
+  const gains = [[0x21, 'gIn1'], [0x22, 'gIn2'], [0x23, 'gAux'], [0x25, 'gBt'], [0x27, 'gOtg']];
+  for (const [tt, id] of gains) {
+    const v = g(tt, 0x04);
+    if (v !== null) { $(id).value = v; $(`${id}V`).textContent = v; }
+  }
+
+  // 48V
+  for (const [tt, id] of [[0x21, 'p48v1'], [0x22, 'p48v2']]) {
+    const v = g(tt, 0x03);
+    const b = $(id);
+    b.textContent = v === 1 ? '48V ВКЛ' : 'выкл';
+    b.classList.toggle('on', v === 1);
+  }
+
+  // реверб
+  const rv = readReverb(t.snapshot());
+  if (rv && rv.type !== null && rv.type !== undefined) {
+    $('rvType').value = String(rv.type);
+  }
+  for (const [k, id] of [['dryWet', 'rvWet'], ['room', 'rvRoom'], ['decay', 'rvDecay'], ['width', 'rvWidth']]) {
+    if (rv && rv[k] !== null && rv[k] !== undefined) {
+      $(id).value = rv[k];
+      $(`${id}V`).textContent = rv[k];
+    }
+  }
+  const bypass = rv && rv.type === 1;
+  $('rvNote').textContent = bypass ? 'в Bypass параметры не применяются' : '';
+
+  // компрессор
+  const cp = readCompressor(t.snapshot());
+  if (cp) {
+    const sw = cp.switch;
+    const b = $('cpSwitch');
+    b.textContent = sw === 1 ? 'включён' : 'bypass';
+    b.classList.toggle('on', sw === 1);
+    const map = [['threshold', 'cpThr'], ['ratio', 'cpRatio'], ['attack', 'cpAtk'], ['release', 'cpRel'], ['mix', 'cpMix']];
+    for (const [k, id] of map) {
+      if (cp[k] !== null && cp[k] !== undefined) {
+        $(id).value = cp[k];
+        $(`${id}V`).textContent = cp[k];
+      }
+    }
+  }
+
+  // EQ
+  const bands = readChannelBands(t.snapshot(), 'IN1');
+  for (const b of bands) {
+    const en = $(`eq${b.band}en`);
+    const gn = $(`eq${b.band}gain`);
+    if (!en) continue;
+    en.textContent = b.enable === 1 ? 'вкл' : 'выкл';
+    en.classList.toggle('on', b.enable === 1);
+    if (b.gain !== null && b.gain !== undefined) {
+      gn.value = b.gain;
+      $(`eq${b.band}v`).textContent = `${b.gain} дБ`;
+    }
+  }
 }
 
 // ─── подключение ───
+function enableControls(on) {
+  document.querySelectorAll('input[type=range], select, .card button').forEach((el) => {
+    if (el.id === 'btnConnect' || el.id === 'btnDisconnect') return;
+    el.disabled = !on;
+  });
+  $('btnDump').disabled = !on;
+}
+
 async function connect() {
-  if (!isWebHidSupported()) {
-    log('WebHID не поддерживается. Нужен Chrome или Edge 89+.', 'err');
-    return;
-  }
+  if (!isWebHidSupported()) { log('WebHID не поддерживается. Chrome или Edge 89+.', 'err'); return; }
   try {
-    $('status').textContent = 'выбор устройства…';
+    $('status').textContent = 'выбор…';
     const device = await requestDevice();
-    if (!device) {
-      log('устройство не выбрано', 'warn');
-      $('status').textContent = 'не подключено';
-      return;
-    }
+    if (!device) { $('status').textContent = 'не подключено'; log('устройство не выбрано', 'warn'); return; }
     log(`выбрано: ${device.productName || 'M62'}`);
 
-    adapter = await openWebHidDevice(device);
-    transport = new M62TransportCore({ adapter, logger: quiet });
+    const adapter = await openWebHidDevice(device);
+    t = new M62TransportCore({ adapter, logger: quiet });
+    t.on('change', () => render());
+    t.on('error', (e) => log(`ошибка: ${e?.message ?? e}`, 'err'));
 
-    transport.on('change', () => render());
-    transport.on('error', (e) => log(`ошибка: ${e?.message ?? e}`, 'err'));
-
-    await transport.open();
-    log('сессия открыта (handshake + subscribe + announce)', 'ok');
+    await t.open();
+    log('сессия открыта', 'ok');
 
     $('status').textContent = 'подключено';
     $('status').className = 'badge on';
     $('btnConnect').disabled = true;
     $('btnDisconnect').disabled = false;
-    $('dState').textContent = 'работает';
+    enableControls(true);
 
-    // первый дамп идёт ~6 с; обновляем постепенно
-    setTimeout(render, 1500);
-    setTimeout(render, 4000);
+    setTimeout(render, 1200);
+    setTimeout(render, 3500);
     setTimeout(() => {
       render();
-      log(`получено адресов: ${Object.keys(transport.snapshot()).length}`, 'ok');
-    }, 7000);
+      log(`адресов: ${Object.keys(t.snapshot()).length}`, 'ok');
+      if (t.get(0x64, 0x06) === 1 && t.get(0x64, 0x04) !== 1) {
+        log('⚠ наушники подключены и НЕ заглушены — нажмите «Заглушить»', 'warn');
+      }
+    }, 6500);
   } catch (err) {
-    log(`не удалось подключиться: ${err?.message ?? err}`, 'err');
+    log(`не удалось: ${err?.message ?? err}`, 'err');
     $('status').textContent = 'ошибка';
-    $('status').className = 'badge off';
+    $('status').className = 'badge';
   }
 }
 
 function disconnect() {
-  try {
-    transport?.close();
-  } catch { /* уже */ }
-  transport = null;
-  adapter = null;
+  try { t?.close(); } catch { /* уже */ }
+  t = null;
   $('status').textContent = 'не подключено';
-  $('status').className = 'badge off';
+  $('status').className = 'badge';
   $('btnConnect').disabled = false;
   $('btnDisconnect').disabled = true;
-  $('dState').textContent = '—';
+  enableControls(false);
   log('отключено');
 }
 
 $('btnConnect').addEventListener('click', connect);
 $('btnDisconnect').addEventListener('click', disconnect);
 
+$('btnDump').addEventListener('click', () => queue(async () => {
+  log('запрашиваю дамп…');
+  await t.readViaDump();
+  render();
+  log(`дамп получен, адресов: ${Object.keys(t.snapshot()).length}`, 'ok');
+}));
+
+// ─── обработчики управления ───
+
+// HP volume
+$('oHpVol').addEventListener('input', (e) => { $('oHpVolV').textContent = e.target.value; });
+$('oHpVol').addEventListener('change', (e) => queue(() => {
+  const v = Number(e.target.value);
+  return send([{ target: 0x64, prop: 0x03, value: v }, { target: 0x63, prop: 0x03, value: v }], `HP громкость ${v}`);
+}));
+
+// HP mute (обе цели пары!)
+$('oHpMute').addEventListener('click', () => queue(() => {
+  const cur = t.get(0x64, 0x04) === 1 ? 1 : 0;
+  const v = cur === 1 ? 0 : 1;
+  return send([{ target: 0x64, prop: 0x04, value: v }, { target: 0x63, prop: 0x04, value: v }], `HP MUTE ${v ? 'вкл' : 'выкл'}`);
+}));
+$('oHpMuteOn').addEventListener('click', () => queue(() =>
+  send([{ target: 0x64, prop: 0x04, value: 1 }, { target: 0x63, prop: 0x04, value: 1 }], 'HP заглушён')));
+
+// OTG mute
+$('oOtgMute').addEventListener('click', () => queue(() => {
+  const cur = t.get(0x62, 0x04) === 1 ? 1 : 0;
+  const v = cur === 1 ? 0 : 1;
+  return send([{ target: 0x62, prop: 0x04, value: v }, { target: 0x61, prop: 0x04, value: v }], `OTG MUTE ${v ? 'вкл' : 'выкл'}`);
+}));
+
+// усиления входов
+const gainMap = [['gIn1', 0x21], ['gIn2', 0x22], ['gAux', 0x23], ['gBt', 0x25], ['gOtg', 0x27]];
+for (const [id, tt] of gainMap) {
+  $(id).addEventListener('input', (e) => { $(`${id}V`).textContent = e.target.value; });
+  $(id).addEventListener('change', (e) => queue(() =>
+    send([{ target: tt, prop: 0x04, value: Number(e.target.value) }], `усиление 0x${tt.toString(16)} = ${e.target.value}`)));
+}
+
+// 48V
+for (const [id, ch] of [['p48v1', 'IN1'], ['p48v2', 'IN2']]) {
+  $(id).addEventListener('click', () => {
+    const tt = ch === 'IN1' ? 0x21 : 0x22;
+    const cur = t.get(tt, 0x03) === 1 ? 1 : 0;
+    const v = cur === 1 ? 0 : 1;
+    if (v === 1) {
+      const ok = confirm(`Подать 48 В на ${ch}?\n\nЭто фантомное питание для КОНДЕНСАТОРНОГО микрофона.\nНе включайте на линейном или инструментальном входе — можно повредить оборудование.`);
+      if (!ok) return;
+    }
+    queue(() => send(buildPhantomFrames(ch, v === 1), `48V ${ch} ${v ? 'вкл' : 'выкл'}`));
+  });
+}
+
+// реверб: тип
+$('rvType').addEventListener('change', (e) => queue(async () => {
+  const code = Number(e.target.value);
+  await send(buildReverbFrames('type', code), `реверб ${REVERB_TYPES[code]}`);
+}));
+
+// реверб: параметры (только если не Bypass)
+//
+// ВАЖНО: width у модуля задаётся 0..1 (в HID уходит ×100).
+// В интерфейсе удобнее 0..100, поэтому делим перед отправкой.
+for (const [id, field, scale] of [['rvWet', 'dryWet', 1], ['rvRoom', 'room', 1], ['rvDecay', 'decay', 1], ['rvWidth', 'width', 100]]) {
+  $(id).addEventListener('input', (e) => { $(`${id}V`).textContent = e.target.value; });
+  $(id).addEventListener('change', (e) => queue(async () => {
+    const rv = readReverb(t.snapshot());
+    if (rv && rv.type === 1) {
+      log('реверб в Bypass — параметры не применятся. Сначала выберите тип.', 'warn');
+      return;
+    }
+    const raw = Number(e.target.value) / scale;
+    try {
+      await send(buildReverbFrames(field, raw), `реверб ${field} = ${e.target.value}`);
+    } catch (err) {
+      log(`реверб ${field}: ${err?.message ?? err}`, 'err');
+    }
+  }));
+}
+
+// компрессор
+$('cpSwitch').addEventListener('click', () => queue(() => {
+  const cur = t.get(0x46, 0x01) === 1 ? 1 : 0;
+  const v = cur === 1 ? 0 : 1;
+  return send(buildCompFrames('switch', v), `компрессор ${v ? 'вкл' : 'bypass'}`);
+}));
+
+for (const [id, field] of [['cpThr', 'threshold'], ['cpRatio', 'ratio'], ['cpAtk', 'attack'], ['cpRel', 'release'], ['cpMix', 'mix']]) {
+  $(id).addEventListener('input', (e) => { $(`${id}V`).textContent = e.target.value; });
+  $(id).addEventListener('change', (e) => queue(async () => {
+    try {
+      const frames = buildCompFrames(field, Number(e.target.value));
+      await send(frames, `компрессор ${field} = ${e.target.value}`);
+    } catch (err) {
+      log(`компрессор ${field}: ${err?.message ?? err}`, 'err');
+    }
+  }));
+}
+
+// EQ: включение полосы и gain
+for (let band = 1; band <= 4; band += 1) {
+  const enBtn = $(`eq${band}en`);
+  const gainEl = $(`eq${band}gain`);
+  const bandProp = band <= 2 ? 0x01 : 0x06;
+  const baseTarget = band <= 2 ? 0x91 : 0x92;
+
+  enBtn.addEventListener('click', () => queue(async () => {
+    const cur = t.get(baseTarget, bandProp) === 1 ? 1 : 0;
+    await sendEq([{ target: baseTarget, prop: bandProp, value: cur === 1 ? 0 : 1 }],
+      `EQ полоса ${band} ${cur === 1 ? 'выкл' : 'вкл'}`);
+  }));
+
+  gainEl.addEventListener('input', (e) => { $(`eq${band}v`).textContent = `${e.target.value} дБ`; });
+  gainEl.addEventListener('change', (e) => queue(async () => {
+    const frames = buildEqFrames('IN1', band, 'gain', Number(e.target.value));
+    await sendEq(frames, `EQ полоса ${band} gain ${e.target.value}`);
+  }));
+}
+
+// ─── старт ───
 if (!isWebHidSupported()) {
   $('btnConnect').disabled = true;
   log('этот браузер не поддерживает WebHID — откройте в Chrome или Edge', 'err');
 } else {
-  log('готово. нажмите «Подключить» и выберите M62 в списке');
+  log('готово. Нажмите «Подключить» и выберите M62');
 }
 </script>
 </body>

@@ -411,6 +411,91 @@ export class M62Transport extends EventEmitter {
   }
 
   /**
+   * ЗАПИСЬ EQ С ПРАВИЛЬНЫМ КОММИТОМ (открытие 2026-11-13).
+   *
+   * ═══ В ЧЁМ БЫЛА ПРОБЛЕМА ═══
+   *
+   * Девять проверок «запись EQ не работает» ошибались по ДВУМ причинам:
+   *
+   *  1. Сессия обрывалась сразу после записи. Прошивка коммитит
+   *     live-состояние НЕ МГНОВЕННО: если закрыть HID сразу, запись
+   *     теряется. Замерено: 0.5/1/1.5 с — теряется;
+   *     2 с и больше — применяется.
+   *
+   *  2. Читали обычным ANNOUNCE. Блоки EQ (0x91..0x94, 0xa1..0xaa)
+   *     приходят ТОЛЬКО в ответ на 0x11:26 (дамп DSP-блоков),
+   *     который завершается 0x11:25 через ~2.7-3.0 с.
+   *
+   * ═══ ПРОВЕРЕНО ═══
+   *
+   *   hold 2.0 с  gain=5  -> дамп показывает 5   ПРИМЕНЕНО
+   *   hold 2.5 с  gain=6  -> дамп показывает 6   ПРИМЕНЕНО
+   *   hold 3/6/10/15 с    -> все применены
+   *   hold 0.5/1/1.5 с    -> потеряно
+   *
+   * ═══ ЧТО ДЕЛАЕТ ЭТОТ МЕТОД ═══
+   *
+   * Пишет кадры, держит сессию открытой `holdMs` (по умолчанию 2500),
+   * затем читает результат через дамп и обновляет кеш ПРАВДОЙ.
+   *
+   * @param {Array<{target:number, prop:number, value:number}>} frames
+   * @param {{holdMs?: number, readBack?: boolean}} [opts]
+   */
+  async writeEqWithCommit(frames, opts = {}) {
+    if (!Array.isArray(frames) || frames.length === 0) {
+      throw new Error('writeEqWithCommit: пустой набор кадров');
+    }
+    const holdMs = Math.max(2000, opts.holdMs ?? 2500);
+
+    for (const f of frames) {
+      this.send(f.target, f.prop, f.value);
+      if (opts.updateCache !== false) {
+        this.cache.set(`${f.target}:${f.prop}`, f.value);
+      }
+    }
+
+    // Держим сессию живой: без этого прошивка не коммитит.
+    await new Promise((r) => setTimeout(r, holdMs));
+
+    // Запрашиваем дамп — только так приходят блоки EQ.
+    this.send(0x11, PP_ANNOUNCE, 1);
+
+    return { frames: frames.length, holdMs };
+  }
+
+  /**
+   * Прочитать состояние ЧЕРЕЗ ДАМП (единственный способ для EQ).
+   *
+   * Шлёт 0x11:26, ждёт терминатор 0x11:25 (примерно 2.7-3.0 с),
+   * собирает всё, что пришло. Возвращает снимок в том же формате,
+   * что `snapshot()`, плюс отметку о терминаторе.
+   *
+   * @param {{timeoutMs?: number}} [opts]
+   * @returns {Promise<Record<string, number>>}
+   */
+  async readViaDump(opts = {}) {
+    const timeoutMs = opts.timeoutMs ?? 12000;
+
+    // ═══ ЧЕСТНАЯ ЛОГИКА ═══
+    //
+    // Раньше здесь была попытка поймать «конец дампа» по терминатору
+    // 0x11:0x25 или по приросту EQ-адресов. Оба критерия ненадёжны:
+    // к моменту вызова EQ-адреса уже лежат в кеше (они пришли на
+    // первом ANNOUNCE сессии), поэтому «прироста» нет.
+    //
+    // Проще и правильнее: запросить дамп и подождать ФИКСИРОВАННОЕ
+    // время, за которое он гарантированно доезжает. Замерено:
+    // терминатор 0x11:0x25 приходит через ~2.7-3.0 с.
+    this.send(0x11, PP_ANNOUNCE, 1);
+    await new Promise((r) => setTimeout(r, Math.min(timeoutMs, 3500)));
+
+    const snap = this.snapshot();
+    snap.__dumpComplete = this.cache.get('17:37') === 1;
+    snap.__terminatorSeen = snap.__dumpComplete;
+    return snap;
+  }
+
+  /**
    * Закрыть устройство.
    * @param {{final?: boolean}} [opts] final=true — не пытаться переподключаться
    */

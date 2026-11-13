@@ -88,27 +88,30 @@ async function main() {
   const band1Gain = eq0.json?.bands?.IN1?.[0]?.gain ?? 0;
   const eqTarget = band1Gain === 3 ? -3 : 3;
 
-  // ═══ EQ НА ВХОДАХ: ТОЛЬКО ЧТЕНИЕ (2026-11-13) ═══
+  // ═══ EQ НА ВХОДАХ: ЗАПИСЬ РАБОТАЕТ (2026-11-13) ═══
   //
-  // Раньше здесь проверялось, что запись применяется. Проверка была
-  // ложной: значение читалось из оптимистичного кеша транспорта.
-  // Устройство запись EQ не принимает — доказано 9 способами
-  // (см. NOTES §151 и docs/API.md).
+  // История: сначала запись EQ казалась нерабочей (9 способов мимо),
+  // и маршрут был переведён в read-only. Это оказалось НЕВЕРНО.
   //
-  // Теперь тест проверяет ГЛАВНОЕ СВОЙСТВО: маршрут не врёт.
-  // Он обязан ответить ok:false, applied:'unverified', readOnly:true.
+  // Настоящая причина: прошивка коммитит запись НЕ МГНОВЕННО.
+  // Замерено: удержание сессии < 2 с -> потеряно; >= 2 с -> применено.
+  // Второе условие: читать результат надо через дамп 0x11:26,
+  // обычный ANNOUNCE блоки EQ не несёт.
+  //
+  // Тест проверяет рабочий путь: запись -> applied:'confirmed' ->
+  // независимое чтение показывает новое значение.
   let r = await api('eq/band', 'POST', { input: 'IN1', band: 1, param: 'gain', value: eqTarget });
   record(
-    'POST /api/eq/band честно отказывает',
-    r.ok && r.json?.ok === false && r.json?.applied === 'unverified' && r.json?.readOnly === true,
-    `applied=${r.json?.applied} readOnly=${r.json?.readOnly}`,
+    'POST /api/eq/band пишет и подтверждает',
+    r.ok && r.json?.ok === true && r.json?.applied === 'confirmed',
+    `applied=${r.json?.applied} dumpComplete=${r.json?.dumpComplete}`,
   );
 
   let snap = await rereadSnapshot();
   record(
-    '  проверка: gain НЕ изменился (как и должно быть)',
-    snap.eq?.IN1?.[0]?.gain === band1Gain,
-    `было ${band1Gain}, видим ${snap.eq?.IN1?.[0]?.gain}`,
+    '  проверка: gain применился',
+    snap.eq?.IN1?.[0]?.gain === eqTarget,
+    `видим ${snap.eq?.IN1?.[0]?.gain}, хотели ${eqTarget}`,
   );
 
   record(
@@ -117,11 +120,15 @@ async function main() {
     `полос IN1: ${eq0.json?.bands?.IN1?.length}`,
   );
 
+  // откат
+  r = await api('eq/band', 'POST', { input: 'IN1', band: 1, param: 'gain', value: band1Gain });
+  record('  откат gain', r.ok && r.json?.ok === true, `-> ${r.json?.after?.gain}`);
+
   r = await api('eq/band/enable', 'POST', { input: 'IN1', band: 2, enabled: true });
   record(
-    'POST /api/eq/band/enable честно отказывает',
-    r.ok && r.json?.ok === false && r.json?.readOnly === true,
-    `readOnly=${r.json?.readOnly}`,
+    'POST /api/eq/band/enable пишет',
+    r.ok && r.json?.ok === true,
+    `applied=${r.json?.applied}`,
   );
 
   // ═══ 2. Компрессор ═══

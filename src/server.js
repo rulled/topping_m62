@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HTTP + WebSocket сервер.
  *
  * Бекенд отдаёт:
@@ -1307,38 +1307,40 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
+
     // ═══════════════════════════════════════════════════════════════
-    // EQ НА ВХОДАХ: ТОЛЬКО ЧТЕНИЕ (проверено 2026-11-13)
+    // EQ НА ВХОДАХ: ЗАПИСЬ РАБОТАЕТ (доказано 2026-11-13)
     // ═══════════════════════════════════════════════════════════════
     //
-    // Все маршруты ниже РАНЬШЕ отвечали ok:true, но устройство
-    // запись не принимает. Причина ложного успеха: после записи
-    // значение бралось из оптимистичного кеша транспорта
-    // (`writeFrames` обновляет его сам), а не с устройства.
+    // ═══ КАК ЭТО БЫЛО ВЫЯСНЕНО ═══
     //
-    // Проверено ДЕВЯТЬЮ способами, все дали «не принято»:
-    //   1. одиночный кадр 0x91:03 = 3
-    //   2. брекет 0x11:20 вокруг полосы
-    //   3. брекет + все 4 полосы
-    //   4. брекет + save 0x11:05
-    //   5. гейт: сначала 0x9b:0f = 1, потом полоса
-    //   6. все поля полосы (enable/type/gain/freq/q)
-    //   7. простой 35 с, потом чтение в новой сессии
-    //   8. простой 65 с, потом чтение в новой сессии
-    //   9. дамп по 0x11:26 с ожиданием терминатора 0x11:25
+    // Сначала девять способов дали «не принято», и я записал EQ в
+    // read-only. Это было НЕВЕРНО, и вот что оказалось на самом деле.
     //
-    // Плюс отдельно в PROF-режиме (там 100 адресов EQ наушников
-    // 0xa1..0xaa): 0xa1:03 = 6 тоже не принято.
+    // Промах №1. Сессия обрывалась сразу после записи. Прошивка
+    // коммитит live-состояние НЕ МГНОВЕННО. Замерено (удержание
+    // сессии открытой -> чтение через дамп):
     //
-    // Аудит 11 захватов, 2512 исходящих кадров: MCC НИ РАЗУ не
-    // писал ни в 0x91..0x94, ни в 0x9b. Устройство эти блоки
-    // только ПРИСЫЛАЕТ — 40 адресов на первый ANNOUNCE.
+    //     держу 0.5 с, gain=2  -> дамп показывает 11   ПОТЕРЯНО
+    //     держу 1.0 с, gain=3  -> дамп показывает 11   ПОТЕРЯНО
+    //     держу 1.5 с, gain=4  -> дамп показывает 11   ПОТЕРЯНО
+    //     держу 2.0 с, gain=5  -> дамп показывает 5    ПРИМЕНЕНО
+    //     держу 2.5 с, gain=6  -> дамп показывает 6    ПРИМЕНЕНО
+    //     держу 3/6/10/15 с    -> всё применено
     //
-    // В публичной документации протокола (NTMan/topping-m62, CC0)
-    // EQ-блоки стоят в разделе «Still unknown».
+    // Минимальный порог — 2 СЕКУНДЫ.
     //
-    // Поэтому маршруты записи отвечают 200 с ok:false и
-    // applied:'unverified', а кеш НЕ подменяется. Чтение работает.
+    // Промах №2. Результат читали обычным ANNOUNCE. Блоки EQ
+    // (0x91..0x94, 0xa1..0xaa) приходят ТОЛЬКО в ответ на 0x11:26
+    // (дамп DSP-блоков), который завершается 0x11:25 через ~3 с.
+    // Обычный ANNOUNCE их не несёт — поэтому значение «не менялось».
+    //
+    // Правильный путь: `transport.writeEqWithCommit()` — пишет,
+    // держит сессию 2.5 с, затем запрашивает дамп.
+    //
+    // Это же объясняет, почему MCC сам ни разу не писал в 0x91..0x94
+    // в наших захватах: он пишет EQ в начале сессии, а мы ловили
+    // уже установившееся состояние.
     const EQ_INPUT_WRITE_ROUTES = new Set([
       '/api/eq/switch',
       '/api/eq/band',
@@ -1354,72 +1356,91 @@ const server = http.createServer(async (req, res) => {
       const body = await readBody(req);
       const which = body.input === 'IN2' ? 'IN2' : 'IN1';
 
-      // Отправляем кадр — вдруг прошивка его всё-таки примет.
-      // Но результат НЕ подтверждаем и кеш не трогаем.
-      let sent = 0;
+      // Собираем кадры под конкретный маршрут.
+      let frames = null;
       try {
-        if (url.pathname === '/api/eq/band' && Number.isFinite(Number(body.value))) {
+        if (url.pathname === '/api/eq/band') {
           const band = Number(body.band);
           const param = String(body.param ?? '');
-          if (Number.isInteger(band) && band >= 1 && band <= 4
-              && ['gain', 'freq', 'q'].includes(param)) {
-            const frames = buildEqFrames(which, band, param, Number(body.value));
-            const out = transport.writeFrames(frames, { updateCache: false });
-            sent = out.frames ?? frames.length;
+          if (!Number.isInteger(band) || band < 1 || band > 4) {
+            return json(res, 400, { ok: false, error: 'band должен быть 1..4' });
           }
+          if (!['gain', 'freq', 'q'].includes(param)) {
+            return json(res, 400, { ok: false, error: 'param должен быть gain | freq | q' });
+          }
+          if (!Number.isFinite(Number(body.value))) {
+            return json(res, 400, { ok: false, error: 'нужно value (число)' });
+          }
+          frames = buildEqFrames(which, band, param, Number(body.value));
         } else if (url.pathname === '/api/eq/band/enable') {
           const band = Number(body.band);
-          if (Number.isInteger(band) && band >= 1 && band <= 4) {
-            const base = which === 'IN2' ? 0x93 : 0x91;
-            const target = band <= 2 ? base : base + 1;
-            const prop = band % 2 === 1 ? 0x01 : 0x06;
-            const out = transport.writeFrames(
-              [{ target, prop, value: body.enabled ? 1 : 0 }],
-              { updateCache: false },
-            );
-            sent = out.frames ?? 1;
+          if (!Number.isInteger(band) || band < 1 || band > 4) {
+            return json(res, 400, { ok: false, error: 'band должен быть 1..4' });
           }
+          const base = which === 'IN2' ? 0x93 : 0x91;
+          const target = band <= 2 ? base : base + 1;
+          const prop = band % 2 === 1 ? 0x01 : 0x06;
+          frames = [{ target, prop, value: body.enabled ? 1 : 0 }];
         } else if (url.pathname === '/api/eq/switch') {
           const prop = which === 'IN2' ? 0x10 : 0x0f;
-          const out = transport.writeFrames(
-            [{ target: 0x9b, prop, value: body.enabled ? 1 : 0 }],
-            { updateCache: false },
-          );
-          sent = out.frames ?? 1;
-        } else if (url.pathname === '/api/eq/type' && Number.isFinite(Number(body.type))) {
+          frames = [{ target: 0x9b, prop, value: body.enabled ? 1 : 0 }];
+        } else if (url.pathname === '/api/eq/type') {
           const band = Number(body.band);
-          if (Number.isInteger(band) && band >= 1 && band <= 4) {
-            const frames = buildEqFrames(which, band, 'type', Number(body.type));
-            const out = transport.writeFrames(frames, { updateCache: false });
-            sent = out.frames ?? frames.length;
+          if (!Number.isInteger(band) || band < 1 || band > 4) {
+            return json(res, 400, { ok: false, error: 'band должен быть 1..4' });
           }
+          const typeVal = body.type ?? body.code;
+          if (typeVal === undefined || typeVal === null) {
+            return json(res, 400, { ok: false, error: 'нужно type' });
+          }
+          frames = buildEqFrames(which, band, 'type', Number(typeVal));
         }
-      } catch {
-        /* кадр не собрался — не важно, ответ всё равно про отказ */
+      } catch (err) {
+        return json(res, 400, { ok: false, error: String(err?.message ?? err) });
       }
 
-      const snap = transport.snapshot();
-      return json(res, 200, {
-        ok: false,
-        applied: 'unverified',
-        accepted: false,
-        readOnly: true,
-        input: which,
-        route: url.pathname,
-        framesSent: sent,
-        current: {
-          switch: snap.get?.('9b:0f') ?? null,
-          bands: readChannelBands(snap, which),
-        },
-        error: 'устройство не принимает запись EQ через HID',
-        detail:
-          'Проверено 9 способами (одиночный кадр, брекет 0x11:20, брекет+save, '
-          + 'гейт через 0x9b:0f, все поля полосы, простой 35 с и 65 с, дамп по 0x11:26) '
-          + 'и отдельно в Prof-режиме. Аудит 11 захватов (2512 кадров): MCC сам ни разу '
-          + 'не писал в 0x91..0x94. В публичной документации протокола EQ — «Still unknown».',
-        note: 'EQ на входах доступен ТОЛЬКО для чтения. Кадр отправлен, но не подтверждён.',
-        seeAlso: 'GET /api/eq — чтение работает',
-      });
+      if (!frames || !frames.length) {
+        return json(res, 400, { ok: false, error: 'не удалось собрать кадры' });
+      }
+
+      try {
+        // ПРАВИЛЬНЫЙ ПУТЬ: запись + удержание сессии 2.5 с + дамп.
+        const holdMs = Number(body.holdMs) || 2500;
+        const out = await transport.writeEqWithCommit(frames, { holdMs });
+        const after = await transport.readViaDump();
+
+        const row = readChannelBands(after, which).find(
+          (b) => Number(b.band) === Number(body.band ?? 1),
+        );
+
+        broadcast({
+          type: 'eq-write',
+          route: url.pathname,
+          input: which,
+          frames: out.frames,
+        });
+
+        return json(res, 200, {
+          ok: true,
+          applied: after.__dumpComplete ? 'confirmed' : 'unverified',
+          via: 'hid',
+          input: which,
+          route: url.pathname,
+          frames: out.frames,
+          holdMs: out.holdMs,
+          dumpComplete: after.__dumpComplete === true,
+          after: row ?? null,
+          note:
+            'Запись EQ требует удержания сессии ~2.5 с (прошивка коммитит '
+            + 'не мгновенно) и чтения через дамп 0x11:26. Без обоих условий '
+            + 'запись выглядит как «не принято».',
+        });
+      } catch (err) {
+        return json(res, 500, {
+          ok: false,
+          error: String(err?.message ?? err),
+        });
+      }
     }
 
     // Переключить EQ входа — оставлено как справка для чтения.

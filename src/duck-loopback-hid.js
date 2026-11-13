@@ -57,8 +57,8 @@ export const DUCK_FIELDS = {
   attack: { prop: 0x02, min: 1, max: 500, unit: 'ms' },
   reduction: { prop: 0x03, min: 0, max: 60, unit: 'dB' },
   release: { prop: 0x04, min: 1, max: 3000, unit: 'ms' },
-  maskLo: { prop: 0x05, min: 0, max: 255, unit: '' },
-  maskHi: { prop: 0x06, min: 0, max: 255, unit: '' },
+  maskLo: { prop: 0x05, min: 0, max: 255, unit: '', label: 'маска IN1' },
+  maskHi: { prop: 0x06, min: 0, max: 255, unit: '', label: 'маска IN2' },
   switch: { prop: 0x07, min: 0, max: 1, unit: '' },
 };
 
@@ -67,12 +67,19 @@ export const DUCK_FIELD_NAMES = Object.keys(DUCK_FIELDS);
 /**
  * МАСКИ DUCKING — ДВЕ, А НЕ ОДНА.
  *
- * Доказано захватом 2026-11-10 (`capture-48v-and-mask.ps1`):
- * в INI выключили РОВНО ОДИН флаг (IN1AUX=false), и после запуска
- * MCC под захватом маска стала:
+ * Доказано захватами:
  *
- *     0x43:0x05 = 254   (1111 1110 — выключен бит 0)
- *     0x43:0x06 = 255   (все биты)
+ *  2026-11-10: в INI выключили РОВНО ОДИН флаг (IN1AUX=false) ->
+ *      0x43:0x05 = 254   (1111 1110 — выключен бит 0)
+ *      0x43:0x06 = 255   (все биты)
+ *
+ *  2026-11-13: 3 шаблона (`capture-duck-bits-fast.ps1`), совпадение
+ *  100% на всех трёх — см. §148 в research/NOTES.md:
+ *
+ *      шаблон          IN1            IN2
+ *      все включены    255            255
+ *      A/ B            170 (0b10101010)  84 (0b01010100)
+ *      B/ A             84             170
  *
  * Значит:
  *     0x43:0x05 = маска источников для IN1
@@ -80,40 +87,124 @@ export const DUCK_FIELD_NAMES = Object.keys(DUCK_FIELDS);
  *
  * Это НЕ младший и старший байт одной маски, а две отдельные.
  *
- * Соответствие битов источникам: **AUX = бит 0** (доказано).
- * Остальные биты не проверены по одному — порядок отличается от
- * порядка в MIXER_SOURCES (там AUX был бы битом 4, а он бит 0).
+ * Соответствие битов источникам ДОКАЗАНО ПОЛНОСТЬЮ: порядок битов
+ * совпадает с порядком флагов в секции [Ducking] INI.
  */
 export const DUCK_MASK = {
   in1: { prop: 0x05, note: 'маска входов для IN1' },
   in2: { prop: 0x06, note: 'маска входов для IN2' },
-  /** Доказанное соответствие. Остальные биты — неизвестны. */
+  /** Все 8 битов доказаны захватом 2026-11-13. */
   knownBits: {
     0: 'AUX',
+    1: 'BT',
+    2: 'OTGIN',
+    3: 'Playback1_2',
+    4: 'Playback3_4',
+    5: 'Playback5_6',
+    6: 'Playback7_8',
+    7: 'Playback9_10',
   },
 };
+
+/** бит -> флаг INI (без префикса IN1/IN2). */
+export const DUCK_MASK_BITS = DUCK_MASK.knownBits;
+
+/** Имя источника ducking -> номер бита. */
+export const DUCK_SOURCE_BIT = Object.fromEntries(
+  Object.entries(DUCK_MASK.knownBits).map(([bit, name]) => [name, Number(bit)]),
+);
+
+/**
+ * Имена источников ducking, которые принимает API.
+ * Порядок = порядок битов.
+ */
+export const DUCK_SOURCES = Object.values(DUCK_MASK.knownBits);
+
+/**
+ * Человеческие имена -> ключи битов.
+ * 'Playback 1/2' и 'PB12' оба дают бит 3.
+ */
+const DUCK_NAME_ALIASES = (() => {
+  const out = { ...DUCK_SOURCE_BIT };
+  out['OTG IN'] = DUCK_SOURCE_BIT.OTGIN;
+  out['OTG'] = DUCK_SOURCE_BIT.OTGIN;
+  for (const [key, bit] of Object.entries(DUCK_SOURCE_BIT)) {
+    if (key.startsWith('Playback')) {
+      const tail = key.slice('Playback'.length); // '1_2'
+      out[`PB${tail.replace('_', '')}`] = bit;
+      out[`pb${tail.replace('_', '')}`] = bit;
+      out[`Playback ${tail.replace('_', '/')}`] = bit;
+      out[`Playback ${tail.replace('_', '')}`] = bit;
+    }
+  }
+  return out;
+})();
+
+/** Имя источника -> номер бита (или бросает). */
+export function duckBit(src) {
+  if (typeof src === 'number') {
+    if (Number.isInteger(src) && src >= 0 && src <= 7) return src;
+    throw new Error(`бит должен быть 0..7, получили ${src}`);
+  }
+  const raw = String(src ?? '').trim();
+  if (!raw) throw new Error('источник ducking не указан');
+  if (DUCK_NAME_ALIASES[raw] !== undefined) return DUCK_NAME_ALIASES[raw];
+  const found = Object.keys(DUCK_NAME_ALIASES)
+    .find((k) => k.toLowerCase() === raw.toLowerCase());
+  if (found !== undefined) return DUCK_NAME_ALIASES[found];
+  throw new Error(
+    `неизвестный источник ducking: ${raw}; допустимо ${DUCK_SOURCES.join(', ')}`,
+  );
+}
 
 /**
  * Собирает маску из списка источников.
  *
- * РАБОТАЕТ ТОЛЬКО ДЛЯ AUX: остальные биты не проверены, поэтому
- * функция требует явного списка битов, а не имён.
+ * Принимает имена ('AUX', 'Playback 1/2', 'PB34') и номера битов.
  *
- * @param {number[]} bits  номера битов (0..7)
+ * @param {Array<string|number>} bits
  * @returns {number} байт маски
  */
 export function buildMaskFromBits(bits) {
+  const list = Array.isArray(bits) ? bits : [bits];
   let v = 0;
-  for (const b of bits) {
-    if (!Number.isInteger(b) || b < 0 || b > 7) {
-      throw new Error(`бит должен быть 0..7, получили ${b}`);
-    }
-    v |= 1 << b;
+  for (const b of list) {
+    v |= 1 << duckBit(b);
   }
   return v;
 }
 
-/** Расшифровывает байт маски в список битов с известными именами. */
+/**
+ * Кадры для масок ducking.
+ *
+ * @param {{in1?: Array<string|number>|number, in2?: Array<string|number>|number}} masks
+ * @returns {Array<{target:number,prop:number,value:number}>}
+ */
+export function buildDuckMaskFrames(masks = {}) {
+  const frames = [];
+  if (masks.in1 !== undefined && masks.in1 !== null) {
+    const v = typeof masks.in1 === 'number' && !Array.isArray(masks.in1)
+      ? masks.in1
+      : buildMaskFromBits(masks.in1);
+    if (!Number.isInteger(v) || v < 0 || v > 255) {
+      throw new Error(`маска IN1 вне 0..255: ${v}`);
+    }
+    frames.push({ target: TT_DUCK, prop: DUCK_MASK.in1.prop, value: v });
+  }
+  if (masks.in2 !== undefined && masks.in2 !== null) {
+    const v = typeof masks.in2 === 'number' && !Array.isArray(masks.in2)
+      ? masks.in2
+      : buildMaskFromBits(masks.in2);
+    if (!Number.isInteger(v) || v < 0 || v > 255) {
+      throw new Error(`маска IN2 вне 0..255: ${v}`);
+    }
+    frames.push({ target: TT_DUCK, prop: DUCK_MASK.in2.prop, value: v });
+  }
+  if (!frames.length) throw new Error('buildDuckMaskFrames: нечего писать');
+  return frames;
+}
+
+/** Расшифровывает байт маски в список источников. */
 export function describeMask(value) {
   if (value === null || value === undefined) return null;
   const bits = [];
@@ -122,7 +213,13 @@ export function describeMask(value) {
       bits.push({ bit: i, name: DUCK_MASK.knownBits[i] ?? null });
     }
   }
-  return { value, bits, known: DUCK_MASK.knownBits };
+  return {
+    value,
+    binary: value.toString(2).padStart(8, '0'),
+    bits,
+    sources: bits.map((b) => b.name).filter(Boolean),
+    known: DUCK_MASK.knownBits,
+  };
 }
 
 /** Пары loopback: имя -> (группа L, группа R). */
@@ -281,6 +378,13 @@ export function describeDuckingLoopback() {
       addresses: Object.fromEntries(
         Object.entries(DUCK_FIELDS).map(([k, f]) => [k, `0x43:0x${f.prop.toString(16).padStart(2, '0')}`]),
       ),
+      mask: {
+        in1: { prop: '0x43:0x05', note: 'маска источников для IN1' },
+        in2: { prop: '0x43:0x06', note: 'маска источников для IN2' },
+        bits: DUCK_MASK.knownBits,
+        sources: DUCK_SOURCES,
+        note: 'бит = порядок флагов в секции [Ducking] INI; доказано захватом 2026-11-13',
+      },
     },
     loopback: {
       pairs: Object.fromEntries(

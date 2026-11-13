@@ -1,0 +1,20 @@
+﻿[
+    {
+        "label":  "all",
+        "file":  "E:\\Programming shit\\Topping\\research\\duck-bits-fast\\step-all.pcap",
+        "flagsIn1":  "AUX,BT,OTGIN,Playback1_2,Playback3_4,Playback5_6,Playback7_8,Playback9_10",
+        "flagsIn2":  "AUX,BT,OTGIN,Playback1_2,Playback3_4,Playback5_6,Playback7_8,Playback9_10"
+    },
+    {
+        "label":  "a1b2",
+        "file":  "E:\\Programming shit\\Topping\\research\\duck-bits-fast\\step-a1b2.pcap",
+        "flagsIn1":  "BT,Playback1_2,Playback5_6,Playback9_10",
+        "flagsIn2":  "OTGIN,Playback3_4,Playback7_8"
+    },
+    {
+        "label":  "b1a2",
+        "file":  "E:\\Programming shit\\Topping\\research\\duck-bits-fast\\step-b1a2.pcap",
+        "flagsIn1":  "OTGIN,Playback3_4,Playback7_8",
+        "flagsIn2":  "BT,Playback1_2,Playback5_6,Playback9_10"
+    }
+]

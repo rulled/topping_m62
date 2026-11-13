@@ -54,7 +54,7 @@ $MCC_EXE  = 'C:\Program Files\TOPPING Pro\M Control Center\M Control Center.exe'
 $INI      = 'C:\Program Files\TOPPING Pro\M Control Center\Workspace\M62\Live\M62_Live_main.ini'
 $INI_BAK  = Join-Path $PSScriptRoot 'research\live-ini-before-fastbits.ini'
 $OUT_DIR  = Join-Path $PSScriptRoot 'research\duck-bits-fast'
-$RESULTS  = Join-Path $PSScriptRoot 'research\duck-bits-fast.json'
+$RESULTS_PATH  = Join-Path $PSScriptRoot 'research\duck-bits-fast.json'
 $DECODER  = Join-Path $PSScriptRoot 'src\tools\decode-duck-bits-fast.py'
 
 # бит -> флаг IN1/IN2 (порядок из секции [Ducking])
@@ -174,7 +174,9 @@ function Stop-Capture {
     Start-Sleep -Seconds 1
 }
 
-$results = @()
+# ВАЖНО: имена переменных в PowerShell регистронезависимы!
+# $rows и $ROWS_PATH — разные, а $results и $RESULTS — ОДНА переменная.
+$rows = @()
 $total = $STEPS.Count
 $idx = 0
 
@@ -214,7 +216,7 @@ foreach ($step in $STEPS) {
     if (Test-Path $outFile) {
         $size = (Get-Item $outFile).Length
         Write-Host ("  захвачено: {0:N0} байт" -f $size)
-        $results += [PSCustomObject]@{
+        $rows += [PSCustomObject]@{
             label = $step.label
             file  = $outFile
             size  = $size
@@ -233,13 +235,13 @@ Write-Host '=== ВОССТАНАВЛИВАЮ INI ===' -ForegroundColor Cyan
 Copy-Item $INI_BAK $INI -Force
 Write-Host '  восстановлен'
 
-$results | ConvertTo-Json -Depth 4 | Set-Content -Path $RESULTS -Encoding UTF8
-Write-Host "  результаты: $RESULTS"
+$rows | ConvertTo-Json -Depth 4 | Set-Content -Path $RESULTS_PATH -Encoding UTF8
+Write-Host "  результаты: $RESULTS_PATH"
 
 Write-Host ''
 Write-Host '=== РАЗБОР ===' -ForegroundColor Cyan
-if (Test-Path $RESULTS) {
-    & python $DECODER $RESULTS $OUT_DIR
+if (Test-Path $RESULTS_PATH) {
+    & python $DECODER $RESULTS_PATH $OUT_DIR
 }
 
 Write-Host ''

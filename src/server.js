@@ -73,10 +73,13 @@ import { WorkspaceService } from './workspace-service.js';
 import * as stateStore from './state-store.js';
 import {
   buildAllLoopbackFrames,
+  buildDuckMaskFrames,
   buildDuckingFrames,
   buildLoopbackFrames,
   describeDuckingLoopback,
   describeMask,
+  DUCK_MASK,
+  DUCK_SOURCES,
   LOOPBACK_PAIRS,
   LOOPBACK_PAIR_NAMES,
   sourceCode,
@@ -556,6 +559,81 @@ const server = http.createServer(async (req, res) => {
       } catch (err) {
         return json(res, 400, { ok: false, error: String(err?.message ?? err) });
       }
+    }
+
+    // ═══ МАСКА DUCKING: КАКИЕ ИСТОЧНИКИ ПРИГЛУШАЮТСЯ ═══
+    //
+    // Две маски по 8 бит: 0x43:0x05 = IN1, 0x43:0x06 = IN2.
+    // Порядок битов доказан захватом 2026-11-13 (3 шаблона, 100%
+    // совпадение): бит = порядок флагов в секции [Ducking] INI.
+    //
+    // Принимаем имена источников, а не только числа — в отличие от
+    // старого /api/ducking, где маска задавалась как maskLo/maskHi.
+    if (req.method === 'POST' && url.pathname === '/api/ducking/mask') {
+      const body = await readBody(req);
+      const hasIn1 = body.in1 !== undefined && body.in1 !== null;
+      const hasIn2 = body.in2 !== undefined && body.in2 !== null;
+      if (!hasIn1 && !hasIn2) {
+        return json(res, 400, {
+          ok: false,
+          error: 'нужно поле in1 и/или in2: массив источников или число 0..255',
+          sources: DUCK_SOURCES,
+          example: { in1: ['AUX', 'BT'], in2: ['Playback 1/2'] },
+        });
+      }
+      if (!transport.isOpen?.() && !transport.device) {
+        return json(res, 503, { ok: false, error: 'устройство не открыто', hint: 'POST /api/connect' });
+      }
+      try {
+        const frames = buildDuckMaskFrames({ in1: body.in1, in2: body.in2 });
+        const out = transport.writeFrames(frames);
+        const result = {};
+        for (const f of frames) {
+          const side = f.prop === DUCK_MASK.in1.prop ? 'in1' : 'in2';
+          result[side] = describeMask(f.value);
+        }
+        broadcast({ type: 'ack', op: 'ducking-mask', result, via: 'hid' });
+        return json(res, 200, {
+          ok: true,
+          via: 'hid',
+          frames: out.frames,
+          masks: result,
+          applied: 'unknown',
+          note: 'маска ducking не читается из устройства — подтвердить применение можно только захватом',
+        });
+      } catch (err) {
+        return json(res, 400, {
+          ok: false,
+          error: String(err?.message ?? err),
+          sources: DUCK_SOURCES,
+        });
+      }
+    }
+
+    // Справочник по маске: биты, источники, адреса.
+    if (req.method === 'GET' && url.pathname === '/api/ducking/mask') {
+      const q = url.searchParams;
+      // без параметров — справочник; с ?value=N — расшифровка байта
+      if (q.has('value')) {
+        const n = Number(q.get('value'));
+        if (!Number.isInteger(n) || n < 0 || n > 255) {
+          return json(res, 400, { ok: false, error: 'value должно быть 0..255' });
+        }
+        return json(res, 200, { ok: true, mask: describeMask(n) });
+      }
+      return json(res, 200, {
+        ok: true,
+        address: { in1: '0x43:0x05', in2: '0x43:0x06' },
+        bits: DUCK_MASK.knownBits,
+        sources: DUCK_SOURCES,
+        geometry: {
+          in1: describeMask(170),
+          in2: describeMask(84),
+          all: 255,
+          none: 0,
+        },
+        note: 'бит = порядок флагов в секции [Ducking] INI; доказано захватом 2026-11-13',
+      });
     }
 
     if (req.method === 'POST' && url.pathname === '/api/loopback') {

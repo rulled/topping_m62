@@ -66,3 +66,11 @@ test1.pcap
 
 # Временный файл сообщения коммита
 .gitmsg.tmp
+
+# ─── захваты USBPcap: десятки-сотни МБ, в git не место ───
+*.pcap
+*.pcapng
+research/duck-bits/
+research/duck-bits-fast/
+research/srv-out.log
+research/srv-err.log

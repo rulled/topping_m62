@@ -31,6 +31,11 @@ import { buildEqFrames, readChannelBands, EQ_LIMITS } from '../eq-hid.js';
 import { buildCompFrames, readCompressor, COMP_FIELDS } from '../comp-hid.js';
 import { buildReverbFrames, REVERB_TYPES, REVERB_FIELDS } from '../reverb-hid.js';
 import { buildPhantomFrames } from '../phantom-hid.js';
+import {
+  EQ_HP_BANDS,
+  buildBandFrames as buildHpFrames,
+  readBand as readHpBand,
+} from '../eq-hp.js';
 
 let ok = 0;
 let fail = 0;
@@ -171,6 +176,39 @@ console.log('\n--- EQ ---');
   const gIn2 = buildEqFrames('IN2', 1, 'gain', 1);
   check('EQ IN2 полоса1 -> 0x93:0x03', frameIs(gIn2, 0x93, 0x03, 1), JSON.stringify(gIn2));
 
+  // ─── расширенный UI: IN2 все полосы и все свойства ───
+  // Полосы 1,2 -> 0x93; полосы 3,4 -> 0x94.
+  const in2Cases = [
+    ['полоса1 gain', 1, 'gain', 3, 0x93, 0x03],
+    ['полоса2 gain', 2, 'gain', 2, 0x93, 0x08],
+    ['полоса3 gain', 3, 'gain', 1, 0x94, 0x03],
+    ['полоса4 gain', 4, 'gain', -2, 0x94, 0x08],
+  ];
+  for (const [name, band, field, v, tt, pp] of in2Cases) {
+    const f = buildEqFrames('IN2', band, field, v);
+    check(`EQ IN2 ${name} -> 0x${tt.toString(16)}:0x${pp.toString(16).padStart(2, '0')}`,
+      frameIs(f, tt, pp, v), JSON.stringify(f));
+  }
+
+  // Все пять свойств полосы 1 и полосы 2 (нечётная/чётная раскладка)
+  const propCases = [
+    ['тип', 'type', 2, 0x02, 0x07],
+    ['частота', 'freq', 1000, 0x04, 0x09],
+    ['Q', 'q', 1.5, 0x05, 0x0a],
+  ];
+  for (const [name, field, v, oddProp, evenProp] of propCases) {
+    const f1 = buildEqFrames('IN1', 1, field, v);
+    check(`EQ полоса1 ${name} -> prop 0x${oddProp.toString(16).padStart(2, '0')}`,
+      f1[0].prop === oddProp, `prop=${f1[0].prop}`);
+    const f2 = buildEqFrames('IN1', 2, field, v);
+    check(`EQ полоса2 ${name} -> prop 0x${evenProp.toString(16).padStart(2, '0')}`,
+      f2[0].prop === evenProp, `prop=${f2[0].prop}`);
+  }
+
+  // Q передаётся как Q×10000
+  const qFrame = buildEqFrames('IN1', 1, 'q', 1.5);
+  check('EQ Q масштабируется ×10000', qFrame[0].value === 15000, `value=${qFrame[0].value}`);
+
   check('EQ лимит gain -12..+12', EQ_LIMITS.gain.min === -12 && EQ_LIMITS.gain.max === 12);
 
   // вне диапазона -> ошибка
@@ -203,6 +241,88 @@ console.log('\n--- чтение для отрисовки ---');
   const cp = readCompressor(snap);
   check('readCompressor прочитал threshold', cp && cp.threshold === -28, cp ? `thr=${cp.threshold}` : 'нет');
   check('readCompressor прочитал switch', cp && cp.switch === 1, cp ? `sw=${cp.switch}` : 'нет');
+}
+
+// ─── EQ наушников (0xa1..0xaa, 10 полос × 2 канала) ───
+//
+// Фаза 2. Раскладка из docs/EQ-HP.md:
+//   блок = 0xa1 + (полоса - 1)
+//   свойства 0x01..0x05 = левый канал
+//   свойства 0x06..0x0a = правый канал (смещение +5)
+console.log('\n--- EQ наушников ---');
+{
+  // полоса 1 = 0xa1, полоса 10 = 0xaa
+  const b1 = buildHpFrames(1, { l: { gain: 3 } });
+  check('EQ HP полоса1 L gain -> 0xa1:0x03', frameIs(b1, 0xa1, 0x03, 3), JSON.stringify(b1));
+
+  const b10 = buildHpFrames(10, { l: { gain: -2 } });
+  check('EQ HP полоса10 L gain -> 0xaa:0x03', frameIs(b10, 0xaa, 0x03, -2), JSON.stringify(b10));
+
+  // правый канал — смещение +5
+  const r1 = buildHpFrames(1, { r: { gain: 4 } });
+  check('EQ HP полоса1 R gain -> 0xa1:0x08', frameIs(r1, 0xa1, 0x08, 4), JSON.stringify(r1));
+
+  const r5 = buildHpFrames(5, { r: { enable: 1 } });
+  check('EQ HP полоса5 R enable -> 0xa5:0x06', frameIs(r5, 0xa5, 0x06, 1), JSON.stringify(r5));
+
+  // все пять свойств левого и правого канала
+  const fieldProps = [
+    ['enable', 0x01, 0x06],
+    ['type', 0x02, 0x07],
+    ['gain', 0x03, 0x08],
+    ['freq', 0x04, 0x09],
+    ['q', 0x05, 0x0a],
+  ];
+  for (const [name, lProp, rProp] of fieldProps) {
+    const f = buildHpFrames(2, { l: { [name]: 1 }, r: { [name]: 2 } });
+    const left = f.find((x) => x.prop === lProp);
+    const right = f.find((x) => x.prop === rProp);
+    check(`EQ HP ${name}: L=0x${lProp.toString(16).padStart(2, '0')} R=0x${rProp.toString(16).padStart(2, '0')}`,
+      left?.value === 1 && right?.value === 2,
+      `L=${left?.value} R=${right?.value}`);
+  }
+
+  // обе стороны одним вызовом -> два кадра, один блок
+  const both = buildHpFrames(3, { l: { gain: 1 }, r: { gain: 2 } });
+  check('EQ HP обе стороны -> 2 кадра в одном блоке',
+    both.length === 2 && both.every((f) => f.target === 0xa3), JSON.stringify(both));
+
+  // полоса вне диапазона -> ошибка
+  let hpThrew = false;
+  try {
+    buildHpFrames(11, { l: { gain: 1 } });
+  } catch {
+    hpThrew = true;
+  }
+  check('EQ HP отклоняет полосу 11', hpThrew);
+
+  let hpThrew0 = false;
+  try {
+    buildHpFrames(0, { l: { gain: 1 } });
+  } catch {
+    hpThrew0 = true;
+  }
+  check('EQ HP отклоняет полосу 0', hpThrew0);
+
+  // чтение: ключи в десятичной (как даёт ядро)
+  const hpSnap = {
+    '161:1': 1, '161:2': 1, '161:3': 5, '161:4': 100, '161:5': 700,
+    '161:6': 0, '161:7': 2, '161:8': -5, '161:9': 2000, '161:10': 1500,
+  };
+  const rb = readHpBand(hpSnap, 1);
+  check('readHpBand полоса1 L прочитан',
+    rb && rb.l.enable === 1 && rb.l.gain === 5, rb ? `en=${rb.l.enable} gain=${rb.l.gain}` : 'нет');
+  check('readHpBand полоса1 R прочитан',
+    rb && rb.r.enable === 0 && rb.r.gain === -5, rb ? `en=${rb.r.enable} gain=${rb.r.gain}` : 'нет');
+
+  // та же карта, но в hex-ключах (как пишут дампы)
+  const hpSnapHex = { 'a1:01': 1, 'a1:03': 5, 'a1:08': -5 };
+  const rbHex = readHpBand(hpSnapHex, 1);
+  check('readHpBand понимает hex-ключи',
+    rbHex && rbHex.l.gain === 5 && rbHex.r.gain === -5,
+    rbHex ? `L=${rbHex.l.gain} R=${rbHex.r.gain}` : 'нет');
+
+  check('EQ HP: 10 полос', EQ_HP_BANDS === 10, String(EQ_HP_BANDS));
 }
 
 console.log('\n' + '='.repeat(70));

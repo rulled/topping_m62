@@ -297,25 +297,41 @@ export class M62TransportCore {
   /**
    * ЗАПИСЬ EQ С КОММИТОМ.
    *
-   * Прошивка коммитит live-состояние НЕ МГНОВЕННО. Замерено:
-   * держать сессию < 2 с — запись теряется; >= 2 с — применяется.
+   * Прошивка коммитит live-состояние НЕ МГНОВЕННО. Замерено
+   * (`prove-eq-in2-live.js`, 5 свойств × IN1/IN2 — 5/5):
+   *
+   *   1. держать сессию < 2 с после кадра — запись теряется,
+   *      >= 2 с — применяется;
+   *   2. ПОСЛЕ этого нужна ещё пауза ~4 с, прежде чем закрывать
+   *      сессию. Иначе запись тоже теряется.
+   *
+   * Второй пункт раньше был неявным: тест читал через
+   * `readViaDump()`, который сам ждёт 3.5 с, и «случайно» давал
+   * нужную задержку. Как только чтение убрали, 5 из 5 проверок
+   * стали проваливаться при формально правильных кадрах.
+   *
+   * Поэтому метод сам выдерживает и hold, и settle — вызывающему
+   * достаточно дождаться промиса и только потом закрывать сессию.
    *
    * @param {Array<{target:number,prop:number,value:number}>} frames
-   * @param {{holdMs?:number}} [opts]
+   * @param {{holdMs?:number, settleMs?:number, announce?:boolean}} [opts]
    */
   async writeEqWithCommit(frames, opts = {}) {
     if (!Array.isArray(frames) || !frames.length) {
       throw new Error('writeEqWithCommit: пустой набор кадров');
     }
     const holdMs = Math.max(2000, opts.holdMs ?? 2500);
+    const settleMs = Math.max(0, opts.settleMs ?? 4000);
     for (const f of frames) {
       this.send(f.target, f.prop, f.value);
       this.cache.set(`${f.target}:${f.prop}`, f.value);
     }
     // Держим сессию живой — иначе карта не закоммитит.
     await sleep(holdMs);
-    this.send(TT_DEVICE, PP_ANNOUNCE, 1);
-    return { frames: frames.length, holdMs };
+    if (opts.announce !== false) this.send(TT_DEVICE, PP_ANNOUNCE, 1);
+    // И даём прошивке дописать live-состояние до закрытия сессии.
+    if (settleMs) await sleep(settleMs);
+    return { frames: frames.length, holdMs, settleMs };
   }
 
   /**

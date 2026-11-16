@@ -262,7 +262,16 @@ const STATIC_DENY = [
   '/src/controls-service',
   '/src/modes',
   '/src/eq-mixer',
-  '/src/eq-hp',
+  // ВНИМАНИЕ: /src/eq-hp здесь БЫЛ — и это была ошибка.
+  //
+  // `eq-hp.js` не тянет ничего из Node (ноль импортов вообще): это
+  // чистый модуль раскладки 10 полос × 2 канала. Страница его
+  // импортирует — а сервер отвечал 404. В результате падал ВЕСЬ
+  // модульный скрипт страницы (одна неудачная статическая загрузка
+  // рушит весь граф), и не строился ни EQ входов, ни EQ наушников.
+  //
+  // Снаружи это выглядело как «JS не выполнился» без внятной
+  // причины: карточки на месте, но пустые.
   '/src/eq-scales',
   '/src/comp-scales',
 ];
@@ -1498,14 +1507,35 @@ const server = http.createServer(async (req, res) => {
       }
 
       try {
-        // ПРАВИЛЬНЫЙ ПУТЬ: запись + удержание сессии 2.5 с + дамп.
+        // ПРАВИЛЬНЫЙ ПУТЬ: запись + удержание сессии + чтение новой сессией.
         const holdMs = Number(body.holdMs) || 2500;
         const out = await transport.writeEqWithCommit(frames, { holdMs });
-        const after = await transport.readViaDump();
+        // ЧЕСТНОЕ ПОДТВЕРЖДЕНИЕ.
+        //
+        // `readViaDump()` живёт в ТОЙ ЖЕ сессии, а EQ приходит только
+        // на первый announce новой (см. `prove-announce-eq-rule`).
+        // Значит после записи он вернёт кеш — то, что мы сами туда
+        // положили, — и «подтвердит» запись, даже если карта её
+        // потеряла. Ровно эта ошибка уже была и была исправлена;
+        // здесь она вернулась через серверный путь.
+        //
+        // Правильный способ — `readFresh()`: закрыть сессию и открыть
+        // новую. Он дороже (~7 с), но только он говорит правду.
+        let after = null;
+        try {
+          after = await transport.readFresh?.();
+        } catch {
+          after = null;
+        }
+        const confirmed = after !== null && Number.isFinite(
+          after[`${frames[0].target}:${frames[0].prop}`],
+        ) && after[`${frames[0].target}:${frames[0].prop}`] === frames[0].value;
 
-        const row = readChannelBands(after, which).find(
-          (b) => Number(b.band) === Number(body.band ?? 1),
-        );
+        const row = after
+          ? readChannelBands(after, which).find(
+            (b) => Number(b.band) === Number(body.band ?? 1),
+          ) ?? null
+          : null;
 
         broadcast({
           type: 'eq-write',
@@ -1516,18 +1546,20 @@ const server = http.createServer(async (req, res) => {
 
         return json(res, 200, {
           ok: true,
-          applied: after.__dumpComplete ? 'confirmed' : 'unverified',
+          applied: confirmed ? 'confirmed' : 'unverified',
           via: 'hid',
           input: which,
           route: url.pathname,
           frames: out.frames,
           holdMs: out.holdMs,
-          dumpComplete: after.__dumpComplete === true,
-          after: row ?? null,
+          settleMs: out.settleMs,
+          reread: after !== null,
+          after: row,
           note:
-            'Запись EQ требует удержания сессии ~2.5 с (прошивка коммитит '
-            + 'не мгновенно) и чтения через дамп 0x11:26. Без обоих условий '
-            + 'запись выглядит как «не принято».',
+            'Запись EQ требует: (1) удержания сессии ≥2 с, (2) паузы ~4 с '
+            + 'после этого до закрытия сессии, (3) чтения НОВОЙ сессией. '
+            + 'applied: confirmed ставится только если новая сессия вернула '
+            + 'записанное значение; unverified — если перечитать не удалось.',
         });
       } catch (err) {
         return json(res, 500, {

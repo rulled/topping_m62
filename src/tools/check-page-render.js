@@ -1,0 +1,160 @@
+/**
+ * ПРОВЕРКА: страница отрисовывается в браузере без ошибок JS.
+ *
+ * ═══ ЗАЧЕМ ═══
+ *
+ * `check-page-script.js` проверяет синтаксис и наличие id. Но он не
+ * поймает ошибку ВЫПОЛНЕНИЯ: например, обращение к свойству `null`
+ * на старте, из-за которого рендер умирает и все карточки остаются
+ * с прочерками. Синтаксис при этом целый.
+ *
+ * ═══ КАК ═══
+ *
+ * Запускаем headless Edge/Chrome и просим отдать DOM после
+ * выполнения скриптов (`--dump-dom`). Затем смотрим, что:
+ *   1. DOM содержит наши карточки;
+ *   2. новые карточки (EQ наушников) на месте;
+ *   3. в DOM нет признаков падения.
+ *
+ * ═══ ЧЕГО ЭТО НЕ ПРОВЕРЯЕТ ═══
+ *
+ * WebHID в headless недоступен: `navigator.hid` отсутствует, поэтому
+ * подключиться к карте нельзя. Проверяется только то, что страница
+ * грузится и рисует разметку. Реальная работа с устройством —
+ * только в видимом окне.
+ *
+ * ═══ ПОЧЕМУ НЕ Start-Process ИЗ POWERSHELL ═══
+ *
+ * В этом окружении `Start-Process` с перенаправлением вывода падает
+ * на дублирующемся ключе `no_proxy`/`NO_PROXY`. Поэтому запускаем
+ * через `execFile` из Node.
+ *
+ * Запуск: node src/tools/check-page-render.js [--port 8898]
+ */
+
+import { execFile } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+const PORT = (() => {
+  const i = process.argv.indexOf('--port');
+  return i >= 0 ? Number(process.argv[i + 1]) : 8898;
+})();
+
+const CANDIDATES = [
+  'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+  'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+];
+
+const browser = CANDIDATES.find((p) => existsSync(p));
+if (!browser) {
+  console.log('браузер не найден — проверка пропущена');
+  process.exit(0);
+}
+
+let ok = 0;
+let fail = 0;
+const check = (name, cond, detail = '') => {
+  if (cond) { ok += 1; console.log(`  OK    ${name}`); }
+  else { fail += 1; console.log(`  FAIL  ${name}${detail ? `  (${detail})` : ''}`); }
+};
+
+const udd = join(tmpdir(), `m62-render-${process.pid}`);
+const args = [
+  '--headless=new',
+  '--disable-gpu',
+  '--no-sandbox',
+  '--disable-dev-shm-usage',
+  `--user-data-dir=${udd}`,
+  '--virtual-time-budget=9000',
+  '--dump-dom',
+  `http://127.0.0.1:${PORT}/`,
+];
+
+const dom = await new Promise((done) => {
+  execFile(browser, args, { maxBuffer: 32 * 1024 * 1024, timeout: 90000 }, (err, stdout) => {
+    done({ err, stdout: stdout ?? '' });
+  });
+});
+
+console.log(`браузер: ${browser}`);
+console.log(`DOM:     ${dom.stdout.length} байт\n`);
+
+check('DOM получен', dom.stdout.length > 5000, `${dom.stdout.length} байт`);
+if (!dom.stdout.length) {
+  console.log(`\nвывод браузера: ${String(dom.err?.message ?? '').slice(0, 400)}`);
+  process.exitCode = 1;
+} else {
+  const html = dom.stdout;
+
+  // ─── карточки на месте ───
+  for (const id of ['eqBands', 'eqHpCard', 'eqHpNote', 'eqHpFields', 'eqBands']) {
+    check(`карточка #${id} в DOM`, html.includes(`id="${id}"`));
+  }
+
+  // ─── EQ входов построен скриптом ───
+  //
+  // `buildEqControls()` создаёт 4 полосы динамически. Если скрипт
+  // упал на старте, разметки полос не будет вовсе — а она есть
+  // только в результате работы JS, не в исходном HTML.
+  const bandCount = (html.match(/полоса \d/g) ?? []).length;
+  check('EQ входов построен (4 полосы)', bandCount >= 4, `${bandCount}`);
+
+  // ─── EQ наушников: список 10 полос ───
+  //
+  // `buildHpControls()` заполняет select. Считаем option внутри
+  // #eqHpBand — их должно быть 10.
+  const bandSel = html.match(/id="eqHpBand"[^>]*>([\s\S]*?)<\/select>/);
+  const hpOptions = bandSel ? (bandSel[1].match(/<option/g) ?? []).length : 0;
+  check('EQ наушников: 10 полос в списке', hpOptions === 10, `${hpOptions}`);
+
+  // ─── микшер: 5 шин и 11 источников ───
+  //
+  // `buildMixerControls()` заполняет список шин, `buildMixerRows()`
+  // строит строки источников. Обе функции — результат работы JS:
+  // в исходном HTML этих элементов нет.
+  const busSel = html.match(/id="mixerBus"[^>]*>([\s\S]*?)<\/select>/);
+  const busOptions = busSel ? (busSel[1].match(/<option/g) ?? []).length : 0;
+  check('микшер: 5 шин в списке', busOptions === 5, `${busOptions}`);
+
+  // Ползунки источников имеют id вида mx_<source>_l.
+  const mxSliders = (html.match(/id="mx_[a-z0-9]+_l"/g) ?? []).length;
+  check('микшер: строки источников построены', mxSliders === 11, `${mxSliders}`);
+
+  // Предупреждение о том, что состояние не с карты, обязано быть.
+  check(
+    'микшер: предупреждение о модели видно',
+    /Состояние — наше, не с карты|не отдаёт микшер/.test(html),
+  );
+
+  // ─── сцены ───
+  //
+  // `renderSceneList()` заполняет select. Пустой список — это один
+  // пункт «нет сохранённых», он тоже строится скриптом.
+  const sceneSel = html.match(/id="sceneList"[^>]*>([\s\S]*?)<\/select>/);
+  const sceneOptions = sceneSel ? (sceneSel[1].match(/<option/g) ?? []).length : 0;
+  check('сцены: список построен', sceneOptions >= 1, `${sceneOptions}`);
+
+  // Сцена обязана честно говорить о микшере.
+  check(
+    'сцены: оговорка про микшер видна',
+    /Микшер она восстановит из нашей\s*модели|восстановит из нашей/.test(html),
+  );
+
+  // ─── в headless WebHID нет: страница должна честно сказать ───
+  check(
+    'страница сообщает об отсутствии WebHID',
+    /не поддерживает WebHID|Chrome или Edge/i.test(html),
+  );
+
+  // ─── признаков падения ───
+  check('нет "null" в статусе устройства', !/>null</.test(html));
+}
+
+console.log(`\n${'='.repeat(60)}`);
+console.log(`  пройдено: ${ok}`);
+console.log(`  провалено: ${fail}`);
+process.exitCode = fail === 0 ? 0 : 1;

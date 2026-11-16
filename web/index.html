@@ -143,13 +143,140 @@
     <div class="ctl"><label>mix</label><input type="range" id="cpMix" min="0" max="100" value="100" disabled><span class="val" id="cpMixV">—</span></div>
   </section>
 
-  <section class="card">
-    <h2>EQ входа IN 1</h2>
-    <div class="ctl"><label>полоса 1</label><button id="eq1en" class="danger" disabled>выкл</button><input type="range" id="eq1gain" min="-12" max="12" value="0" disabled><span class="val" id="eq1v">—</span></div>
-    <div class="ctl"><label>полоса 2</label><button id="eq2en" class="danger" disabled>выкл</button><input type="range" id="eq2gain" min="-12" max="12" value="0" disabled><span class="val" id="eq2v">—</span></div>
-    <div class="ctl"><label>полоса 3</label><button id="eq3en" class="danger" disabled>выкл</button><input type="range" id="eq3gain" min="-12" max="12" value="0" disabled><span class="val" id="eq3v">—</span></div>
-    <div class="ctl"><label>полоса 4</label><button id="eq4en" class="danger" disabled>выкл</button><input type="range" id="eq4gain" min="-12" max="12" value="0" disabled><span class="val" id="eq4v">—</span></div>
-    <div class="commit">Запись EQ требует удержания сессии ~2.5 с</div>
+  <section class="card" style="grid-column: 1 / -1">
+    <h2>EQ входов</h2>
+    <div class="ctl" style="margin-bottom:8px">
+      <label>вход</label>
+      <select id="eqInput" disabled>
+        <option value="IN1">IN 1</option>
+        <option value="IN2">IN 2</option>
+      </select>
+      <span class="commit" id="eqNote"></span>
+    </div>
+    <div id="eqBands"></div>
+    <div class="commit" style="margin-top:8px">
+      Запись EQ требует удержания сессии ~2.5 s. Подтвердить можно только новой сессией.
+    </div>
+  </section>
+
+  <section class="card" style="grid-column: 1 / -1" id="eqHpCard">
+    <h2>EQ наушников</h2>
+    <!--
+      ═══ ПОЧЕМУ ЭТОТ БЛОК СКРЫТ ПО УМОЛЧАНИЮ ═══
+
+      Блоки 0xa1..0xaa существуют ТОЛЬКО в режиме Prof. В Live и
+      Mobile их нет вовсе (проверено дампами всех трёх режимов,
+      docs/EQ-HP.md). Показывать в этих режимах 20 ползунков,
+      которые ничего не делают, — врать пользователю.
+
+      Поэтому карточка скрыта, пока в снимке не появятся блоки
+      0xa1..0xaa. Это же признак Prof в modes.js.
+    -->
+    <div class="commit" id="eqHpNote">блоки EQ наушников не пришли — нужен режим Prof</div>
+    <div class="ctl" style="margin-bottom:8px">
+      <label>канал</label>
+      <select id="eqHpChannel" disabled>
+        <option value="l">левый</option>
+        <option value="r">правый</option>
+      </select>
+      <label style="min-width:auto">полоса</label>
+      <select id="eqHpBand" disabled></select>
+      <span class="commit" id="eqHpState"></span>
+    </div>
+    <div id="eqHpFields" style="display:none">
+      <div class="ctl">
+        <label>включена</label>
+        <button id="eqHpEn" class="danger" disabled>выкл</button>
+      </div>
+      <div class="ctl">
+        <label>тип</label>
+        <select id="eqHpType" disabled>
+          <option value="1">peaking</option>
+          <option value="2">lowpass</option>
+          <option value="3">highpass</option>
+          <option value="4">lowshelf</option>
+          <option value="5">highshelf</option>
+        </select>
+      </div>
+      <div class="ctl"><label>gain</label><input type="range" id="eqHpGain" min="-12" max="12" value="0" disabled><span class="val" id="eqHpGainV">—</span></div>
+      <div class="ctl"><label>частота</label><input type="range" id="eqHpFreq" min="0" max="100" value="50" disabled><span class="val" id="eqHpFreqV">—</span></div>
+      <div class="ctl"><label>Q</label><input type="range" id="eqHpQ" min="0" max="100" value="50" disabled><span class="val" id="eqHpQV">—</span></div>
+    </div>
+    <div class="commit" style="margin-top:8px">
+      Те же правила коммита, что у EQ входов: удержание сессии и проверка новой сессией.
+    </div>
+  </section>
+
+  <section class="card" style="grid-column: 1 / -1" id="mixerCard">
+    <h2>Микшер</h2>
+    <!--
+      ═══ ГЛАВНОЕ ПРЕДУПРЕЖДЕНИЕ ═══
+
+      Микшер M62 — ТОЛЬКО ЗАПИСЬ. Проверено на 11 захватах
+      (1600 записей, 0 прочтений): карта принимает матрицу и не
+      отдаёт её обратно. Прочитать состояние НЕЛЬЗЯ ничем.
+
+      Поэтому таблица ниже показывает НАШУ модель (localStorage),
+      а не прочитанное с карты. Это не уловка — так же устроен сам
+      MCC: он хранит микшер в своём workspace-INI.
+
+      Если состояние разойдётся с картой (трогали MCC, сброс,
+      запись не применилась), мы об этом не узнаем. Показываем
+      это честно, а не делаем вид, что знаем.
+    -->
+    <div class="warnbox" style="display:block;margin-bottom:10px">
+      <b>Состояние — наше, не с карты.</b> Карта не отдаёт микшер назад
+      (проверено: 1600 записей, 0 чтений). Значения берутся из памяти
+      этого браузера и могут отличаться от реальных.
+    </div>
+
+    <div class="ctl" style="margin-bottom:8px">
+      <label>шина</label>
+      <select id="mixerBus" disabled></select>
+      <span class="commit" id="mixerKnown"></span>
+    </div>
+    <div class="ctl" style="margin-bottom:10px">
+      <button id="mixerForget" class="danger" disabled>Забыть сохранённое</button>
+      <span style="flex:1"></span>
+      <button id="mixerReadCard" disabled title="Попробовать прочитать — карта не отдаёт микшер">Прочитать с карты</button>
+    </div>
+    <div id="mixerRows"></div>
+    <div class="commit" style="margin-top:8px" id="mixerNote">
+      Запись идёт пакетом внутри брекета 0x11:0x20 — одиночные кадры карта игнорирует.
+    </div>
+  </section>
+
+  <section class="card" style="grid-column: 1 / -1" id="scenesCard">
+    <h2>Сцены</h2>
+    <!--
+      ═══ ЧТО СЦЕНА ВОССТАНАВЛИВАЕТ, А ЧТО НЕТ ═══
+
+      Сцена хранит два РАЗНЫХ набора:
+
+        params — адреса, которые карта отдаёт назад. Их можно
+                 записать и проверить.
+        model  — наша модель (микшер). Карта её не отдаёт, поэтому
+                 мы можем только записать свои значения и НЕ можем
+                 утверждать, что они были на карте.
+
+      Список «не восстановится» показывается пользователю прямо
+      здесь, а не прячется в документации.
+    -->
+    <div class="ctl" style="margin-bottom:8px">
+      <label>имя</label>
+      <input type="text" id="sceneName" placeholder="например, вокал" style="flex:1;min-width:120px" disabled>
+      <button id="sceneSave" disabled>Сохранить</button>
+    </div>
+    <div class="ctl" style="margin-bottom:8px">
+      <label>сцена</label>
+      <select id="sceneList" disabled style="flex:1"></select>
+      <button id="sceneLoad" disabled>Загрузить</button>
+      <button id="sceneDelete" class="danger" disabled>Удалить</button>
+    </div>
+    <div class="commit" id="sceneNote">
+      Сцена хранится в этом браузере. Микшер она восстановит из нашей
+      модели, а не с карты.
+    </div>
   </section>
 
   <div class="log" id="log"></div>
@@ -162,6 +289,33 @@ import { buildEqFrames, readChannelBands } from '/src/eq-hid.js';
 import { buildCompFrames, readCompressor } from '/src/comp-hid.js';
 import { buildReverbFrames, readReverb, REVERB_TYPES } from '/src/reverb-hid.js';
 import { buildPhantomFrames } from '/src/phantom-hid.js';
+import {
+  EQ_HP_BANDS,
+  EQ_HP_FIELDS,
+  EQ_HP_FIRST,
+  EQ_HP_RIGHT_OFFSET,
+  buildBandFrames as buildHpFrames,
+  readBand as readHpBand,
+} from '/src/eq-hp.js';
+import { MIXER_BUSES, MIXER_SOURCES, MIXER_PROPS, MIXER_GROUP_ORDER, buildMixerPacket, dbToQ25, q25ToDb } from '/src/mixer-tags.js';
+import {
+  MIXER_STATE_KEY,
+  clearMixerState,
+  countKnown,
+  diffMatrix,
+  emptyMatrix,
+  loadMixerState,
+  saveMixerState,
+  setCell,
+} from '/web/mixer-state.js';
+import {
+  clearScenes,
+  getScene,
+  listScenes,
+  removeScene,
+  saveScene,
+  sceneLimitations,
+} from '/web/scenes.js';
 
 const $ = (id) => document.getElementById(id);
 const logEl = $('log');
@@ -285,19 +439,9 @@ function render() {
     }
   }
 
-  // EQ
-  const bands = readChannelBands(t.snapshot(), 'IN1');
-  for (const b of bands) {
-    const en = $(`eq${b.band}en`);
-    const gn = $(`eq${b.band}gain`);
-    if (!en) continue;
-    en.textContent = b.enable === 1 ? 'вкл' : 'выкл';
-    en.classList.toggle('on', b.enable === 1);
-    if (b.gain !== null && b.gain !== undefined) {
-      gn.value = b.gain;
-      $(`eq${b.band}v`).textContent = `${b.gain} дБ`;
-    }
-  }
+  // EQ — отдельной функцией (нужна и при смене входа)
+  if (typeof renderEq === 'function') renderEq();
+  if (typeof renderEqHp === 'function') renderEqHp();
 }
 
 // ─── подключение ───
@@ -461,25 +605,675 @@ for (const [id, field] of [['cpThr', 'threshold'], ['cpRatio', 'ratio'], ['cpAtk
   }));
 }
 
-// EQ: включение полосы и gain
-for (let band = 1; band <= 4; band += 1) {
-  const enBtn = $(`eq${band}en`);
-  const gainEl = $(`eq${band}gain`);
-  const bandProp = band <= 2 ? 0x01 : 0x06;
-  const baseTarget = band <= 2 ? 0x91 : 0x92;
+// ═══════════════════════════════════════════════════════════════════
+// EQ ВХОДОВ: IN1 и IN2, 4 полосы × (включение, тип, gain, частота, Q)
+// ═══════════════════════════════════════════════════════════════════
+//
+// АДРЕСА (проверено buildEqFrames):
+//   IN1: полосы 1,2 -> 0x91   полосы 3,4 -> 0x92
+//   IN2: полосы 1,2 -> 0x93   полосы 3,4 -> 0x94
+//
+// СВОЙСТВА внутри блока:
+//   полоса нечётная (1,3): enable 0x01, type 0x02, gain 0x03, freq 0x04, q 0x05
+//   полоса чётная   (2,4): enable 0x06, type 0x07, gain 0x08, freq 0x09, q 0x0a
+//
+// ВАЖНО: Q уходит как Q×10000 (1.5 -> 15000). Это делает buildEqFrames.
+// Тип: 1 peaking, 2 lowpass, 3 highpass, 4 lowshelf, 5 highshelf.
 
-  enBtn.addEventListener('click', () => queue(async () => {
-    const cur = t.get(baseTarget, bandProp) === 1 ? 1 : 0;
-    await sendEq([{ target: baseTarget, prop: bandProp, value: cur === 1 ? 0 : 1 }],
-      `EQ полоса ${band} ${cur === 1 ? 'выкл' : 'вкл'}`);
-  }));
+const EQ_TYPES = [
+  [1, 'peaking'],
+  [2, 'lowpass'],
+  [3, 'highpass'],
+  [4, 'lowshelf'],
+  [5, 'highshelf'],
+];
 
-  gainEl.addEventListener('input', (e) => { $(`eq${band}v`).textContent = `${e.target.value} дБ`; });
-  gainEl.addEventListener('change', (e) => queue(async () => {
-    const frames = buildEqFrames('IN1', band, 'gain', Number(e.target.value));
-    await sendEq(frames, `EQ полоса ${band} gain ${e.target.value}`);
-  }));
+/** Блок и свойство для полосы данного входа. */
+function eqAddress(input, band, field) {
+  const base = input === 'IN2' ? 0x93 : 0x91;
+  const target = band <= 2 ? base : base + 1;
+  const odd = band % 2 === 1;
+  const prop = {
+    enable: odd ? 0x01 : 0x06,
+    type: odd ? 0x02 : 0x07,
+    gain: odd ? 0x03 : 0x08,
+    freq: odd ? 0x04 : 0x09,
+    q: odd ? 0x05 : 0x0a,
+  }[field];
+  return { target, prop };
 }
+
+/** Построить все контролы полос один раз. */
+function buildEqControls() {
+  const host = $('eqBands');
+  host.innerHTML = '';
+  for (let band = 1; band <= 4; band += 1) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:grid;grid-template-columns:60px 64px 96px 1fr 1fr 1fr;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)';
+    wrap.innerHTML = `
+      <span style="color:var(--muted);font-size:13px">полоса ${band}</span>
+      <button id="eq${band}en" class="danger" disabled>выкл</button>
+      <select id="eq${band}type" disabled>
+        ${EQ_TYPES.map(([c, n]) => `<option value="${c}">${n}</option>`).join('')}
+      </select>
+      <label style="color:var(--muted);font-size:12px">gain
+        <input type="range" id="eq${band}gain" min="-12" max="12" value="0" disabled>
+        <span id="eq${band}gv" style="font-variant-numeric:tabular-nums">0</span>
+      </label>
+      <label style="color:var(--muted);font-size:12px">частота
+        <input type="range" id="eq${band}freq" min="0" max="100" value="50" disabled>
+        <span id="eq${band}fv" style="font-variant-numeric:tabular-nums">—</span>
+      </label>
+      <label style="color:var(--muted);font-size:12px">Q
+        <input type="range" id="eq${band}q" min="0" max="100" value="50" disabled>
+        <span id="eq${band}qv" style="font-variant-numeric:tabular-nums">—</span>
+      </label>
+    `;
+    host.appendChild(wrap);
+  }
+}
+
+/**
+ * Частота: слайдер 0..100 -> 20..20000 Гц логарифмически.
+ * Логарифм нужен потому, что линейный слайдер бесполезен:
+ * весь диапазон 20-20000 в линейном масштабе сжат в начало.
+ */
+const freqFromSlider = (v) => Math.round(20 * (1000 ** (v / 100)));
+const sliderFromFreq = (f) => Math.round(100 * Math.log(f / 20) / Math.log(1000));
+
+/** Q: слайдер 0..100 -> 0.05..20 логарифмически. */
+const qFromSlider = (v) => Number((0.05 * (400 ** (v / 100))).toFixed(2));
+const sliderFromQ = (q) => Math.round(100 * Math.log(q / 0.05) / Math.log(400));
+
+/** Текущий выбранный вход EQ. */
+const eqInput = () => $('eqInput').value || 'IN1';
+
+function wireEqControls() {
+  for (let band = 1; band <= 4; band += 1) {
+    const enBtn = $(`eq${band}en`);
+    const typeEl = $(`eq${band}type`);
+    const gainEl = $(`eq${band}gain`);
+    const freqEl = $(`eq${band}freq`);
+    const qEl = $(`eq${band}q`);
+
+    const { target, prop } = eqAddress('IN1', band, 'enable');
+    void target;
+    void prop;
+
+    // включение полосы
+    enBtn.addEventListener('click', () => queue(async () => {
+      const input = eqInput();
+      const a = eqAddress(input, band, 'enable');
+      const cur = t.get(a.target, a.prop) === 1 ? 1 : 0;
+      await sendEq(
+        [{ target: a.target, prop: a.prop, value: cur === 1 ? 0 : 1 }],
+        `EQ ${input} полоса ${band} ${cur === 1 ? 'выкл' : 'вкл'}`,
+      );
+    }));
+
+    // тип фильтра
+    typeEl.addEventListener('change', (e) => queue(async () => {
+      const input = eqInput();
+      const frames = buildEqFrames(input, band, 'type', Number(e.target.value));
+      await sendEq(frames, `EQ ${input} полоса ${band} тип ${e.target.options[e.target.selectedIndex].text}`);
+    }));
+
+    // gain
+    gainEl.addEventListener('input', (e) => {
+      $(`eq${band}gv`).textContent = `${e.target.value} дБ`;
+    });
+    gainEl.addEventListener('change', (e) => queue(async () => {
+      const input = eqInput();
+      const frames = buildEqFrames(input, band, 'gain', Number(e.target.value));
+      await sendEq(frames, `EQ ${input} полоса ${band} gain ${e.target.value}`);
+    }));
+
+    // частота
+    freqEl.addEventListener('input', (e) => {
+      $(`eq${band}fv`).textContent = `${freqFromSlider(Number(e.target.value))} Гц`;
+    });
+    freqEl.addEventListener('change', (e) => queue(async () => {
+      const input = eqInput();
+      const hz = freqFromSlider(Number(e.target.value));
+      const frames = buildEqFrames(input, band, 'freq', hz);
+      await sendEq(frames, `EQ ${input} полоса ${band} ${hz} Гц`);
+    }));
+
+    // Q
+    qEl.addEventListener('input', (e) => {
+      $(`eq${band}qv`).textContent = String(qFromSlider(Number(e.target.value)));
+    });
+    qEl.addEventListener('change', (e) => queue(async () => {
+      const input = eqInput();
+      const q = qFromSlider(Number(e.target.value));
+      const frames = buildEqFrames(input, band, 'q', q);
+      await sendEq(frames, `EQ ${input} полоса ${band} Q=${q}`);
+    }));
+  }
+
+  // смена входа — перерисовать значения
+  $('eqInput').addEventListener('change', () => {
+    log(`EQ: показываю ${eqInput()}`);
+    render();
+  });
+}
+
+/** Обновить контролы EQ из кеша для выбранного входа. */
+function renderEq() {
+  const input = eqInput();
+  const bands = readChannelBands(t.snapshot(), input);
+  for (let band = 1; band <= 4; band += 1) {
+    const b = bands.find((x) => Number(x.band) === band);
+    if (!b) continue;
+
+    const en = $(`eq${band}en`);
+    if (en) {
+      en.textContent = b.enable === 1 ? 'вкл' : 'выкл';
+      en.classList.toggle('on', b.enable === 1);
+    }
+    const typeEl = $(`eq${band}type`);
+    if (typeEl && b.type) typeEl.value = String(b.type);
+
+    if (b.gain !== null && b.gain !== undefined) {
+      $(`eq${band}gain`).value = b.gain;
+      $(`eq${band}gv`).textContent = `${b.gain} дБ`;
+    }
+    if (b.freq) {
+      $(`eq${band}freq`).value = sliderFromFreq(b.freq);
+      $(`eq${band}fv`).textContent = `${b.freq} Гц`;
+    }
+    if (b.q) {
+      $(`eq${band}q`).value = sliderFromQ(b.q);
+      $(`eq${band}qv`).textContent = String(b.q);
+    }
+  }
+
+  // предупреждение: в Live IN2-блоки могут отсутствовать
+  const cnt = Object.keys(t.snapshot()).filter((k) => /^(147|148):/.test(k)).length;
+  $('eqNote').textContent = input === 'IN2' && cnt === 0
+    ? 'блоки IN2 не пришли — возможно, вход не активен'
+    : '';
+}
+
+buildEqControls();
+wireEqControls();
+
+// ═══════════════════════════════════════════════════════════════════
+// EQ НАУШНИКОВ: 10 полос × 2 канала (L/R) — только режим Prof
+// ═══════════════════════════════════════════════════════════════════
+//
+// АДРЕСА (docs/EQ-HP.md, проверено скриншотом окна MCC):
+//   0xa1 = полоса 1 ... 0xaa = полоса 10
+//   свойства 0x01..0x05 = ЛЕВЫЙ канал
+//   свойства 0x06..0x0a = ПРАВЫЙ канал (смещение +5)
+//
+// ПОЧЕМУ БЛОК СКРЫТ, ПОКА НЕТ 0xa1..0xaa:
+//   в Live и Mobile этих блоков нет вовсе. Показывать контролы,
+//   которые ничего не делают, — хуже, чем не показывать ничего.
+//   Наличие этих блоков И ЕСТЬ признак Prof (см. modes.js).
+
+/** Есть ли в снимке блоки EQ наушников. */
+function hpBlocksPresent() {
+  if (!t) return false;
+  return Object.keys(t.snapshot()).some((k) => {
+    const [a, b] = k.split(':');
+    // ключи transport даёт в десятичном виде ("161:3"), дампы — в hex
+    const tt = /[a-f]/i.test(a) ? parseInt(a, 16) : Number(a);
+    void b;
+    return Number.isFinite(tt) && tt >= 0xa1 && tt <= 0xaa;
+  });
+}
+
+/** Заполнить список полос один раз. */
+function buildHpControls() {
+  const sel = $('eqHpBand');
+  sel.innerHTML = '';
+  for (let band = 1; band <= EQ_HP_BANDS; band += 1) {
+    const o = document.createElement('option');
+    o.value = String(band);
+    o.textContent = String(band);
+    sel.appendChild(o);
+  }
+}
+
+const hpChannel = () => $('eqHpChannel').value || 'l';
+const hpBand = () => Number($('eqHpBand').value) || 1;
+
+/** Текущие значения выбранной полосы/канала из кеша. */
+function hpCurrent() {
+  if (!t) return null;
+  const b = readHpBand(t.snapshot(), hpBand());
+  if (!b) return null;
+  return hpChannel() === 'r' ? b.r : b.l;
+}
+
+function renderEqHp() {
+  const present = hpBlocksPresent();
+  const card = $('eqHpCard');
+  const note = $('eqHpNote');
+  const fields = $('eqHpFields');
+
+  if (!present) {
+    card.style.opacity = '0.6';
+    note.textContent = 'блоки EQ наушников не пришли — нужен режим Prof';
+    fields.style.display = 'none';
+    return;
+  }
+
+  card.style.opacity = '1';
+  note.textContent = 'режим Prof — 10 полос × 2 канала';
+  fields.style.display = '';
+
+  const cur = hpCurrent();
+  if (!cur) { $('eqHpState').textContent = 'нет значения'; return; }
+
+  $('eqHpEn').textContent = cur.enable === 1 ? 'вкл' : 'выкл';
+  $('eqHpEn').classList.toggle('on', cur.enable === 1);
+  if (cur.type) $('eqHpType').value = String(cur.type);
+
+  if (cur.gain !== null && cur.gain !== undefined) {
+    $('eqHpGain').value = cur.gain;
+    $('eqHpGainV').textContent = `${cur.gain} дБ`;
+  }
+  if (cur.freq) {
+    $('eqHpFreq').value = sliderFromFreq(cur.freq);
+    $('eqHpFreqV').textContent = `${cur.freq} Гц`;
+  }
+  if (cur.q) {
+    $('eqHpQ').value = sliderFromQ(cur.q);
+    $('eqHpQV').textContent = String(cur.q);
+  }
+  $('eqHpState').textContent = `полоса ${hpBand()} ${hpChannel() === 'r' ? 'R' : 'L'}`;
+}
+
+function wireEqHpControls() {
+  buildHpControls();
+
+  // Адрес поля: блок = 0xa1 + полоса - 1, свойство = поле + смещение канала.
+  const hpAddr = (band, field) => {
+    const target = EQ_HP_FIRST + band - 1;
+    const base = EQ_HP_FIELDS[field];
+    const offset = hpChannel() === 'r' ? EQ_HP_RIGHT_OFFSET : 0;
+    return { target, prop: base + offset };
+  };
+
+  $('eqHpEn').addEventListener('click', () => queue(async () => {
+    const a = hpAddr(hpBand(), 'enable');
+    const cur = t.get(a.target, a.prop) === 1 ? 1 : 0;
+    await sendEq(
+      [{ target: a.target, prop: a.prop, value: cur === 1 ? 0 : 1 }],
+      `EQ HP полоса ${hpBand()} ${hpChannel() === 'r' ? 'R' : 'L'} ${cur === 1 ? 'выкл' : 'вкл'}`,
+    );
+  }));
+
+  $('eqHpType').addEventListener('change', (e) => queue(async () => {
+    const band = hpBand();
+    const frames = buildHpFrames(band, {
+      [hpChannel()]: { type: Number(e.target.value) },
+    });
+    await sendEq(frames, `EQ HP полоса ${band} тип ${e.target.options[e.target.selectedIndex].text}`);
+  }));
+
+  $('eqHpGain').addEventListener('input', (e) => {
+    $('eqHpGainV').textContent = `${e.target.value} дБ`;
+  });
+  $('eqHpGain').addEventListener('change', (e) => queue(async () => {
+    const band = hpBand();
+    const frames = buildHpFrames(band, { [hpChannel()]: { gain: Number(e.target.value) } });
+    await sendEq(frames, `EQ HP полоса ${band} gain ${e.target.value}`);
+  }));
+
+  $('eqHpFreq').addEventListener('input', (e) => {
+    $('eqHpFreqV').textContent = `${freqFromSlider(Number(e.target.value))} Гц`;
+  });
+  $('eqHpFreq').addEventListener('change', (e) => queue(async () => {
+    const band = hpBand();
+    const hz = freqFromSlider(Number(e.target.value));
+    const frames = buildHpFrames(band, { [hpChannel()]: { freq: hz } });
+    await sendEq(frames, `EQ HP полоса ${band} ${hz} Гц`);
+  }));
+
+  $('eqHpQ').addEventListener('input', (e) => {
+    $('eqHpQV').textContent = String(qFromSlider(Number(e.target.value)));
+  });
+  $('eqHpQ').addEventListener('change', (e) => queue(async () => {
+    const band = hpBand();
+    const q = qFromSlider(Number(e.target.value));
+    const frames = buildHpFrames(band, { [hpChannel()]: { q } });
+    await sendEq(frames, `EQ HP полоса ${band} Q=${q}`);
+  }));
+
+  for (const id of ['eqHpChannel', 'eqHpBand']) {
+    $(id).addEventListener('change', () => { renderEqHp(); });
+  }
+}
+
+buildHpControls();
+wireEqHpControls();
+
+// ═══════════════════════════════════════════════════════════════════
+// МИКШЕР: 5 шин × 11 источников — НАША модель (карта не читается)
+// ═══════════════════════════════════════════════════════════════════
+//
+// ═══ ПОЧЕМУ МОДЕЛЬ, А НЕ ЧТЕНИЕ ═══
+//
+// Проверено на 11 захватах: кросспоинты 0x31..0x3c:0x01..0x14
+// записаны 1600 раз и НИ РАЗУ не пришли в IN. Карта принимает
+// микшер и не отдаёт его назад. Прочитать невозможно.
+//
+// Сам MCC устроен так же — он держит микшер в workspace-INI.
+//
+// ═══ КАК ПИШЕМ ═══
+//
+// Только пакетом внутри брекета 0x11:0x20 (writeBulk). Одиночные
+// кадры карта игнорирует — проверено.
+//
+// ═══ ЧЕСТНОСТЬ ═══
+//
+// После записи мы НЕ знаем, применилась ли она. В тишине метры не
+// приходят вовсе, поэтому подтвердить нечем. Пишем 'unverified' и
+// не делаем вид, что знаем результат.
+
+/** Текущая матрица (наша модель). */
+let mixerMatrix = null;
+/** Матрица до последнего изменения — для diff при записи. */
+let mixerBefore = null;
+
+/** Текущая шина. */
+const mixerBus = () => $('mixerBus').value || 'a';
+
+/** Загрузить модель из localStorage или начать с пустой. */
+function loadMixer() {
+  const saved = loadMixerState();
+  mixerMatrix = saved?.matrix ?? emptyMatrix(MIXER_BUSES, MIXER_SOURCES);
+  mixerBefore = JSON.parse(JSON.stringify(mixerMatrix));
+  return saved;
+}
+
+/** Заполнить список шин (один раз). */
+function buildMixerControls() {
+  const sel = $('mixerBus');
+  sel.innerHTML = '';
+  for (const bus of Object.keys(MIXER_BUSES)) {
+    const o = document.createElement('option');
+    o.value = bus;
+    o.textContent = bus.toUpperCase();
+    sel.appendChild(o);
+  }
+}
+
+/** Построить строки источников для текущей шины. */
+function buildMixerRows() {
+  const host = $('mixerRows');
+  const bus = mixerBus();
+  host.innerHTML = '';
+
+  for (const [key, info] of Object.entries(MIXER_SOURCES)) {
+    const cell = mixerMatrix?.[bus]?.[key] ?? { l: null, r: null };
+    const row = document.createElement('div');
+    row.className = 'ctl';
+    row.style.cssText = 'gap:8px';
+
+    // Моно-источники (IN1/IN2) имеют один канал — второй не показываем.
+    const showR = info.stereo;
+
+    const lVal = cell.l === null ? '—' : `${cell.l} дБ`;
+    const rVal = cell.r === null ? '—' : `${cell.r} дБ`;
+
+    row.innerHTML = `
+      <label style="min-width:104px">${info.name}</label>
+      <input type="range" id="mx_${key}_l" min="-60" max="12" step="1"
+             value="${cell.l === null ? -60 : cell.l}" disabled>
+      <span class="val" id="mx_${key}_l_v">${lVal}</span>
+      ${showR ? `<input type="range" id="mx_${key}_r" min="-60" max="12" step="1"
+             value="${cell.r === null ? -60 : cell.r}" disabled>
+      <span class="val" id="mx_${key}_r_v">${rVal}</span>` : '<span class="val" style="min-width:52px">моно</span><span style="min-width:52px"></span>'}
+    `;
+    host.appendChild(row);
+  }
+
+  wireMixerRows();
+}
+
+/** Навесить обработчики на строки. */
+function wireMixerRows() {
+  const bus = mixerBus();
+  for (const key of Object.keys(MIXER_SOURCES)) {
+    for (const ch of ['l', 'r']) {
+      const el = $(`mx_${key}_${ch}`);
+      if (!el) continue;
+
+      el.addEventListener('input', () => {
+        const v = Number(el.value);
+        $(`mx_${key}_${ch}_v`).textContent = v <= -60 ? '−∞' : `${v} дБ`;
+      });
+
+      el.addEventListener('change', () => queue(async () => {
+        const v = Number(el.value);
+        const lvl = v <= -60 ? null : v;
+        mixerMatrix = setCell(mixerMatrix, bus, key, { [ch]: lvl });
+        saveMixerState(mixerMatrix);
+        await writeMixerDiff();
+      }));
+    }
+  }
+}
+
+/**
+ * Записать изменения в карту.
+ *
+ * Отправляем ТОЛЬКО изменившиеся ячейки — не всю матрицу. Полная
+ * матрица это 200 кадров; слать её на каждое движение ползунка
+ * расточительно и создаёт лишний трафик по HID.
+ */
+async function writeMixerDiff() {
+  if (!t) return;
+  const changed = diffMatrix(mixerBefore, mixerMatrix);
+  if (!changed.length) return;
+
+  // Собираем состояние в формате buildMixerPacket.
+  // Он ждёт { busName: { sourceName: db } } и строит все 200 кадров,
+  // поэтому передаём полную матрицу — но с нашими значениями.
+  const flat = {};
+  for (const bus of Object.keys(mixerMatrix)) {
+    flat[bus] = {};
+    for (const [src, cell] of Object.entries(mixerMatrix[bus])) {
+      // Для моно берём l (или r, если l пуст).
+      const db = cell.l !== null ? cell.l : cell.r;
+      // null = mute -> -90 дБ (ниже любого реального значения).
+      flat[bus][src] = db === null ? -90 : db;
+    }
+  }
+
+  try {
+    setLast(`микшер: ${changed.length} ячеек`);
+    log(`→ микшер: ${changed.length} изменений (пакетом)`, 'warn');
+    const frames = buildMixerPacket(flat);
+    t.writeBulk(frames);
+    mixerBefore = JSON.parse(JSON.stringify(mixerMatrix));
+    setLast('микшер записан (не подтверждён)');
+    log('✓ микшер отправлен — подтвердить нельзя, карта не отдаёт его назад', 'warn');
+    renderMixer();
+  } catch (e) {
+    log(`ошибка микшера: ${e?.message ?? e}`, 'err');
+  }
+}
+
+/** Обновить счётчик известных ячеек. */
+function renderMixer() {
+  if (!mixerMatrix) return;
+  const { known, total } = countKnown(mixerMatrix);
+  $('mixerKnown').textContent = `задано ${known} из ${total}`;
+}
+
+buildMixerControls();
+loadMixer();
+buildMixerRows();
+renderMixer();
+
+$('mixerBus').addEventListener('change', () => {
+  buildMixerRows();
+  renderMixer();
+});
+
+$('mixerForget').addEventListener('click', () => {
+  clearMixerState();
+  mixerMatrix = emptyMatrix(MIXER_BUSES, MIXER_SOURCES);
+  mixerBefore = JSON.parse(JSON.stringify(mixerMatrix));
+  buildMixerRows();
+  renderMixer();
+  log('сохранённый микшер забыт — значения сброшены в тишину', 'warn');
+});
+
+$('mixerReadCard').addEventListener('click', () => {
+  log('карта не отдаёт микшер: проверено 11 захватов, 1600 записей, 0 чтений', 'err');
+  $('mixerNote').textContent =
+    'Прочитать микшер с карты невозможно — это свойство протокола, а не недоработка.';
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// СЦЕНЫ: сохранить / загрузить / удалить
+// ═══════════════════════════════════════════════════════════════════
+//
+// ═══ ЧТО СОХРАНЯЕМ ═══
+//
+//   params — все адреса из снимка, которые карта реально отдала.
+//            Это проверяемое состояние: при загрузке пишем и можем
+//            перечитать.
+//
+//   model  — матрица микшера (наша). Карта её не отдаёт, поэтому
+//            восстановить «как было на карте» нельзя — только как
+//            было в нашей модели.
+//
+// ═══ ЧЕГО НЕ СОХРАНЯЕМ ═══
+//
+// Метры (0x21:0x01, 0x31..0x34:0x15, 0x39:*) — это живой сигнал,
+// а не настройка. Сохранять их бессмысленно: они меняются каждую
+// секунду. Поэтому фильтруем.
+
+/** Адреса, которые НЕ настройки, а живые показания. */
+const METER_LIKE = new Set([
+  '0x21:0x01',
+  '0x31:0x15', '0x32:0x15', '0x33:0x15', '0x34:0x15',
+  '0x35:0x15', '0x36:0x15',
+  '0x39:0x01', '0x39:0x02',
+  '0x44:0x0d', '0x44:0x0e',
+  '0x46:0x0c', '0x46:0x0d',
+  '0x9b:0x0b',
+  '0x61:0x01', '0x62:0x01', '0x63:0x01', '0x64:0x01',
+]);
+
+/** Ключ снимка ("51:21") -> "0x33:0x15". */
+function snapKeyToHex(k) {
+  const [a, b] = String(k).split(':').map(Number);
+  return `0x${a.toString(16).padStart(2, '0')}:0x${b.toString(16).padStart(2, '0')}`;
+}
+
+/** Собрать params: только читаемые настройки, без метров. */
+function collectParams() {
+  if (!t) return {};
+  const out = {};
+  for (const [k, v] of Object.entries(t.snapshot())) {
+    const hex = snapKeyToHex(k);
+    if (METER_LIKE.has(hex)) continue;
+    out[hex] = v;
+  }
+  return out;
+}
+
+/** Обновить список сцен. */
+function renderSceneList() {
+  const sel = $('sceneList');
+  const scenes = listScenes();
+  sel.innerHTML = '';
+
+  if (!scenes.length) {
+    const o = document.createElement('option');
+    o.value = '';
+    o.textContent = '— нет сохранённых —';
+    sel.appendChild(o);
+    return;
+  }
+
+  for (const s of scenes) {
+    const o = document.createElement('option');
+    o.value = s.name;
+    o.textContent = `${s.name} (${s.paramCount} парам.)`;
+    sel.appendChild(o);
+  }
+}
+
+$('sceneSave').addEventListener('click', () => {
+  const name = $('sceneName').value.trim();
+  if (!name) { log('введите имя сцены', 'err'); return; }
+
+  const params = collectParams();
+  const paramCount = Object.keys(params).length;
+  const r = saveScene(name, { params, model: mixerMatrix });
+
+  if (!r.ok) { log(`не сохранилось: ${r.error}`, 'err'); return; }
+
+  log(`✓ сцена «${name}»: ${paramCount} параметров + модель микшера`, 'ok');
+  $('sceneName').value = '';
+  renderSceneList();
+  $('sceneList').value = name;
+});
+
+$('sceneLoad').addEventListener('click', () => queue(async () => {
+  const name = $('sceneList').value;
+  if (!name) { log('нет сцены для загрузки', 'err'); return; }
+
+  const scene = getScene(name);
+  if (!scene) { log(`сцена «${name}» не найдена`, 'err'); return; }
+
+  if (!t) { log('сначала подключите карту', 'err'); return; }
+
+  // ─── 1. читаемые параметры ───
+  const frames = [];
+  for (const [hex, value] of Object.entries(scene.params ?? {})) {
+    const m = hex.match(/^0x([0-9a-f]{2}):0x([0-9a-f]{2})$/i);
+    if (!m) continue;
+    frames.push({
+      target: parseInt(m[1], 16),
+      prop: parseInt(m[2], 16),
+      value,
+    });
+  }
+
+  if (frames.length) {
+    t.writeFrames(frames, { updateCache: true });
+    log(`→ сцена «${name}»: ${frames.length} параметров записано`, 'ok');
+    setTimeout(render, 500);
+  }
+
+  // ─── 2. модель микшера ───
+  if (scene.model) {
+    mixerMatrix = scene.model;
+    mixerBefore = JSON.parse(JSON.stringify(mixerMatrix));
+    saveMixerState(mixerMatrix);
+    buildMixerRows();
+    renderMixer();
+    log('микшер восстановлен из модели — на карте это не проверено', 'warn');
+  }
+
+  // ─── 3. честно сказать, что не восстановится ───
+  const limits = sceneLimitations(scene);
+  $('sceneNote').textContent = limits.length
+    ? `Восстановлено. НЕ восстановится: ${limits.join(', ')}.`
+    : 'Восстановлено.';
+}));
+
+$('sceneDelete').addEventListener('click', () => {
+  const name = $('sceneList').value;
+  if (!name) return;
+  const r = removeScene(name);
+  if (!r.ok) { log(`не удалилось: ${r.error}`, 'err'); return; }
+  log(`сцена «${name}» удалена`, 'warn');
+  renderSceneList();
+  $('sceneNote').textContent = 'Сцена удалена.';
+});
+
+renderSceneList();
 
 // ─── старт ───
 if (!isWebHidSupported()) {

@@ -23,12 +23,44 @@
  */
 
 import { readFileSync, existsSync } from 'node:fs';
+import { request as httpRequest } from 'node:http';
 import { dirname, resolve } from 'node:path';
 
 const PORT = (() => {
   const i = process.argv.indexOf('--port');
   return i >= 0 ? Number(process.argv[i + 1]) : 8898;
 })();
+
+/**
+ * Запросить URL и получить статус.
+ *
+ * ПОЧЕМУ НЕ `fetch`. Глобальный fetch (undici) держит keep-alive
+ * соединения, и `process.exit()` на них падает с libuv assertion
+ * `!(handle->flags & UV_HANDLE_CLOSING)`. Причём падает ПОСЛЕ
+ * правильного подсчёта: тест печатал «22 из 22», а код возврата
+ * был 1 — то есть в CI он выглядел сломанным.
+ *
+ * Попытка добавить `connection: close` уронила undici иначе
+ * (`assert(!this.paused)` в Parser.finish). Поэтому здесь голый
+ * `node:http` с обычным `agent: false`: соединение закрывается само.
+ *
+ * @param {string} url
+ * @returns {Promise<number|null>} null — не удалось соединиться
+ */
+function httpStatus(url) {
+  return new Promise((done) => {
+    const req = httpRequest(url, { agent: false, timeout: 5000 }, (res) => {
+      res.resume(); // дочитать и освободить сокет
+      res.on('end', () => done(res.statusCode ?? null));
+    });
+    req.on('error', () => done(null));
+    req.on('timeout', () => {
+      req.destroy();
+      done(null);
+    });
+    req.end();
+  });
+}
 
 /** Точка входа браузерного клиента. */
 const ENTRY = 'src/adapter-webhid.js';
@@ -160,12 +192,8 @@ async function main() {
   console.log('\n--- сервер отдаёт файлы страницы ---');
   const need = ['/', ...files.map((f) => '/' + f.replace(process.cwd(), '').replace(/^[\\/]/, '').replace(/\\/g, '/'))];
   for (const path of need) {
-    try {
-      const r = await fetch(`http://127.0.0.1:${PORT}${path}`);
-      check(`GET ${path}`, r.status === 200, `HTTP ${r.status}`);
-    } catch (err) {
-      check(`GET ${path}`, false, String(err?.message ?? err));
-    }
+    const status = await httpStatus(`http://127.0.0.1:${PORT}${path}`);
+    check(`GET ${path}`, status === 200, status === null ? 'нет ответа' : `HTTP ${status}`);
   }
 
   console.log('\n' + '='.repeat(70));
@@ -177,7 +205,7 @@ async function main() {
     console.log('\n  ВСЕ КЛИЕНТСКИЕ МОДУЛИ ГОТОВЫ ДЛЯ БРАУЗЕРА.');
     console.log('  Ни одного node:*-модуля, ни одного npm-пакета в графе.');
   }
-  process.exit(fail === 0 ? 0 : 1);
+  process.exitCode = fail === 0 ? 0 : 1;
 }
 
 main().catch((e) => {

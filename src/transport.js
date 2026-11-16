@@ -433,19 +433,30 @@ export class M62Transport extends EventEmitter {
    *   hold 3/6/10/15 с    -> все применены
    *   hold 0.5/1/1.5 с    -> потеряно
    *
+   * ═══ ВАЖНОЕ УТОЧНЕНИЕ ═══
+   *
+   * Держать `holdMs` НЕДОСТАТОЧНО. После hold нужна ещё пауза
+   * ~4 с (`settleMs`), прежде чем закрывать сессию — иначе запись
+   * теряется. Это выяснилось на 5 свойствах × IN1/IN2
+   * (`prove-eq-in2-live.js`): пока тест читал через `readViaDump()`
+   * (он сам ждёт 3.5 с), всё проходило; как только чтение убрали,
+   * провалились 5 из 5 при формально правильных кадрах.
+   *
    * ═══ ЧТО ДЕЛАЕТ ЭТОТ МЕТОД ═══
    *
    * Пишет кадры, держит сессию открытой `holdMs` (по умолчанию 2500),
-   * затем читает результат через дамп и обновляет кеш ПРАВДОЙ.
+   * даёт прошивке `settleMs` (по умолчанию 4000) и только потом
+   * возвращает управление — закрывать сессию можно сразу после.
    *
    * @param {Array<{target:number, prop:number, value:number}>} frames
-   * @param {{holdMs?: number, readBack?: boolean}} [opts]
+   * @param {{holdMs?: number, settleMs?: number, readBack?: boolean}} [opts]
    */
   async writeEqWithCommit(frames, opts = {}) {
     if (!Array.isArray(frames) || frames.length === 0) {
       throw new Error('writeEqWithCommit: пустой набор кадров');
     }
     const holdMs = Math.max(2000, opts.holdMs ?? 2500);
+    const settleMs = Math.max(0, opts.settleMs ?? 4000);
 
     for (const f of frames) {
       this.send(f.target, f.prop, f.value);
@@ -460,7 +471,10 @@ export class M62Transport extends EventEmitter {
     // Запрашиваем дамп — только так приходят блоки EQ.
     this.send(0x11, PP_ANNOUNCE, 1);
 
-    return { frames: frames.length, holdMs };
+    // И даём прошивке дописать live-состояние до закрытия сессии.
+    if (settleMs) await new Promise((r) => setTimeout(r, settleMs));
+
+    return { frames: frames.length, holdMs, settleMs };
   }
 
   /**
@@ -511,6 +525,69 @@ export class M62Transport extends EventEmitter {
     snap.__eqCount = after;
     snap.__terminatorSeen = sawTerminator;
     return snap;
+  }
+
+  /**
+   * ПРОЧИТАТЬ ПРАВДУ: закрыть сессию и открыть НОВУЮ.
+   *
+   * ═══ ЗАЧЕМ ЭТО ОТДЕЛЬНЫЙ МЕТОД ═══
+   *
+   * EQ-блоки (0x91..0x94, 0xa1..0xaa) приходят ТОЛЬКО на ПЕРВЫЙ
+   * announce НОВОЙ сессии (`prove-announce-eq-rule`: announce#1 =
+   * 40 EQ-адресов, announce#2 и #3 = 0, новая сессия = 40 снова).
+   *
+   * Значит `readViaDump()` в той же сессии физически не может
+   * вернуть свежий EQ — он вернёт то, что уже лежит в кеше, включая
+   * значения, которые мы сами туда записали. Это и давало ложное
+   * «ПРИМЕНЕНО». Единственный честный способ — новая сессия.
+   *
+   * ═══ ОСТОРОЖНО С АВТОРЕКОННЕКТОМ ═══
+   *
+   * Обычный `close()` планирует автопереподключение по таймеру.
+   * Здесь это недопустимо: таймер откроет устройство параллельно
+   * с нашим и второй писатель будет конфликтовать. Поэтому сначала
+   * ставим `closing`, затем закрываем «навсегда».
+   *
+   * @param {{waitMs?:number}} [opts] waitMs — сколько ждать первый announce
+   * @returns {Promise<Record<string,number>|null>} null — переоткрыть не удалось
+   */
+  async readFresh(opts = {}) {
+    const waitMs = opts.waitMs ?? 7000;
+
+    // Замораживаем всё, что может помешать: keepalive, announce, чтение
+    // и — главное — автопереподключение.
+    this.closing = true;
+    this.#stopKeepalive();
+    this.#stopAutoReconnect();
+    if (this.readTimer) {
+      clearTimeout(this.readTimer);
+      this.readTimer = null;
+    }
+
+    const old = this.device;
+    this.device = null;
+    if (old) {
+      try {
+        old.close();
+      } catch {
+        /* уже закрыто */
+      }
+    }
+    this.stats.reads = 0;
+    this.stats.parseErrors = 0;
+
+    // Новая сессия: open() сам снимает closing и делает handshake.
+    try {
+      await this.open();
+    } catch (err) {
+      this.log.warn?.(`[m62] readFresh: переоткрыть не удалось: ${err?.message ?? err}`);
+      return null;
+    }
+
+    // Первый announce новой сессии несёт EQ. Ждём его.
+    await new Promise((r) => setTimeout(r, waitMs));
+
+    return this.snapshot();
   }
 
   /**

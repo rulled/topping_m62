@@ -120,7 +120,6 @@ for (const cap of captures) {
   if (eqFrames.length) SUMMARY.withEq.push({ path: cap.path, n: eqFrames.length, frames: eqFrames });
   if (bFrames.length) SUMMARY.withB.push({ path: cap.path, n: bFrames.length, frames: bFrames });
 
-  const has = (t) => (fam[t] ? `+${fam[t]}` : '—');
   console.log(
     `${cap.path.replace(/\\/g, '/').padEnd(50)} `
     + `кадров ${String(frames.length).padStart(4)}  `

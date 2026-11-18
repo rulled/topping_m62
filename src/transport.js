@@ -162,7 +162,7 @@ export class M62Transport extends EventEmitter {
     this.announceTimer = setInterval(() => {
       try {
         this.send(TT_DEVICE, PP_ANNOUNCE, 1);
-      } catch (err) {
+      } catch {
         /* тихо: устройство могло отключиться, этим займётся reconnect */
       }
     }, ANNOUNCE_MS);
@@ -654,3 +654,4 @@ export class M62Transport extends EventEmitter {
     }
   }
 }
+

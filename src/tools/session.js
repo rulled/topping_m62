@@ -102,7 +102,6 @@ function finish() {
     byKey.get(c.key).push(c.value);
   }
 
-  const knownArr = [...known];
   const newKeys = [...byKey.keys()].filter((k) => !known.has(k));
 
   console.log('\n' + '='.repeat(64));

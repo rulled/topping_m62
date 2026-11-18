@@ -31,7 +31,6 @@ import HID from 'node-hid';
 import { PID, VID } from '../transport-consts.js';
 
 const hex4 = (n) => `0x${Number(n).toString(16).padStart(4, '0')}`;
-const hex2 = (n) => `0x${Number(n).toString(16).padStart(2, '0')}`;
 
 console.log('='.repeat(74));
 console.log('АУДИТ: ИНТЕРФЕЙСЫ M62 — ГДЕ DFU, ГДЕ КАНАЛ УПРАВЛЕНИЯ');

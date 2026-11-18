@@ -28,7 +28,7 @@
  * Запуск: node src/tools/feature-matrix.js
  */
 
-import { existsSync } from 'node:fs';
+
 
 /**
  * Полный список возможностей M62.

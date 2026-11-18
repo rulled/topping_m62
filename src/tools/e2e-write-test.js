@@ -67,14 +67,12 @@ async function main() {
   console.log(`сервер: ${BASE}, connected=${health.json?.connected}`);
 
   // --- безопасность ---
-  const tagSnap = await api('tags');
   const rv0 = await api('reverb');
   if (!rv0.ok) {
     console.error('не читается реверб — устройство не в том режиме?');
     process.exit(2);
   }
 
-  const safety = await fetch(`${BASE}/api/eq`).then((r) => r.json()).catch(() => null);
   // джеки проверяем через отдельный скрипт; здесь полагаемся на то,
   // что пользователь их отключил
   console.log('');

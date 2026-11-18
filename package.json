@@ -1,22 +1,30 @@
 {
   "name": "m62-web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Lightweight web client for TOPPING M62 (replacement for M Control Center)",
+  "description": "Веб-управление аудиоинтерфейсом TOPPING M62 через WebHID, без установки ПО",
   "type": "module",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
-    "probe": "node src/tools/probe.js",
-    "selftest": "node src/tools/selftest.js",
-    "listen": "node src/tools/listen.js",
-    "session": "node src/tools/session.js"
+    "start": "node src/static-server.js",
+    "dev": "node --watch src/static-server.js",
+    "dev:api": "node --watch src/server.js",
+    "lint": "eslint src/ web/",
+    "lint:fix": "eslint src/ web/ --fix",
+    "test": "npm run test:offline && npm run test:static",
+    "test:offline": "node src/tools/test-ui-frames.js && node src/tools/test-gain-scales.js && node src/tools/test-mutes-loopback.js && node src/tools/test-scenes.js && node src/tools/check-page-script.js && node src/tools/audit-docs.js",
+    "test:static": "node src/tools/test-static-server.js",
+    "test:server": "node src/tools/check-page-render.js --port 8898 && node src/tools/test-browser-modules.js --port 8898 && node src/tools/test-robustness.js",
+    "test:device": "node src/tools/test-transport-core.js",
+    "check": "npm run lint && npm test"
   },
   "dependencies": {
     "node-hid": "^3.4.0",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1"
   }
 }

@@ -93,7 +93,7 @@ const USES_REGISTRY = ['readAllAudioParams', 'readAudioParam', 'readAudioFormatS
  */
 
 const routeRe =
-  /if \(req\.method === '(\w+)' && url\.pathname === '([^']+)'\) \{([\s\S]*?)\n    \}/g;
+  /if \(req\.method === '(\w+)' && url\.pathname === '([^']+)'\) \{([\s\S]*?)\n {4}\}/g;
 
 const routes = [];
 let m;

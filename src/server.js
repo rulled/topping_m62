@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HTTP + WebSocket сервер.
  *
  * Бекенд отдаёт:
@@ -34,60 +34,23 @@ import {
 } from './snapshots.js';
 import { classifyTag, COMP_METER_ROLES, describeTags, gainReductionDb, meterToDb, meterUnits, METER_SCALE } from './tags.js';
 import { M62Transport } from './transport.js';
-import { describeMixer, MIXER_SOURCES, MIXER_BUSES, SOURCE_CODES } from './mixer-tags.js';
+import { describeMixer } from './mixer-tags.js';
 import { buildBandFrames, describeEqHp, EQ_HP_BANDS, readAllBands } from './eq-hp.js';
 import { clickByName, describeUiControls } from './ui-control.js';
 import { AUDIO_OPTIONS as AUDIO_OPTIONS_FOR_API, readAllAudioParams, setAudioParam } from './audio-params.js';
-import { bandEnableState, describeEq, dialIndexMap, EQ_LAYOUT, FILE_SETTLE_MS, isEqWindowOpen, nudgeEqParam, openEqWindow, pressDial, readEqSwitch, readEqTypes, setEqParamTo, setEqSwitch } from './eq-control.js';
+import { describeEq, dialIndexMap, EQ_LAYOUT, FILE_SETTLE_MS, isEqWindowOpen, openEqWindow } from './eq-control.js';
 import * as comp from './comp-control.js';
-import {
-  buildEqFrames,
-  describeEqHid,
-  DEVICE_TYPE_CODE,
-  eqTagAddress,
-  EQ_LIMITS as EQ_HID_LIMITS,
-  readChannelBands,
-  TYPE_BY_DEVICE_CODE,
-  validateEqValue,
-} from './eq-hid.js';
-import {
-  buildCompFrames,
-  describeCompHid,
-  readCompressor as readCompressorHid,
-  validateCompValue,
-} from './comp-hid.js';
-import {
-  buildReverbBatch,
-  buildReverbFrames,
-  describeReverbHid,
-  readReverb,
-  REVERB_BYPASS,
-  REVERB_FIELDS,
-  REVERB_TYPES,
-  typeCode,
-} from './reverb-hid.js';
-import { Q_MAX, Q_MIN } from './eq-scales.js';
+import { buildEqFrames, describeEqHid, DEVICE_TYPE_CODE, readChannelBands } from './eq-hid.js';
+import { buildCompFrames, describeCompHid, readCompressor as readCompressorHid } from './comp-hid.js';
+import { buildReverbFrames, describeReverbHid, readReverb, REVERB_FIELDS, REVERB_TYPES, typeCode } from './reverb-hid.js';
+
 import { describeScales } from './eq-scales.js';
 import { checkModeConsistency, describeMode, detectModeFromHid } from './modes.js';
 import { PRELUDE, ps } from './tools/uia.js';
 import { createWorkspace, deleteWorkspace, switchWorkspace } from './workspace.js';
 import { WorkspaceService } from './workspace-service.js';
 import * as stateStore from './state-store.js';
-import {
-  buildAllLoopbackFrames,
-  buildDuckMaskFrames,
-  buildDuckingFrames,
-  buildLoopbackFrames,
-  describeDuckingLoopback,
-  describeMask,
-  DUCK_MASK,
-  DUCK_SOURCES,
-  LOOPBACK_PAIRS,
-  LOOPBACK_PAIR_NAMES,
-  sourceCode,
-  dbToQ25,
-  q25ToDb,
-} from './duck-loopback-hid.js';
+import { buildAllLoopbackFrames, buildDuckMaskFrames, buildDuckingFrames, buildLoopbackFrames, describeDuckingLoopback, describeMask, DUCK_MASK, DUCK_SOURCES, LOOPBACK_PAIRS, LOOPBACK_PAIR_NAMES } from './duck-loopback-hid.js';
 import {
   buildPhantomFrames,
   describePhantom,
@@ -397,7 +360,7 @@ function readEqBandsFromWorkspace(which, band) {
 }
 
 /** Переключить TogglePattern по индексу элемента (для чекбоксов полос). */
-function psEqToggle(index) {
+function _psEqToggle(index) {
   return ps(String.raw`
 Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
 $p = Get-Process -Name "M Control Center" -ErrorAction Stop | Select-Object -First 1
@@ -431,7 +394,7 @@ if ($e.TryGetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern, 
  * Координаты UIA уже ФИЗИЧЕСКИЕ, когда процесс DPI-aware.
  * Масштаб берём из PRELUDE и пересчитываем только если он != 1.
  */
-function psEqComboSelect(band, typeName, which = 'IN1') {
+function _psEqComboSelect(band, typeName, _which = 'IN1') {
   const safeType = typeName.replace(/'/g, "''");
   const script = PRELUDE + String.raw`
 # 1. найти комбобокс нужной полосы
@@ -1197,7 +1160,12 @@ const server = http.createServer(async (req, res) => {
         const before = readReverb(snap);
         const frames = buildReverbFrames('type', code);
         const out = transport.writeFrames(frames);
-        broadcast({ type: 'ack', op: 'reverb', type: body.type, code, via: 'hid' });
+        // ВНИМАНИЕ: здесь был баг — два ключа `type` в одном объекте:
+        //   { type: 'ack', op: 'reverb', type: body.type, ... }
+        // Второй молча перезаписывал первый, и клиент получал
+        // type с именем эффекта вместо 'ack' — сообщение не
+        // распознавалось. Тип эффекта переименован в reverbType.
+        broadcast({ type: 'ack', op: 'reverb', reverbType: body.type, code, via: 'hid' });
         return json(res, 200, {
           ok: true,
           type: REVERB_TYPES[code],
@@ -1906,7 +1874,9 @@ const server = http.createServer(async (req, res) => {
 
         const frames = buildEqFrames(which, band, 'type', code);
         const out = transport.writeFrames(frames);
-        broadcast({ type: 'eq-type', input: which, band, type, code, via: 'hid' });
+        // Тот же класс бага, что и с ревербом: два ключа `type`.
+        // Тип фильтра переименован в filterType.
+        broadcast({ type: 'eq-type', input: which, band, filterType: type, code, via: 'hid' });
         return json(res, 200, {
           ok: true,
           changed: true,
@@ -2300,7 +2270,7 @@ wss.on('connection', (ws) => {
           const code = typeCode(typeName);
           const out = transport.writeFrames(buildReverbFrames('type', code));
           broadcast({
-            type: 'ack', op: 'reverb', type: REVERB_TYPES[code], code, via: 'hid', frames: out.frames,
+            type: 'ack', op: 'reverb', reverbType: REVERB_TYPES[code], code, via: 'hid', frames: out.frames,
           });
         } catch (err) {
           ws.send(JSON.stringify({ type: 'error', op: 'reverb', error: String(err?.message ?? err) }));
@@ -2376,6 +2346,7 @@ function shutdown() {
 }
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+
 
 
 

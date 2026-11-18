@@ -1,4 +1,4 @@
-/**
+﻿/**
  * КОМПЛЕКСНАЯ ПРОВЕРКА ПОКРЫТИЯ: каждый пункт из списка задачи.
  *
  * Проверяет через API, что каждая функция реально работает.
@@ -52,6 +52,7 @@ try {
   const oldVal = hp.current;
   const newVal = oldVal === 50 ? 40 : 50;
   const w = await post('volume', { id: 'hp', value: newVal });
+  void w; // результат нужен только чтобы действие произошло
   await sleep(600);
   const c2 = await api('controls');
   const got = c2.volumes.find((v) => v.id === 'hp').current;
@@ -61,10 +62,8 @@ try {
 
 // ---------- 2. Настройки ----------
 console.log('\n=== 2. НАСТРОЙКИ УСТРОЙСТВА ===');
-let settingsBefore = null;
 try {
   const s = await api('settings?refresh=1');
-  settingsBefore = s;
   check('bluetooth читается', s.toggles.find((t) => t.id === 'bluetooth')?.value !== null);
   check('brightness читается', s.enums.find((e) => e.id === 'brightness')?.value !== null);
   check('otgPower читается', s.enums.find((e) => e.id === 'otgPower')?.value !== null);
@@ -317,3 +316,5 @@ if (failed.length) {
   for (const f of failed) console.log(`  ${f.name}  ${f.detail}`);
 }
 console.log('='.repeat(60));
+
+

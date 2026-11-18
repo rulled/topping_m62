@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ПРОВЕРКА НА КАРТЕ: когда приходит ответ на handshake и что в 0x11:0x18.
  *
  * ═══ ЗАЧЕМ ═══
@@ -37,7 +37,7 @@ import { M62TransportCore } from '../transport-core.js';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const quiet = { info() {}, warn() {}, error: console.error };
 
-async function runTrial(trialNo) {
+async function runTrial(_trialNo) {
   const a = createNodeHidAdapter({ logger: quiet });
   const t = new M62TransportCore({ adapter: a, logger: quiet });
 
@@ -89,7 +89,7 @@ async function main() {
 
   const times = [];
   const allBattery = [];
-  let tagCounts = [];
+  const tagCounts = [];
 
   // Три попытки: время ответа может зависеть от того, что карта делает
   for (let n = 1; n <= 3; n += 1) {
@@ -160,3 +160,4 @@ main().catch((e) => {
   console.error('ошибка:', e.message);
   process.exit(1);
 });
+

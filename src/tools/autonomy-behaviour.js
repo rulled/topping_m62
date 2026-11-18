@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ПОВЕДЕНЧЕСКИЙ АУДИТ: какие маршруты РЕАЛЬНО работают без MCC.
  *
  * ═══ ЗАЧЕМ ОН, ЕСЛИ ЕСТЬ autonomy-audit.js ═══
@@ -73,7 +73,7 @@ async function probe(path, method = 'GET', body = null) {
 }
 
 /** Подтверждает, что MCC действительно закрыт. */
-async function mccClosed() {
+async function _mccClosed() {
   const h = await probe('/api/ui-controls');
   if (!h.json) return null;
   // окна MCC нет — проверяем через health/device нельзя напрямую,
@@ -135,3 +135,4 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
+

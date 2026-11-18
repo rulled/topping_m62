@@ -48,7 +48,6 @@ import {
 const VID = 0x152a;
 const PID = 0x875c;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const hex2 = (n) => n.toString(16).padStart(2, '0');
 
 function findDev() {
   return HID.devices()

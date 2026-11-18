@@ -64,7 +64,6 @@ async function main() {
 
   // ─── исходное состояние ───
   const s0 = await openFresh();
-  const snap0 = s0.snapshot();
 
   const jack = s0.get(0x64, 0x06);
   const hpMute = s0.get(0x64, 0x04);

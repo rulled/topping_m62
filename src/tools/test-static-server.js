@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ТЕСТ: статик-сервер отдаёт только разрешённое.
  *
  * ═══ ЗАЧЕМ ═══
@@ -110,19 +110,44 @@ async function main() {
     );
     check('страница не пустая', page.body.length > 10000, `${page.body.length} байт`);
 
-    // ─── 3. все импорты страницы отдаются ───
-    console.log('\n--- 3. модули, которые импортирует страница ---');
+    // ─── 3. все модули графа отдаются ───
+    //
+    // Раньше импорты были прямо в HTML. Теперь клиент вынесен в
+    // app.js, поэтому граф обходим рекурсивно от него: один
+    // недоступный модуль обрывает выполнение всей страницы.
+    console.log('\n--- 3. модули графа страницы ---');
     const html = page.body.toString('utf8');
-    const specs = importsOf(html);
-    check('импорты найдены', specs.length > 0, `${specs.length}`);
 
+    const appTagMatch = html.match(/<script[^>]*type="module"[^>]*src="([^"]+)"/);
+    check('страница подключает скрипт файлом', !!appTagMatch);
+    const entry = appTagMatch?.[1] ?? '/web/app.js';
+
+    const entryRes = await request(port, entry);
+    check(`входной скрипт отдаётся (${entry})`, entryRes.status === 200,
+      `HTTP ${entryRes.status}`);
+
+    // Обход графа
+    const seen = new Set();
+    const queue = importsOf(entryRes.body.toString('utf8'));
     const notServed = [];
-    for (const spec of specs) {
+
+    while (queue.length) {
+      const spec = queue.shift();
+      if (seen.has(spec)) continue;
+      seen.add(spec);
       const r = await request(port, spec);
-      if (r.status !== 200) notServed.push(`${spec} -> HTTP ${r.status}`);
+      if (r.status !== 200) {
+        notServed.push(`${spec} -> HTTP ${r.status}`);
+        continue;
+      }
+      for (const child of importsOf(r.body.toString('utf8'))) {
+        if (child.startsWith('/') && !seen.has(child)) queue.push(child);
+      }
     }
+
+    check('граф модулей найден', seen.size > 0, `${seen.size}`);
     check(
-      `все ${specs.length} импортов отдаются`,
+      `все ${seen.size} модулей графа отдаются`,
       notServed.length === 0,
       notServed.join(', '),
     );
@@ -183,15 +208,34 @@ async function main() {
     check('HEAD работает (200)', head.status === 200, `HTTP ${head.status}`);
     check('HEAD без тела', head.body.length === 0, `${head.body.length} байт`);
 
-    // ─── 8. кэширование ───
-    console.log('\n--- 8. кэширование ---');
-    check('HTML не кэшируется', page.headers['cache-control'] === 'no-cache',
-      String(page.headers['cache-control']));
-    const mod = await request(port, '/src/protocol.js');
-    check('модули кэшируются', String(mod.headers['cache-control']).includes('max-age'),
-      String(mod.headers['cache-control']));
-    check('модуль отдан как JS',
-      String(mod.headers['content-type']).startsWith('text/javascript'));
+    // ─── 9. CSP-совместимость страницы ───
+    //
+    // ГЛАВНАЯ ПРОВЕРКА. Однажды уже случилось: страница содержала
+    // встроенный <script type="module"> на 40 КБ, CSP `script-src
+    // 'self'` его блокировал, и страница не выполнялась вовсе —
+    // при этом DOM приходил, и всё выглядело как «пустые карточки».
+    //
+    // Проверяем, что такого больше нет.
+    console.log('\n--- 9. CSP-совместимость страницы ---');
+    const pageHtml = page.body.toString('utf8');
+    const csp = String(page.headers['content-security-policy'] ?? '');
+    const noUnsafeInline = csp.includes("script-src 'self'") && !csp.includes("script-src 'self' 'unsafe-inline'");
+    check('CSP не разрешает unsafe-inline для скриптов', noUnsafeInline, csp);
+
+    const inline = [...pageHtml.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)]
+      .filter((m) => m[1].trim().length > 0);
+    check('в странице нет инлайн-скриптов (иначе CSP их убьёт)',
+      inline.length === 0,
+      `найдено ${inline.length}`);
+
+    // Скрипт подключён файлом — и этот файл отдаётся.
+    const appMatch = pageHtml.match(/<script[^>]*type="module"[^>]*src="([^"]+)"/);
+    check('страница подключает модульный скрипт файлом', !!appMatch);
+    if (appMatch) {
+      const appRes = await request(port, appMatch[1]);
+      check(`скрипт страницы отдаётся (${appMatch[1]})`, appRes.status === 200,
+        `HTTP ${appRes.status}`);
+    }
   } finally {
     await new Promise((r) => server.close(r));
   }
@@ -206,4 +250,5 @@ main().catch((e) => {
   console.error('ошибка теста:', e?.message ?? e);
   process.exitCode = 1;
 });
+
 

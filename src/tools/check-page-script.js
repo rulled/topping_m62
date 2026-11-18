@@ -1,64 +1,76 @@
 /**
- * ПРОВЕРКА: встроенный скрипт страницы синтаксически корректен.
+ * ПРОВЕРКА: клиентский скрипт страницы корректен.
  *
- * ═══ ЗАЧЕМ ═══
+ * ═══ ЧТО ИЗМЕНИЛОСЬ ═══
  *
- * `web/index.html` — один файл, и весь клиент живёт в блоке
- * `<script type="module">`. Опечатка в нём ломает страницу целиком,
- * причём молча: браузер покажет пустые карточки, а ошибка уйдёт
- * в консоль, которую при headless-проверке не видно.
+ * Раньше весь клиент лежал встроенным `<script type="module">` внутри
+ * `web/index.html`. Теперь он вынесен в `web/app.js` — потому что CSP
+ * `script-src 'self'` блокирует инлайн-скрипты, и на продакшн-сервере
+ * страница не выполнялась вовсе.
  *
- * `node --check` для HTML не работает, поэтому извлекаем скрипт
- * в отдельный модуль и проверяем его как модуль.
+ * Тест переписан под новую структуру. Заодно он стал строже: теперь
+ * проверяется ещё и CSP-совместимость разметки.
  *
- * ═══ ЧТО ИМЕННО ПРОВЕРЯЕТСЯ ═══
+ * ═══ ЧТО ПРОВЕРЯЕТСЯ ═══
  *
- *   1. блок <script type="module"> существует и не пуст;
- *   2. он парсится как ES-модуль (импорты разрешены);
- *   3. все id, которые скрипт ищет через $('...'), есть в разметке;
- *   4. все импортируемые модули существуют на диске.
- *
- * Пункт 3 особенно важен: `$('eqHpNote').textContent = ...` при
- * отсутствующем id даёт `null.textContent` в рантайме и убивает
- * рендер, но синтаксис остаётся целым.
+ *   1. В HTML нет инлайн-скриптов (иначе CSP их заблокирует).
+ *   2. Скрипт подключён как отдельный файл и этот файл существует.
+ *   3. `app.js` парсится как ES-модуль.
+ *   4. Все импортируемые модули существуют на диске.
+ *   5. Все литеральные `$('id')` есть в разметке.
  *
  * Запуск: node src/tools/check-page-script.js
  */
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const PAGE = 'web/index.html';
+const APP = 'web/app.js';
+
 let ok = 0;
 let fail = 0;
-
 const check = (name, cond, detail = '') => {
-  if (cond) {
-    ok += 1;
-    console.log(`  OK    ${name}`);
-  } else {
-    fail += 1;
-    console.log(`  FAIL  ${name}${detail ? `  (${detail})` : ''}`);
-  }
+  if (cond) { ok += 1; console.log(`  OK    ${name}`); }
+  else { fail += 1; console.log(`  FAIL  ${name}${detail ? `  (${detail})` : ''}`); }
 };
 
 const html = readFileSync(PAGE, 'utf8');
 
-// ─── 1. блок скрипта ───
-const m = html.match(/<script type="module">([\s\S]*?)<\/script>/);
-check('блок <script type="module"> найден', !!m);
-if (!m) {
+// ─── 1. нет инлайн-скриптов ───
+//
+// Регулярка ищет <script ...> без src. Именно такой блок CSP
+// заблокирует, и страница молча не выполнится.
+console.log('\n--- 1. CSP-совместимость разметки ---');
+const inlineScripts = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)]
+  .filter((m) => m[1].trim().length > 0);
+
+check(
+  'в HTML нет инлайн-скриптов (CSP их блокирует)',
+  inlineScripts.length === 0,
+  `найдено ${inlineScripts.length}, первый: ${inlineScripts[0]?.[1].trim().slice(0, 40)}…`,
+);
+
+// ─── 2. скрипт подключён файлом ───
+console.log('\n--- 2. подключение скрипта ---');
+const appTag = html.match(/<script[^>]*type="module"[^>]*src="([^"]+)"/);
+check('страница подключает модульный скрипт файлом', !!appTag);
+check('это /web/app.js', appTag?.[1] === '/web/app.js', String(appTag?.[1]));
+check('файл app.js существует', existsSync(APP));
+
+if (!existsSync(APP)) {
   console.log('\nдальше проверять нечего');
   process.exit(1);
 }
-const js = m[1];
+
+// ─── 3. синтаксис ───
+console.log('\n--- 3. синтаксис ---');
+const js = readFileSync(APP, 'utf8');
 check('скрипт не пустой', js.trim().length > 500, `${js.trim().length} символов`);
 
-// ─── 2. синтаксис ───
-const tmp = join(tmpdir(), `m62-page-${process.pid}.mjs`);
-const { writeFileSync, unlinkSync } = await import('node:fs');
+const tmp = join(tmpdir(), `m62-app-${process.pid}.mjs`);
 writeFileSync(tmp, js, 'utf8');
 let syntaxErr = null;
 try {
@@ -67,28 +79,26 @@ try {
   syntaxErr = String(err?.stderr ?? err?.message ?? err);
 }
 try { unlinkSync(tmp); } catch { /* уже */ }
-check('скрипт парсится как ES-модуль', syntaxErr === null, syntaxErr?.split('\n').slice(0, 4).join(' '));
+check('парсится как ES-модуль', syntaxErr === null,
+  syntaxErr?.split('\n').slice(0, 4).join(' '));
 
-// ─── 3. импорты существуют ───
-const imports = [...js.matchAll(/from\s+['"](\/src\/[^'"]+)['"]/g)].map((x) => x[1]);
+// ─── 4. импорты существуют ───
+console.log('\n--- 4. импорты ---');
+const imports = [...js.matchAll(/from\s+['"](\/(?:src|web)\/[^'"]+)['"]/g)].map((x) => x[1]);
 check('импорты найдены', imports.length > 0, `${imports.length}`);
 for (const spec of imports) {
   const rel = spec.replace(/^\//, '');
   check(`файл есть: ${spec}`, existsSync(rel));
 }
 
-// ─── 4. id из $('...') есть в разметке ───
-//
-// Ищем только литеральные вызовы $('id'). Динамические (`$(id)`)
-// пропускаем — их нельзя проверить статически.
+// ─── 5. id из $('...') есть в разметке ───
+console.log('\n--- 5. id контролов ---');
 const ids = new Set([...js.matchAll(/\$\('([A-Za-z][\w-]*)'\)/g)].map((x) => x[1]));
-const idsDynamic = [...js.matchAll(/\$\(`([^`]*)`\)/g)].length;
-check('id в разметке найдены', ids.size > 0, `${ids.size} литеральных, ${idsDynamic} динамических`);
+check('id в разметке найдены', ids.size > 0, `${ids.size}`);
 
 const missing = [];
 for (const id of [...ids].sort()) {
-  const re = new RegExp(`id="${id}"`);
-  if (!re.test(html)) missing.push(id);
+  if (!new RegExp(`id="${id}"`).test(html)) missing.push(id);
 }
 check('все литеральные id есть в разметке', missing.length === 0, missing.join(', '));
 

@@ -52,6 +52,7 @@ export const ALLOWED_FILES = new Map([
   // клиентские модули страницы (браузерный граф)
   ['/web/mixer-state.js', 'web/mixer-state.js'],
   ['/web/scenes.js', 'web/scenes.js'],
+  ['/web/app.js', 'web/app.js'],
 
   ['/src/transport-core.js', 'src/transport-core.js'],
   ['/src/transport-consts.js', 'src/transport-consts.js'],

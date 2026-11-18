@@ -124,6 +124,10 @@ export default [
         parseFloat: 'readonly',
         URL: 'readonly',
         fetch: 'readonly',
+        // Диалоги браузера. confirm используется для опасного
+        // действия — подачи 48 В на вход.
+        confirm: 'readonly',
+        alert: 'readonly',
       },
     },
     rules: {
@@ -194,3 +198,4 @@ export default [
     },
   },
 ];
+

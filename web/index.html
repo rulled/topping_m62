@@ -79,6 +79,12 @@
       проверено на живой карте (94%).
     -->
     <div class="row"><span class="k">заряд батареи</span><span class="v" id="dBattery">—</span></div>
+    <!--
+      Режим приходит в ответе на handshake: 0x11:0x01 = 1 Mobile,
+      2 Live, 3 Prof. Это прямое сообщение карты, а не вывод по
+      составу тегов — приходит за 44-92 мс вместо 7-14 с.
+    -->
+    <div class="row"><span class="k">режим</span><span class="v" id="dMode">—</span></div>
     <div class="row"><span class="k">отчётов прочитано</span><span class="v" id="dReads">0</span></div>
     <div class="row"><span class="k">кадров отправлено</span><span class="v" id="dWrites">0</span></div>
     <div class="row"><span class="k">последняя запись</span><span class="v" id="dLast">—</span></div>
@@ -450,6 +456,13 @@ function render() {
   } else {
     $('dBattery').textContent = '—';
   }
+
+  // Режим: карта отвечает на handshake кодом своего режима.
+  // 1 Mobile, 2 Live, 3 Prof (замерено: Live=2 -> 92 адреса,
+  // Prof=3 -> 203 адреса).
+  const modeCode = g(0x11, 0x01);
+  const MODE_NAMES = { 1: 'Mobile', 2: 'Live', 3: 'Prof' };
+  $('dMode').textContent = MODE_NAMES[modeCode] ?? '—';
   $('dReads').textContent = String(t.stats.reads);
   $('dWrites').textContent = String(t.stats.writes);
 

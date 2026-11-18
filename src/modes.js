@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ОПРЕДЕЛЕНИЕ РЕЖИМА УСТРОЙСТВА.
  *
  * Тег 0x11:0x1d (FirmwareSelected) устройство НЕ возвращает — проверено.
@@ -307,6 +307,64 @@ export function checkModeConsistency(ws, tags) {
         + 'Перезапустите M Control Center для синхронизации.',
   };
 }
+/**
+ * КОДЫ РЕЖИМОВ ИЗ ОТВЕТА HANDSHAKE.
+ *
+ * ═══ ГЛАВНОЕ ОТКРЫТИЕ ═══
+ *
+ * Карта отвечает на handshake (`0x11:0x01`) КОДОМ СВОЕГО РЕЖИМА.
+ * Это самый надёжный способ узнать режим — не нужен ни workspace,
+ * ни полный дамп.
+ *
+ * ═══ КАК ИЗМЕРЕНО ═══
+ *
+ * Сверка полных дампов Live и Prof (`probe-mode-dump.js --compare`):
+ *
+ *     0x11:0x01 = 2  ->  Live Streaming  (92 адреса, 15 семейств)
+ *     0x11:0x01 = 3  ->  Pro Audio       (203 адреса, 37 семейств)
+ *
+ * Подтверждено текстом опубликованного драйвера: «The card answers
+ * the handshake with its mode».
+ *
+ * ═══ ПОЧЕМУ ЭТО ЛУЧШЕ ЭВРИСТИКИ ═══
+ *
+ * Прежний `detectModeFromHid()` смотрит на состав семейств: «есть
+ * 0xa1..0xaa -> Prof». Это работает, но требует ПОЛНОГО дампа, а он
+ * приходит через 7-14 с и иногда неполный. Код режима приходит
+ * в ответ на handshake за 44-92 мс.
+ */
+export const MODE_CODES = {
+  1: 'Mobile',
+  2: 'Live',
+  3: 'Prof',
+};
+
+/**
+ * Режим по коду из ответа handshake.
+ *
+ * @param {number|null} code значение тега 0x11:0x01
+ * @returns {{mode:string, confidence:string, reasons:string[]}|null}
+ */
+export function detectModeFromHandshake(code) {
+  if (code === null || code === undefined) return null;
+  const mode = MODE_CODES[code];
+  if (!mode) {
+    return {
+      mode: 'unknown',
+      confidence: 'low',
+      reasons: [`ответ handshake = ${code}, такого кода мы не знаем`],
+    };
+  }
+  return {
+    mode,
+    confidence: 'high',
+    reasons: [
+      `ответ handshake 0x11:0x01 = ${code} -> ${mode}`,
+      'это прямое сообщение карты, а не вывод по составу тегов',
+    ],
+  };
+}
+
 export function describeMode(ws) {
   const det = detectMode(ws);
   const caps = MODE_CAPABILITIES[det.mode] ?? MODE_CAPABILITIES.Tyro;
@@ -323,9 +381,10 @@ export function describeMode(ws) {
       hasDucking: Boolean(ws?.ducking),
     },
     caveats: [
-      'тег 0x11:0x1d (mode) устройство не возвращает',
+      'тег 0x11:0x1d (запрос смены режима) устройство не возвращает как состояние — но режим сообщается в ответе на handshake 0x11:0x01',
       'режим определяется по имени папки workspace или по составу блоков',
       'смена режима перезагружает устройство и меняет активный workspace',
     ],
   };
 }
+

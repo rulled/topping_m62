@@ -144,6 +144,30 @@ if (!dom.stdout.length) {
     /Микшер она восстановит из нашей\s*модели|восстановит из нашей/.test(html),
   );
 
+  // ─── mutes ───
+  //
+  // `buildMuteRows()` строит 7 кнопок вида mt_<id>.
+  const muteBtns = (html.match(/id="mt_[a-zA-Z0-9]+"/g) ?? []).length;
+  check('mutes: 7 кнопок построено', muteBtns === 7, `${muteBtns}`);
+
+  // ─── loopback ───
+  //
+  // `buildLoopbackRows()` строит 4 ползунка вида lb_<id>_gain.
+  const lbGains = (html.match(/id="lb_[a-z0-9]+_gain"/g) ?? []).length;
+  check('loopback: 4 гейна построено', lbGains === 4, `${lbGains}`);
+
+  const lbSrcs = (html.match(/id="lb_[a-z0-9]+_src"/g) ?? []).length;
+  check('loopback: 4 селектора построено', lbSrcs === 4, `${lbSrcs}`);
+
+  // loopback обязан честно говорить, что состояние не с карты.
+  check(
+    'loopback: предупреждение о модели видно',
+    /Гейн и источник loopback карта\s*не отдаёт|не отдаёт/.test(html),
+  );
+
+  // ─── батарея ───
+  check('батарея: строка в карточке устройства', html.includes('id="dBattery"'));
+
   // ─── в headless WebHID нет: страница должна честно сказать ───
   check(
     'страница сообщает об отсутствии WebHID',

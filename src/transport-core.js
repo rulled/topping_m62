@@ -141,8 +141,21 @@ export class M62TransportCore {
   /**
    * Открыть сессию.
    *
-   * Порядок критичен: handshake -> subscribe -> announce.
-   * Проверено на карте: без handshake приходит 44 тега, с ним 96.
+   * ═══ ПОРЯДОК И ОЖИДАНИЕ ═══
+   *
+   * handshake -> ДОЖДАТЬСЯ ОТВЕТА -> subscribe -> announce.
+   *
+   * Раньше здесь стояла фиксированная пауза 400 мс. Наша карта
+   * отвечает за 44-92 мс, так что обычно хватало. Но опубликованный
+   * драйвер ядра (`sound/usb/hid-topping.c`, патч 5/8) предупреждает:
+   * карта отвечает за 8..851 мс, и «запись, дошедшая за 2 мс до
+   * ответа, НЕ применялась, тогда как остальные применились».
+   *
+   * То есть 400 мс — лотерея: при медленном ответе часть записей
+   * теряется молча. Поэтому ждём СОБЫТИЕ, а не время, с отсечкой
+   * по 3.5 с (столько длятся announce; дольше ждать бессмысленно).
+   *
+   * Проверено на карте: ответ приходит 44-92 мс, тегов 91-92.
    */
   async open() {
     if (this.opened) return;
@@ -150,14 +163,54 @@ export class M62TransportCore {
     this.opened = true;
     this.stats.started = new Date().toISOString();
 
+    // Ждём ответ на handshake: обещание разрешается в #handleReport,
+    // когда придёт кадр TT_DEVICE:PP_HANDSHAKE.
+    const answered = this.#waitForHandshakeAnswer(3500);
+
     this.send(TT_DEVICE, PP_HANDSHAKE, 1);
-    await sleep(400);
+
+    const gotAnswer = await answered;
+    if (!gotAnswer) {
+      // Не ошибка: карта могла быть занята announce. Продолжаем —
+      // без подписки она всё равно замолчит.
+      this.log.warn?.(
+        '[m62] карта не ответила на handshake за 3.5 с, продолжаю',
+      );
+    }
+
     this.send(TT_DEVICE, PP_SUBSCRIBE, 1);
     await sleep(250);
     this.send(TT_DEVICE, PP_ANNOUNCE, 1);
 
     this.#startTimers();
     this.emit('open');
+  }
+
+  /**
+   * Дождаться ответа на handshake.
+   *
+   * Возвращает промис, который разрешается `true`, когда придёт
+   * кадр `TT_DEVICE:PP_HANDSHAKE`, или `false` по таймауту.
+   *
+   * @param {number} timeoutMs
+   * @returns {Promise<boolean>}
+   */
+  #waitForHandshakeAnswer(timeoutMs) {
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = (ok) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        this.off?.('change', onChange);
+        resolve(ok);
+      };
+      const onChange = (ev) => {
+        if (ev.target === TT_DEVICE && ev.prop === PP_HANDSHAKE) finish(true);
+      };
+      const timer = setTimeout(() => finish(false), timeoutMs);
+      this.on('change', onChange);
+    });
   }
 
   #startTimers() {

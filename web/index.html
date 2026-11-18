@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -71,6 +71,14 @@
   <section class="card">
     <h2>Устройство</h2>
     <div class="row"><span class="k">адресов получено</span><span class="v" id="dTags">0</span></div>
+    <!--
+      Батарея. Карта питается от собственного аккумулятора, и то,
+      заряжается ли она от компьютера, зависит от настройки её
+      USB-C порта. Уровень карта сообщает сама: 0x11:0x18 в процентах.
+      Раньше этот тег считался «счётчиком сессии» — это было неверно,
+      проверено на живой карте (94%).
+    -->
+    <div class="row"><span class="k">заряд батареи</span><span class="v" id="dBattery">—</span></div>
     <div class="row"><span class="k">отчётов прочитано</span><span class="v" id="dReads">0</span></div>
     <div class="row"><span class="k">кадров отправлено</span><span class="v" id="dWrites">0</span></div>
     <div class="row"><span class="k">последняя запись</span><span class="v" id="dLast">—</span></div>
@@ -279,6 +287,54 @@
     </div>
   </section>
 
+  <section class="card" style="grid-column: 1 / -1" id="mutesCard">
+    <h2>Mute входов и выходов</h2>
+    <!--
+      ═══ ИНВЕРСИЯ — ГЛАВНАЯ ЛОВУШКА ═══
+
+      Карта принимает 1 = ЗАГЛУШЕНО. Кнопка «звук идёт» — инверсия.
+      Перепутать легко, а последствие громкое: вместо включения звука
+      получится тишина, или наоборот — внезапный звук в наушниках.
+
+      Адреса и инверсия — из драйвера ядра (research/CONTROLS-MAP.md).
+    -->
+    <div class="hint" style="margin-bottom:10px">
+      Кнопка показывает, идёт ли звук. Входы IN1/IN2/AUX/BT/OTG и
+      выходы HP/OTG глушатся отдельно от громкости.
+    </div>
+    <div id="muteRows"></div>
+  </section>
+
+  <section class="card" style="grid-column: 1 / -1" id="loopbackCard">
+    <h2>Loopback</h2>
+    <!--
+      ═══ ЧТО ЭТО ═══
+
+      Loopback — это маршрутизация: карта берёт то, что играет (или
+      вход), и отдаёт это обратно в запись как отдельные каналы.
+      В Pro Audio Mode таких возвратов четыре (8 каналов захвата).
+
+      ═══ ЧЕГО НЕЛЬЗЯ ПРОЧИТАТЬ ═══
+
+      Гейн и источник loopback карта НЕ ОТДАЁТ (проверено драйвером
+      и на нашей карте: после записи читается null). Поэтому UI
+      показывает нашу модель, как и у микшера.
+
+      ═══ MUTE У LOOPBACK НЕТ ═══
+
+      Вместо mute гейн ставится в шаг 0 (off). Драйвер проверял:
+      запись 1 в 0x04/0x05 возврат не глушит.
+    -->
+    <div class="warnbox" style="display:block;margin-bottom:10px">
+      <b>Состояние — наше, не с карты.</b> Гейн и источник loopback карта
+      не отдаёт (проверено: после записи читается null). К тому же
+      8 каналов захвата приходят заглушенными, пока не включён
+      <code>Mic Capture Switch</code> — это UAC-контрол, через HID
+      до него не достать.
+    </div>
+    <div id="loopbackRows"></div>
+  </section>
+
   <div class="log" id="log"></div>
 </main>
 
@@ -317,6 +373,16 @@ import {
   saveScene,
   sceneLimitations,
 } from '/web/scenes.js';
+import {
+  LOOPBACK_RETURNS,
+  MUTE_CONTROLS,
+  SOURCE_ITEMS,
+  buildLoopbackGainFrames,
+  buildMuteFrames,
+  buildSelectorFrames,
+  lbStepToDb,
+  readAllMutes,
+} from '/src/mutes-loopback.js';
 
 const $ = (id) => document.getElementById(id);
 const logEl = $('log');
@@ -375,6 +441,15 @@ function render() {
   const g = (tt, pp) => t.get(tt, pp);
 
   $('dTags').textContent = Object.keys(t.snapshot()).length;
+
+  // Батарея: 0x11:0x18 — проценты (проверено на карте: 94).
+  // Раньше считалось «счётчиком сессии».
+  const battery = g(0x11, 0x18);
+  if (battery !== null && battery >= 0 && battery <= 100) {
+    $('dBattery').textContent = `${battery}%`;
+  } else {
+    $('dBattery').textContent = '—';
+  }
   $('dReads').textContent = String(t.stats.reads);
   $('dWrites').textContent = String(t.stats.writes);
 
@@ -455,6 +530,7 @@ function render() {
   // EQ — отдельной функцией (нужна и при смене входа)
   if (typeof renderEq === 'function') renderEq();
   if (typeof renderEqHp === 'function') renderEqHp();
+  if (typeof renderMutes === 'function') renderMutes();
 }
 
 // ─── подключение ───
@@ -1298,6 +1374,134 @@ $('sceneDelete').addEventListener('click', () => {
 });
 
 renderSceneList();
+
+// ═══════════════════════════════════════════════════════════════════
+// MUTES: кнопки «звук идёт» (инверсия карты)
+// ═══════════════════════════════════════════════════════════════════
+//
+// ВАЖНО: карта принимает 1 = ЗАГЛУШЕНО. Кнопка показывает «звук идёт»,
+// поэтому на провод уходит ИНВЕРСИЯ (buildMuteFrames это делает).
+//
+// Читается только mute выходов (0x64:0x04, 0x62:0x04 — приходят в
+// announce). Mute входов карта не отдаёт, поэтому для них состояние
+// берём из нашей модели.
+
+/** Состояние mute входов (наша модель), id -> звук идёт. */
+const inputMuteModel = {};
+
+function buildMuteRows() {
+  const host = $('muteRows');
+  host.innerHTML = '';
+  for (const c of MUTE_CONTROLS) {
+    const row = document.createElement('div');
+    row.className = 'ctl';
+    row.innerHTML = `
+      <label style="min-width:104px">${c.name}</label>
+      <button id="mt_${c.id}" class="danger" disabled>—</button>
+    `;
+    host.appendChild(row);
+  }
+  wireMuteRows();
+}
+
+function wireMuteRows() {
+  for (const c of MUTE_CONTROLS) {
+    const btn = $(`mt_${c.id}`);
+    if (!btn) continue;
+    btn.addEventListener('click', () => queue(async () => {
+      if (!t) return;
+      const known = readAllMutes(t.snapshot())[c.id];
+      const cur = known !== null && known !== undefined
+        ? known
+        : (inputMuteModel[c.id] ?? true);
+      const next = !cur;
+
+      t.writeFrames(buildMuteFrames(c, next), { updateCache: true });
+      inputMuteModel[c.id] = next;
+
+      log(`→ ${c.name}: ${next ? 'звук идёт' : 'заглушено'}`, next ? 'ok' : 'warn');
+      setTimeout(renderMutes, 300);
+    }));
+  }
+}
+
+function renderMutes() {
+  if (!t) return;
+  const mutes = readAllMutes(t.snapshot());
+  for (const c of MUTE_CONTROLS) {
+    const btn = $(`mt_${c.id}`);
+    if (!btn) continue;
+    const known = mutes[c.id];
+    const on = known !== null && known !== undefined
+      ? known
+      : (inputMuteModel[c.id] ?? null);
+
+    if (on === null) {
+      btn.textContent = '—';
+      btn.classList.remove('on');
+    } else {
+      btn.textContent = on ? 'звук идёт' : 'заглушено';
+      btn.classList.toggle('on', on);
+    }
+  }
+}
+
+buildMuteRows();
+
+// ═══════════════════════════════════════════════════════════════════
+// LOOPBACK: гейн + источник (наша модель, карта не отдаёт)
+// ═══════════════════════════════════════════════════════════════════
+
+/** Наша модель loopback: id -> { step, source }. */
+const loopbackModel = {};
+
+function buildLoopbackRows() {
+  const host = $('loopbackRows');
+  host.innerHTML = '';
+  for (const r of LOOPBACK_RETURNS) {
+    const row = document.createElement('div');
+    row.className = 'ctl';
+    row.style.cssText = 'gap:8px;flex-wrap:wrap';
+    row.innerHTML = `
+      <label style="min-width:104px">${r.name}</label>
+      <input type="range" id="lb_${r.id}_gain" min="0" max="102" step="1" value="90" disabled>
+      <span class="val" id="lb_${r.id}_gain_v">0 dB</span>
+      <select id="lb_${r.id}_src" disabled>
+        ${SOURCE_ITEMS.map((s) => `<option value="${s.value}">${s.label}</option>`).join('')}
+      </select>
+    `;
+    host.appendChild(row);
+    loopbackModel[r.id] = { step: 90, source: 12 };
+
+    const gainEl = $(`lb_${r.id}_gain`);
+    gainEl.addEventListener('input', (e) => {
+      const db = lbStepToDb(Number(e.target.value));
+      $(`lb_${r.id}_gain_v`).textContent = db === null ? 'MUTE' : `${db} dB`;
+    });
+    gainEl.addEventListener('change', (e) => queue(async () => {
+      if (!t) return;
+      const step = Number(e.target.value);
+      loopbackModel[r.id].step = step;
+      t.writeFrames(buildLoopbackGainFrames(r, step), { updateCache: false });
+      const db = lbStepToDb(step);
+      log(`→ ${r.name}: гейн ${db === null ? 'MUTE' : `${db} dB`} (не подтверждается)`, 'warn');
+    }));
+
+    const srcEl = $(`lb_${r.id}_src`);
+    srcEl.addEventListener('change', (e) => queue(async () => {
+      if (!t) return;
+      const value = Number(e.target.value);
+      loopbackModel[r.id].source = value;
+      t.writeFrames(
+        buildSelectorFrames({ target: r.selTarget, prop: 0x02 }, value),
+        { updateCache: false },
+      );
+      log(`→ ${r.name}: источник ${srcEl.options[srcEl.selectedIndex].text}`, 'warn');
+    }));
+  }
+}
+
+buildLoopbackRows();
 
 // ─── старт ───
 if (!isWebHidSupported()) {

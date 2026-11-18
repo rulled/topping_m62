@@ -13,7 +13,8 @@
 | **Веб-клиент (WebHID)** | **работает**: EQ входов и наушников, микшер, сцены, mutes, loopback, батарея |
 | Сервер + API (61 маршрут) | работает; для веб-клиента **не нужен** |
 | Протокол | **расшифрован полностью** (см. ниже) |
-| Прошивка | **разбирается** в Ghidra (архитектура xCore XS3) |
+| Прошивка | **разбирается** в Ghidra (xCore XS3, XMOS XU316) |
+| Железо | **опознано полностью**: 2× ES9821Q, AK7604, STM32G070, батарея |
 
 ### Почему протокол считаем полным
 
@@ -99,7 +100,10 @@ MCC при этом должен быть закрыт.
 | файл | о чём |
 |---|---|
 | **[research/FIRMWARE-REVERSE.md](research/FIRMWARE-REVERSE.md)** | **архитектура найдена**: xCore XS3, разбирается в Ghidra |
-| [research/BOARD-PHOTOS.md](research/BOARD-PHOTOS.md) | опознание чипов по фото платы |
+| [research/HARDWARE.md](research/HARDWARE.md) | **полный список чипов** (из разборки на ASR) |
+| [research/CAPABILITIES.md](research/CAPABILITIES.md) | **итог: что можем, что недоступно** |
+| [research/BOARD-PHOTOS.md](research/BOARD-PHOTOS.md) | плата: что где стоит |
+| [research/ASR-THREAD-2.md](research/ASR-THREAD-2.md) | вторая ветка ASR: дескрипторы Linux, factory reset |
 | [research/FEASIBILITY.md](research/FEASIBILITY.md) | что можно и чего нельзя с прошивкой |
 | [research/PROGRAMMERS.md](research/PROGRAMMERS.md) | CP2102/FT232RL: что подходит для флеша, а что нет |
 

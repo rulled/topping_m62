@@ -44,8 +44,10 @@
 
 | документ | о чём |
 |---|---|
-| **[../research/FIRMWARE-REVERSE.md](../research/FIRMWARE-REVERSE.md)** | **архитектура найдена**: xCore XS3, XMOS XU316, разбирается в Ghidra |
-| [../research/BOARD-PHOTOS.md](../research/BOARD-PHOTOS.md) | опознание чипов по фото платы |
+| **[../research/CAPABILITIES.md](../research/CAPABILITIES.md)** | **итоговый отчёт: что можем, что недоступно** |
+| **[../research/HARDWARE.md](../research/HARDWARE.md)** | **полный список чипов** (2× ES9821Q, AK7604, XU316, STM32G070) |
+| **[../research/FIRMWARE-REVERSE.md](../research/FIRMWARE-REVERSE.md)** | **архитектура найдена**: xCore XS3, разбирается в Ghidra |
+| [../research/BOARD-PHOTOS.md](../research/BOARD-PHOTOS.md) | плата: что где стоит, слепые зоны |
 | [../research/FEASIBILITY.md](../research/FEASIBILITY.md) | что можно и чего нельзя: оценка усилий |
 | [../research/PROGRAMMERS.md](../research/PROGRAMMERS.md) | CP2102/FT232RL: что подходит для флеша |
 | [../research/FIRMWARE-CONCLUSION.md](../research/FIRMWARE-CONCLUSION.md) | ⚠ история: как мы ошибались с архитектурой |
@@ -56,7 +58,8 @@
 
 | документ | о чём |
 |---|---|
-| [../research/ASR-THREAD.md](../research/ASR-THREAD.md) | 8 страниц обзора ASR: порты, каналы, режимы, латентность |
+| [../research/ASR-THREAD.md](../research/ASR-THREAD.md) | обзор ASR (8 страниц): порты, каналы, режимы, латентность |
+| [../research/ASR-THREAD-2.md](../research/ASR-THREAD-2.md) | вторая ветка: дескрипторы Linux, factory reset, баги прошивки |
 | [../research/board-photos/](../research/board-photos/) | фото платы и кропы чипов |
 
 ---

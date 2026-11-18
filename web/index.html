@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -289,6 +289,7 @@ import { buildEqFrames, readChannelBands } from '/src/eq-hid.js';
 import { buildCompFrames, readCompressor } from '/src/comp-hid.js';
 import { buildReverbFrames, readReverb, REVERB_TYPES } from '/src/reverb-hid.js';
 import { buildPhantomFrames } from '/src/phantom-hid.js';
+import { formatGain, gainStep } from '/src/gain-scales.js';
 import {
   EQ_HP_BANDS,
   EQ_HP_FIELDS,
@@ -387,7 +388,7 @@ function render() {
   hpMuteBtn.classList.toggle('on', hpMute === 1);
 
   const hpVol = g(0x64, 0x03);
-  if (hpVol !== null) { $('oHpVol').value = hpVol; $('oHpVolV').textContent = hpVol; }
+  if (hpVol !== null) { $('oHpVol').value = hpVol; $('oHpVolV').textContent = formatGain(hpVol, 'out9'); }
 
   $('oOtgJack').textContent = g(0x62, 0x06) === 1 ? 'подключён' : 'нет';
   const otgMute = g(0x62, 0x04);
@@ -395,10 +396,22 @@ function render() {
   $('oOtgMute').classList.toggle('on', otgMute === 1);
 
   // усиления
-  const gains = [[0x21, 'gIn1'], [0x22, 'gIn2'], [0x23, 'gAux'], [0x25, 'gBt'], [0x27, 'gOtg']];
-  for (const [tt, id] of gains) {
+  //
+  // ВАЖНО: сырое значение — это ШАГ шкалы, а не дБ. У каждого входа
+  // своя кривая (данные из mainline-драйвера, см. src/gain-scales.js):
+  //   IN1/IN2 — 0..88 дБ, шаг 1 дБ;
+  //   AUX     — шаг 81 = 0 дБ;
+  //   BT, OTG — шаг 99 = 0 дБ.
+  // Раньше сюда выводилось сырое число как будто это дБ.
+  const gains = [
+    [0x21, 'gIn1', 'mic'], [0x22, 'gIn2', 'mic'],
+    [0x23, 'gAux', 'out9'], [0x25, 'gBt', 'out0'], [0x27, 'gOtg', 'out0'],
+  ];
+  for (const [tt, id, curve] of gains) {
     const v = g(tt, 0x04);
-    if (v !== null) { $(id).value = v; $(`${id}V`).textContent = v; }
+    if (v === null) continue;
+    $(id).value = v;
+    $(`${id}V`).textContent = formatGain(v, curve);
   }
 
   // 48V
@@ -515,10 +528,10 @@ $('btnDump').addEventListener('click', () => queue(async () => {
 // ─── обработчики управления ───
 
 // HP volume
-$('oHpVol').addEventListener('input', (e) => { $('oHpVolV').textContent = e.target.value; });
+$('oHpVol').addEventListener('input', (e) => { $('oHpVolV').textContent = formatGain(Number(e.target.value), 'out9'); });
 $('oHpVol').addEventListener('change', (e) => queue(() => {
   const v = Number(e.target.value);
-  return send([{ target: 0x64, prop: 0x03, value: v }, { target: 0x63, prop: 0x03, value: v }], `HP громкость ${v}`);
+  return send([{ target: 0x64, prop: 0x03, value: v }, { target: 0x63, prop: 0x03, value: v }], `HP громкость ${formatGain(v, 'out9')}`);
 }));
 
 // HP mute (обе цели пары!)
@@ -538,11 +551,22 @@ $('oOtgMute').addEventListener('click', () => queue(() => {
 }));
 
 // усиления входов
-const gainMap = [['gIn1', 0x21], ['gIn2', 0x22], ['gAux', 0x23], ['gBt', 0x25], ['gOtg', 0x27]];
-for (const [id, tt] of gainMap) {
-  $(id).addEventListener('input', (e) => { $(`${id}V`).textContent = e.target.value; });
+//
+// Ползунок двигает ШАГ, а подпись показывает дБ по правильной кривой.
+// Раньше подпись показывала сырое число, то есть «81» вместо «0 dB».
+const gainMap = [
+  ['gIn1', 0x21, 'mic'], ['gIn2', 0x22, 'mic'],
+  ['gAux', 0x23, 'out9'], ['gBt', 0x25, 'out0'], ['gOtg', 0x27, 'out0'],
+];
+for (const [id, tt, curve] of gainMap) {
+  $(id).addEventListener('input', (e) => {
+    $(`${id}V`).textContent = formatGain(Number(e.target.value), curve);
+  });
   $(id).addEventListener('change', (e) => queue(() =>
-    send([{ target: tt, prop: 0x04, value: Number(e.target.value) }], `усиление 0x${tt.toString(16)} = ${e.target.value}`)));
+    send(
+      [{ target: tt, prop: 0x04, value: Number(e.target.value) }],
+      `усиление 0x${tt.toString(16)} = ${formatGain(Number(e.target.value), curve)}`,
+    )));
 }
 
 // 48V
@@ -1285,3 +1309,4 @@ if (!isWebHidSupported()) {
 </script>
 </body>
 </html>
+

@@ -219,7 +219,8 @@ async function main() {
     console.log('\n--- 9. CSP-совместимость страницы ---');
     const pageHtml = page.body.toString('utf8');
     const csp = String(page.headers['content-security-policy'] ?? '');
-    const noUnsafeInline = csp.includes("script-src 'self'") && !csp.includes("script-src 'self' 'unsafe-inline'");
+    const noUnsafeInline = csp.includes("script-src 'self'")
+      && !csp.includes("script-src 'self' 'unsafe-inline'");
     check('CSP не разрешает unsafe-inline для скриптов', noUnsafeInline, csp);
 
     const inline = [...pageHtml.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)]
@@ -236,6 +237,35 @@ async function main() {
       check(`скрипт страницы отдаётся (${appMatch[1]})`, appRes.status === 200,
         `HTTP ${appRes.status}`);
     }
+
+    // ─── 10. кэширование ───
+    console.log('\n--- 10. кэширование ---');
+    check('HTML не кэшируется', page.headers['cache-control'] === 'no-cache',
+      String(page.headers['cache-control']));
+    const mod = await request(port, '/src/protocol.js');
+    check('модули кэшируются', String(mod.headers['cache-control']).includes('max-age'),
+      String(mod.headers['cache-control']));
+    check('модуль отдан как JS',
+      String(mod.headers['content-type']).startsWith('text/javascript'));
+
+    // ─── 11. BOM ───
+    //
+    // PowerShell при Set-Content -Encoding UTF8 добавляет BOM в начало
+    // файла. Для JSON это фатально (npm не читает package.json), для
+    // JS-модулей — нежелательно. Однажды это уже случилось с 16 файлами.
+    //
+    // Проверяем, что ни один отдаваемый файл не начинается с BOM.
+    console.log('\n--- 11. BOM в отдаваемых файлах ---');
+    const BOM = Buffer.from([0xEF, 0xBB, 0xBF]);
+    const withBom = [];
+    for (const [url] of ALLOWED_FILES) {
+      const r = await request(port, url);
+      if (r.status === 200 && r.body.subarray(0, 3).equals(BOM)) {
+        withBom.push(url);
+      }
+    }
+    check('ни один отдаваемый файл не начинается с BOM',
+      withBom.length === 0, withBom.join(', '));
   } finally {
     await new Promise((r) => server.close(r));
   }

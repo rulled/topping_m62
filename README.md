@@ -1,4 +1,4 @@
-﻿# M62 Web Client
+# M62 Web Client
 
 Замена **M Control Center** для аудиоинтерфейса TOPPING M62:
 сервер на Node.js + веб-клиент, который общается с картой **напрямую

@@ -1,4 +1,4 @@
-﻿# M62 Web Client — Backend API
+# M62 Web Client — Backend API
 
 Полный справочник для разработчика фронтенда.
 

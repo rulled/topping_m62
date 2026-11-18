@@ -74,3 +74,14 @@ research/duck-bits/
 research/duck-bits-fast/
 research/srv-out.log
 research/srv-err.log
+
+# ═══════════════════ РЕВИЗИЯ 2026-11-19 ═══════════════════
+# Архив одноразовых скриптов и чужие материалы держим в git,
+# но крупные образы для сравнения — нет.
+research/xmos-samples/random-noise.bin
+research/ghidra-profiles/*.csv
+research/tools-inventory.txt
+
+# Проект Ghidra (создаётся заново скриптами)
+*.gpr
+*.rep/

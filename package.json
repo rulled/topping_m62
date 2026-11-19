@@ -22,7 +22,8 @@
     "ci:simulate": "node src/tools/simulate-ci.js",
     "test:docs": "node src/tools/check-doc-links.js",
     "test:hosting": "node src/tools/test-subdirectory-hosting.js",
-    "test:security": "node src/tools/audit-server-exposure.js && node src/tools/test-exposure-warning.js"
+    "test:security": "node src/tools/audit-server-exposure.js && node src/tools/test-exposure-warning.js",
+    "verify:deployed": "node src/tools/verify-deployed-site.js"
   },
   "dependencies": {
     "node-hid": "^3.4.0",

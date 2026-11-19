@@ -55,6 +55,34 @@ export const ANNOUNCE_MS = 15000;
 const TERMINATOR_KEY = '17:37';
 
 /**
+ * Адаптер среды: то немногое, что зависит от Node или браузера.
+ *
+ * `reopen` НЕОБЯЗАТЕЛЕН намеренно: `readFresh()` умеет подтверждать
+ * запись только новой сессией, а для этого адаптер должен закрыться и
+ * открыться заново. Не всякий адаптер это умеет (в браузере — повторный
+ * `device.open()`), поэтому отсутствие `reopen` — штатная ситуация:
+ * `readFresh()` проверяет его наличие и честно возвращает null.
+ *
+ * @typedef {object} TransportAdapter
+ * @property {(report: Uint8Array|number[]) => (Promise<void>|void)} write
+ * @property {(cb: (data: Uint8Array) => void) => (Promise<void>|void)} onData
+ * @property {() => (Promise<void>|void)} [close]
+ * @property {() => (Promise<unknown>|void)} [reopen]
+ */
+
+/**
+ * Логгер: любой объект с необязательными методами.
+ *
+ * Именно необязательными — в скриптах часто передают `{ warn(){} }`
+ * без `info`/`error`, и это нормально: вызовы идут через `?.`.
+ *
+ * @typedef {object} TransportLogger
+ * @property {(...a: any[]) => void} [info]
+ * @property {(...a: any[]) => void} [warn]
+ * @property {(...a: any[]) => void} [error]
+ */
+
+/**
  * Транспорт, не зависящий от среды.
  *
  * Наследует Map-подобный кеш и события через простой эмиттер,
@@ -62,9 +90,10 @@ const TERMINATOR_KEY = '17:37';
  */
 export class M62TransportCore {
   /**
-   * @param {object} opts
-   * @param {{write:Function,onData:Function,close:Function}} opts.adapter
-   * @param {{info?:Function,warn?:Function,error?:Function}} [opts.logger]
+   * @param {{adapter?: TransportAdapter, logger?: TransportLogger}} [opts]
+   *        `adapter` объявлен необязательным только чтобы можно было
+   *        вызвать конструктор без аргументов и получить внятную
+   *        ошибку ниже, а не падение деструктуризации.
    */
   constructor({ adapter, logger = console } = {}) {
     if (!adapter) throw new Error('M62TransportCore: нужен adapter');

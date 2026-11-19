@@ -54,7 +54,96 @@ import {
   readAllMutes,
 } from '../src/mutes-loopback.js';
 
-const $ = (id) => document.getElementById(id);
+/**
+ * Найти элемент по id.
+ *
+ * ═══ ПОЧЕМУ НЕ ПРОСТО getElementById ═══
+ *
+ * `document.getElementById()` возвращает `HTMLElement | null`, у
+ * которого НЕТ свойств `.value`, `.checked`, `.disabled` — они есть
+ * только у специализированных типов (`HTMLInputElement`,
+ * `HTMLSelectElement`, `HTMLButtonElement`).
+ *
+ * В этом файле `.value` используется 21 раз, `.disabled` — 6. Если
+ * когда-нибудь id в разметке перепутается и по нему окажется не
+ * `<input>` (или элемента не будет вовсе), код упадёт с
+ * `Cannot read properties of null` — и вся страница перестанет
+ * работать.
+ *
+ * Поэтому приведение к нужному типу делается здесь, в одном месте:
+ * если разметка изменится, ошибка будет видна проверкой типов
+ * (`npm run typecheck`), а не в браузере у пользователя.
+ *
+ * @param {string} id
+ * @returns {HTMLElement}
+ */
+const $ = (id) => /** @type {HTMLElement} */ (document.getElementById(id));
+
+/**
+ * Найти поле ввода.
+ *
+ * @param {string} id
+ * @returns {HTMLInputElement}
+ */
+const $input = (id) => /** @type {HTMLInputElement} */ (document.getElementById(id));
+
+/**
+ * Найти выпадающий список.
+ *
+ * @param {string} id
+ * @returns {HTMLSelectElement}
+ */
+const $select = (id) => /** @type {HTMLSelectElement} */ (document.getElementById(id));
+
+/**
+ * Найти кнопку.
+ *
+ * @param {string} id
+ * @returns {HTMLButtonElement}
+ */
+const $button = (id) => /** @type {HTMLButtonElement} */ (document.getElementById(id));
+
+/**
+ * Выставить текст элемента.
+ *
+ * `textContent` принимает только строку, а в коде часто передают
+ * число (счётчики адресов, значения). TS это ловит как TS2322 —
+ * и правильно: без приведения получится тот же результат, но
+ * намерение не выражено. Приводим явно.
+ *
+ * @param {string} id
+ * @param {string|number|null|undefined} value
+ */
+const setText = (id, value) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = value === null || value === undefined ? '—' : String(value);
+};
+
+/**
+ * Привести `Event.target` к полю ввода.
+ *
+ * Тип `Event.target` в DOM — `EventTarget | null`, а `.value` есть только
+ * у `HTMLInputElement`. Приведение безопасно там, где слушатель навешен
+ * на `<input>`: `$input('id').addEventListener(...)`.
+ *
+ * @param {Event} e
+ * @returns {HTMLInputElement}
+ */
+const inputOf = (e) => /** @type {HTMLInputElement} */ (e.target);
+
+/**
+ * Привести `Event.target` к выпадающему списку.
+ *
+ * Нужен там, где читается не только `.value`, но и `.options` /
+ * `.selectedIndex` — например, чтобы показать в логе текст выбранного
+ * пункта, а не его код.
+ *
+ * @param {Event} e
+ * @returns {HTMLSelectElement}
+ */
+const selectOf = (e) => /** @type {HTMLSelectElement} */ (e.target);
+
 const logEl = $('log');
 const log = (msg, kind = '') => {
   const s = document.createElement('span');
@@ -74,7 +163,7 @@ function queue(fn) {
   return writeChain;
 }
 
-function setLast(txt) { $('dLast').textContent = txt; }
+function setLast(txt) { setText('dLast', txt) }
 
 /** Отправить кадры и отметить в логе. */
 async function send(frames, label) {
@@ -110,7 +199,7 @@ function render() {
   if (!t) return;
   const g = (tt, pp) => t.get(tt, pp);
 
-  $('dTags').textContent = Object.keys(t.snapshot()).length;
+  setText('dTags', Object.keys(t.snapshot()).length)
 
   // Батарея: 0x11:0x18 — проценты (проверено на карте: 94).
   // Раньше считалось «счётчиком сессии».
@@ -127,8 +216,8 @@ function render() {
   const modeCode = g(0x11, 0x01);
   const MODE_NAMES = { 1: 'Mobile', 2: 'Live', 3: 'Prof' };
   $('dMode').textContent = MODE_NAMES[modeCode] ?? '—';
-  $('dReads').textContent = String(t.stats.reads);
-  $('dWrites').textContent = String(t.stats.writes);
+  setText('dReads', String(t.stats.reads))
+  setText('dWrites', String(t.stats.writes))
 
   const hpJack = g(0x64, 0x06);
   $('oHpJack').textContent = hpJack === 1 ? 'подключены' : 'нет';
@@ -140,7 +229,7 @@ function render() {
   hpMuteBtn.classList.toggle('on', hpMute === 1);
 
   const hpVol = g(0x64, 0x03);
-  if (hpVol !== null) { $('oHpVol').value = hpVol; $('oHpVolV').textContent = formatGain(hpVol, 'out9'); }
+  if (hpVol !== null) { $input('oHpVol').value = hpVol; setText('oHpVolV', formatGain(hpVol, 'out9')) }
 
   $('oOtgJack').textContent = g(0x62, 0x06) === 1 ? 'подключён' : 'нет';
   const otgMute = g(0x62, 0x04);
@@ -155,6 +244,7 @@ function render() {
   //   AUX     — шаг 81 = 0 дБ;
   //   BT, OTG — шаг 99 = 0 дБ.
   // Раньше сюда выводилось сырое число как будто это дБ.
+  /** @type {Array<[number, string, string]>} */
   const gains = [
     [0x21, 'gIn1', 'mic'], [0x22, 'gIn2', 'mic'],
     [0x23, 'gAux', 'out9'], [0x25, 'gBt', 'out0'], [0x27, 'gOtg', 'out0'],
@@ -162,12 +252,14 @@ function render() {
   for (const [tt, id, curve] of gains) {
     const v = g(tt, 0x04);
     if (v === null) continue;
-    $(id).value = v;
-    $(`${id}V`).textContent = formatGain(v, curve);
+    $input(id).value = String(v);
+    setText(`${id}V`, formatGain(v, curve));
   }
 
   // 48V
-  for (const [tt, id] of [[0x21, 'p48v1'], [0x22, 'p48v2']]) {
+  /** @type {Array<[number, string]>} */
+  const phantomLeds = [[0x21, 'p48v1'], [0x22, 'p48v2']];
+  for (const [tt, id] of phantomLeds) {
     const v = g(tt, 0x03);
     const b = $(id);
     b.textContent = v === 1 ? '48V ВКЛ' : 'выкл';
@@ -177,12 +269,13 @@ function render() {
   // реверб
   const rv = readReverb(t.snapshot());
   if (rv && rv.type !== null && rv.type !== undefined) {
-    $('rvType').value = String(rv.type);
+    $select('rvType').value = String(rv.type);
   }
+  /** @type {Array<[string, string]>} */
   for (const [k, id] of [['dryWet', 'rvWet'], ['room', 'rvRoom'], ['decay', 'rvDecay'], ['width', 'rvWidth']]) {
     if (rv && rv[k] !== null && rv[k] !== undefined) {
-      $(id).value = rv[k];
-      $(`${id}V`).textContent = rv[k];
+      $input(id).value = String(rv[k]);
+      setText(`${id}V`, rv[k])
     }
   }
   const bypass = rv && rv.type === 1;
@@ -195,11 +288,12 @@ function render() {
     const b = $('cpSwitch');
     b.textContent = sw === 1 ? 'включён' : 'bypass';
     b.classList.toggle('on', sw === 1);
+    /** @type {Array<[string, string]>} */
     const map = [['threshold', 'cpThr'], ['ratio', 'cpRatio'], ['attack', 'cpAtk'], ['release', 'cpRel'], ['mix', 'cpMix']];
     for (const [k, id] of map) {
       if (cp[k] !== null && cp[k] !== undefined) {
-        $(id).value = cp[k];
-        $(`${id}V`).textContent = cp[k];
+        $input(id).value = String(cp[k]);
+        setText(`${id}V`, cp[k]);
       }
     }
   }
@@ -212,11 +306,12 @@ function render() {
 
 // ─── подключение ───
 function enableControls(on) {
-  document.querySelectorAll('input[type=range], select, .card button').forEach((el) => {
+  document.querySelectorAll('input[type=range], select, .card button').forEach((node) => {
+    const el = /** @type {HTMLInputElement} */ (node);
     if (el.id === 'btnConnect' || el.id === 'btnDisconnect') return;
     el.disabled = !on;
   });
-  $('btnDump').disabled = !on;
+  $button('btnDump').disabled = !on;
 }
 
 async function connect() {
@@ -237,8 +332,8 @@ async function connect() {
 
     $('status').textContent = 'подключено';
     $('status').className = 'badge on';
-    $('btnConnect').disabled = true;
-    $('btnDisconnect').disabled = false;
+    $button('btnConnect').disabled = true;
+    $button('btnDisconnect').disabled = false;
     enableControls(true);
 
     setTimeout(render, 1200);
@@ -262,8 +357,8 @@ function disconnect() {
   t = null;
   $('status').textContent = 'не подключено';
   $('status').className = 'badge';
-  $('btnConnect').disabled = false;
-  $('btnDisconnect').disabled = true;
+  $button('btnConnect').disabled = false;
+  $button('btnDisconnect').disabled = true;
   enableControls(false);
   log('отключено');
 }
@@ -281,9 +376,9 @@ $('btnDump').addEventListener('click', () => queue(async () => {
 // ─── обработчики управления ───
 
 // HP volume
-$('oHpVol').addEventListener('input', (e) => { $('oHpVolV').textContent = formatGain(Number(e.target.value), 'out9'); });
+$('oHpVol').addEventListener('input', (e) => { setText('oHpVolV', formatGain(Number(inputOf(e).value), 'out9')) });
 $('oHpVol').addEventListener('change', (e) => queue(() => {
-  const v = Number(e.target.value);
+  const v = Number(inputOf(e).value);
   return send([{ target: 0x64, prop: 0x03, value: v }, { target: 0x63, prop: 0x03, value: v }], `HP громкость ${formatGain(v, 'out9')}`);
 }));
 
@@ -307,23 +402,26 @@ $('oOtgMute').addEventListener('click', () => queue(() => {
 //
 // Ползунок двигает ШАГ, а подпись показывает дБ по правильной кривой.
 // Раньше подпись показывала сырое число, то есть «81» вместо «0 dB».
+/** @type {Array<[string, number, string]>} */
 const gainMap = [
   ['gIn1', 0x21, 'mic'], ['gIn2', 0x22, 'mic'],
   ['gAux', 0x23, 'out9'], ['gBt', 0x25, 'out0'], ['gOtg', 0x27, 'out0'],
 ];
 for (const [id, tt, curve] of gainMap) {
   $(id).addEventListener('input', (e) => {
-    $(`${id}V`).textContent = formatGain(Number(e.target.value), curve);
+    setText(`${id}V`, formatGain(Number(inputOf(e).value), curve))
   });
   $(id).addEventListener('change', (e) => queue(() =>
     send(
-      [{ target: tt, prop: 0x04, value: Number(e.target.value) }],
-      `усиление 0x${tt.toString(16)} = ${formatGain(Number(e.target.value), curve)}`,
+      [{ target: tt, prop: 0x04, value: Number(inputOf(e).value) }],
+      `усиление 0x${tt.toString(16)} = ${formatGain(Number(inputOf(e).value), curve)}`,
     )));
 }
 
 // 48V
-for (const [id, ch] of [['p48v1', 'IN1'], ['p48v2', 'IN2']]) {
+/** @type {Array<[string, 'IN1' | 'IN2']>} */
+const phantomButtons = [['p48v1', 'IN1'], ['p48v2', 'IN2']];
+for (const [id, ch] of phantomButtons) {
   $(id).addEventListener('click', () => {
     const tt = ch === 'IN1' ? 0x21 : 0x22;
     const cur = t.get(tt, 0x03) === 1 ? 1 : 0;
@@ -338,7 +436,7 @@ for (const [id, ch] of [['p48v1', 'IN1'], ['p48v2', 'IN2']]) {
 
 // реверб: тип
 $('rvType').addEventListener('change', (e) => queue(async () => {
-  const code = Number(e.target.value);
+  const code = Number(inputOf(e).value);
   await send(buildReverbFrames('type', code), `реверб ${REVERB_TYPES[code]}`);
 }));
 
@@ -346,17 +444,19 @@ $('rvType').addEventListener('change', (e) => queue(async () => {
 //
 // ВАЖНО: width у модуля задаётся 0..1 (в HID уходит ×100).
 // В интерфейсе удобнее 0..100, поэтому делим перед отправкой.
-for (const [id, field, scale] of [['rvWet', 'dryWet', 1], ['rvRoom', 'room', 1], ['rvDecay', 'decay', 1], ['rvWidth', 'width', 100]]) {
-  $(id).addEventListener('input', (e) => { $(`${id}V`).textContent = e.target.value; });
+/** @type {Array<[string, string, number]>} */
+const reverbSliders = [['rvWet', 'dryWet', 1], ['rvRoom', 'room', 1], ['rvDecay', 'decay', 1], ['rvWidth', 'width', 100]];
+for (const [id, field, scale] of reverbSliders) {
+  $(id).addEventListener('input', (e) => { setText(`${id}V`, inputOf(e).value) });
   $(id).addEventListener('change', (e) => queue(async () => {
     const rv = readReverb(t.snapshot());
     if (rv && rv.type === 1) {
       log('реверб в Bypass — параметры не применятся. Сначала выберите тип.', 'warn');
       return;
     }
-    const raw = Number(e.target.value) / scale;
+    const raw = Number(inputOf(e).value) / scale;
     try {
-      await send(buildReverbFrames(field, raw), `реверб ${field} = ${e.target.value}`);
+      await send(buildReverbFrames(field, raw), `реверб ${field} = ${inputOf(e).value}`);
     } catch (err) {
       log(`реверб ${field}: ${err?.message ?? err}`, 'err');
     }
@@ -370,12 +470,13 @@ $('cpSwitch').addEventListener('click', () => queue(() => {
   return send(buildCompFrames('switch', v), `компрессор ${v ? 'вкл' : 'bypass'}`);
 }));
 
+/** @type {Array<[string, string]>} */
 for (const [id, field] of [['cpThr', 'threshold'], ['cpRatio', 'ratio'], ['cpAtk', 'attack'], ['cpRel', 'release'], ['cpMix', 'mix']]) {
-  $(id).addEventListener('input', (e) => { $(`${id}V`).textContent = e.target.value; });
+  $(id).addEventListener('input', (e) => { setText(`${id}V`, inputOf(e).value) });
   $(id).addEventListener('change', (e) => queue(async () => {
     try {
-      const frames = buildCompFrames(field, Number(e.target.value));
-      await send(frames, `компрессор ${field} = ${e.target.value}`);
+      const frames = buildCompFrames(field, Number(inputOf(e).value));
+      await send(frames, `компрессор ${field} = ${inputOf(e).value}`);
     } catch (err) {
       log(`компрессор ${field}: ${err?.message ?? err}`, 'err');
     }
@@ -462,8 +563,16 @@ const sliderFromFreq = (f) => Math.round(100 * Math.log(f / 20) / Math.log(1000)
 const qFromSlider = (v) => Number((0.05 * (400 ** (v / 100))).toFixed(2));
 const sliderFromQ = (q) => Math.round(100 * Math.log(q / 0.05) / Math.log(400));
 
-/** Текущий выбранный вход EQ. */
-const eqInput = () => $('eqInput').value || 'IN1';
+/**
+ * Текущий выбранный вход EQ.
+ *
+ * Приведение к `'IN1' | 'IN2'` оправдано разметкой: в `<select id="eqInput">`
+ * ровно два варианта, и оба — эти. Если появится третий, проверка типов
+ * укажет на это место.
+ *
+ * @returns {'IN1' | 'IN2'}
+ */
+const eqInput = () => /** @type {'IN1' | 'IN2'} */ ($select('eqInput').value || 'IN1');
 
 function wireEqControls() {
   for (let band = 1; band <= 4; band += 1) {
@@ -491,38 +600,38 @@ function wireEqControls() {
     // тип фильтра
     typeEl.addEventListener('change', (e) => queue(async () => {
       const input = eqInput();
-      const frames = buildEqFrames(input, band, 'type', Number(e.target.value));
-      await sendEq(frames, `EQ ${input} полоса ${band} тип ${e.target.options[e.target.selectedIndex].text}`);
+      const frames = buildEqFrames(input, band, 'type', Number(inputOf(e).value));
+      await sendEq(frames, `EQ ${input} полоса ${band} тип ${selectOf(e).options[selectOf(e).selectedIndex].text}`);
     }));
 
     // gain
     gainEl.addEventListener('input', (e) => {
-      $(`eq${band}gv`).textContent = `${e.target.value} дБ`;
+      setText(`eq${band}gv`, `${inputOf(e).value} дБ`)
     });
     gainEl.addEventListener('change', (e) => queue(async () => {
       const input = eqInput();
-      const frames = buildEqFrames(input, band, 'gain', Number(e.target.value));
-      await sendEq(frames, `EQ ${input} полоса ${band} gain ${e.target.value}`);
+      const frames = buildEqFrames(input, band, 'gain', Number(inputOf(e).value));
+      await sendEq(frames, `EQ ${input} полоса ${band} gain ${inputOf(e).value}`);
     }));
 
     // частота
     freqEl.addEventListener('input', (e) => {
-      $(`eq${band}fv`).textContent = `${freqFromSlider(Number(e.target.value))} Гц`;
+      setText(`eq${band}fv`, `${freqFromSlider(Number(inputOf(e).value))} Гц`)
     });
     freqEl.addEventListener('change', (e) => queue(async () => {
       const input = eqInput();
-      const hz = freqFromSlider(Number(e.target.value));
+      const hz = freqFromSlider(Number(inputOf(e).value));
       const frames = buildEqFrames(input, band, 'freq', hz);
       await sendEq(frames, `EQ ${input} полоса ${band} ${hz} Гц`);
     }));
 
     // Q
     qEl.addEventListener('input', (e) => {
-      $(`eq${band}qv`).textContent = String(qFromSlider(Number(e.target.value)));
+      setText(`eq${band}qv`, String(qFromSlider(Number(inputOf(e).value))))
     });
     qEl.addEventListener('change', (e) => queue(async () => {
       const input = eqInput();
-      const q = qFromSlider(Number(e.target.value));
+      const q = qFromSlider(Number(inputOf(e).value));
       const frames = buildEqFrames(input, band, 'q', q);
       await sendEq(frames, `EQ ${input} полоса ${band} Q=${q}`);
     }));
@@ -549,19 +658,19 @@ function renderEq() {
       en.classList.toggle('on', b.enable === 1);
     }
     const typeEl = $(`eq${band}type`);
-    if (typeEl && b.type) typeEl.value = String(b.type);
+    if (typeEl && b.type) $select(`eq${band}type`).value = String(b.type);
 
     if (b.gain !== null && b.gain !== undefined) {
-      $(`eq${band}gain`).value = b.gain;
-      $(`eq${band}gv`).textContent = `${b.gain} дБ`;
+      $input(`eq${band}gain`).value = String(b.gain);
+      setText(`eq${band}gv`, `${b.gain} дБ`)
     }
     if (b.freq) {
-      $(`eq${band}freq`).value = sliderFromFreq(b.freq);
-      $(`eq${band}fv`).textContent = `${b.freq} Гц`;
+      $input(`eq${band}freq`).value = String(sliderFromFreq(b.freq));
+      setText(`eq${band}fv`, `${b.freq} Гц`)
     }
     if (b.q) {
-      $(`eq${band}q`).value = sliderFromQ(b.q);
-      $(`eq${band}qv`).textContent = String(b.q);
+      $input(`eq${band}q`).value = String(sliderFromQ(b.q));
+      setText(`eq${band}qv`, String(b.q))
     }
   }
 
@@ -613,8 +722,8 @@ function buildHpControls() {
   }
 }
 
-const hpChannel = () => $('eqHpChannel').value || 'l';
-const hpBand = () => Number($('eqHpBand').value) || 1;
+const hpChannel = () => $select('eqHpChannel').value || 'l';
+const hpBand = () => Number($select('eqHpBand').value) || 1;
 
 /** Текущие значения выбранной полосы/канала из кеша. */
 function hpCurrent() {
@@ -646,19 +755,19 @@ function renderEqHp() {
 
   $('eqHpEn').textContent = cur.enable === 1 ? 'вкл' : 'выкл';
   $('eqHpEn').classList.toggle('on', cur.enable === 1);
-  if (cur.type) $('eqHpType').value = String(cur.type);
+  if (cur.type) $select('eqHpType').value = String(cur.type);
 
   if (cur.gain !== null && cur.gain !== undefined) {
-    $('eqHpGain').value = cur.gain;
+    $input('eqHpGain').value = String(cur.gain);
     $('eqHpGainV').textContent = `${cur.gain} дБ`;
   }
   if (cur.freq) {
-    $('eqHpFreq').value = sliderFromFreq(cur.freq);
+    $input('eqHpFreq').value = String(sliderFromFreq(cur.freq));
     $('eqHpFreqV').textContent = `${cur.freq} Гц`;
   }
   if (cur.q) {
-    $('eqHpQ').value = sliderFromQ(cur.q);
-    $('eqHpQV').textContent = String(cur.q);
+    $input('eqHpQ').value = String(sliderFromQ(cur.q));
+    setText('eqHpQV', String(cur.q))
   }
   $('eqHpState').textContent = `полоса ${hpBand()} ${hpChannel() === 'r' ? 'R' : 'L'}`;
 }
@@ -686,36 +795,36 @@ function wireEqHpControls() {
   $('eqHpType').addEventListener('change', (e) => queue(async () => {
     const band = hpBand();
     const frames = buildHpFrames(band, {
-      [hpChannel()]: { type: Number(e.target.value) },
+      [hpChannel()]: { type: Number(inputOf(e).value) },
     });
-    await sendEq(frames, `EQ HP полоса ${band} тип ${e.target.options[e.target.selectedIndex].text}`);
+    await sendEq(frames, `EQ HP полоса ${band} тип ${selectOf(e).options[selectOf(e).selectedIndex].text}`);
   }));
 
   $('eqHpGain').addEventListener('input', (e) => {
-    $('eqHpGainV').textContent = `${e.target.value} дБ`;
+    $('eqHpGainV').textContent = `${inputOf(e).value} дБ`;
   });
   $('eqHpGain').addEventListener('change', (e) => queue(async () => {
     const band = hpBand();
-    const frames = buildHpFrames(band, { [hpChannel()]: { gain: Number(e.target.value) } });
-    await sendEq(frames, `EQ HP полоса ${band} gain ${e.target.value}`);
+    const frames = buildHpFrames(band, { [hpChannel()]: { gain: Number(inputOf(e).value) } });
+    await sendEq(frames, `EQ HP полоса ${band} gain ${inputOf(e).value}`);
   }));
 
   $('eqHpFreq').addEventListener('input', (e) => {
-    $('eqHpFreqV').textContent = `${freqFromSlider(Number(e.target.value))} Гц`;
+    $('eqHpFreqV').textContent = `${freqFromSlider(Number(inputOf(e).value))} Гц`;
   });
   $('eqHpFreq').addEventListener('change', (e) => queue(async () => {
     const band = hpBand();
-    const hz = freqFromSlider(Number(e.target.value));
+    const hz = freqFromSlider(Number(inputOf(e).value));
     const frames = buildHpFrames(band, { [hpChannel()]: { freq: hz } });
     await sendEq(frames, `EQ HP полоса ${band} ${hz} Гц`);
   }));
 
   $('eqHpQ').addEventListener('input', (e) => {
-    $('eqHpQV').textContent = String(qFromSlider(Number(e.target.value)));
+    setText('eqHpQV', String(qFromSlider(Number(inputOf(e).value))))
   });
   $('eqHpQ').addEventListener('change', (e) => queue(async () => {
     const band = hpBand();
-    const q = qFromSlider(Number(e.target.value));
+    const q = qFromSlider(Number(inputOf(e).value));
     const frames = buildHpFrames(band, { [hpChannel()]: { q } });
     await sendEq(frames, `EQ HP полоса ${band} Q=${q}`);
   }));
@@ -757,7 +866,7 @@ let mixerMatrix = null;
 let mixerBefore = null;
 
 /** Текущая шина. */
-const mixerBus = () => $('mixerBus').value || 'a';
+const mixerBus = () => $select('mixerBus').value || 'a';
 
 /** Загрузить модель из localStorage или начать с пустой. */
 function loadMixer() {
@@ -773,7 +882,7 @@ function buildMixerControls() {
   sel.innerHTML = '';
   for (const bus of Object.keys(MIXER_BUSES)) {
     const o = document.createElement('option');
-    o.value = bus;
+    o.value = String(bus);
     o.textContent = bus.toUpperCase();
     sel.appendChild(o);
   }
@@ -817,12 +926,12 @@ function wireMixerRows() {
   const bus = mixerBus();
   for (const key of Object.keys(MIXER_SOURCES)) {
     for (const ch of ['l', 'r']) {
-      const el = $(`mx_${key}_${ch}`);
+      const el = $input(`mx_${key}_${ch}`);
       if (!el) continue;
 
       el.addEventListener('input', () => {
         const v = Number(el.value);
-        $(`mx_${key}_${ch}_v`).textContent = v <= -60 ? '−∞' : `${v} дБ`;
+        setText(`mx_${key}_${ch}_v`, v <= -60 ? '−∞' : `${v} дБ`)
       });
 
       el.addEventListener('change', () => queue(async () => {
@@ -981,7 +1090,7 @@ function renderSceneList() {
 }
 
 $('sceneSave').addEventListener('click', () => {
-  const name = $('sceneName').value.trim();
+  const name = $input('sceneName').value.trim();
   if (!name) { log('введите имя сцены', 'err'); return; }
 
   const params = collectParams();
@@ -991,13 +1100,13 @@ $('sceneSave').addEventListener('click', () => {
   if (!r.ok) { log(`не сохранилось: ${r.error}`, 'err'); return; }
 
   log(`✓ сцена «${name}»: ${paramCount} параметров + модель микшера`, 'ok');
-  $('sceneName').value = '';
+  $input('sceneName').value = '';
   renderSceneList();
-  $('sceneList').value = name;
+  $select('sceneList').value = name;
 });
 
 $('sceneLoad').addEventListener('click', () => queue(async () => {
-  const name = $('sceneList').value;
+  const name = $select('sceneList').value;
   if (!name) { log('нет сцены для загрузки', 'err'); return; }
 
   const scene = getScene(name);
@@ -1041,7 +1150,7 @@ $('sceneLoad').addEventListener('click', () => queue(async () => {
 }));
 
 $('sceneDelete').addEventListener('click', () => {
-  const name = $('sceneList').value;
+  const name = $select('sceneList').value;
   if (!name) return;
   const r = removeScene(name);
   if (!r.ok) { log(`не удалилось: ${r.error}`, 'err'); return; }
@@ -1152,22 +1261,22 @@ function buildLoopbackRows() {
 
     const gainEl = $(`lb_${r.id}_gain`);
     gainEl.addEventListener('input', (e) => {
-      const db = lbStepToDb(Number(e.target.value));
-      $(`lb_${r.id}_gain_v`).textContent = db === null ? 'MUTE' : `${db} dB`;
+      const db = lbStepToDb(Number(inputOf(e).value));
+      setText(`lb_${r.id}_gain_v`, db === null ? 'MUTE' : `${db} dB`)
     });
     gainEl.addEventListener('change', (e) => queue(async () => {
       if (!t) return;
-      const step = Number(e.target.value);
+      const step = Number(inputOf(e).value);
       loopbackModel[r.id].step = step;
       t.writeFrames(buildLoopbackGainFrames(r, step), { updateCache: false });
       const db = lbStepToDb(step);
       log(`→ ${r.name}: гейн ${db === null ? 'MUTE' : `${db} dB`} (не подтверждается)`, 'warn');
     }));
 
-    const srcEl = $(`lb_${r.id}_src`);
+    const srcEl = $select(`lb_${r.id}_src`);
     srcEl.addEventListener('change', (e) => queue(async () => {
       if (!t) return;
-      const value = Number(e.target.value);
+      const value = Number(inputOf(e).value);
       loopbackModel[r.id].source = value;
       t.writeFrames(
         buildSelectorFrames({ target: r.selTarget, prop: 0x02 }, value),
@@ -1182,7 +1291,7 @@ buildLoopbackRows();
 
 // ─── старт ───
 if (!isWebHidSupported()) {
-  $('btnConnect').disabled = true;
+  $button('btnConnect').disabled = true;
   log('этот браузер не поддерживает WebHID — откройте в Chrome или Edge', 'err');
 } else {
   log('готово. Нажмите «Подключить» и выберите M62');

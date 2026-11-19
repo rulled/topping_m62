@@ -114,8 +114,23 @@ export const EQ_LIMITS = {
   enable: { min: 0, max: 1, unit: '' },
 };
 
+/**
+ * Имя поля полосы EQ.
+ * @typedef {'enable'|'type'|'gain'|'freq'|'q'} EqField
+ */
+
 export const EQ_BANDS = 4;
-export const EQ_FIELD_NAMES = Object.keys(FIELD_PROP);
+
+/**
+ * Все имена полей в порядке объявления.
+ *
+ * Приведение типа здесь честное: `FIELD_PROP` объявлен выше и содержит
+ * ровно эти пять ключей. Без него `Object.keys` даёт `string[]`, и
+ * `eqTagAddress(channel, band, field)` перестаёт проверяться.
+ *
+ * @type {EqField[]}
+ */
+export const EQ_FIELD_NAMES = /** @type {EqField[]} */ (Object.keys(FIELD_PROP));
 
 /**
  * Адрес тега для поля полосы.
@@ -124,8 +139,7 @@ export const EQ_FIELD_NAMES = Object.keys(FIELD_PROP);
  * @param {'enable'|'type'|'gain'|'freq'|'q'} field
  * @returns {{target: number, prop: number}}
  */
-export function eqTagAddress(channel, band, field) {
-  const base = CHANNEL_BASE[channel];
+export function eqTagAddress(channel, band, field) {  const base = CHANNEL_BASE[channel];
   if (base === undefined) throw new Error(`неизвестный канал: ${channel}; допустимо IN1, IN2`);
   if (!Number.isInteger(band) || band < 1 || band > EQ_BANDS) {
     throw new Error(`band должен быть 1..${EQ_BANDS}`);

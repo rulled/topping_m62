@@ -32,10 +32,26 @@
 // ───────────────────────────────────────────────────────────────────
 
 /**
+ * Переключатель mute.
+ *
+ * `pair` — второй адрес пары (писать в оба). `inverted` — карта
+ * принимает 1 как «заглушено», значит UI-значение инвертируется.
+ *
+ * @typedef {object} MuteControl
+ * @property {string} id
+ * @property {string} name
+ * @property {number} target   первый адрес пары
+ * @property {number} prop     свойство mute
+ * @property {number|null} pair второй адрес пары (null = пары нет)
+ */
+
+/**
  * Переключатели mute.
  *
  * `pair` — второй адрес пары (писать в оба). `inverted` — карта
  * принимает 1 как «заглушено», значит UI-значение инвертируется.
+ *
+ * @type {MuteControl[]}
  */
 export const MUTE_CONTROLS = [
   { id: 'mic1', name: 'IN 1', target: 0x21, prop: 0x05, pair: null },
@@ -50,7 +66,7 @@ export const MUTE_CONTROLS = [
 /**
  * Кадры для переключения mute.
  *
- * @param {object} control одна запись из MUTE_CONTROLS
+ * @param {MuteControl} control одна запись из MUTE_CONTROLS
  * @param {boolean} soundOn true = звук должен идти (mute снят)
  * @returns {Array<{target:number, prop:number, value:number}>}
  */
@@ -69,7 +85,7 @@ export function buildMuteFrames(control, soundOn) {
  * Прочитать состояние mute из снимка.
  *
  * @param {Record<string,number>} snap снимок ядра (ключи десятичные)
- * @param {object} control
+ * @param {MuteControl} control
  * @returns {boolean|null} true = звук идёт; null = не прочитано
  */
 export function readMute(snap, control) {
@@ -96,10 +112,23 @@ export function readAllMutes(snap) {
 // ───────────────────────────────────────────────────────────────────
 
 /**
+ * Loopback-возврат: гейн пишется в оба адреса пары, селектор — в первый.
+ *
+ * @typedef {object} LoopbackReturn
+ * @property {string} id
+ * @property {string} name
+ * @property {number} gainTarget первый адрес пары гейна
+ * @property {number} gainPair   второй адрес пары гейна
+ * @property {number} selTarget  адрес селектора источника
+ */
+
+/**
  * Loopback-возвраты: гейн + селектор источника.
  *
  * `gainTarget`/`gainPair` — гейн пишется в оба.
  * `selTarget` — селектор только в первый из пары.
+ *
+ * @type {LoopbackReturn[]}
  */
 export const LOOPBACK_RETURNS = [
   { id: 'lb12', name: 'Loopback 1/2', gainTarget: 0x51, gainPair: 0x52, selTarget: 0x51 },
@@ -145,7 +174,7 @@ export const LB_GAIN_MAX_STEP = 102;
 /**
  * Кадры для установки loopback-гейна.
  *
- * @param {object} ret запись из LOOPBACK_RETURNS
+ * @param {LoopbackReturn} ret запись из LOOPBACK_RETURNS
  * @param {number} step 0..102
  * @returns {Array<{target:number, prop:number, value:number}>}
  */
@@ -202,9 +231,21 @@ export const SOURCE_ITEMS = [
 export const SOURCE_DEFAULT = 12;
 
 /**
+ * Селектор источника.
+ *
+ * @typedef {object} Selector
+ * @property {string} id
+ * @property {string} name
+ * @property {number} target адрес селектора
+ * @property {number} prop   свойство селектора
+ */
+
+/**
  * Селекторы источников (только Pro Audio Mode).
  *
  * Отвечают на ОДИН адрес: выход — второй из пары, loopback — первый.
+ *
+ * @type {Selector[]}
  */
 export const SELECTORS = [
   { id: 'hpSrc', name: 'Наушники слушают', target: 0x64, prop: 0x02 },
@@ -218,7 +259,7 @@ export const SELECTORS = [
 /**
  * Кадр для установки селектора.
  *
- * @param {object} sel
+ * @param {{target:number, prop:number}} sel адрес селектора
  * @param {number} value значение на проводе (из SOURCE_ITEMS)
  * @returns {Array<{target:number, prop:number, value:number}>}
  */
@@ -237,7 +278,7 @@ export function buildSelectorFrames(sel, value) {
  * вернёт null — это честный ответ, а не ошибка.
  *
  * @param {Record<string,number>} snap
- * @param {object} sel
+ * @param {{target:number, prop:number}} sel
  * @returns {number|null}
  */
 export function readSelector(snap, sel) {

@@ -52,9 +52,30 @@ export const UNREADABLE_GROUPS = [
 ];
 
 /**
+ * Матрица микшера: шина -> источник -> уровни L/R.
+ *
+ * `null` в уровне означает «−∞» (полное глушение). Ноль — это валидный
+ * уровень 0 дБ, поэтому путать нельзя.
+ *
+ * @typedef {Record<string, Record<string, {l:number|null, r:number|null}>>} MixerMatrix
+ */
+
+/**
+ * Сохранённая сцена.
+ *
+ * @typedef {object} Scene
+ * @property {string} name
+ * @property {string} createdAt        ISO-дата создания
+ * @property {Record<string, number>} params  читаемые параметры, ключ "0xTT:0xPP"
+ * @property {MixerMatrix|null} model  модель микшера (карта её не отдаёт)
+ * @property {string} source
+ * @property {string[]} unreadable     группы, которых в сцене нет
+ */
+
+/**
  * Прочитать все сцены.
  * @param {Storage} [storage]
- * @returns {{version:number, scenes:object}}
+ * @returns {{version:number, scenes:Record<string, Scene>}}
  */
 function readStore(storage) {
   try {
@@ -84,7 +105,7 @@ function writeStore(store, storage) {
  * Сохранить сцену.
  *
  * @param {string} name
- * @param {{params?:object, model?:object, source?:string}} payload
+ * @param {{params?:Record<string, number>, model?:MixerMatrix|null, source?:string}} payload
  *        params — адреса, прочитанные с карты
  *        model  — наша модель (микшер и т.п.)
  * @param {Storage} [storage]
@@ -128,7 +149,7 @@ export function listScenes(storage = globalThis.localStorage) {
  * Получить сцену целиком.
  * @param {string} name
  * @param {Storage} [storage]
- * @returns {object|null}
+ * @returns {Scene|null}
  */
 export function getScene(name, storage = globalThis.localStorage) {
   const store = readStore(storage);
@@ -161,7 +182,7 @@ export function clearScenes(storage = globalThis.localStorage) {
 /**
  * Что сцена НЕ восстановит — для честного показа пользователю.
  *
- * @param {object} scene
+ * @param {Scene|null} scene
  * @returns {string[]}
  */
 export function sceneLimitations(scene) {

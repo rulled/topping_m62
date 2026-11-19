@@ -147,10 +147,28 @@ function snapshotValue(snapshot, prop) {
 }
 
 /**
+ * Состояние реверба, прочитанное из снимка.
+ *
+ * Любое поле может быть `null`, если тег не пришёл в снимке. `typeName` —
+ * человекочитаемое имя типа, `bypass` — удобный флаг «тип = Bypass».
+ *
+ * @typedef {object} ReverbState
+ * @property {number|null} dryWet
+ * @property {number|null} room
+ * @property {number|null} decay
+ * @property {number|null} type
+ * @property {string|null} typeName
+ * @property {number|null} muteFx
+ * @property {number|null} width
+ * @property {boolean} bypass
+ */
+
+/**
  * Читает состояние реверба из снимка.
- * @returns {{dryWet, room, decay, type, typeName, muteFx, width, bypass}}
+ * @returns {ReverbState}
  */
 export function readReverb(snapshot) {
+  /** @type {Record<string, any>} */
   const out = {};
   for (const field of REVERB_FIELD_NAMES) {
     const raw = snapshotValue(snapshot, REVERB_FIELDS[field].prop);
@@ -158,7 +176,7 @@ export function readReverb(snapshot) {
   }
   out.typeName = REVERB_TYPES[out.type] ?? null;
   out.bypass = out.type === REVERB_BYPASS;
-  return out;
+  return /** @type {ReverbState} */ (out);
 }
 
 /**

@@ -39,6 +39,30 @@
  * (в отличие от микшера).
  */
 
+/**
+ * Параметры одной полосы (один канал).
+ *
+ * Все поля — `number|null`: `null` означает «тег не пришёл в снимке»
+ * (блок ещё не был прочитан или полосы нет в текущем режиме). Путать с
+ * нулём нельзя: 0 — это валидное значение (bypass полосы, 0 дБ).
+ *
+ * @typedef {object} EqHpBandParams
+ * @property {number|null} enable  0 = полоса выключена, 1 = включена
+ * @property {number|null} type    тип фильтра (1 = peaking)
+ * @property {number|null} gain    усиление, дБ (может быть отрицательным)
+ * @property {number|null} freq    частота, Гц
+ * @property {number|null} q       добротность × 10000
+ */
+
+/**
+ * Одна полоса целиком: левый и правый канал.
+ *
+ * @typedef {object} EqHpBand
+ * @property {number} band         номер полосы, 1..10
+ * @property {EqHpBandParams} l    левый канал
+ * @property {EqHpBandParams} r    правый канал
+ */
+
 /** Первый блок EQ наушников. */
 export const EQ_HP_FIRST = 0xa1;
 /** Последний блок (10 полос). */
@@ -92,7 +116,7 @@ export function bandOf(target) {
  *          "a1:03"   hex       (так пишут наши скрипты и дампы)
  *        Пробуем оба.
  * @param {number} band  1..10
- * @returns {{band:number, l:object, r:object}}
+ * @returns {EqHpBand}
  */
 export function readBand(state, band) {
   const get = (tt, pp) => {
@@ -134,7 +158,7 @@ export function readAllBands(state) {
  * Готовит кадры для записи одной полосы.
  *
  * @param {number} band  1..10
- * @param {{l?:object, r?:object}} params
+ * @param {{l?:Partial<EqHpBandParams>, r?:Partial<EqHpBandParams>}} params
  *        { l: { enable, type, gain, freq, q }, r: {...} }
  * @returns {Array<{target:number, prop:number, value:number}>}
  */
@@ -145,11 +169,16 @@ export function buildBandFrames(band, params) {
   const tt = EQ_HP_FIRST + band - 1;
   const frames = [];
 
+  /**
+   * @param {number} offset
+   * @param {Partial<EqHpBandParams>|undefined} obj
+   */
   const push = (offset, obj) => {
     if (!obj) return;
     for (const [name, prop] of Object.entries(EQ_HP_FIELDS)) {
-      if (obj[name] === undefined) continue;
-      frames.push({ target: tt, prop: prop + offset, value: obj[name] });
+      const value = obj[/** @type {keyof EqHpBandParams} */ (name)];
+      if (value === undefined) continue;
+      frames.push({ target: tt, prop: prop + offset, value });
     }
   };
 

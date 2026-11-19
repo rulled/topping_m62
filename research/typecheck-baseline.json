@@ -1,13 +1,4 @@
 {
-  "count": 113,
-  "updatedAt": "2026-11-19T10:16:59.347Z",
-  "note": "Число замечаний tsc. Храповик: новые ошибки не проходят, старые можно чинить постепенно.",
-  "byFile": {
-    "web/app.js": 92,
-    "src/mutes-loopback.js": 13,
-    "src/transport-core.js": 3,
-    "web/scenes.js": 3,
-    "src/eq-hid.js": 1,
-    "src/reverb-hid.js": 1
-  }
+  "count": 0,
+  "updatedAt": "2026-11-19T10:55:22.457Z"
 }

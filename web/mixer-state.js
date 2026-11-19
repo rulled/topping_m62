@@ -40,6 +40,25 @@ export const MIXER_STATE_KEY = 'm62.mixer.v1';
 export const MIXER_STATE_VERSION = 1;
 
 /**
+ * Матрица микшера: шина -> источник -> уровни L/R.
+ *
+ * `null` — это «−∞» (глушение), а не «нет данных»: микшер не читается
+ * с карты, поэтому вся модель целиком наша. Ноль — валидный уровень
+ * 0 дБ, различать обязательно.
+ *
+ * @typedef {Record<string, Record<string, {l:number|null, r:number|null}>>} MixerMatrix
+ */
+
+/**
+ * Сохранённое состояние микшера в localStorage.
+ *
+ * @typedef {object} MixerState
+ * @property {number} version
+ * @property {string} updatedAt
+ * @property {MixerMatrix} matrix
+ */
+
+/**
  * Пустая матрица: все шины, все источники, −inf (mute).
  *
  * ПОЧЕМУ НЕ 0 дБ: 0 дБ означает «источник слышен в шине». Если мы
@@ -48,9 +67,9 @@ export const MIXER_STATE_VERSION = 1;
  * например, включить микрофон в наушники. Тишина — безопасное
  * значение по умолчанию.
  *
- * @param {object} buses  MIXER_BUSES
- * @param {object} sources MIXER_SOURCES
- * @returns {Record<string, Record<string, {l:number, r:number}>>}
+ * @param {Record<string, {l:number, r:number}>} buses  MIXER_BUSES
+ * @param {Record<string, {prop:number, stereo:boolean, name:string}>} sources MIXER_SOURCES
+ * @returns {MixerMatrix}
  */
 export function emptyMatrix(buses, sources) {
   const out = {};
@@ -71,7 +90,7 @@ export function emptyMatrix(buses, sources) {
  * состояние, чем угаданное.
  *
  * @param {Storage} [storage]
- * @returns {object|null}
+ * @returns {MixerState|null}
  */
 export function loadMixerState(storage = globalThis.localStorage) {
   try {
@@ -89,7 +108,7 @@ export function loadMixerState(storage = globalThis.localStorage) {
 /**
  * Сохранить модель.
  *
- * @param {Record<string, Record<string, {l:number,r:number}>>} matrix
+ * @param {MixerMatrix} matrix
  * @param {Storage} [storage]
  * @returns {{ok:boolean, error?:string}}
  */
@@ -123,11 +142,11 @@ export function clearMixerState(storage = globalThis.localStorage) {
 /**
  * Изменить одну ячейку матрицы (не мутируя исходную).
  *
- * @param {object} matrix
+ * @param {MixerMatrix} matrix
  * @param {string} bus
  * @param {string} source
  * @param {{l?:number, r?:number}} value
- * @returns {object} новая матрица
+ * @returns {MixerMatrix} новая матрица
  */
 export function setCell(matrix, bus, source, value) {
   const next = { ...matrix };
@@ -147,8 +166,8 @@ export function setCell(matrix, bus, source, value) {
  * расточительно и рискованно. Сравниваем модель до и после и
  * отправляем ровно те ячейки, что поменялись.
  *
- * @param {object} before
- * @param {object} after
+ * @param {MixerMatrix} before
+ * @param {MixerMatrix} after
  * @returns {Array<{bus:string, source:string, l:number|null, r:number|null}>}
  */
 export function diffMatrix(before, after) {
@@ -171,7 +190,7 @@ export function diffMatrix(before, after) {
  * Нужно, чтобы UI мог честно сказать «состояние известно для N из M
  * ячеек» вместо того, чтобы делать вид, что знает всё.
  *
- * @param {object} matrix
+ * @param {MixerMatrix} matrix
  * @returns {{known:number, total:number}}
  */
 export function countKnown(matrix) {

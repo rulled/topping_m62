@@ -1,0 +1,67 @@
+{
+  // Проверка типов для JavaScript без переписывания на TypeScript.
+  //
+  // ═══ ЗАЧЕМ ═══
+  //
+  // TypeScript умеет проверять обычные .js файлы по JSDoc-комментариям.
+  // Это ловит настоящие ошибки, не требуя менять язык.
+  //
+  // В проекте много модулей протокола, где адреса — числа. Опечатка
+  // там стоит дорого: кадр уйдёт не туда, а карта молча ничего не
+  // сделает (она не отвечает ошибкой на неизвестный тег).
+  //
+  // ═══ ПОЧЕМУ НЕ strict ═══
+  //
+  // `strict: true` на существующем коде даст сотни замечаний про
+  // `null`. Здесь умеренный режим: ловим структурные ошибки.
+  //
+  // Запуск: npm run typecheck
+
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2023", "DOM"],
+
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitThis": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+
+  // Проверяем БРАУЗЕРНЫЙ код: он уходит пользователю и его нельзя
+  // проверить на сервере.
+  //
+  // node_modules и research не включаем: там чужой код без типов.
+  "include": [
+    "types/**/*.d.ts",
+    "web/app.js",
+    "web/mixer-state.js",
+    "web/scenes.js",
+    "src/transport-core.js",
+    "src/transport-consts.js",
+    "src/adapter-webhid.js",
+    "src/protocol.js",
+    "src/crc16.js",
+    "src/eq-hid.js",
+    "src/eq-hp.js",
+    "src/comp-hid.js",
+    "src/reverb-hid.js",
+    "src/phantom-hid.js",
+    "src/mixer-tags.js",
+    "src/mutes-loopback.js",
+    "src/gain-scales.js"
+  ],
+  "exclude": ["node_modules", "research", "src/tools"]
+}

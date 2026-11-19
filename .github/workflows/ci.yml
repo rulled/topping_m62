@@ -71,6 +71,9 @@ jobs:
       - name: Линтер
         run: npm run lint
 
+      - name: Проверка типов (храповик)
+        run: npm run typecheck
+
       - name: Офлайн-тесты
         run: npm run test:offline
 
@@ -118,6 +121,9 @@ jobs:
 
       - name: Линтер
         run: npm run lint
+
+      - name: Проверка типов (храповик)
+        run: npm run typecheck
 
       - name: Офлайн-тесты
         run: npm run test:offline

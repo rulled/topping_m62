@@ -23,13 +23,17 @@
     "test:docs": "node src/tools/check-doc-links.js",
     "test:hosting": "node src/tools/test-subdirectory-hosting.js",
     "test:security": "node src/tools/audit-server-exposure.js && node src/tools/test-exposure-warning.js",
-    "verify:deployed": "node src/tools/verify-deployed-site.js"
+    "verify:deployed": "node src/tools/verify-deployed-site.js",
+    "typecheck": "node src/tools/typecheck.js",
+    "typecheck:update": "node src/tools/typecheck.js --update"
   },
   "dependencies": {
     "node-hid": "^3.4.0",
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "eslint": "^9.39.1"
+    "@types/node": "^26.6.6",
+    "eslint": "^9.39.1",
+    "typescript": "^7.0.2"
   }
 }

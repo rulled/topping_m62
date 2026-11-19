@@ -14,14 +14,15 @@
     "lint": "eslint src/ web/",
     "lint:fix": "eslint src/ web/ --fix",
     "test": "npm run test:offline && npm run test:static",
-    "test:offline": "node src/tools/test-ui-frames.js && node src/tools/test-gain-scales.js && node src/tools/test-mutes-loopback.js && node src/tools/test-scenes.js && node src/tools/check-page-script.js && node src/tools/check-doc-links.js && node src/tools/audit-docs.js",
+    "test:offline": "node src/tools/test-ui-frames.js && node src/tools/test-gain-scales.js && node src/tools/test-mutes-loopback.js && node src/tools/test-scenes.js && node src/tools/check-page-script.js && node src/tools/check-doc-links.js && node src/tools/audit-server-exposure.js && node src/tools/audit-docs.js",
     "test:static": "node src/tools/test-static-server.js && node src/tools/test-static-performance.js && node src/tools/test-graceful-shutdown.js && node src/tools/test-static-robustness.js && node src/tools/test-behind-proxy.js && node src/tools/test-access-log.js && node src/tools/test-subdirectory-hosting.js && node src/tools/check-dockerfile.js",
     "test:server": "node src/tools/check-page-render.js --port 8898 && node src/tools/test-browser-modules.js --port 8898 && node src/tools/test-robustness.js",
     "test:device": "node src/tools/test-transport-core.js",
     "check": "npm run lint && npm test",
     "ci:simulate": "node src/tools/simulate-ci.js",
     "test:docs": "node src/tools/check-doc-links.js",
-    "test:hosting": "node src/tools/test-subdirectory-hosting.js"
+    "test:hosting": "node src/tools/test-subdirectory-hosting.js",
+    "test:security": "node src/tools/audit-server-exposure.js && node src/tools/test-exposure-warning.js"
   },
   "dependencies": {
     "node-hid": "^3.4.0",

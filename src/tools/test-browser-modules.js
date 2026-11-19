@@ -170,15 +170,21 @@ async function main() {
   }
 
   // ─── 4. доменные модули ───
+  //
+  // Здесь ТОЛЬКО то, что реально грузит браузер. Доменные модули
+  // dev-фазы (duck-loopback-hid.js и др.) переехали в research/ и
+  // странице не нужны — проверять их здесь значило бы требовать от
+  // продакшена код, которого в нём нет. Список совпадает с
+  // audit-production-graph.js.
   console.log('\n--- доменные модули ---');
   const domain = [
     ['mixer-tags.js', ['MIXER_SOURCES', 'MIXER_BUSES']],
     ['eq-hid.js', ['buildEqFrames', 'readChannelBands']],
     ['comp-hid.js', ['buildCompFrames', 'readCompressor']],
     ['reverb-hid.js', ['buildReverbBatch', 'REVERB_TYPES']],
-    ['duck-loopback-hid.js', ['buildDuckMaskFrames', 'DUCK_MASK_BITS']],
     ['phantom-hid.js', ['buildPhantomFrames', 'PHANTOM']],
-    ['tags.js', ['classifyTag']],
+    ['mutes-loopback.js', ['buildMuteFrames', 'readAllMutes']],
+    ['gain-scales.js', ['formatGain', 'gainDb']],
   ];
   for (const [file, needed] of domain) {
     try {

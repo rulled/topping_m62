@@ -6,7 +6,7 @@
 Все проверены на живом устройстве: `node src/tools/verify-coverage.js` → **42/42**.
 
 > **Устарело, см. ниже.** Счётчики в шапке не обновлялись с раннего этапа.
-> Фактически в `src/server.js` сейчас **50 уникальных путей**
+> Фактически в `research/dev-server/server.js` сейчас **50 уникальных путей**
 > (56 пар метод+путь: у 6 путей есть и GET, и POST).
 > `node src/tools/audit-docs.js` сверяет это с документацией: **50 = 50**.
 
@@ -78,7 +78,7 @@ curl http://127.0.0.1:8787/api/health
 | `src/modes.js` | определение режима устройства |
 | `src/snapshots.js` | свои снимки состояния |
 | `src/eq-mixer.js` | каталог адресов EQ/микшера (справочно) |
-| `src/server.js` | HTTP + WebSocket |
+| `research/dev-server/server.js` | HTTP + WebSocket |
 
 ---
 

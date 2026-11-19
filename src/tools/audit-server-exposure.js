@@ -8,12 +8,14 @@
  *   • `src/static-server.js` — для хостинга. Отдаёт 18 файлов,
  *     ничего не меняет. Безопасен для публичного доступа.
  *
- *   • `src/server.js` — dev-сервер. 73 маршрута, БЕЗ АВТОРИЗАЦИИ:
- *     управляет картой, читает реестр Windows, запускает процессы,
- *     дёргает окна MCC через UIA.
+ *   • `research/dev-server/server.js` — dev-сервер. 61 маршрут,
+ *     БЕЗ АВТОРИЗАЦИИ: управляет картой, читает реестр Windows,
+ *     запускает процессы, дёргает окна MCC через UIA.
  *
  * Если второй случайно окажется в интернете — кто угодно сможет
- * управлять картой и трогать систему.
+ * управлять картой и трогать систему. Сейчас он лежит в research/,
+ * поэтому случайно не попадёт в образ: Docker копирует файлы
+ * поимённо.
  *
  * ═══ ЧТО ПРОВЕРЯЕТСЯ ═══
  *
@@ -21,7 +23,7 @@
  *   2. Есть ли предупреждение при привязке к внешнему адресу.
  *   3. Документация не советует открывать его наружу.
  *   4. Статик-сервер (публичный) не имеет маршрутов управления.
- *   5. Docker и hостинг используют ИМЕННО статик-сервер.
+ *   5. Docker и хостинг используют ИМЕННО статик-сервер.
  *
  * Запуск: node src/tools/audit-server-exposure.js
  */
@@ -37,7 +39,10 @@ const check = (name, cond, detail = '') => {
 };
 const note = (msg) => { warn += 1; console.log(`  !     ${msg}`); };
 
-const DEV = readFileSync('src/server.js', 'utf8');
+/** Сервер с API живёт в research/: в продакшене его нет. */
+const DEV_PATH = 'research/dev-server/server.js';
+
+const DEV = readFileSync(DEV_PATH, 'utf8');
 const STATIC = readFileSync('src/static-server.js', 'utf8');
 
 console.log('='.repeat(70));
@@ -111,9 +116,14 @@ check('Dockerfile НЕ копирует server.js',
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 check('npm start = статик-сервер', pkg.scripts.start.includes('static-server'));
-check('dev-сервер отдельной командой', pkg.scripts['dev:api'].includes('server.js'));
-note(`npm start  -> ${pkg.scripts.start}`);
-note(`npm run dev:api -> ${pkg.scripts['dev:api']}`);
+
+// Раньше dev-сервер запускался отдельным скриптом `dev:api` из src/.
+// Теперь он в research/ и НЕ должен быть доступен через npm-скрипты:
+// иначе кто-то запустит его, думая, что это часть сайта.
+check('в npm-скриптах НЕТ dev-сервера',
+  !Object.values(pkg.scripts).some((s) => String(s).includes('server.js') && !String(s).includes('static-server')));
+note(`npm start -> ${pkg.scripts.start}`);
+note('dev-сервер (research/dev-server/server.js) запускается только вручную');
 
 // ─── 6. документация предупреждает ───
 console.log('\n--- 6. документация ---');
@@ -131,15 +141,22 @@ console.log(`
 `);
 
 if (fail === 0) {
+  // Числа берём из кода, а не пишем в тексте руками: иначе они
+  // разъедутся при следующем изменении (18 файлов было верно до
+  // появления алиасов, теперь их 21).
+  const fileCount = (STATIC.match(/^\s*\['\/[^']*',\s*'/gm) || []).length;
+  const devRoutes = (DEV.match(/url\.pathname\s*===\s*'\/api\//g) || []).length;
+
   console.log(`
   РАЗДЕЛЕНИЕ КОРРЕКТНО.
 
-  Публичный статик-сервер: отдаёт 18 файлов, ничего не меняет,
-  не тянет node-hid и ws. Безопасен для хостинга.
+  Публичный статик-сервер: отдаёт ${fileCount} URL из белого списка,
+  ничего не меняет, не тянет node-hid и ws. Безопасен для хостинга.
 
-  Dev-сервер: 73 маршрута с управлением картой и системой, БЕЗ
-  авторизации. По умолчанию слушает только 127.0.0.1, поэтому
-  наружу не виден. В Docker не попадает.
+  Dev-сервер (research/dev-server/): маршрутов с управлением картой
+  и системой — ${devRoutes}, БЕЗ авторизации. По умолчанию слушает
+  только 127.0.0.1, поэтому наружу не виден. В Docker не попадает
+  и npm-скриптом не запускается.
 `);
 } else {
   console.log('\n  ЕСТЬ РИСК. Смотри провалы.\n');

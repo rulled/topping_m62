@@ -51,7 +51,7 @@ npm start
 - опциональный access-log в формате nginx;
 - graceful shutdown по SIGTERM (работает на Linux/Docker).
 
-Серверный код (`src/server.js` с 61 маршрутом, `src/transport.js`,
+Серверный код (`research/dev-server/server.js` с 61 маршрутом, `src/transport.js`,
 `workspace.js`, `ui-control.js`) **не отдаётся** — это проверяется
 тестом.
 
@@ -126,9 +126,9 @@ HSTS бессмыслен, а браузер запоминает его нав�
 | файл | для чего | нужен на хостинге |
 |---|---|---|
 | `src/static-server.js` | отдать сайт | **да** |
-| `src/server.js` | агент: workspace, UIA-управление MCC, API на 61 маршрут | **нет** |
+| `research/dev-server/server.js` | агент: workspace, UIA-управление MCC, API на 61 маршрут | **нет** |
 
-`src/server.js` — это инструмент разработки и исследований. Он тянет
+`research/dev-server/server.js` — это инструмент разработки и исследований. Он тянет
 `node-hid`, `ws` и Windows-специфику. На хостинге он не нужен и
 вреден: увеличивает поверхность атаки.
 
@@ -204,7 +204,7 @@ node src/tools/verify-deployed-site.js https://user.github.io/repo/
 | все 15 модулей отдаются | один 404 рушит всю страницу |
 | CSP сохранён | некоторые хостинги переписывают заголовки |
 | сжатие включено | иначе страница грузится в 4 раза дольше |
-| серверный код не виден | `/src/server.js` и `/package.json` должны быть 404 |
+| серверный код не виден | `/research/dev-server/server.js` и `/package.json` должны быть 404 |
 
 Ожидаемый результат — 17 проверок, 0 провалов:
 

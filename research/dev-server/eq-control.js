@@ -37,7 +37,7 @@
  *
  * Окно открывается ДВОЙНЫМ КЛИКОМ по кнопке EQ в колонке входа.
  */
-import { ps, PRELUDE, dumpTree } from './tools/uia.js';
+import { ps, PRELUDE, dumpTree } from '../../src/tools/uia.js';
 import { freqPresses, freqToStep, qPresses, qSnap } from './eq-scales.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

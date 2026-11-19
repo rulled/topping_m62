@@ -3,10 +3,19 @@
  *
  * Важно для передачи фронтендеру: в API.md не должно быть
  * ни пропущенных, ни несуществующих эндпоинтов.
+ *
+ * ═══ ПОЧЕМУ ПУТЬ ВЕДЁТ В research/ ═══
+ *
+ * Сервер с API переехал в `research/dev-server/`: в продакшене его
+ * нет, сайт отдаёт только статику. Но `docs/API.md` описывает именно
+ * этот API, и сверка документации с кодом остаётся полезной — иначе
+ * описание разъедется с реализацией молча.
  */
 import { readFileSync } from 'node:fs';
 
-const server = readFileSync('src/server.js', 'utf8');
+const SERVER_PATH = 'research/dev-server/server.js';
+
+const server = readFileSync(SERVER_PATH, 'utf8');
 const docs = readFileSync('docs/API.md', 'utf8');
 
 // 1) вытащить все эндпоинты из кода

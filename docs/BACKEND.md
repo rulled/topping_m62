@@ -92,7 +92,7 @@
 | `src/modes.js` | определение режима устройства |
 | `src/snapshots.js` | свои снимки состояния |
 | `src/eq-mixer.js` | справочный каталог адресов EQ/микшера |
-| `src/server.js` | HTTP + WebSocket |
+| `research/dev-server/server.js` | HTTP + WebSocket |
 
 ---
 

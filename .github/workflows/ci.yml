@@ -200,7 +200,11 @@ jobs:
 
       - name: Проверить, что серверный код не отдаётся
         run: |
-          for path in /src/server.js /src/transport.js /package.json; do
+          # Пути, которых на хостинге быть не должно. dev-сервер с API
+          # теперь лежит в research/, но проверяем и его: если кто-то
+          # случайно скопирует research/ в образ, это надо заметить.
+          for path in /src/static-server.js /src/transport.js /package.json \
+                      /research/dev-server/server.js; do
             code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:8080$path")
             echo "$path -> $code"
             test "$code" = "404"

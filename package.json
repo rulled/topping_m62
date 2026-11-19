@@ -10,13 +10,12 @@
   "scripts": {
     "start": "node src/static-server.js",
     "dev": "node --watch src/static-server.js",
-    "dev:api": "node --watch src/server.js",
     "lint": "eslint src/ web/",
     "lint:fix": "eslint src/ web/ --fix",
     "test": "npm run test:offline && npm run test:static && npm run test:graph",
     "test:offline": "node src/tools/test-ui-frames.js && node src/tools/test-gain-scales.js && node src/tools/test-mutes-loopback.js && node src/tools/test-crc16.js && node src/tools/test-scenes.js && node src/tools/check-page-script.js && node src/tools/check-doc-links.js && node src/tools/audit-server-exposure.js && node src/tools/audit-docs.js",
     "test:static": "node src/tools/test-static-server.js && node src/tools/test-static-performance.js && node src/tools/test-graceful-shutdown.js && node src/tools/test-static-robustness.js && node src/tools/test-behind-proxy.js && node src/tools/test-access-log.js && node src/tools/test-subdirectory-hosting.js && node src/tools/check-dockerfile.js",
-    "test:graph": "node src/tools/audit-production-graph.js && node src/tools/audit-served-coverage.js",
+    "test:graph": "node src/tools/audit-production-graph.js && node src/tools/audit-served-coverage.js && node src/tools/check-broken-imports.js && node src/tools/check-devserver-imports.js",
     "test:mutations": "node src/tools/audit-mutation-tests.js",
     "test:server": "node src/tools/check-page-render.js --port 8898 && node src/tools/test-browser-modules.js --port 8898",
     "test:device": "node src/tools/test-transport-core.js",
@@ -30,8 +29,7 @@
     "typecheck:update": "node src/tools/typecheck.js --update"
   },
   "dependencies": {
-    "node-hid": "^3.4.0",
-    "ws": "^8.18.0"
+    "node-hid": "^3.4.0"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

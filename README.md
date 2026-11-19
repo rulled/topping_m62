@@ -142,7 +142,7 @@ node src/tools/test-scenes.js           # 35/35  сцены
 node src/tools/check-page-script.js     # 16/16  синтаксис страницы
 
 # нужен сервер на 8898
-$env:M62_PORT='8898'; node src/server.js
+$env:M62_PORT='8898'; node research/dev-server/server.js
 node src/tools/check-page-render.js --port 8898   # 20/20  рендер
 node src/tools/test-browser-modules.js --port 8898 # 22/22 без Node
 node src/tools/test-robustness.js                  # 20/20 надёжность

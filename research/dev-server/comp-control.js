@@ -38,7 +38,7 @@ import {
   describeCompressor,
   ratioAtIndex,
   ratioToIndex,
-} from './comp-scales.js';
+} from '../../src/comp-scales.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PS1 = path.join(HERE, 'tools', 'comp-key.ps1');

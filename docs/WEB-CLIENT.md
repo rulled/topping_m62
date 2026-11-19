@@ -58,7 +58,7 @@ USB посетителя.** Данные карты не могут уйти н�
 
 **Состояние на сегодня: агент есть, клиента к нему нет.**
 
-- Сервер `src/server.js` работает и отдаёт 61 маршрут, но страница
+- Сервер `research/dev-server/server.js` работает и отдаёт 61 маршрут, но страница
   `web/index.html` не делает ни одного HTTP-запроса (ноль вхождений
   `fetch`, `/api`, WebSocket). То есть сервер сегодня вызывают только
   собственные тесты.
@@ -92,13 +92,13 @@ USB посетителя.** Данные карты не могут уйти н�
 │               duck-loopback-hid, phantom-hid,│
 │               mixer-tags, tags               │
 ├──────────────────────────────────────────────┤
-│ Сервер        src/server.js (61 маршрут)     │  путь B, ОТДЕЛЬНАЯ
+│ Сервер        research/dev-server/server.js (61 маршрут)     │  путь B, ОТДЕЛЬНАЯ
 │               src/transport.js               │  реализация политики
 └──────────────────────────────────────────────┘
 ```
 
 **Сервер стоит на своей реализации транспорта, а не на ядре.** Это
-не описание замысла, а факт: `src/server.js` импортирует
+не описание замысла, а факт: `research/dev-server/server.js` импортирует
 `M62Transport` из `src/transport.js`, где handshake, keepalive,
 announce, `writeEqWithCommit` и `readFresh` написаны заново. Ядро
 `transport-core.js` сервер не использует.
@@ -333,7 +333,7 @@ Q (`0x05`/`0x0a`). Итого 40 адресов на вход.
 доказательство — `prove-eq-in2-live.js` и `prove-eq-hp-live.js`,
 которые читают **новой сессией**.
 
-**«25 из 25» — не «все маршруты».** В `src/server.js` 61 маршрут,
+**«25 из 25» — не «все маршруты».** В `research/dev-server/server.js` 61 маршрут,
 `autonomy-behaviour.js` перебирает 25 GET-адресов, и все 25
 отвечают без MCC. В список не попали, например, `/api/phantom`,
 `/api/ducking/mask`, `/api/loopback`, `/api/snapshots/get`. Так что
@@ -415,7 +415,7 @@ node src/tools/test-ui-frames.js
 # ожидаемо: 66 из 66
 
 # 3. сервер (в отдельном окне, оставить работать)
-$env:M62_PORT='8898'; node src/server.js
+$env:M62_PORT='8898'; node research/dev-server/server.js
 
 # 4. клиентские модули без Node — НУЖЕН сервер из шага 3
 node src/tools/test-browser-modules.js --port 8898

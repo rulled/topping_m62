@@ -32,21 +32,21 @@ import {
   listSnapshots,
   readSnapshot,
 } from './snapshots.js';
-import { classifyTag, COMP_METER_ROLES, describeTags, gainReductionDb, meterToDb, meterUnits, METER_SCALE } from './tags.js';
-import { M62Transport } from './transport.js';
-import { describeMixer } from './mixer-tags.js';
-import { buildBandFrames, describeEqHp, EQ_HP_BANDS, readAllBands } from './eq-hp.js';
+import { classifyTag, COMP_METER_ROLES, describeTags, gainReductionDb, meterToDb, meterUnits, METER_SCALE } from '../../src/tags.js';
+import { M62Transport } from '../../src/transport.js';
+import { describeMixer } from '../../src/mixer-tags.js';
+import { buildBandFrames, describeEqHp, EQ_HP_BANDS, readAllBands } from '../../src/eq-hp.js';
 import { clickByName, describeUiControls } from './ui-control.js';
 import { AUDIO_OPTIONS as AUDIO_OPTIONS_FOR_API, readAllAudioParams, setAudioParam } from './audio-params.js';
 import { describeEq, dialIndexMap, EQ_LAYOUT, FILE_SETTLE_MS, isEqWindowOpen, openEqWindow } from './eq-control.js';
 import * as comp from './comp-control.js';
-import { buildEqFrames, describeEqHid, DEVICE_TYPE_CODE, readChannelBands } from './eq-hid.js';
-import { buildCompFrames, describeCompHid, readCompressor as readCompressorHid } from './comp-hid.js';
-import { buildReverbFrames, describeReverbHid, readReverb, REVERB_FIELDS, REVERB_TYPES, typeCode } from './reverb-hid.js';
+import { buildEqFrames, describeEqHid, DEVICE_TYPE_CODE, readChannelBands } from '../../src/eq-hid.js';
+import { buildCompFrames, describeCompHid, readCompressor as readCompressorHid } from '../../src/comp-hid.js';
+import { buildReverbFrames, describeReverbHid, readReverb, REVERB_FIELDS, REVERB_TYPES, typeCode } from '../../src/reverb-hid.js';
 
 import { describeScales } from './eq-scales.js';
 import { checkModeConsistency, describeMode, detectModeFromHid } from './modes.js';
-import { PRELUDE, ps } from './tools/uia.js';
+import { PRELUDE, ps } from '../../src/tools/uia.js';
 import { createWorkspace, deleteWorkspace, switchWorkspace } from './workspace.js';
 import { WorkspaceService } from './workspace-service.js';
 import * as stateStore from './state-store.js';
@@ -56,7 +56,7 @@ import {
   describePhantom,
   PHANTOM_CHANNELS,
   readPhantomState,
-} from './phantom-hid.js';
+} from '../../src/phantom-hid.js';
 
 const PORT = Number(process.env.M62_PORT ?? 8787);
 const HOST = process.env.M62_HOST ?? '127.0.0.1';

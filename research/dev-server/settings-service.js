@@ -15,7 +15,7 @@ import {
   TOGGLES,
   findSetting,
   labelFor,
-} from './settings.js';
+} from '../../src/settings.js';
 
 export class SettingsService {
   /**

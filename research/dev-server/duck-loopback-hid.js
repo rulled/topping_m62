@@ -46,7 +46,7 @@
  *  +12 дБ   = 133582600
  */
 
-import { SOURCE_CODES } from './mixer-tags.js';
+import { SOURCE_CODES } from '../../src/mixer-tags.js';
 
 const TT_DUCK = 0x43;
 const Q25_UNITY = 33554432;

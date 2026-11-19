@@ -12,7 +12,7 @@
  */
 import { execFileSync } from 'node:child_process';
 
-import { dumpTree, ps as uiaPs, PRELUDE as UIA_PRELUDE } from './tools/uia.js';
+import { dumpTree, ps as uiaPs, PRELUDE as UIA_PRELUDE } from '../../src/tools/uia.js';
 
 const PS_EXE = 'powershell.exe';
 

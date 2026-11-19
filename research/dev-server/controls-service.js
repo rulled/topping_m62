@@ -10,7 +10,7 @@ import {
   indexToDb,
   sourceIndex,
   sourceValue,
-} from './controls.js';
+} from '../../src/controls.js';
 
 export class ControlService {
   /**

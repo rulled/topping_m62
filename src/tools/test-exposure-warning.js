@@ -3,8 +3,9 @@
  *
  * ═══ ПОЧЕМУ ЭТО КРИТИЧНО ═══
  *
- * `src/server.js` — dev-сервер с 73 маршрутами БЕЗ АВТОРИЗАЦИИ:
- * управление картой, чтение реестра Windows, управление окнами MCC.
+ * `research/dev-server/server.js` — dev-сервер с 73 маршрутами БЕЗ
+ * АВТОРИЗАЦИИ: управление картой, чтение реестра Windows, управление
+ * окнами MCC.
  *
  * По умолчанию он слушает 127.0.0.1 — наружу не виден. Но если
  * кто-то выставит `M62_HOST=0.0.0.0` (например, «чтобы зайти с
@@ -32,9 +33,12 @@ const check = (name, cond, detail = '') => {
   else { fail += 1; console.log(`  FAIL  ${name}${detail ? `  (${detail})` : ''}`); }
 };
 
+/** Сервер с API живёт в research/: в продакшене его нет. */
+const DEV_SERVER = 'research/dev-server/server.js';
+
 /** Запустить dev-сервер с заданным HOST и собрать вывод. */
 async function runWithHost(host) {
-  const child = spawn(process.execPath, ['src/server.js'], {
+  const child = spawn(process.execPath, [DEV_SERVER], {
     env: { ...process.env, M62_PORT: '8901', M62_HOST: host },
     stdio: ['ignore', 'pipe', 'pipe'],
   });

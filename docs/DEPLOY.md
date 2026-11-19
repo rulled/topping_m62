@@ -76,12 +76,12 @@ IP берётся из `X-Forwarded-For`, если запрос пришёл ч�
 
 | файл | без сжатия | brotli |
 |---|---|---|
-| `/` (HTML) | 21 042 | 5 113 |
-| `/web/app.js` | 48 625 | 11 515 |
-| `/src/transport-core.js` | 17 600 | 5 196 |
-| **вся страница** | **132 513** | **36 556** |
+| `/` (HTML) | 21 039 | 5 123 |
+| `/app.js` | 53 205 | 12 683 |
+| `/src/transport-core.js` | 19 293 | 5 619 |
+| **вся страница** | **93 537** | **23 425** |
 
-Экономия 72%. Повторный визит — ещё дешевле: браузер получает `304`
+Экономия 75%. Повторный визит — ещё дешевле: браузер получает `304`
 без тела.
 
 ## За обратным прокси
@@ -146,13 +146,25 @@ HSTS бессмыслен, а браузер запоминает его нав�
 Нужно отдать эти файлы:
 
 ```
-/                                          -> web/index.html
-/app.js  (и /web/app.js как алиас)         -> web/app.js
-/mixer-state.js, /scenes.js                -> web/*
-/src/*.js                                  -> 15 модулей
+/                    -> index.html   (лежит В КОРНЕ репозитория)
+/app.js              -> app.js
+/mixer-state.js      -> mixer-state.js
+/scenes.js           -> scenes.js
+/src/*.js            -> 15 модулей
 ```
 
-Полный список — `ALLOWED_FILES` в `src/static-server.js` (18 путей).
+**Почему страница в корне.** GitHub Pages, Cloudflare Pages и любой
+`npx serve` раздают каталог как есть: `index.html` ищется в корне и
+никаких алиасов нет. Пока страница лежала в `web/`, главная по
+адресу сайта отдавала 404 — при том что на нашем сервере всё
+работало, он умел алиас `/` -> `web/index.html`.
+
+Проверяется это не нашим сервером, а отдельно:
+`node src/tools/check-plain-static-hosting.js` поднимает «глупую»
+раздачу каталога без алиасов и смотрит, что страница и все её
+импорты открываются.
+
+Полный список — `ALLOWED_FILES` в `src/static-server.js` (21 URL).
 
 ### Вариант 2: свой сервер
 
@@ -176,9 +188,9 @@ FROM node:20-alpine
 WORKDIR /app
 COPY package.json ./
 RUN npm install --omit=dev
-COPY src/static-server.js src/
+COPY src/static-server.js src/static-server.js
 COPY src/*.js src/
-COPY web/ web/
+COPY index.html app.js mixer-state.js scenes.js ./
 ENV PORT=8080
 EXPOSE 8080
 CMD ["node", "src/static-server.js"]

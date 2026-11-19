@@ -46,9 +46,9 @@
   // node_modules и research не включаем: там чужой код без типов.
   "include": [
     "types/**/*.d.ts",
-    "web/app.js",
-    "web/mixer-state.js",
-    "web/scenes.js",
+    "app.js",
+    "mixer-state.js",
+    "scenes.js",
     "src/transport-core.js",
     "src/transport-consts.js",
     "src/adapter-webhid.js",

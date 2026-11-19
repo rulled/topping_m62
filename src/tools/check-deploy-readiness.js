@@ -72,10 +72,10 @@ async function main() {
 
   const required = [
     'src/static-server.js',
-    'web/index.html',
-    'web/app.js',
-    'web/mixer-state.js',
-    'web/scenes.js',
+    'index.html',
+    'app.js',
+    'mixer-state.js',
+    'scenes.js',
     'Dockerfile',
     'package.json',
     '.github/workflows/ci.yml',
@@ -119,7 +119,7 @@ async function main() {
     check('страница не пустая', page.body.length > 10000, `${page.body.length} байт`);
 
     // Все модули графа
-    const app = await get(port, '/web/app.js');
+    const app = await get(port, '/app.js');
     check('клиентский скрипт отдаётся', app.status === 200, `HTTP ${app.status}`);
     const imports = [...app.body.toString().matchAll(/from\s+'(\/[^']+)'/g)]
       .map((m) => m[1]);

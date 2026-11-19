@@ -86,7 +86,7 @@ async function main() {
 
     // ─── 2. содержимое не испорчено ───
     console.log('\n--- 2. целостность после распаковки ---');
-    const original = readFileSync('web/index.html');
+    const original = readFileSync('index.html');
     check('brotli распаковывается в оригинал',
       brotliDecompressSync(br.body).equals(original));
     check('gzip распаковывается в оригинал',

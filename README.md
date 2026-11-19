@@ -159,20 +159,28 @@ node src/tools/prove-eq-hp-live.js      # 8/8  EQ наушников
 ## Структура
 
 ```
-src/                  сервер и модули протокола
-  protocol.js         кадры, CRC
+index.html            страница (в КОРНЕ — так требует статический хостинг)
+app.js                клиентский код страницы
+mixer-state.js        модель микшера в localStorage
+scenes.js             сцены (наборы настроек)
+src/                  23 модуля: протокол, HID, шкалы, сервер
+  protocol.js         кадры, CRC, разбор отчётов
   transport-core.js   политика протокола (для браузера)
-  transport.js        вторая реализация (для сервера)
-  adapter-webhid.js   WebHID
-  adapter-nodehid.js  node-hid
+  transport.js        транспорт через node-hid (скрипты, тесты)
+  adapter-webhid.js   WebHID — карта управляется из браузера
+  eq-hid.js           EQ входов (0x91..0x94)
+  eq-hp.js            EQ наушников (0xa1..0xaa, только Prof)
+  comp-hid.js         компрессор
+  reverb-hid.js       реверб
+  phantom-hid.js      фантомное питание 48 В
+  mixer-tags.js       адреса микшера
   mutes-loopback.js   mutes, loopback, селекторы
   gain-scales.js      шкалы громкости в дБ
-  modes.js            определение режима
-  server.js           HTTP + WS API
-  tools/              50 активных скриптов (остальное в research/archive/)
-web/                  клиент: index.html, mixer-state.js, scenes.js
+  static-server.js    продакшн-сервер: отдаёт только белый список
+  tools/              64 активных скрипта (остальное в research/archive/)
 docs/                 документация
 research/             исследования, заметки, архив
+  dev-server/         исторический HTTP+WS сервер с API (не продакшн)
   board-photos/       фото платы
   ghidra-scripts/     скрипты для Ghidra
   firmware/           образ прошивки

@@ -76,7 +76,7 @@ export default [
   {
     ...base,
     files: [
-      'web/**/*.js',
+      '*.js',
       'src/transport-core.js',
       'src/adapter-webhid.js',
       'src/transport-consts.js',

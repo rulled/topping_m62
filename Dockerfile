@@ -18,10 +18,13 @@ COPY src/static-server.js ./src/static-server.js
 
 # Файлы сайта. Список совпадает с белым списком в static-server.js:
 # если добавить модуль в белый список, надо добавить COPY и здесь.
-COPY web/index.html ./web/index.html
-COPY web/app.js ./web/app.js
-COPY web/mixer-state.js ./web/mixer-state.js
-COPY web/scenes.js ./web/scenes.js
+#
+# Страница и её модули лежат в КОРНЕ: так требует любой статический
+# хостинг (GitHub Pages ищет index.html в корне и не умеет алиасов).
+COPY index.html ./index.html
+COPY app.js ./app.js
+COPY mixer-state.js ./mixer-state.js
+COPY scenes.js ./scenes.js
 
 COPY src/transport-core.js ./src/transport-core.js
 COPY src/transport-consts.js ./src/transport-consts.js

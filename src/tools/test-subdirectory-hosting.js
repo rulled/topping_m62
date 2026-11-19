@@ -33,7 +33,10 @@
 
 import { existsSync, readFileSync } from 'node:fs';
 import { request as httpRequest } from 'node:http';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+
+// Путь страницы относительно корня проекта: страница лежит в корне.
+const APP = 'app.js';
 
 import { createStaticServer } from '../static-server.js';
 
@@ -65,8 +68,8 @@ async function main() {
   console.log('ХОСТИНГ В ПОДКАТАЛОГЕ (как GitHub Pages)');
   console.log('='.repeat(70));
 
-  const html = readFileSync('web/index.html', 'utf8');
-  const app = readFileSync('web/app.js', 'utf8');
+  const html = readFileSync('index.html', 'utf8');
+  const app = readFileSync('app.js', 'utf8');
 
   // ─── 1. нет абсолютных путей в HTML ───
   console.log('\n--- 1. пути в index.html ---');
@@ -88,7 +91,9 @@ async function main() {
 
   // ─── 3. относительные импорты резолвятся ───
   console.log('\n--- 3. относительные пути ведут к файлам ---');
-  const appDir = resolve('web');
+  // app.js лежит в КОРНЕ проекта, поэтому импорты считаются от него.
+  // Раньше здесь было resolve('web') — привязка к старой структуре.
+  const appDir = dirname(resolve(APP));
   const broken = [];
   for (const spec of relImports) {
     const target = resolve(appDir, spec);
@@ -97,7 +102,7 @@ async function main() {
   check(`все ${relImports.length} относительных импортов резолвятся`,
     broken.length === 0, broken.join(', '));
 
-  // ─── 4. сервер отдаёт модули без префикса /web/ ───
+  // ─── 4. сервер отдаёт модули по путям от корня ───
   console.log('\n--- 4. сервер отдаёт алиасы для относительных путей ---');
   const server = createStaticServer();
   await new Promise((r) => server.listen(0, '127.0.0.1', r));

@@ -25,7 +25,7 @@ import {
   loadMixerState,
   saveMixerState,
   setCell,
-} from '../../web/mixer-state.js';
+} from '../../mixer-state.js';
 import {
   clearScenes,
   getScene,
@@ -34,7 +34,7 @@ import {
   saveScene,
   sceneLimitations,
   UNREADABLE_GROUPS,
-} from '../../web/scenes.js';
+} from '../../scenes.js';
 import { MIXER_BUSES, MIXER_SOURCES } from '../mixer-tags.js';
 
 let ok = 0;

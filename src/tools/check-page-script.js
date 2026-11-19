@@ -27,8 +27,8 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 
-const PAGE = 'web/index.html';
-const APP = 'web/app.js';
+const PAGE = 'index.html';
+const APP = 'app.js';
 
 let ok = 0;
 let fail = 0;

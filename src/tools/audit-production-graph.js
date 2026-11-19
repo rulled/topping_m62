@@ -17,13 +17,13 @@
  * белого списка. Поэтому `src/static-server.js` не проверяется на
  * «отдаётся ли он»: он и есть сервер.
  *
- * А вот всё, что достижимо из `web/app.js`, браузер обязан получить
+ * А вот всё, что достижимо из `app.js`, браузер обязан получить
  * по HTTP, иначе страница упадёт с 404.
  *
  * ═══ КАК СЧИТАЕТСЯ ═══
  *
  * Два независимых обхода:
- *   browser — от web/app.js (то, что грузит браузер)
+ *   browser — от app.js (то, что грузит браузер)
  *   node    — от src/static-server.js (то, что крутится на сервере)
  *
  * Запуск: node src/tools/audit-production-graph.js [--json]
@@ -36,7 +36,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 /** Точка входа браузера: её грузит страница по HTTP. */
-const BROWSER_ENTRIES = ['web/app.js'];
+const BROWSER_ENTRIES = ['app.js'];
 
 /** Точки входа сервера: запускаются в Node. */
 const NODE_ENTRIES = ['src/static-server.js'];

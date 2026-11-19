@@ -39,6 +39,18 @@ const VENDOR_INTERFACE = 4;
  */
 const ANNOUNCE_MS = 15000;
 
+/**
+ * Сколько ждать ответ на handshake.
+ *
+ * Опубликованный драйвер ядра (`sound/usb/hid-topping.c`, патч 5/8):
+ * карта отвечает за 8..851 мс. Announce длится 3,1-3,3 с, поэтому
+ * 3,5 с — разумный предел: дольше ждать нечего.
+ *
+ * Значение то же, что в `transport-core.js` — это проверяет
+ * `audit-transport-divergence.js`.
+ */
+const ANSWER_MS = 3500;
+
 export class M62Transport extends EventEmitter {
   constructor({ logger = console } = {}) {
     super();
@@ -80,8 +92,7 @@ export class M62Transport extends EventEmitter {
   }
 
   /** Открывает устройство и подписывается. */
-  async open() {
-    if (this.device) return;
+  async open() {    if (this.device) return;
 
     // Ручной open() снимает флаг окончательного закрытия и сбрасывает
     // счётчик попыток — иначе автовосстановление не заработает.
@@ -113,7 +124,43 @@ export class M62Transport extends EventEmitter {
     // EQ-полосы (0x91..0x94) и переключатели (0x9b:0x0f/10/12/13)
     // не приходят вовсе. Проверено: 44 тега -> 96 тегов.
     // Источник: github.com/NTMan/topping-m62 (PROTOCOL.md).
+    //
+    // ═══ ВАЖНО: ЖДАТЬ ОТВЕТ, А НЕ ШЛАТЬ ПОДРЯД ═══
+    //
+    // Раньше здесь стояло три кадра подряд без паузы. Это работает
+    // на нашей карте, но опубликованный драйвер ядра
+    // (`sound/usb/hid-topping.c`, патч 5/8) предупреждает:
+    //
+    //   «Nothing follows the handshake until it is answered. The card
+    //   answers 0x11/0x01 8 to 851 ms after it… a write that reached
+    //   the card 2 ms before the answer was not applied.»
+    //
+    // То есть без ожидания часть записей теряется МОЛЧА. В
+    // `transport-core.js` это уже исправлено, а здесь — нет:
+    // расхождение нашёл `audit-transport-divergence.js`.
+    //
+    // Правильно: дождаться события handshake (или 3.5 с) и только
+    // потом подписываться.
+    //
+    // ═══ ЛОВУШКА: ЧТЕНИЕ НАДО ЗАПУСТИТЬ ДО ОЖИДАНИЯ ═══
+    //
+    // Первая версия этой правки ставила ожидание ПЕРЕД #startReading(),
+    // и `open()` зависал навсегда: ответ карты читать было некому,
+    // промис никогда не разрешался.
+    //
+    // Чтение должно идти ДО отправки handshake — иначе ожидание
+    // ответа превращается во взаимную блокировку.
+    this.#startReading();
+
+    const answered = this.#waitForHandshakeAnswer(ANSWER_MS);
     this.send(TT_DEVICE, PP_HANDSHAKE, 1);
+
+    const gotAnswer = await answered;
+    if (!gotAnswer) {
+      // Не ошибка: карта могла быть занята announce. Продолжаем —
+      // без подписки она всё равно замолчит.
+      this.log.warn?.('[m62] карта не ответила на handshake за 3.5 с, продолжаю');
+    }
 
     // Подписка: без неё устройство молчит.
     this.send(TT_DEVICE, PP_SUBSCRIBE, 1);
@@ -121,7 +168,9 @@ export class M62Transport extends EventEmitter {
     this.send(TT_DEVICE, PP_ANNOUNCE, 1);
 
     this.#startKeepalive();
-    this.#startReading();
+    // ВТОРОЙ #startReading() здесь НЕ НУЖЕН: чтение уже запущено выше,
+    // до ожидания handshake. Второй вызов создал бы два конкурирующих
+    // цикла чтения — один терял бы отчёты, которые забрал другой.
 
     this.emit('open');
   }
@@ -146,6 +195,39 @@ export class M62Transport extends EventEmitter {
    * Поэтому шлём ANNOUNCE периодически (каждые 15 с). Это не мешает
    * работе: устройство просто повторяет полный дамп.
    */
+  /**
+   * Дождаться ответа на handshake.
+   *
+   * Карта отвечает кадром `TT_DEVICE:PP_HANDSHAKE`. Пока ответа нет,
+   * ничего слать нельзя — иначе часть записей теряется (см. комментарий
+   * в open()).
+   *
+   * Возвращает промис, который разрешается `true` при ответе или
+   * `false` по таймауту. Не бросает: отсутствие ответа не фатально.
+   *
+   * @param {number} timeoutMs
+   * @returns {Promise<boolean>}
+   */
+  #waitForHandshakeAnswer(timeoutMs) {
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = (ok) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        this.off('event', onEvent);
+        resolve(ok);
+      };
+      const onEvent = (ev) => {
+        if (ev.target === TT_DEVICE && ev.prop === PP_HANDSHAKE) finish(true);
+      };
+      const timer = setTimeout(() => finish(false), timeoutMs);
+      // unref: таймер не должен держать процесс живым.
+      timer.unref?.();
+      this.on('event', onEvent);
+    });
+  }
+
   #startKeepalive() {
     this.#stopKeepalive();
     this.keepaliveTimer = setInterval(() => {

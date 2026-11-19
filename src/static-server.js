@@ -342,15 +342,84 @@ export async function handleRequest(req, res) {
 }
 
 /**
+ * Логирование запросов.
+ *
+ * ═══ ЗАЧЕМ ОПЦИОНАЛЬНО ═══
+ *
+ * Без логов нельзя понять, что происходит на публичном сайте: кто
+ * получает 404, какие боты ломятся, не отдаём ли мы ошибки сотнями.
+ *
+ * Но и всегда писать логи нельзя: в разработке это шум, а на
+ * хостинге с большим трафиком — лишний объём.
+ *
+ * Поэтому: включается переменной `M62_ACCESS_LOG=1`.
+ *
+ * ═══ ФОРМАТ ═══
+ *
+ * Одна строка на запрос, как в nginx:
+ *
+ *     127.0.0.1 - [19/Nov/2026:02:55:00 +0000] "GET / HTTP/1.1" 200 5113 "-"
+ *
+ * Поля: IP, время, запрос, статус, размер тела, referer.
+ * IP берём из X-Forwarded-For, если есть (за прокси свой адрес
+ * бесполезен).
+ */
+const ACCESS_LOG = process.env.M62_ACCESS_LOG === '1';
+
+/** Записать строку access-лога. */
+function accessLog(req, res, bytes) {
+  if (!ACCESS_LOG) return;
+
+  // За прокси настоящий IP в X-Forwarded-For (первый в списке).
+  const fwd = String(req.headers['x-forwarded-for'] ?? '').split(',')[0].trim();
+  const ip = fwd || req.socket?.remoteAddress || '-';
+
+  const now = new Date();
+  // Формат как в nginx: 19/Nov/2026:02:55:00 +0000
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const pad = (n) => String(n).padStart(2, '0');
+  const stamp = `${pad(now.getUTCDate())}/${months[now.getUTCMonth()]}/${now.getUTCFullYear()}`
+    + `:${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}:${pad(now.getUTCSeconds())} +0000`;
+
+  const referer = String(req.headers.referer ?? '-');
+
+  console.log(`${ip} - [${stamp}] "${req.method} ${req.url} HTTP/${req.httpVersion}" `
+    + `${res.statusCode} ${bytes} "${referer}"`);
+}
+
+/**
  * Создать сервер.
  *
  * Вынесено отдельно от запуска, чтобы тесты могли поднять сервер на
  * случайном порту, не трогая процесс.
  *
+ * ═══ ЗАЩИТА ОТ МЕДЛЕННЫХ КЛИЕНТОВ ═══
+ *
+ * Публичный сайт будет получать соединения, которые открыли и молчат
+ * (slowloris) или читают ответ по байту в минуту. Без таймаутов
+ * несколько сотен таких соединений займут все слоты, и нормальные
+ * пользователи не смогут зайти.
+ *
+ * Node по умолчанию НЕ ставит таймаут на чтение всего запроса —
+ * только на отдельные операции. Поэтому настраиваем явно.
+ *
  * @returns {import('node:http').Server}
  */
 export function createStaticServer() {
-  return createServer((req, res) => {
+  const server = createServer((req, res) => {
+    // Замеряем размер тела для access-лога.
+    let sent = 0;
+    const writeHead = res.writeHead.bind(res);
+    res.writeHead = (status, headers) => {
+      if (headers && typeof headers === 'object' && 'content-length' in headers) {
+        sent = Number(headers['content-length']) || 0;
+      }
+      return writeHead(status, headers);
+    };
+
+    res.on('finish', () => accessLog(req, res, sent));
+
     handleRequest(req, res).catch((err) => {
       // Не роняем процесс из-за одного запроса.
       const message = err?.message ?? String(err);
@@ -362,6 +431,17 @@ export function createStaticServer() {
       }
     });
   });
+
+  // Заголовки должны прийти за 10 с. Медленный клиент отсекается.
+  server.headersTimeout = 10_000;
+  // Всё время запроса (включая тело) — 30 с. Статика маленькая,
+  // дольше означает проблемного клиента.
+  server.requestTimeout = 30_000;
+  // Keep-alive: сколько держать простаивающее соединение. Дольше
+  // держать смысла нет — статика отдаётся быстро.
+  server.keepAliveTimeout = 5_000;
+
+  return server;
 }
 
 /**
@@ -388,15 +468,48 @@ function isMainModule() {
   }
 }
 
+/**
+ * Разобрать номер порта из переменной окружения.
+ *
+ * ═══ ПОЧЕМУ ОТДЕЛЬНАЯ ФУНКЦИЯ ═══
+ *
+ * Сначала было `Number(process.env.PORT) || 8080`. Это ломается на
+ * `PORT=0`: ноль — falsy, поэтому выражение даёт 8080, а не «любой
+ * свободный порт» (что означает 0 для ОС).
+ *
+ * Из-за этого тесты не могли поднять сервер на случайном порту, и
+ * они падали с EADDRINUSE на 8080.
+ *
+ * Правильно: проверять, задана ли переменная вообще, а не «истинно
+ * ли её значение».
+ *
+ * @returns {number}
+ */
+function parsePort() {
+  const raw = process.env.PORT;
+  if (raw === undefined || raw === '') return 8080;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 0 || n > 65535) {
+    console.error(`[static] некорректный PORT="${raw}", использую 8080`);
+    return 8080;
+  }
+  return n;
+}
+
 function start() {
-  const port = Number(process.env.PORT) || 8080;
+  const port = parsePort();
   const host = process.env.HOST || '0.0.0.0';
   const server = createStaticServer();
 
   server.listen(port, host, () => {
-    console.log(`[static] слушаю ${host}:${port}`);
+    // ВАЖНО: берём порт из адреса, а не из переменной.
+    // Если PORT=0, ОС выделяет свободный порт, и в логе должен быть
+    // настоящий, иначе тесты не смогут к нему подключиться.
+    const actual = server.address()?.port ?? port;
+    console.log(`[static] слушаю ${host}:${actual}`);
     console.log(`[static] файлов в белом списке: ${ALLOWED_FILES.size}`);
     console.log('[static] управление картой идёт из браузера через WebHID');
+    if (ACCESS_LOG) console.log('[static] access-log включён');
   });
 
   /**

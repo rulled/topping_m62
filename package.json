@@ -18,7 +18,8 @@
     "test:static": "node src/tools/test-static-server.js && node src/tools/test-static-performance.js && node src/tools/test-graceful-shutdown.js && node src/tools/test-static-robustness.js && node src/tools/test-behind-proxy.js && node src/tools/test-access-log.js && node src/tools/check-dockerfile.js",
     "test:server": "node src/tools/check-page-render.js --port 8898 && node src/tools/test-browser-modules.js --port 8898 && node src/tools/test-robustness.js",
     "test:device": "node src/tools/test-transport-core.js",
-    "check": "npm run lint && npm test"
+    "check": "npm run lint && npm test",
+    "ci:simulate": "node src/tools/simulate-ci.js"
   },
   "dependencies": {
     "node-hid": "^3.4.0",
@@ -28,4 +29,3 @@
     "eslint": "^9.39.1"
   }
 }
-

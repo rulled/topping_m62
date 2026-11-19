@@ -1,0 +1,188 @@
+# CI: проверки на каждый коммит и pull request.
+#
+# ═══ ЗАЧЕМ ═══
+#
+# Локально проверки запускаются вручную, а значит рано или поздно
+# кто-то (включая меня) забудет их запустить. CI ловит регрессию
+# автоматически.
+#
+# ═══ ЧТО ПРОВЕРЯЕТСЯ ═══
+#
+#   1. Линтер (браузерные и Node-модули разделены).
+#   2. Офлайн-тесты: кадры, шкалы, сцены, страница.
+#   3. Тесты статик-сервера: безопасность, сжатие, прокси,
+#      устойчивость, access-log, Dockerfile.
+#   4. Отсутствие BOM (PowerShell на Windows его добавляет).
+#   5. Docker-сборка и smoke-тест контейнера.
+#
+# ═══ ЧЕГО ЗДЕСЬ НЕТ ═══
+#
+# Нет тестов на живом устройстве (`test-transport-core.js` и
+# `prove-*`): им нужна подключённая M62, которой на CI нет. Они
+# запускаются локально.
+#
+# ═══ ПОЧЕМУ ДВЕ ОС ═══
+#
+# Ubuntu — основная: там работают сигналы, Docker и всё, что похоже
+# на прод. Windows — потому что разработка идёт на нём, и надо
+# ловить Windows-специфику (BOM, пути, сигналы).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Ручной запуск из вкладки Actions.
+  workflow_dispatch:
+
+# Отменять предыдущий прогон при новом коммите в ту же ветку:
+# незачем ждать два прогона подряд.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ─── основной прогон: Linux ───
+  test:
+    name: Тесты (Ubuntu, Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Проверяем минимально поддерживаемую версию и текущую LTS.
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      # npm ci ставит точные версии из package-lock.json.
+      # --ignore-scripts: node-hid требует нативной сборки, а для
+      # статик-сервера и тестов он не нужен.
+      - name: Зависимости
+        run: npm ci --ignore-scripts
+
+      - name: Линтер
+        run: npm run lint
+
+      - name: Офлайн-тесты
+        run: npm run test:offline
+
+      - name: Тесты статик-сервера
+        run: npm run test:static
+
+      - name: Нет BOM
+        run: |
+          python3 - <<'PY'
+          import sys, pathlib
+          BOM = b'\xef\xbb\xbf'
+          SKIP = {'node_modules', 'archive', 'external', '_reviews', '.git'}
+          bad = []
+          for p in pathlib.Path('.').rglob('*'):
+              if not p.is_file():
+                  continue
+              if set(p.parts) & SKIP:
+                  continue
+              if p.suffix not in {'.json', '.js', '.mjs', '.html', '.md'}:
+                  continue
+              if p.read_bytes().startswith(BOM):
+                  bad.append(str(p))
+          if bad:
+              print('Файлы с BOM:')
+              for b in bad:
+                  print(' ', b)
+              sys.exit(1)
+          print('BOM не найден')
+          PY
+
+  # ─── Windows: ловим платформенную специфику ───
+  test-windows:
+    name: Тесты (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Зависимости
+        run: npm ci --ignore-scripts
+
+      - name: Линтер
+        run: npm run lint
+
+      - name: Офлайн-тесты
+        run: npm run test:offline
+
+      # На Windows graceful shutdown проверить нельзя (Node не
+      # вызывает обработчики SIGTERM), тест это учитывает.
+      - name: Тесты статик-сервера
+        run: npm run test:static
+
+  # ─── Docker: сборка и smoke-тест ───
+  docker:
+    name: Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Собрать образ
+        run: docker build -t m62-web:ci .
+
+      - name: Запустить контейнер
+        run: docker run -d --name m62 -p 8080:8080 m62-web:ci
+
+      # Ждём healthcheck: контейнер должен сам сообщить, что готов.
+      - name: Дождаться готовности
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/health > /dev/null; then
+              echo "сервер готов"
+              curl -s http://127.0.0.1:8080/health
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "сервер не поднялся за 30 с"
+          docker logs m62
+          exit 1
+
+      - name: Проверить, что страница отдаётся
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/)
+          echo "GET / -> $code"
+          test "$code" = "200"
+
+      - name: Проверить, что сжатие работает
+        run: |
+          # Запрашиваем с Accept-Encoding: br и смотрим заголовок.
+          enc=$(curl -s -H 'Accept-Encoding: br, gzip' -o /dev/null \
+            -w '%{content_type}|%{size_download}' http://127.0.0.1:8080/)
+          echo "тип|размер: $enc"
+          size=$(echo "$enc" | cut -d'|' -f2)
+          # Сжатая страница должна быть заметно меньше 21 КБ.
+          test "$size" -lt 15000
+
+      - name: Проверить, что серверный код не отдаётся
+        run: |
+          for path in /src/server.js /src/transport.js /package.json; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:8080$path")
+            echo "$path -> $code"
+            test "$code" = "404"
+          done
+
+      - name: Логи контейнера
+        if: always()
+        run: docker logs m62
+
+      - name: Остановить
+        if: always()
+        run: docker rm -f m62

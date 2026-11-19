@@ -11,13 +11,13 @@
  * Вынос даёт ещё два плюса: файл кэшируется отдельно от HTML
  * и проверяется линтером (встроенный код ESLint не видит).
  */
-import { M62TransportCore } from '/src/transport-core.js';
-import { requestDevice, openWebHidDevice, isWebHidSupported } from '/src/adapter-webhid.js';
-import { buildEqFrames, readChannelBands } from '/src/eq-hid.js';
-import { buildCompFrames, readCompressor } from '/src/comp-hid.js';
-import { buildReverbFrames, readReverb, REVERB_TYPES } from '/src/reverb-hid.js';
-import { buildPhantomFrames } from '/src/phantom-hid.js';
-import { formatGain } from '/src/gain-scales.js';
+import { M62TransportCore } from '../src/transport-core.js';
+import { requestDevice, openWebHidDevice, isWebHidSupported } from '../src/adapter-webhid.js';
+import { buildEqFrames, readChannelBands } from '../src/eq-hid.js';
+import { buildCompFrames, readCompressor } from '../src/comp-hid.js';
+import { buildReverbFrames, readReverb, REVERB_TYPES } from '../src/reverb-hid.js';
+import { buildPhantomFrames } from '../src/phantom-hid.js';
+import { formatGain } from '../src/gain-scales.js';
 import {
   EQ_HP_BANDS,
   EQ_HP_FIELDS,
@@ -25,8 +25,8 @@ import {
   EQ_HP_RIGHT_OFFSET,
   buildBandFrames as buildHpFrames,
   readBand as readHpBand,
-} from '/src/eq-hp.js';
-import { MIXER_BUSES, MIXER_SOURCES, buildMixerPacket } from '/src/mixer-tags.js';
+} from '../src/eq-hp.js';
+import { MIXER_BUSES, MIXER_SOURCES, buildMixerPacket } from '../src/mixer-tags.js';
 import {
   clearMixerState,
   countKnown,
@@ -35,14 +35,14 @@ import {
   loadMixerState,
   saveMixerState,
   setCell,
-} from '/web/mixer-state.js';
+} from './mixer-state.js';
 import {
   getScene,
   listScenes,
   removeScene,
   saveScene,
   sceneLimitations,
-} from '/web/scenes.js';
+} from './scenes.js';
 import {
   LOOPBACK_RETURNS,
   MUTE_CONTROLS,
@@ -52,7 +52,7 @@ import {
   buildSelectorFrames,
   lbStepToDb,
   readAllMutes,
-} from '/src/mutes-loopback.js';
+} from '../src/mutes-loopback.js';
 
 const $ = (id) => document.getElementById(id);
 const logEl = $('log');

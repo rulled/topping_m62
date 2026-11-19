@@ -243,6 +243,26 @@ function serveStatic(pathname, res) {
   let rel = decodeURIComponent(pathname);
   if (rel === '/' || rel === '') rel = '/web/index.html';
 
+  // ═══ АЛИАСЫ ДЛЯ ОТНОСИТЕЛЬНЫХ ПУТЕЙ ═══
+  //
+  // Страница лежит в /web/, но импортирует через относительные пути:
+  // `./app.js` резолвится браузером в `/app.js` (рядом с index.html
+  // по URL `/`), а `../src/x.js` — в `/src/x.js`.
+  //
+  // Раньше здесь были только абсолютные пути, поэтому алиасы не
+  // требовались. Теперь страница работает и в подкаталоге (GitHub
+  // Pages), и запросы приходят без префикса `/web/`.
+  //
+  // Без этих алиасов dev-сервер отдаёт 404 на `/app.js` и страница
+  // не выполняется. Тест `check-page-render.js --port 8898` это ловит.
+  const WEB_ALIASES = {
+    '/app.js': '/web/app.js',
+    '/mixer-state.js': '/web/mixer-state.js',
+    '/scenes.js': '/web/scenes.js',
+    '/index.html': '/web/index.html',
+  };
+  if (WEB_ALIASES[rel]) rel = WEB_ALIASES[rel];
+
   // только разрешённые каталоги
   const first = rel.replace(/^\/+/, '').split('/')[0];
   if (!STATIC_DIRS.includes(first)) return false;

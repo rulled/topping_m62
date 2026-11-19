@@ -69,9 +69,30 @@ function request(port, path, method = 'GET') {
 }
 
 /** Извлечь импорты из HTML и JS. */
-function importsOf(html) {
+/**
+ * Извлечь импорты из JS-текста и резолвить их в URL.
+ *
+ * ═══ ПОЧЕМУ С ПРЕОБРАЗОВАНИЕМ ═══
+ *
+ * Импорты теперь ОТНОСИТЕЛЬНЫЕ (`../src/x.js`, `./scenes.js`), потому
+ * что абсолютные пути ломали хостинг в подкаталоге (GitHub Pages).
+ *
+ * Браузер резолвит их относительно URL самого модуля. Тест должен
+ * делать так же, иначе он запросит `../src/x.js` дословно и получит
+ * 400.
+ *
+ * @param {string} text содержимое модуля
+ * @param {string} baseUrl URL, относительно которого резолвить
+ * @returns {string[]} абсолютные пути для запроса
+ */
+function importsOf(text, baseUrl = 'http://localhost/') {
   const specs = [];
-  for (const m of html.matchAll(/from\s+['"](\/[^'"]+)['"]/g)) specs.push(m[1]);
+  for (const m of text.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
+    const spec = m[1];
+    // Пропускаем внешние и bare-импорты: нам нужны только пути.
+    if (!spec.startsWith('.') && !spec.startsWith('/')) continue;
+    specs.push(new URL(spec, baseUrl).pathname);
+  }
   return [...new Set(specs)];
 }
 
@@ -120,7 +141,13 @@ async function main() {
 
     const appTagMatch = html.match(/<script[^>]*type="module"[^>]*src="([^"]+)"/);
     check('страница подключает скрипт файлом', !!appTagMatch);
-    const entry = appTagMatch?.[1] ?? '/web/app.js';
+
+    // ВАЖНО: путь может быть ОТНОСИТЕЛЬНЫМ (./app.js). Браузер
+    // резолвит его относительно URL страницы ('/'), то есть в
+    // '/app.js'. Тест должен делать так же, иначе он запросит
+    // './app.js' дословно и получит 400.
+    const rawEntry = appTagMatch?.[1] ?? './app.js';
+    const entry = new URL(rawEntry, 'http://localhost/').pathname;
 
     const entryRes = await request(port, entry);
     check(`входной скрипт отдаётся (${entry})`, entryRes.status === 200,
@@ -128,7 +155,7 @@ async function main() {
 
     // Обход графа
     const seen = new Set();
-    const queue = importsOf(entryRes.body.toString('utf8'));
+    const queue = importsOf(entryRes.body.toString('utf8'), `http://localhost${entry}`);
     const notServed = [];
 
     while (queue.length) {
@@ -140,7 +167,10 @@ async function main() {
         notServed.push(`${spec} -> HTTP ${r.status}`);
         continue;
       }
-      for (const child of importsOf(r.body.toString('utf8'))) {
+      // Дочерние импорты резолвим ОТНОСИТЕЛЬНО URL ЭТОГО модуля:
+      // в src/transport-core.js путь './protocol.js' означает
+      // '/src/protocol.js', а не '/protocol.js'.
+      for (const child of importsOf(r.body.toString('utf8'), `http://localhost${spec}`)) {
         if (child.startsWith('/') && !seen.has(child)) queue.push(child);
       }
     }
@@ -233,8 +263,10 @@ async function main() {
     const appMatch = pageHtml.match(/<script[^>]*type="module"[^>]*src="([^"]+)"/);
     check('страница подключает модульный скрипт файлом', !!appMatch);
     if (appMatch) {
-      const appRes = await request(port, appMatch[1]);
-      check(`скрипт страницы отдаётся (${appMatch[1]})`, appRes.status === 200,
+      // Путь относительный (./app.js) — резолвим как браузер.
+      const appPath = new URL(appMatch[1], 'http://localhost/').pathname;
+      const appRes = await request(port, appPath);
+      check(`скрипт страницы отдаётся (${appPath})`, appRes.status === 200,
         `HTTP ${appRes.status}`);
     }
 

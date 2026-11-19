@@ -62,9 +62,22 @@ export const ALLOWED_FILES = new Map([
   ['/', 'web/index.html'],
   ['/index.html', 'web/index.html'],
 
-  // клиентские модули страницы (браузерный граф)
+  // ─── клиентские модули ───
+  //
+  // СТРАНИЦА ЛЕЖИТ В /web/, НО ИМПОРТИРУЕТ ЧЕРЕЗ ОТНОСИТЕЛЬНЫЕ ПУТИ.
+  //
+  // Почему так. Раньше пути были абсолютными (`/src/x.js`), и это
+  // работало только в КОРНЕ домена. GitHub Pages размещает сайт в
+  // подкаталоге (`user.github.io/repo/`), и абсолютный путь давал 404.
+  // Относительные пути (`../src/x.js`, `./app.js`) работают везде.
+  //
+  // Следствие: браузер запрашивает `/app.js` (рядом с index.html по
+  // URL `/`), а не `/web/app.js`. Поэтому нужны оба алиаса.
+  ['/app.js', 'web/app.js'],
   ['/web/app.js', 'web/app.js'],
+  ['/mixer-state.js', 'web/mixer-state.js'],
   ['/web/mixer-state.js', 'web/mixer-state.js'],
+  ['/scenes.js', 'web/scenes.js'],
   ['/web/scenes.js', 'web/scenes.js'],
 
   ['/src/transport-core.js', 'src/transport-core.js'],

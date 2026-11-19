@@ -139,17 +139,20 @@ HSTS бессмыслен, а браузер запоминает его нав�
 Подойдёт GitHub Pages, Cloudflare Pages, Netlify, Vercel,
 обычный nginx.
 
-Нужно отдать эти файлы по путям:
+**Сайт работает и в корне домена, и в подкаталоге.** Пути
+относительные (`./app.js`, `../src/x.js`), поэтому GitHub Pages
+с его `user.github.io/repo/` тоже подходит.
+
+Нужно отдать эти файлы:
 
 ```
-/                    -> web/index.html
-/web/mixer-state.js  -> web/mixer-state.js
-/web/scenes.js       -> web/scenes.js
-/src/*.js            -> 15 модулей (список в static-server.js)
+/                                          -> web/index.html
+/app.js  (и /web/app.js как алиас)         -> web/app.js
+/mixer-state.js, /scenes.js                -> web/*
+/src/*.js                                  -> 15 модулей
 ```
 
-**Важно:** пути к модулям в `index.html` абсолютные (`/src/...`),
-поэтому сайт должен лежать в корне домена, а не в подкаталоге.
+Полный список — `ALLOWED_FILES` в `src/static-server.js` (18 путей).
 
 ### Вариант 2: свой сервер
 

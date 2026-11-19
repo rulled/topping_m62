@@ -156,7 +156,7 @@ raw на дБ.
 | файл | о чём |
 |---|---|
 | [API.md](API.md) | **полный справочник API** — начните отсюда |
-| [FOR-DESIGNER.md](FOR-DESIGNER.md) | факты о данных для дизайнера фронта |
+| [DESIGN-BRIEF.md](DESIGN-BRIEF.md) | ТЗ для дизайнера: что умеет страница, логика, ограничения |
 | [PROTOCOL.md](PROTOCOL.md) | спецификация HID-протокола |
 | [../research/PIPELINE.md](../research/PIPELINE.md) | пайплайн MCC: настройки, сцены, пресеты |
 | [../research/WORKSPACE.md](../research/WORKSPACE.md) | workspace-файлы: микшер, EQ, 48V |

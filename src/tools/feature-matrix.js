@@ -9,7 +9,8 @@
  *
  * ═══ ОТКУДА СПИСОК ═══
  *
- * 1. `docs/FOR-DESIGNER.md` — что видит пользователь в MCC.
+ * 1. `docs/DESIGN-BRIEF.md` — что умеет наша страница (на MCC не ссылаться:
+ *    его API и workspace-файлы к текущей архитектуре не относятся).
  * 2. `docs/STATUS.md` — карта покрытия проекта.
  * 3. Строки из `M Control Center.exe` (finance-модули: Effect_*,
  *    Mixer_*, Input_*, Output_*, Loopback_*).

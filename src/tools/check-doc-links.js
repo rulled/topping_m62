@@ -32,13 +32,29 @@ const check = (name, cond, detail = '') => {
   else { fail += 1; console.log(`  FAIL  ${name}${detail ? `\n         ${detail}` : ''}`); }
 };
 
+/**
+ * Документы, которые НЕ проверяем на актуальность ссылок.
+ *
+ * `research/NOTES.md` — датированный журнал работ на 648 КБ: записи
+ * вида «2026-11-07 обновил docs/FOR-DESIGNER.md». Это исторический
+ * факт, а не действующая ссылка: файл с тех пор переименован и
+ * удалён, но запись об этом остаётся верной.
+ *
+ * Проверять журнал на живые ссылки значило бы требовать переписать
+ * историю. При этом остальные документы research/ проверяются как
+ * обычно — они описывают текущее состояние.
+ */
+const HISTORICAL = new Set(['research/NOTES.md']);
+
 /** Все документы, которые проверяем. */
 function docs() {
   const out = [];
   for (const dir of ['docs', 'research', '.']) {
     for (const f of globSync(`${dir}/*.md`)) out.push(f);
   }
-  return [...new Set(out)].filter((f) => !f.includes('archive'));
+  return [...new Set(out)]
+    .map((f) => f.replace(/\\/g, '/'))
+    .filter((f) => !f.includes('archive') && !HISTORICAL.has(f));
 }
 
 /** Есть ли файл, в том числе в архиве. */

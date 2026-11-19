@@ -2,7 +2,7 @@
 
 > Источник: захват трафика MCC при старте, 2026-11-08.
 > Файл: `research/mixer-boot-capture.pcap` (28 МБ).
-> Разбор: `src/tools/decode-mixer.py`.
+> Разбор: `research/archive/tools/decode-mixer.py`.
 
 ---
 
@@ -288,7 +288,7 @@ mainline-патча `drivers/hid/hid-topping-m62.c` — таблицы `topping_
 0x64:0x02 = 9   -> AUX             (проверено снимком m62-full.pcap)        OK
 ```
 
-Прогон: `python src/tools/verify-source-codes.py`.
+Прогон: `python research/archive/tools/verify-source-codes.py`.
 
 ### Как это подтвердилось
 
@@ -308,13 +308,13 @@ mainline-патча `drivers/hid/hid-topping-m62.c` — таблицы `topping_
 
 ```bash
 # 1. расставить шесть имён и заглушить слоты (без админа)
-python src/tools/one-shot-source-codes.py prepare
+python research/archive/tools/one-shot-source-codes.py prepare
 
 # 2. захват от администратора
 .\capture-source-codes.ps1
 
 # 3. вернуть оригинал
-python src/tools/one-shot-source-codes.py restore
+python research/archive/tools/one-shot-source-codes.py restore
 ```
 
 `prepare` делал бэкап в `research/prof-ini-backup.ini`, ставил

@@ -11,7 +11,7 @@
 > «НЕ ДОСТАТЬ и НЕ ЗАПИСАТЬ» сократился с шести блоков до нуля.
 >
 > Актуальная оценка: **13 из 17 возможностей** доступны через WebHID.
-> Пересчёт: `node src/tools/webhid-coverage-honest.js`.
+> Пересчёт: `node research/archive/tools/webhid-coverage-honest.js`.
 > Решение и разбор: [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md).
 >
 > Что осталось верным: только Chromium, конфликт с MCC, throttling

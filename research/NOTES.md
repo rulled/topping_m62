@@ -1067,7 +1067,7 @@ DPI=168, масштаб 1.75. С делением на 1.75 перетаскив
   parseLoopback, parseOutputs, parseDucking, parseEffects, parseCompressor)
 - `src/workspace-service.js` — сервис с кешем по mtime
 - API: `GET /api/workspace`, `GET /api/workspaces`
-- `src/tools/drag-dial.js` — перетаскивание dial с коррекцией DPI
+- `research/archive/tools/drag-dial.js` — перетаскивание dial с коррекцией DPI
 
 **Проверено через API:** 5 входов (48V=ON), 10 каналов микшера,
 2 EQ по 4 полосы, 4 loopback, 2 выхода.
@@ -1683,7 +1683,7 @@ outputs, компрессор живут в INI-файлах на диске —
 **5. Проверка ссылок:** все относительные ссылки в документации работают.
 
 ### 2026-11-07, §39 — РАУНД 16: УСТОЙЧИВОСТЬ БЕЗ M CONTROL CENTER
-Отчёт: `src/tools/test-no-mcc.js`.
+Отчёт: `research/archive/tools/test-no-mcc.js`.
 
 **Проверено: что работает, если M Control Center НЕ запущен.**
 
@@ -1851,7 +1851,7 @@ workspace после смены (активный файл меняется).
 и компрессора.**
 
 ### 2026-11-07, §44 — РАУНД 18: КОМПРЕССОР ЧИТАЕТСЯ ЧЕРЕЗ HID (после Load preset)
-Отчёт: `src/tools/test-compressor-tags.js`.
+Отчёт: `research/archive/tools/test-compressor-tags.js`.
 
 **ПРОРЫВ В ЧТЕНИИ:** после `Load preset1` (`0x11:0x0e`) устройство
 присылает **все теги компрессора** `0x46:0x01..0x08`.
@@ -1926,7 +1926,7 @@ FX-уровни совпадали точно, а тут — нет.
 **Только Ratio в другой шкале.** Остальные 6 полей точны.
 
 ### 2026-11-07, §46 — РАУНД 19: АУДИТ 793 КЛЮЧЕЙ. РАЗНЫЕ СТРУКТУРЫ РЕЖИМОВ
-Отчёт: `src/tools/audit-coverage.js`.
+Отчёт: `research/archive/tools/audit-coverage.js`.
 
 **Аудит: 793 уникальных ключа во всех workspace-файлах.**
 Не покрыто парсером — **6**, и все 6 это флаги-идентификаторы секций
@@ -1957,7 +1957,7 @@ FX-уровни совпадали точно, а тут — нет.
 **Проверено на всех 5 файлах — парсер корректно разбирает каждый режим.**
 
 ### 2026-11-07, §47 — РАУНД 20: ТОЧНОЕ УПРАВЛЕНИЕ КОМПРЕССОРОМ. ТОЛЬКО THRESHOLD
-Отчёт: `src/tools/calibrate-dial.js`, `src/tools/find-compressor-dials.js`.
+Отчёт: `research/archive/tools/calibrate-dial.js`, `research/archive/tools/find-compressor-dials.js`.
 
 **1. КАЛИБРОВКА DIAL — замкнутый контур РАБОТАЕТ.**
 
@@ -2067,7 +2067,7 @@ Threshold и Gain восстановлены точно. **Ratio остался 
 - `map-compressor-wheel.js` — карта dial'ов
 
 ### 2026-11-07, §50 — РАУНД 21: LOAD PRESET ВОССТАНАВЛИВАЕТ КОМПРЕССОР ЦЕЛИКОМ
-Отчёт: `src/tools/restore-ratio-preset.js`.
+Отчёт: `research/archive/tools/restore-ratio-preset.js`.
 
 **ПРОБЛЕМА ИЗ §49 РЕШЕНА:** Ratio был сбит в 0.8 и считался невосстановимым.
 
@@ -2100,7 +2100,7 @@ Threshold и Gain восстановлены точно. **Ratio остался 
 они недостижимы ПРЯМОЙ записью, но достижимы через пресет.
 
 ### 2026-11-07, §51 — РАУНД 22: ЗАПИСЬ КОМПРЕССОРА ЧЕРЕЗ HID ОКОНЧАТЕЛЬНО ИСКЛЮЧЕНА
-Отчёт: `src/tools/test-ratio-scale.js`, `test-compressor-write-final.js`.
+Отчёт: `research/archive/tools/test-ratio-scale.js`, `test-compressor-write-final.js`.
 
 **Проверена гипотеза «писал не в той шкале»:**
 Ratio в HID = файл × 10, поэтому пробовал `0x4603` = 80 (для 8), 60 (для 6), 40 (для 4).
@@ -2132,7 +2132,7 @@ Ratio в HID = файл × 10, поэтому пробовал `0x4603` = 80 (д
 **Чтение — работает:** после Load preset приходят все `0x46:0x01..0x08`.
 
 ### 2026-11-07, §52 — РАУНД 22: АУДИТ UI -> API. ПОКРЫТИЕ ПОДТВЕРЖДЕНО
-Отчёт: `src/tools/audit-ui-api.js`.
+Отчёт: `research/archive/tools/audit-ui-api.js`.
 
 **Проверено: каждый интерактивный элемент MCC против API.**
 
@@ -2159,7 +2159,7 @@ Ratio в HID = файл × 10, поэтому пробовал `0x4603` = 80 (д
 **ВЫВОД: бекенд покрывает 100% управляющих элементов M Control Center.**
 
 ### 2026-11-07, §53 — РАУНД 23: applySnapshot ПРОВЕРЕН. НАЙДЕНЫ И ИСПРАВЛЕНЫ 2 БАГА
-Отчёт: `src/tools/test-snapshot-apply.js`.
+Отчёт: `research/archive/tools/test-snapshot-apply.js`.
 
 **`applySnapshot` была написана в §33, но НИКОГДА не запускалась end-to-end.
 При первом запуске упала. Найдены два реальных бага.**
@@ -2200,7 +2200,7 @@ Ratio в HID = файл × 10, поэтому пробовал `0x4603` = 80 (д
 применить.**
 
 ### 2026-11-07, §54 — РАУНД 24: WEBSOCKET ПРОВЕРЕН — 14/14
-Отчёт: `src/tools/test-websocket.js`.
+Отчёт: `research/archive/tools/test-websocket.js`.
 
 **Проверены все команды, которые будет слать фронт.**
 
@@ -2246,7 +2246,7 @@ Ratio в HID = файл × 10, поэтому пробовал `0x4603` = 80 (д
 не смешивая HTTP и WS. HTTP-эндпоинты остаются для удобства.
 
 ### 2026-11-07, §56 — РАУНД 25: УСТРОЙСТВО НЕ ПРИСЫЛАЕТ ЭХО. ИСПРАВЛЕНО
-Отчёт: `src/tools/test-echo.js`, `test-events.js`.
+Отчёт: `research/archive/tools/test-echo.js`, `test-events.js`.
 
 **НАЙДЕН ФУНДАМЕНТАЛЬНЫЙ БАГ МУЛЬТИКЛИЕНТНОСТИ.**
 
@@ -2309,7 +2309,7 @@ Ratio в HID = файл × 10, поэтому пробовал `0x4603` = 80 (д
 - поток событий: 429 за 3 с
 
 ### 2026-11-07, §58 — РАУНД 26: АВТОВОССТАНОВЛЕНИЕ ПОСЛЕ ВЫДЁРГИВАНИЯ КАБЕЛЯ
-Отчёт: `src/tools/test-recovery.js`, `test-autoreconnect.js`.
+Отчёт: `research/archive/tools/test-recovery.js`, `test-autoreconnect.js`.
 
 **НАЙДЕНА ДЫРА: автопереподключения НЕ БЫЛО.**
 
@@ -2349,7 +2349,7 @@ Ratio в HID = файл × 10, поэтому пробовал `0x4603` = 80 (д
 | `/api/disconnect` | не восстанавливается — **правильно** |
 
 ### 2026-11-07, §59 — РАУНД 27: ДОЛГАЯ СТАБИЛЬНОСТЬ — ОТЛИЧНО
-Отчёты: `src/tools/test-stability.js` (92 с), `test-memory.js` (65 с).
+Отчёты: `research/archive/tools/test-stability.js` (92 с), `test-memory.js` (65 с).
 
 **1. СТАБИЛЬНОСТЬ ПОТОКА (92 секунды):**
 
@@ -2435,7 +2435,7 @@ MCC и наблюдал 20 секунд:
 перезапуска другая.
 
 ### 2026-11-07, §61 — РАУНД 29: ПРОВЕРКА ГИПОТЕЗЫ "СМЕНА WORKSPACE ПРИМЕНЯЕТ ФАЙЛ"
-Отчёт: `src/tools/test-workspace-switch-apply.js`.
+Отчёт: `research/archive/tools/test-workspace-switch-apply.js`.
 
 **Гипотеза:** переключение workspace в UI заставит MCC перечитать файл,
 что заменило бы 17-секундный цикл перезапуска.
@@ -2459,7 +2459,7 @@ MCC и наблюдал 20 секунд:
 2. **Перезапуск MCC применяет файл** — подтверждено ещё раз
 3. Смена workspace как альтернатива перезапуску — **отвергнута**
 
-**Создан `src/tools/read-mixer-ui.js`** — читает все 10 слайдеров микшера
+**Создан `research/archive/tools/read-mixer-ui.js`** — читает все 10 слайдеров микшера
 из UI с их значениями и диапазонами. Полезен для проверки применения:
 
 | слайдер | значение | диапазон |
@@ -2472,7 +2472,7 @@ MCC и наблюдал 20 секунд:
 Только перезапуск MCC.
 
 ### 2026-11-07, §62 — РАУНД 29: ПОРЯДОК КНОПОК РЕВЕРБА ПОДТВЕРЖДЁН
-Отчёт: `src/tools/verify-reverb-order.js`.
+Отчёт: `research/archive/tools/verify-reverb-order.js`.
 
 **Проверил каждую кнопку реверба отдельно, от текущего состояния:**
 
@@ -2495,7 +2495,7 @@ MCC и наблюдал 20 секунд:
 - добавлено предупреждение про смену workspace
 
 ### 2026-11-07, §63 — РАУНД 30: ДИАПАЗОНЫ EQ — ФАЙЛ НЕ ВАЛИДИРУЕТ
-Отчёты: `src/tools/eq-ranges.js`, `eq-limits.js`, `eq-ui-ranges.js`.
+Отчёты: `research/archive/tools/eq-ranges.js`, `eq-limits.js`, `eq-ui-ranges.js`.
 
 **1. ФАЙЛ ПРИНИМАЕТ ЛЮБЫЕ ЗНАЧЕНИЯ EQ — валидации нет.**
 
@@ -2555,7 +2555,7 @@ MCC и наблюдал 20 секунд:
 **Добавлено:**
 - `AUDIO_OPTIONS` в `ui-control.js`
 - `audioOptions` в `GET /api/ui-controls`
-- `src/tools/read-audio-params.js` — читает значения и варианты из UI
+- `research/archive/tools/read-audio-params.js` — читает значения и варианты из UI
 
 **ПРОВЕРЕНО:** `read-audio-params.js` вернул
 `workspace=ввв, sampleRate=44100, bufferSize=32` и все варианты.
@@ -2564,7 +2564,7 @@ MCC и наблюдал 20 секунд:
 и указанием, что они недоступны через HID/файл.
 
 ### 2026-11-07, §65 — РАУНД 31: EQ_HP РАЗОБРАН В PRO-РЕЖИМЕ
-Отчёт: `src/tools/find-eq-by-mode.js`.
+Отчёт: `research/archive/tools/find-eq-by-mode.js`.
 
 **Сравнение UI по режимам:**
 
@@ -2636,7 +2636,7 @@ EQ_HP:  switch=false gainOut=-10  format=hp
 **Устройство возвращено в Live-режим**, workspace `Live/ввв`.
 
 ### 2026-11-07, §67 — РАУНД 32: УПРАВЛЕНИЕ WORKSPACE ДОБАВЛЕНО
-Отчёты: `src/tools/workspace-management.js`.
+Отчёты: `research/archive/tools/workspace-management.js`.
 
 **Проверено: workspace можно управлять из бекенда через файлы.**
 
@@ -2708,7 +2708,7 @@ PowerShell 5.1 при передаче через `-Command` искажает UT
 должны идти через файлы/UTF-8-скрипты, а не через `powershell -Command`.
 
 ### 2026-11-07, §69 — РАУНД 33: КНОПКИ ПО ИМЕНИ. ПРЕСЕТЫ — ТОЧНАЯ ГРАНИЦА
-Отчёт: `src/tools/click-by-name.js`, `test-presets-byname.js`.
+Отчёт: `research/archive/tools/click-by-name.js`, `test-presets-byname.js`.
 
 **1. НАЖАТИЕ ПО ИМЕНИ РАБОТАЕТ (надёжнее координат!).**
 
@@ -2774,7 +2774,7 @@ PowerShell 5.1 при передаче через `-Command` искажает UT
 **`ui-control.js`** теперь в `describeUiControls()` отдаёт `namedButtons`.
 
 ### 2026-11-07, §71 — РАУНД 34: DIAL'Ы РЕВЕРБА РАЗОБРАНЫ
-Отчёт: `src/tools/map-reverb-dials.js`.
+Отчёт: `research/archive/tools/map-reverb-dials.js`.
 
 **Причина первой неудачи:** dial'ы реверба **не реагируют, когда реверб в Bypass**.
 Сначала нужно включить тип (STUDIO/LIVE/HALL), потом крутить.
@@ -2925,7 +2925,7 @@ UI-операции с dial'ами.
 **Итого эндпоинтов: 12 GET + 17 POST.**
 
 ### 2026-11-07, §75 — РАУНД 36: ПОЛНАЯ КАРТА ВСЕХ 12 DIAL'ОВ
-Отчёты: `src/tools/map-all-dials.js`, `probe-otg-dial.js`.
+Отчёты: `research/archive/tools/map-all-dials.js`, `probe-otg-dial.js`.
 
 **ВСЕ 12 DIAL'ОВ MCC РАЗОБРАНЫ:**
 
@@ -3024,7 +3024,7 @@ snapshots/delete, reverb, reverb/param, mcc/click`
 и соответствует коду.**
 
 ### 2026-11-07, §78 — РАУНД 37: EQ В LIVE НЕДОСТУПЕН. КНОПКИ [368]/[369] РАЗОБРАНЫ
-Отчёт: `src/tools/test-eq-switch-live.js`, `test-eq-buttons.js`.
+Отчёт: `research/archive/tools/test-eq-switch-live.js`, `test-eq-buttons.js`.
 
 **1. `EQ_IN1.Switch` В LIVE НЕ ПИШЕТСЯ — подтверждено повторно.**
 
@@ -3170,7 +3170,7 @@ workspace-файл асинхронно. При слишком раннем чт
 
 ### 2026-11-07, §82 — РАУНД 38: ШКАЛА EQ В HID — НЕ ПОДТВЕРЖДЕНА
 Дополнение к §81.
-Отчёт: `src/tools/eq-scale-check.js`.
+Отчёт: `research/archive/tools/eq-scale-check.js`.
 
 **Гипотеза `HID = Q × 10000` НЕ подтвердилась.**
 
@@ -3201,7 +3201,7 @@ workspace-файл асинхронно. При слишком раннем чт
 
 ### 2026-11-07, §83 — РАУНД 38: РАЗГАДАН БАГ ТЕСТА СЦЕН
 Дополнение к §80.
-Отчёт: `src/tools/diag-scene-timing.js`.
+Отчёт: `research/archive/tools/diag-scene-timing.js`.
 
 **ПРОБЛЕМА:** coverage-тест падал на `sceneChat включает ducking -> 0`
 примерно через раз, хотя сцены работают.
@@ -3233,7 +3233,7 @@ workspace-файл асинхронно. При слишком раннем чт
 опрашивать результат с повтором, а не спать фиксированное время.
 
 ### 2026-11-07, §84 — РАУНД 39: ОПАСНОСТЬ СМЕНЫ РЕЖИМА. РАССИНХРОНИЗАЦИЯ
-Отчёты: `src/tools/diag-real-mode.js`, `eq-pro-test.js`.
+Отчёты: `research/archive/tools/diag-real-mode.js`, `eq-pro-test.js`.
 
 **НАЙДЕНА СЕРЬЁЗНАЯ ПРОБЛЕМА при смене режима через HID.**
 
@@ -3360,7 +3360,7 @@ workspace-файл асинхронно. При слишком раннем чт
 
 ### 2026-11-07, §87 — РАУНД 40: EQ SWITCH — ОКОНЧАТЕЛЬНЫЙ ВЕРДИКТ
 Дополнение к §81/§86.
-Отчёт: `src/tools/test-eq-hp-switch.js`.
+Отчёт: `research/archive/tools/test-eq-hp-switch.js`.
 
 **Проверено в PRO-режиме (устройство было переключено в §86):**
 
@@ -3867,12 +3867,12 @@ HID не отдаёт Switch вовсе.
 то есть это скорее всего **счётчик запусков** или номер сессии.
 
 **ЛОГГЕР НАСТРОЕК СОЗДАН и работает:**
-`src/tools/settings-logger.js`
+`research/archive/tools/settings-logger.js`
 
 - следит за 20 параметрами (все настройки + джеки)
 - при изменении `0x11:0x18` делает ДАМП всех 38 тегов
 - пишет в `research/settings-log.txt`
-- запуск: `node src/tools/settings-logger.js [секунд]`
+- запуск: `node research/archive/tools/settings-logger.js [секунд]`
 
 **ПРОВЕРЕН на 60 с:** логгер корректно поймал изменение счётчика
 (98 -> 99) и сделал дамп. Настройки при этом не менялись —
@@ -3968,13 +3968,13 @@ HID не отдаёт Switch вовсе.
 
 **ДЛЯ ДИАГНОСТИКИ ПРОБЛЕМЫ С ЗАРЯДКОЙ:**
 
-Логгер `src/tools/settings-logger.js` готов и запущен:
+Логгер `research/archive/tools/settings-logger.js` готов и запущен:
 - сравнивает **значения** настроек (не счётчик — он оказался счётчиком запусков)
 - при изменении `usbCPower`/`otgPower`/`bluetooth` делает дамп всех 38 тегов
 - пишет в `research/settings-log.txt`
 - отмечается «жив» каждые 5 минут
 
-**Запуск:** `node src/tools/settings-logger.js 3600` (1 час)
+**Запуск:** `node research/archive/tools/settings-logger.js 3600` (1 час)
 
 **РЕКОМЕНДАЦИЯ ПОЛЬЗОВАТЕЛЮ:** оставить логгер на несколько часов
 с обычным использованием. Когда зарядка «сама переключится» —
@@ -4804,11 +4804,11 @@ Attack уехал с 5 на 417 — восстанавливал 412 нажат�
   `closeCompWindow`, `readCompressorValues`, `pressCompDial`,
   `setCompressorParam`, `nudgeCompressorParam`, `setCompressorSwitch`,
   `setCompressorGainAuto`
-- `src/tools/comp-key.ps1` — действия `state|open|close|toggle|press`
-- `src/tools/comp-keyboard-test2.js` — первая проба (нашла, что работает)
-- `src/tools/comp-scale-measure.js` — шаг каждого параметра
-- `src/tools/comp-ranges.js` — min/max перебором
-- `src/tools/comp-ratio-ladder.js` — лестница Ratio по 1 нажатию
+- `research/archive/tools/comp-key.ps1` — действия `state|open|close|toggle|press`
+- `research/archive/tools/comp-keyboard-test2.js` — первая проба (нашла, что работает)
+- `research/archive/tools/comp-scale-measure.js` — шаг каждого параметра
+- `research/archive/tools/comp-ranges.js` — min/max перебором
+- `research/archive/tools/comp-ratio-ladder.js` — лестница Ratio по 1 нажатию
 
 #### API (6 новых эндпоинтов)
 
@@ -4917,13 +4917,13 @@ Gain Reduction = comp13 − comp12
 - `GET /api/meters` — все метры в дБ + `gainReduction`, без WebSocket
 - `GET /api/tags` — теперь отдаёт `meterScale`
 - WebSocket-события метров дополнены полем `meter: {db, raw, atFloor, noData}`
-- `src/tools/meters-live.js` — сырые значения всех тегов
+- `research/archive/tools/meters-live.js` — сырые значения всех тегов
 - `src/tools/meters-calibrate2/3/4.js` — три подхода к калибровке
-- `src/tools/meters-regression.js` — регрессия по 14 точкам
-- `src/tools/meters-floor.js` — **решающий** тест (пол + наклон вверху)
-- `src/tools/meters-linearity.js` — проверка линейности на интервалах
-- `src/tools/comp-meters-compare.js` — ON/OFF сравнение, нашло редукцию
-- `src/tools/compress-meter-probe.js` — доказало, что UI-бар не работает
+- `research/archive/tools/meters-regression.js` — регрессия по 14 точкам
+- `research/archive/tools/meters-floor.js` — **решающий** тест (пол + наклон вверху)
+- `research/archive/tools/meters-linearity.js` — проверка линейности на интервалах
+- `research/archive/tools/comp-meters-compare.js` — ON/OFF сравнение, нашло редукцию
+- `research/archive/tools/compress-meter-probe.js` — доказало, что UI-бар не работает
 
 #### ПРОВЕРКИ
 
@@ -4957,7 +4957,7 @@ Gain Reduction = comp13 − comp12
 пропе `0x03` (`0x6303`/`0x6403` наушники, `0x6103`/`0x6203` OTG). Проп
 `0x04` у выходов в таблице `topping_m62_ctls` **не упомянут вообще**.
 
-**Доказательство из съёма** (`src/tools/dump-raw-tags.js`, 10 с, 49 тегов):
+**Доказательство из съёма** (`research/archive/tools/dump-raw-tags.js`, 10 с, 49 тегов):
 
 ```
 62:04  value=        0  x  1  t=5302ms
@@ -5081,11 +5081,11 @@ scalar=0.850 mute=False range=[-127.0..0.0] inc=1.000 steps=43/51 hwSupport=3
 
 | файл | назначение |
 |---|---|
-| `src/tools/dump-raw-tags.js` | дамп ВСЕХ тегов без фильтра (нашёл ошибку §115.1) |
-| `src/tools/watch-tags.js` | наблюдение за тегами без подписки |
-| `src/tools/test-output-mute.js` | проверка, управляет ли `0x04` мьютом в UI |
-| `src/tools/probe-mute-rw.js` | проверка, принимает ли устройство запись `0x04` |
-| `src/tools/mute-vs-tag.js` | следует ли `0x04` за UI-мьютом |
+| `research/archive/tools/dump-raw-tags.js` | дамп ВСЕХ тегов без фильтра (нашёл ошибку §115.1) |
+| `research/archive/tools/watch-tags.js` | наблюдение за тегами без подписки |
+| `research/archive/tools/test-output-mute.js` | проверка, управляет ли `0x04` мьютом в UI |
+| `research/archive/tools/probe-mute-rw.js` | проверка, принимает ли устройство запись `0x04` |
+| `research/archive/tools/mute-vs-tag.js` | следует ли `0x04` за UI-мьютом |
 
 **Ловушка:** `readTimeout()` отдаёт **обычный массив**, а не Buffer —
 `buf.subarray` падает. И report ID может присутствовать или нет,
@@ -5113,7 +5113,7 @@ scalar=0.850 mute=False range=[-127.0..0.0] inc=1.000 steps=43/51 hwSupport=3
 | **Реверб (параметры)** | `0x44:0x08..0x0f` | **НЕ принято** |
 | **Микшер** | `0x41..0x48` | теги не приходят вовсе |
 
-Тест: `src/tools/probe-hid-write-matrix.js` → **0 из 4** записались
+Тест: `research/archive/tools/probe-hid-write-matrix.js` → **0 из 4** записались
 (компрессор/EQ/реверб), при этом `verify-hid-writes.js` подтвердил,
 что Mic-1 volume пишется и возвращается устройством.
 
@@ -5941,7 +5941,7 @@ DSP-IOCTL (`0x80882200`) — именно бит занятости (`0xEE000030
 
 ### §118.22 ГЛАВНОЕ ОТКРЫТИЕ: ЗАПИСЬ КОМПРЕССОРА ЧЕРЕЗ HID ПОДТВЕРЖДЕНА
 
-Тест `src/tools/test-comp-write-v2.js` — запись валидных значений в
+Тест `research/archive/tools/test-comp-write-v2.js` — запись валидных значений в
 `0x46:0x02..0x08` + перезапуск MCC для применения.
 
 | параметр | HID-тег | было | записали | в INI после |
@@ -6029,7 +6029,7 @@ decoded from captures / guessed.
 
 ### §119.3 ПРОВЕРЕНО: HANDSHAKE РАСКРЫВАЕТ 54 НОВЫХ ТЕГА
 
-Тест `src/tools/test-handshake.js`:
+Тест `research/archive/tools/test-handshake.js`:
 - до handshake: **44 тега**
 - ответ устройства: `0x11:0x01 = 2` (не 3, но ответ есть)
 - после handshake + announce: **96 тегов**
@@ -6127,8 +6127,8 @@ DryWetLive    = 25              (не изменилось)
 
 | файл | что делает |
 |---|---|
-| `src/tools/test-handshake.js` | **проверка handshake, показала +54 тега** |
-| `src/tools/test-write-after-handshake.js` | запись EQ/comp/reverb после handshake |
+| `research/archive/tools/test-handshake.js` | **проверка handshake, показала +54 тега** |
+| `research/archive/tools/test-write-after-handshake.js` | запись EQ/comp/reverb после handshake |
 | `research/web-m62-protocol.txt` | **124 КБ публичной документации** |
 | `research/web-m62-readme.txt` | README репозитория |
 
@@ -6492,7 +6492,7 @@ CS_INTERFACE HEADER, bcdADC = 0x0200
 | `docs/PROTOCOL.md` | добавлен **§3.0 session handshake**, bulk push (§3.0a), save-to-device (§3.4a); §5 переписан (статусы EQ/компрессора/микшера); §5.1 шкалы (Q25, EQ-поля); §5.3 DSP-тупик с причиной; §5.4 коды TSTATUS; §5.5 рабочие IOCTL; §6.1 словарь параметров MCC; §8 источники |
 | `docs/BACKEND.md` | убрано «микшер и EQ недоступны через HID вообще»; добавлен handshake в жизненный цикл; таблица каналов переписана |
 | `docs/FOR-DESIGNER.md` | handshake в ключевые свойства; EQ — 2 полосы × 5 полей; микшер — «рисовать рано»; статусы источников данных исправлены |
-| `docs/STATUS.md` | **новый файл** — сводка состояния и карта реверса |
+| `docs/INDEX.md` | **новый файл** — сводка состояния и карта реверса |
 | `docs/API.md` | `protocol.sessionHandshake` + `handshakeRequired` в hello |
 | `src/server.js` | добавлены эти поля в hello (документация обещала, кода не было) |
 
@@ -6807,7 +6807,7 @@ capture-mixer-boot.ps1     захват от запуска MCC (правиль�
 с разделением «проверено / не проверено».
 
 Обновлены `docs/PROTOCOL.md` (§3.4 тайминг, §5.0 проверка записи),
-`docs/STATUS.md` (карта покрытия, следующие шаги).
+`docs/INDEX.md` (карта покрытия, следующие шаги).
 ---
 
 ## §125. ИТОГ РАУНДА 96
@@ -6823,7 +6823,7 @@ capture-mixer-boot.ps1     захват от запуска MCC (правиль�
 IN1 не к исходному значению, а к тестовому: он перечитывал `curVol`
 уже ПОСЛЕ теста. В результате `0x21:04` остался на 43 вместо 55.
 
-Исправлено: `src/tools/restore-in1-gain.js` читает эталон из workspace-INI
+Исправлено: `research/archive/tools/restore-in1-gain.js` читает эталон из workspace-INI
 (`[Input_IN1] GAIN`) и восстанавливает. Проверено: 43 -> 55, ВОССТАНОВЛЕНО.
 
 Правило на будущее: восстанавливать значение надо из ВНЕШНЕГО эталона
@@ -7509,7 +7509,7 @@ audio-params). `audit-docs.js` — 50 = 50.
 
 ### §131.14 Подготовка захвата сделана
 
-`python src/tools/one-shot-source-codes.py prepare` — выполнено:
+`python research/archive/tools/one-shot-source-codes.py prepare` — выполнено:
 в Prof-INI шесть слотов получили шесть недостающих имён, все заглушены
 (MUTE=true, GAIN=-90). Бэкап: `research/prof-ini-backup.ini`.
 
@@ -7602,7 +7602,7 @@ mute=1 на выходах. Видно в захвате (что хост отп
     0x63:0x04 (HP L)      = 1
     0x64:0x04 (HP mute)   = 1
 
-INI восстановлен (`python src/tools/one-shot-source-codes.py restore`).
+INI восстановлен (`python research/archive/tools/one-shot-source-codes.py restore`).
 На диске файл совпадает с эталоном побайтно (sha256 78264442...).
 
 Но MCC, запущенный захватом ОТ АДМИНИСТРАТОРА, остался жить и держит
@@ -7659,7 +7659,7 @@ UI MCC там, где мог бы HID. Цифра «~95%» в STATUS.md была
 
 ### §133.2 Как измерено
 
-`node src/tools/autonomy-report.js` — разбирает `src/server.js`,
+`node research/archive/tools/autonomy-report.js` — разбирает `src/server.js`,
 находит все маршруты и раскладывает по трём классам по тому, какие
 функции маршрут вызывает.
 
@@ -7812,7 +7812,7 @@ through the hidraw node». Но проверка `probe-48v.js` показыва
 - Live/Mobile: по метрам 0x44:0x0d/0x0e вместо loopback
 - добавлен сбор свойств 0x44 (`fxMeterProps`)
 
-`src/tools/state-check.js`:
+`research/archive/tools/state-check.js`:
 - убрана ВТОРАЯ независимая копия логики определения режима
 - теперь вызывает `detectModeFromHid` из `src/modes.js`
 
@@ -8306,7 +8306,7 @@ WAVEFORMATEX. Структура начинается со смещения 8:
                             ждёт переподключения HID, возвращает
                             исходный режим
 
-Запуск: node src/tools/prove-mode-change.js [--to Prof]
+Запуск: node research/archive/tools/prove-mode-change.js [--to Prof]
 
 ---
 
@@ -8747,7 +8747,7 @@ MCC, которая обслуживает несколько моделей (KB
 ### §147.6 Инструменты
 
     capture-duck-bits-fast.ps1           3 шага, ~2 мин, нужен админ
-    src/tools/decode-duck-bits-fast.py   разбор + готовый DUCK_MASK_BITS
+    research/archive/tools/decode-duck-bits-fast.py   разбор + готовый DUCK_MASK_BITS
     capture-duck-bits-all.ps1            старый 8-шаговый (резерв)
 
 Логика INI проверена БЕЗ устройства: прогон на копии INI даёт
@@ -8817,7 +8817,7 @@ MCC, которая обслуживает несколько моделей (KB
 
 ### §148.5 Тесты
 
-    src/tools/test-duck-mask.js   8/8 сборка маски, алиасы, ошибки
+    research/archive/tools/test-duck-mask.js   8/8 сборка маски, алиасы, ошибки
 
 Регрессии: `test-robustness.js` 20/20, `e2e-write-test.js` 16/16,
 `audit-docs.js` 61 = 61.
@@ -11573,5 +11573,67 @@ card 2 ms before the answer was not applied». Значит на серверн�
     офлайн-набор               201 проверка, 0 провалов
     статик-сервер              7 наборов, 0 провалов
     eslint                     exit 0
+
+---
+
+### §183. Документация: 101 битая ссылка исправлена
+
+**Дата:** 2026-11-19. **Файлы:** `check-doc-links.js`,
+`fix-doc-links.py`, `docs/INDEX.md`.
+
+#### §183.1 Проблема
+
+После ревизии (§164) 492 скрипта переехали в
+`research/archive/tools/`, но документы продолжали ссылаться на
+`src/tools/<файл>`.
+
+Читатель открывает документацию, идёт по ссылке — и не находит
+ничего. Это хуже отсутствия ссылки: создаётся впечатление, что скрипт
+есть, просто «не нашёл».
+
+Масштаб: **101 битая ссылка** в 37 документах.
+
+#### §183.2 Ошибка в первой версии исправления
+
+Написал скрипт, который собирал список архива и заменял ссылки. Он
+объявил «отсутствующими» **51 ссылку на файлы, которые прекрасно
+лежат в `src/tools`** — потому что проверял только архив.
+
+Пришлось исправлять: сначала проверять активные файлы (ссылка верна,
+не трогаем), потом архив (перенаправляем), и только остальное —
+действительно битое.
+
+**Урок:** проверка «файла нет» должна смотреть все места, где он
+может быть, а не одно.
+
+#### §183.3 Что сделано
+
+`check-doc-links.js` (4/4) проверяет:
+
+  1. нет ссылок на полностью отсутствующие скрипты;
+  2. нет ссылок на скрипты, уехавшие в архив;
+  3. все ссылки на `docs/*.md` существуют;
+  4. все документы из `docs/` упомянуты в `INDEX.md`.
+
+Добавлен в `npm run test:offline` и в CI.
+
+Заодно исправлено:
+  • `docs/STATUS.md` в NOTES (документ удалён) → ссылка на `INDEX.md`;
+  • `DEPLOY.md` отсутствовал в `INDEX.md` — добавлен.
+
+#### §183.4 Тонкость с INDEX
+
+В `INDEX.md` ссылки **относительные** (`API.md`), потому что он лежит
+в той же папке. Первая версия теста искала `docs/API.md` и находила
+«ничего не проиндексировано». Исправлено: ищем имя файла, а не путь
+с префиксом.
+
+#### §183.5 Регрессия
+
+    check-doc-links        4/4   (новый)
+    audit-transport        13/13
+    офлайн-набор          6 наборов, 0 провалов
+    статик-сервер         7 наборов, 0 провалов
+    eslint                exit 0
 
 ---

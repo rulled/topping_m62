@@ -141,12 +141,12 @@ raw на дБ.
 |---|---|
 | `node src/tools/verify-coverage.js` | **42 проверки** всех функций через API |
 | `node src/tools/selftest.js` | самопроверка транспорта на живом устройстве |
-| `node src/tools/read-settings.js` | прочитать настройки с устройства |
-| `node src/tools/dump-hid-families.js` | состояние HID по семействам |
-| `node src/tools/capture-restart.js` | перехват старта MCC |
-| `node src/tools/set-device-mode.js Live\|Prof\|Mobile` | сменить режим |
-| `node src/tools/inventory-workspace.js` | все ключи всех workspace |
-| `node src/tools/crosscheck-file-hid.js` | сверка файла против HID |
+| `node research/archive/tools/read-settings.js` | прочитать настройки с устройства |
+| `node research/archive/tools/dump-hid-families.js` | состояние HID по семействам |
+| `node research/archive/tools/capture-restart.js` | перехват старта MCC |
+| `node research/archive/tools/set-device-mode.js Live\|Prof\|Mobile` | сменить режим |
+| `node research/archive/tools/inventory-workspace.js` | все ключи всех workspace |
+| `node research/archive/tools/crosscheck-file-hid.js` | сверка файла против HID |
 | `node src/tools/listen.js` | пассивное прослушивание (ничего не пишет) |
 
 ---

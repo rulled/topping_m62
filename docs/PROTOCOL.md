@@ -365,7 +365,7 @@ TT = 0x11, PP = 0x05, value = 1
 | **Ducking** | **только запись** (`IN=0`) | `0x43:0x01..0x07` |
 | Питание входов (48V) | не найдено | — |
 
-**Проверка направлений** (`python src/tools/check-exact-direction.py`, 5 захватов):
+**Проверка направлений** (`python research/archive/tools/check-exact-direction.py`, 5 захватов):
 
 ```
 0x51:0x02  loopback LB12 источник   OUT=3   IN=0   ТОЛЬКО ПИШЕТСЯ
@@ -411,7 +411,7 @@ and 5 would be». Mix D и Mix E — это шины микшера (`0x37/0x38`
 0x57:0x02 = 11  OTG IN         совпало: 6, расхождений: 0
 ```
 
-Проверка: `python src/tools/verify-source-codes.py`.
+Проверка: `python research/archive/tools/verify-source-codes.py`.
 
 ### 5.0 Как правильно проверять запись — ГЛАВНАЯ ЛОВУШКА
 

@@ -268,7 +268,7 @@ const py = Math.round(logicalY / 1.75);
 Проверено: `drag dial[283] (164,699) вниз на 40` →
 `GAIN` изменился 51 → **43**.
 
-Инструмент: `src/tools/drag-dial.js`.
+Инструмент: `research/archive/tools/drag-dial.js`.
 
 ---
 
@@ -338,4 +338,4 @@ const py = Math.round(logicalY / 1.75);
 Проверено: `drag dial[283] (164,699) вниз на 40` →
 `GAIN` изменился 51 → **43**.
 
-Инструмент: `src/tools/drag-dial.js`.
+Инструмент: `research/archive/tools/drag-dial.js`.

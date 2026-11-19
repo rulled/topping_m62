@@ -1,7 +1,7 @@
 # M62 — шумоподавление (NC), компрессор, реверб
 
 > Расшифровано 2026-11-08 в Mobile-режиме.
-> Разбор: `src/tools/map-nc-tags.js`, `map-nc-level.js`.
+> Разбор: `research/archive/tools/map-nc-tags.js`, `map-nc-level.js`.
 
 ---
 

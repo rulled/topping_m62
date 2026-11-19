@@ -31,7 +31,7 @@
 Считать надо **возможности** — то, что пользователь теряет или
 сохраняет.
 
-Пересчёт: `node src/tools/webhid-coverage-honest.js`.
+Пересчёт: `node research/archive/tools/webhid-coverage-honest.js`.
 
 ```
 всего маршрутов: 62
@@ -277,7 +277,7 @@ WebHID, при неудаче — агент.
 
 Захватывает интерфейс напрямую, не смотрит на usage pages. Это
 обошло бы проблему `usage = 0x00`. Но проверка на живом устройстве
-(`powershell -File src/tools/probe-webusb.ps1`) показала:
+(`powershell -File research/archive/tools/probe-webusb.ps1`) показала:
 
 ```
 MI_04  class=HIDClass  service=HidUsb

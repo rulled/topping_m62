@@ -1660,7 +1660,7 @@ Output_HP.GAIN, EQ-полоса) восстановился точно — 4/4.
 }
 ```
 
-**Проверено: 14/14** (`node src/tools/test-websocket.js`).
+**Проверено: 14/14** (`node research/archive/tools/test-websocket.js`).
 
 ### События от сервера
 
@@ -1691,9 +1691,9 @@ Output_HP.GAIN, EQ-полоса) восстановился точно — 4/4.
 >
 > **Статус — гипотеза.** Читать значение можно: запись `1` устройство
 > принимает и возвращает её на следующем ANNOUNCE
-> (`src/tools/probe-mute-rw.js`). Но запись `0x04 = 1` **не**
+> (`research/archive/tools/probe-mute-rw.js`). Но запись `0x04 = 1` **не**
 > переключила кнопку MUTE в UI MCC, а UI-переключение не сдвинуло тег
-> (`src/tools/mute-vs-tag.js`, тест нечистый: UI-мьют не держался).
+> (`research/archive/tools/mute-vs-tag.js`, тест нечистый: UI-мьют не держался).
 > Эталон состояния мьюта — по-прежнему `TogglePattern` в UI,
 > а не этот тег.
 
@@ -1726,7 +1726,7 @@ Output_HP.GAIN, EQ-полоса) восстановился точно — 4/4.
 ### Команды от клиента
 
 Все команды возвращают `ack` с тем же `op`, либо `error`.
-Проверено: **17/17** (`node src/tools/test-websocket.js`).
+Проверено: **17/17** (`node research/archive/tools/test-websocket.js`).
 
 ```json
 { "type": "setVolume",   "id": "hp", "value": 50 }
@@ -1846,11 +1846,11 @@ Output_HP.GAIN, EQ-полоса) восстановился точно — 4/4.
 |---|---|
 | `node src/tools/verify-coverage.js` | **42 проверки** всех функций |
 | `node src/tools/selftest.js` | самопроверка транспорта |
-| `node src/tools/read-settings.js` | прочитать настройки с устройства |
-| `node src/tools/capture-restart.js` | перехват старта MCC |
-| `node src/tools/set-device-mode.js Live\|Prof\|Mobile` | сменить режим |
-| `node src/tools/dump-hid-families.js` | состояние HID по семействам |
-| `node src/tools/inventory-workspace.js` | все ключи всех workspace |
+| `node research/archive/tools/read-settings.js` | прочитать настройки с устройства |
+| `node research/archive/tools/capture-restart.js` | перехват старта MCC |
+| `node research/archive/tools/set-device-mode.js Live\|Prof\|Mobile` | сменить режим |
+| `node research/archive/tools/dump-hid-families.js` | состояние HID по семействам |
+| `node research/archive/tools/inventory-workspace.js` | все ключи всех workspace |
 
 ---
 

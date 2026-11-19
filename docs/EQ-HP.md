@@ -1,7 +1,7 @@
 # M62 — Pro audio: EQ наушников
 
 > Расшифровано 2026-11-08 в Prof-режиме.
-> Разбор: `src/tools/analyze-eq-hp.py`, `dump-slow.js`, `test-eq-hp-bulk.js`.
+> Разбор: `research/archive/tools/analyze-eq-hp.py`, `dump-slow.js`, `test-eq-hp-bulk.js`.
 
 ---
 

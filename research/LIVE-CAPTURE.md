@@ -205,10 +205,10 @@ Dial'ы (круглые регуляторы) не поддерживают `Ran
 |---|---|
 | `src/tools/listen.js` | пассивно слушать HID (ничего не пишет) |
 | `src/tools/session.js` | сеанс с метками, ищет новые теги |
-| `src/tools/probe-slider.js` | двигать слайдер по индексу и смотреть события |
-| `src/tools/probe-one.js` | один слайдер + diff состояния через ANNOUNCE |
-| `src/tools/probe-all.js` | перебрать все слайдеры, найти реагирующие |
-| `src/tools/announce-diff.js` | снимок ДО/ПОСЛЕ через ANNOUNCE |
+| `research/archive/tools/probe-slider.js` | двигать слайдер по индексу и смотреть события |
+| `research/archive/tools/probe-one.js` | один слайдер + diff состояния через ANNOUNCE |
+| `research/archive/tools/probe-all.js` | перебрать все слайдеры, найти реагирующие |
+| `research/archive/tools/announce-diff.js` | снимок ДО/ПОСЛЕ через ANNOUNCE |
 
 **Ключевая методическая находка:** устройство открывается **вторым читателем**
 параллельно с M Control Center. Это позволило снимать данные вообще без

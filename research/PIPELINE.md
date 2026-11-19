@@ -502,7 +502,7 @@ this.readTimer = setTimeout(tick, 0);   // <- ~65 тиков/сек
 | `0x45:0x01/0x02` (Scenes) | команда, не состояние |
 
 **Как определять режим без `0x11:0x1d`** — по косвенным признакам
-(реализовано в `src/tools/detect-mode.js`):
+(реализовано в `research/archive/tools/detect-mode.js`):
 
 | признак | Live | Pro | Mobile |
 |---|---|---|---|
@@ -541,7 +541,7 @@ ANNOUNCE, набор тегов изменился (51 параметр в Live,
 | файл | назначение |
 |---|---|
 | `src/tools/uia.js` | DPI-корректный UI Automation (главное!) |
-| `src/tools/probe-ui.js` | нажать элемент MCC и снять изменения HID |
-| `src/tools/read-settings.js` | прочитать все настройки с устройства |
-| `src/tools/capture-restart.js` | перехват старта MCC |
+| `research/archive/tools/probe-ui.js` | нажать элемент MCC и снять изменения HID |
+| `research/archive/tools/read-settings.js` | прочитать все настройки с устройства |
+| `research/archive/tools/capture-restart.js` | перехват старта MCC |
 | `src/tools/session.js` | сеанс с метками |

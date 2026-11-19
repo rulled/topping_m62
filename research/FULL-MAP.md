@@ -163,7 +163,7 @@
 
 ```
 # 1) запустить слушатель (он ждёт)
-node src/tools/capture-restart.js 30
+node research/archive/tools/capture-restart.js 30
 
 # 2) в другом окне — жёстко перезапустить MCC
 Stop-Process -Name "M Control Center" -Force

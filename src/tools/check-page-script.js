@@ -25,7 +25,7 @@
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const PAGE = 'web/index.html';
 const APP = 'web/app.js';
@@ -57,7 +57,11 @@ check(
 console.log('\n--- 2. подключение скрипта ---');
 const appTag = html.match(/<script[^>]*type="module"[^>]*src="([^"]+)"/);
 check('страница подключает модульный скрипт файлом', !!appTag);
-check('это /web/app.js', appTag?.[1] === '/web/app.js', String(appTag?.[1]));
+// Путь ОТНОСИТЕЛЬНЫЙ (./app.js): он должен работать и в корне, и в
+// подкаталоге (GitHub Pages). Абсолютный `/web/app.js` ломал второе.
+check('скрипт подключён относительным путём',
+  appTag?.[1]?.startsWith('./') || appTag?.[1]?.startsWith('../'),
+  String(appTag?.[1]));
 check('файл app.js существует', existsSync(APP));
 
 if (!existsSync(APP)) {
@@ -84,11 +88,16 @@ check('парсится как ES-модуль', syntaxErr === null,
 
 // ─── 4. импорты существуют ───
 console.log('\n--- 4. импорты ---');
-const imports = [...js.matchAll(/from\s+['"](\/(?:src|web)\/[^'"]+)['"]/g)].map((x) => x[1]);
+// Импорты ОТНОСИТЕЛЬНЫЕ: `../src/x.js`, `./scenes.js`.
+// Резолвим их относительно каталога app.js (web/), как это делает
+// браузер. Абсолютные пути ломали хостинг в подкаталоге.
+const imports = [...js.matchAll(/from\s+['"](\.[^'"]+)['"]/g)].map((x) => x[1]);
 check('импорты найдены', imports.length > 0, `${imports.length}`);
+
+const appDir = dirname(APP);
 for (const spec of imports) {
-  const rel = spec.replace(/^\//, '');
-  check(`файл есть: ${spec}`, existsSync(rel));
+  const rel = resolve(appDir, spec);
+  check(`файл есть: ${spec}`, existsSync(rel), rel);
 }
 
 // ─── 5. id из $('...') есть в разметке ───

@@ -37,10 +37,28 @@ import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
+import { ensureServer } from './_server-fixture.js';
+
 const PORT = (() => {
   const i = process.argv.indexOf('--port');
   return i >= 0 ? Number(process.argv[i + 1]) : 8898;
 })();
+
+/**
+ * ПОДНЯТЬ СЕРВЕР, ЕСЛИ ОН НЕ ПОДНЯТ.
+ *
+ * Раньше эта проверка требовала, чтобы кто-то снаружи уже слушал
+ * порт: она просто открывала `http://127.0.0.1:<PORT>/`. В итоге
+ * `npm run test:server` с чистого листа падал на «DOM получен
+ * (0 байт)» — браузер получал отказ в соединении, и это выглядело
+ * как поломка вёрстки, а не как незапущенный сервер.
+ *
+ * Общий подъём живёт в `_server-fixture.js`, чтобы не держать две
+ * копии одной логики.
+ */
+const server = await ensureServer(PORT);
+if (server.owned) console.log(`сервер: поднят на :${PORT} (закрывается вместе с проверкой)`);
+else console.log(`сервер: используется уже запущенный на :${PORT}`);
 
 const CANDIDATES = [
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -181,4 +199,9 @@ if (!dom.stdout.length) {
 console.log(`\n${'='.repeat(60)}`);
 console.log(`  пройдено: ${ok}`);
 console.log(`  провалено: ${fail}`);
+
+// Закрываем сервер ТОЛЬКО если поднимали его сами: чужой процесс
+// (поднятый вручную или соседним тестом) не наше дело.
+await server.close();
+
 process.exitCode = fail === 0 ? 0 : 1;

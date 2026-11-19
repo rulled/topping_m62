@@ -26,6 +26,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { request as httpRequest } from 'node:http';
 import { dirname, resolve } from 'node:path';
 
+import { ensureServer } from './_server-fixture.js';
+
 const PORT = (() => {
   const i = process.argv.indexOf('--port');
   return i >= 0 ? Number(process.argv[i + 1]) : 8898;
@@ -189,11 +191,21 @@ async function main() {
   }
 
   // ─── 5. сервер отдаёт всё нужное ───
+  //
+  // Сервер поднимаем сами: иначе с чистого листа все запросы
+  // получают «нет ответа», и это выглядит как поломка модулей,
+  // хотя сервер просто не был запущен.
   console.log('\n--- сервер отдаёт файлы страницы ---');
-  const need = ['/', ...files.map((f) => '/' + f.replace(process.cwd(), '').replace(/^[\\/]/, '').replace(/\\/g, '/'))];
-  for (const path of need) {
-    const status = await httpStatus(`http://127.0.0.1:${PORT}${path}`);
-    check(`GET ${path}`, status === 200, status === null ? 'нет ответа' : `HTTP ${status}`);
+  const server = await ensureServer(PORT);
+  if (server.owned) console.log(`  (сервер поднят на :${PORT})`);
+  try {
+    const need = ['/', ...files.map((f) => '/' + f.replace(process.cwd(), '').replace(/^[\\/]/, '').replace(/\\/g, '/'))];
+    for (const path of need) {
+      const status = await httpStatus(`http://127.0.0.1:${PORT}${path}`);
+      check(`GET ${path}`, status === 200, status === null ? 'нет ответа' : `HTTP ${status}`);
+    }
+  } finally {
+    await server.close();
   }
 
   console.log('\n' + '='.repeat(70));

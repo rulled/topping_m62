@@ -85,3 +85,21 @@ research/tools-inventory.txt
 # Проект Ghidra (создаётся заново скриптами)
 *.gpr
 *.rep/
+
+# ═══════════════════ РЕВИЗИЯ 2026-11-19 (часть 2) ═══════════════════
+# Захваты USBPcap: сотни МБ, в git не место.
+# Правило *.pcap было, но 7 файлов попали в индекс ДО него, и
+# правило на них не действовало. Убраны из индекса (на диске остались).
+# Теперь любой новый .pcap игнорируется автоматически.
+*.pcap
+*.pcapng
+
+# Дампы строк из бинарников MCC/KBCC: 30 МБ, воспроизводимы.
+research/static/kbcc_strings.txt
+research/static/mcc_strings.txt
+
+# Крупные кропы фото платы: исходники лежат рядом (front.jpg/back.jpg),
+# кропы можно нарезать заново скриптом.
+research/board-photos/back_top_half.png
+research/board-photos/back_bot_half.png
+research/board-photos/front_thermal.png
